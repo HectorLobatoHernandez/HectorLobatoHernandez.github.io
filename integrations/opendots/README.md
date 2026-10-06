@@ -42,6 +42,23 @@ npx --yes copilotkit@latest login
 npx --yes copilotkit@latest project select
 ```
 
+## Optional: isolated computer per Dot
+
+Requires Docker Desktop / Docker Engine with Compose v2.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\integrations\opendots\ENABLE_RHB_DOT_COMPUTERS.ps1
+```
+
+Then restart OpenDots and run the seed script again. The seed applies conservative capabilities:
+- RHB CORE: browser + files, no shell
+- GAZA OPS: browser + files, no shell
+- CAD ENGINEER: files only, no shell
+- SYSTEMS OPS: browser + files + shell inside its isolated container
+- RESEARCH: browser only
+
+The installer also accepts `-EnableComputers` to do this during the initial setup.
+
 ## Start later
 
 ```powershell
