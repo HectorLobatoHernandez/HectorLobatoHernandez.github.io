@@ -38,6 +38,10 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Validate source and asset manifest
