@@ -48,6 +48,26 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
 .sources-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.sources-grid a{padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#111317;font-size:12px;color:#c8d0db}.sources-grid a:hover{border-color:#4a505e}
 @media(max-width:1100px){.gaza-hero-grid,.scene-layout,.split,.sources-grid{grid-template-columns:1fr}.fact-grid,.kpi-row{grid-template-columns:repeat(4,1fr)}.alert-panel{position:relative;top:auto}.world{transform:translate(-50%,-50%) scale(.88) perspective(1400px) rotateX(62deg) rotateZ(-44deg)}}
 @media(max-width:760px){.fact-grid,.kpi-row,.legend{grid-template-columns:repeat(2,1fr)}.sky{height:520px}.world{transform:translate(-50%,-50%) scale(.62) perspective(1400px) rotateX(62deg) rotateZ(-44deg)}.hud-row{display:none}}
+
+/* v5 WebGL twin */
+.webgl-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(290px,.55fr);gap:12px}
+.webgl-shell{position:relative;min-height:680px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#070b10}
+#twin3d{width:100%;height:680px;display:block;touch-action:none}
+.webgl-hud{position:absolute;left:14px;top:14px;z-index:5;display:flex;gap:7px;flex-wrap:wrap;max-width:75%}
+.hudchip{padding:6px 8px;border-radius:999px;background:rgba(8,12,18,.84);border:1px solid #2b3746;color:#c7d0dc;font-size:9px;backdrop-filter:blur(8px)}
+.hudchip.live{color:#c9f0be;border-color:rgba(120,217,94,.34)}
+.twin-side{display:grid;gap:12px;align-content:start}
+.twin-card{padding:15px;border:1px solid var(--line);border-radius:16px;background:#0f141b}
+.twin-card h3{margin:0 0 8px;font-size:14px}.twin-card p{margin:0;color:#9eabbc;font-size:11px}
+.layer-list{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}
+.layer-list label{display:flex;gap:7px;align-items:center;padding:8px;border:1px solid #283443;border-radius:9px;background:#121923;font-size:10px;color:#c7d0dc}
+.twin-kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.twin-kpi{padding:10px;border:1px solid #283443;border-radius:10px;background:#121923}.twin-kpi b{display:block;font-size:17px}.twin-kpi span{font-size:8px;color:#8f9cad;text-transform:uppercase;letter-spacing:.07em}
+.range{width:100%;margin:10px 0}.twin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.selection{min-height:98px;margin-top:10px;padding:10px;border-radius:10px;border:1px solid #293545;background:#0b1017;font-size:10px;color:#aab6c5}
+.source-boundary{margin-top:10px;padding:10px;border-left:3px solid #efc534;background:rgba(239,197,52,.05);font-size:9px;color:#b9c2ce}
+@media(max-width:980px){.webgl-layout{grid-template-columns:1fr}.webgl-shell,#twin3d{height:560px;min-height:560px}}
+@media(max-width:600px){.webgl-shell,#twin3d{height:470px;min-height:470px}.layer-list{grid-template-columns:1fr}.webgl-hud{max-width:92%}}
 </style>
 </head>
 <body class="gaza3d">
@@ -90,6 +110,35 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   </div>
 </div></header>
 
+
+<section id="twin-webgl"><div class="wrap">
+  <div class="section-head"><div class="eyebrow">Digital Twin 3D · v5</div><div><h2>Parcela, granja, planta y flujo logístico en 3D real.</h2><p>WebGL interactivo: una granja funcional de referencia alimenta la recepción mediante cisterna; la leche continúa por proceso, almacén automático de 9 niveles, staging, muelles y transporte. La escala de edificios se ajusta a ≈12.000 m² construidos dentro de una parcela conceptual de 60.000 m²; la distribución interior sigue marcada como simulada hasta disponer de DWG/IFC o levantamiento autorizado.</p></div></div>
+  <div class="webgl-layout">
+    <div class="webgl-shell">
+      <canvas id="twin3d"></canvas>
+      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span></div>
+    </div>
+    <aside class="twin-side">
+      <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
+        <div class="layer-list">
+          <label><input type="checkbox" data-layer="farm" checked> Granja</label>
+          <label><input type="checkbox" data-layer="plant" checked> Planta</label>
+          <label><input type="checkbox" data-layer="warehouse" checked> ASRS</label>
+          <label><input type="checkbox" data-layer="utilities" checked> Utilities</label>
+          <label><input type="checkbox" data-layer="vehicles" checked> Vehículos</label>
+          <label><input type="checkbox" data-layer="roads" checked> Viales</label>
+        </div>
+      </div>
+      <div class="twin-card"><h3>Simulación farm → factory → dispatch</h3>
+        <div class="twin-kpis"><div class="twin-kpi"><b id="milkTemp">3.8 °C</b><span>tanque granja</span></div><div class="twin-kpi"><b id="milkLoad">18.4 t</b><span>cisterna demo</span></div><div class="twin-kpi"><b id="twinEta">17 min</b><span>ETA recepción</span></div><div class="twin-kpi"><b id="asrsOcc">72%</b><span>ocupación ASRS</span></div></div>
+        <input id="simSpeed" class="range" type="range" min="0" max="3" step="0.25" value="1">
+        <div class="twin-actions"><button class="btn primary" id="twinPlay">Pausar</button><button class="btn" id="twinReset">Reset vista</button><button class="btn" id="twinIncident">Inyectar incidencia</button></div>
+        <div class="selection" id="twinSelection"><b>Selecciona un elemento 3D.</b><br>La escena diferencia referencias públicas de geometría funcional simulada.</div>
+        <div class="source-boundary"><b>Frontera de evidencia.</b> Son públicos: 80+ ganaderías, ubicación en Coreses, ≈12.000 m² de instalaciones, ≈60.000 m² de parcela, GAZACONTROL, utilities de Veolia y almacén automático de 9 niveles. Posiciones internas, dimensiones por edificio, flota, volúmenes y KPIs son demostrativos.</div>
+      </div>
+    </aside>
+  </div>
+</div></section>
 <section id="simulacion"><div class="wrap"><div class="section-head"><div class="eyebrow">Digital twin visual</div><div><h2>Simulación 3D de granja a expedición.</h2><p>La escena integra granjas, vial de entrada, tráfico exterior, planta, utilidades, almacén, staging, muelles y expediciones. La parte visual está pensada para resultar memorable al presentar tu candidatura.</p></div></div>
 <div class="scene-layout">
   <div class="scene-shell">
@@ -195,6 +244,107 @@ applyWeather();applyScenario('pallet');
 document.querySelectorAll('.alert-card').forEach(el=>el.addEventListener('click',()=>applyScenario(el.dataset.id)));
 $('simulate').addEventListener('click',simulate);$('approve').addEventListener('click',approve);$('reset').addEventListener('click',resetScene);
 setInterval(()=>{weatherIndex=(weatherIndex+1)%weatherStates.length;applyWeather();log('Actualización de entorno · '+weatherStates[weatherIndex].label.toLowerCase())},14000);
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const canvas=document.getElementById('twin3d');
+if(canvas){
+ const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ renderer.shadowMap.enabled=true;
+ renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ renderer.outputColorSpace=THREE.SRGBColorSpace;
+ const scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x07101a);
+ scene.fog=new THREE.Fog(0x07101a,260,620);
+ const camera=new THREE.PerspectiveCamera(46,1,.1,1200);
+ camera.position.set(255,205,285);
+ const controls=new OrbitControls(camera,renderer.domElement);
+ controls.target.set(20,0,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*.49;controls.minDistance=90;controls.maxDistance=650;
+
+ scene.add(new THREE.HemisphereLight(0xb9d7ff,0x18210f,2.1));
+ const sun=new THREE.DirectionalLight(0xffffff,2.8);sun.position.set(150,240,110);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
+
+ const groups={farm:new THREE.Group(),plant:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group()};
+ Object.values(groups).forEach(g=>scene.add(g));
+ const clickable=[];
+ const mat=(color,rough=.72,metal=.08)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+ const addBox=(group,name,w,h,d,x,z,color,meta={})=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.position.set(x,h/2,z);m.castShadow=true;m.receiveShadow=true;m.name=name;m.userData=meta;group.add(m);clickable.push(m);return m};
+ const addLabel=(group,text,x,y,z,color='#dbe7f5')=>{const cv=document.createElement('canvas');cv.width=512;cv.height=96;const ctx=cv.getContext('2d');ctx.fillStyle='rgba(5,9,14,.82)';ctx.roundRect(2,2,508,92,18);ctx.fill();ctx.font='700 30px system-ui';ctx.fillStyle=color;ctx.textAlign='center';ctx.fillText(text,256,58);const tx=new THREE.CanvasTexture(cv);tx.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false}));s.position.set(x,y,z);s.scale.set(68,13,1);group.add(s);return s};
+
+ // 60,000 m² conceptual plot: 300 m x 200 m.
+ const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,200),mat(0x172218));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+ const border=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(300,.3,200)),new THREE.LineBasicMaterial({color:0x52735d}));border.position.y=.2;scene.add(border);
+ const grid=new THREE.GridHelper(300,30,0x2f4d3a,0x203128);grid.position.y=.05;scene.add(grid);
+
+ // Internal roads / yards.
+ const roadMat=mat(0x252c33,.95,0);
+ const road1=new THREE.Mesh(new THREE.PlaneGeometry(275,18),roadMat);road1.rotation.x=-Math.PI/2;road1.position.set(0,.09,60);groups.roads.add(road1);
+ const road2=new THREE.Mesh(new THREE.PlaneGeometry(18,160),roadMat);road2.rotation.x=-Math.PI/2;road2.position.set(-118,.1,0);groups.roads.add(road2);
+ const yard=new THREE.Mesh(new THREE.PlaneGeometry(95,58),mat(0x303942,.95,0));yard.rotation.x=-Math.PI/2;yard.position.set(86,.11,48);groups.roads.add(yard);
+
+ // Buildings: conceptual geometry totals ~11,800 m² footprint.
+ const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
+ const process=addBox(groups.plant,'Proceso + envasado',110,18,65,-12,-18,0x315d86,{kind:'SIMULADO',info:'Volumen conceptual para proceso, CIP y envasado.'});
+ const warehouse=addBox(groups.warehouse,'Almacén automático · 9 niveles',70,28,45,88,-25,0x455b74,{kind:'PÚBLICO + SIMULADO',info:'9 niveles es dato público; volumen y posición son conceptuales.'});
+ const staging=addBox(groups.plant,'Staging + muelles',58,10,25,91,38,0x875e37,{kind:'SIMULADO',info:'Preparación y expedición. Número/posición de muelles no confirmado.'});
+ const utilities=addBox(groups.utilities,'Utilities · vapor / agua / EDARI',30,11,20,-94,22,0x58753c,{kind:'PÚBLICO + SIMULADO',info:'Veolia confirma vapor, agua y EDARI; geometría/posición conceptual.'});
+ addLabel(groups.plant,'PROCESO / ENVASADO',-12,27,-18);
+ addLabel(groups.warehouse,'ASRS · 9 NIVELES',88,38,-25,'#9fc2ff');
+ addLabel(groups.utilities,'VAPOR · AGUA · EDARI',-94,20,22,'#cceca8');
+
+ // Nine visible ASRS levels.
+ for(let i=0;i<9;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(68,.45,43),mat(i%2?0x54708f:0x405b76));line.position.set(88,2.8+i*2.7,-25);groups.warehouse.add(line)}
+
+ // Tanks / silos.
+ for(let i=0;i<4;i++){const t=new THREE.Mesh(new THREE.CylinderGeometry(5.2,5.2,18,24),mat(0xaeb9c4,.3,.65));t.position.set(-70+i*14,9,-70);t.castShadow=true;groups.plant.add(t)}
+ addLabel(groups.plant,'SILOS',-49,22,-70);
+
+ // Functional farm outside plant plot, connected by collection road.
+ const farmGround=new THREE.Mesh(new THREE.PlaneGeometry(105,80),mat(0x24351e));farmGround.rotation.x=-Math.PI/2;farmGround.position.set(-210,.02,-72);groups.farm.add(farmGround);
+ addBox(groups.farm,'Nave ganadera',58,10,28,-222,-78,0x6a5843,{kind:'SIMULADO',info:'Granja funcional de referencia; no representa una explotación concreta de Gaza.'});
+ addBox(groups.farm,'Sala de ordeño',26,8,18,-180,-78,0x547a69,{kind:'SIMULADO',info:'Módulo conceptual de ordeño y transferencia.'});
+ const milkTank=new THREE.Mesh(new THREE.CylinderGeometry(5,5,16,24),mat(0xc7d3dc,.28,.72));milkTank.rotation.z=Math.PI/2;milkTank.position.set(-180,5,-52);milkTank.name='Tanque frío de leche';milkTank.userData={kind:'SIMULADO',info:'Tanque frío: KPI demo 3,8 °C. Capacidad no confirmada.'};groups.farm.add(milkTank);clickable.push(milkTank);
+ addLabel(groups.farm,'GRANJA · NODO DEMO',-205,18,-103,'#c9efb5');
+ for(let i=0;i<18;i++){const cow=addBox(groups.farm,'Vaca frisona · representación',3,2.3,1.4,-242+(i%6)*8,-88+Math.floor(i/6)*8,0xe8e8e2,{kind:'VISUAL',info:'Representación de bienestar animal; censo real no inferido.'});cow.rotation.y=(i%3)*.35}
+ const connector=new THREE.Mesh(new THREE.PlaneGeometry(120,10),roadMat);connector.rotation.x=-Math.PI/2;connector.rotation.z=-.18;connector.position.set(-157,.08,-61);groups.roads.add(connector);
+
+ // Trucks.
+ const makeTruck=(name,color)=>{const g=new THREE.Group();const cab=new THREE.Mesh(new THREE.BoxGeometry(7,5,7),mat(color));cab.position.set(-6,3,0);const box=new THREE.Mesh(new THREE.BoxGeometry(15,6,7),mat(0xd9e0e7,.4,.45));box.position.set(5,3.5,0);g.add(cab,box);g.name=name;groups.vehicles.add(g);return g};
+ const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf);tanker.position.set(-190,1,-58);
+ const out1=makeTruck('Expedición OUT-01',0x6fb24a);out1.position.set(70,1,60);
+ const out2=makeTruck('Expedición OUT-02',0xefc534);out2.position.set(110,1,60);
+
+ // Docks.
+ for(let i=0;i<4;i++){const d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,70+i*14,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});}
+
+ let running=true,phase=0,incident=false;
+ const speed=document.getElementById('simSpeed');
+ const sel=document.getElementById('twinSelection');
+ const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
+ renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
+ document.querySelectorAll('[data-layer]').forEach(x=>x.addEventListener('change',()=>{groups[x.dataset.layer].visible=x.checked}));
+ document.getElementById('twinPlay').onclick=()=>{running=!running;document.getElementById('twinPlay').textContent=running?'Pausar':'Reanudar'};
+ document.getElementById('twinReset').onclick=()=>{camera.position.set(255,205,285);controls.target.set(20,0,0)};
+ document.getElementById('twinIncident').onclick=()=>{incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min':'17 min';sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado.'};
+
+ function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.floor(w*renderer.getPixelRatio())||canvas.height!==Math.floor(h*renderer.getPixelRatio()))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+ const clock=new THREE.Clock();
+ function animate(){requestAnimationFrame(animate);resize();const dt=clock.getDelta();if(running){const s=Number(speed.value);phase=(phase+dt*s*.055)%1;
+   // Farm tanker follows collection corridor then enters reception.
+   const p=phase<.62?phase/.62:1; tanker.position.x=-190+p*108;tanker.position.z=-58+p*8;tanker.rotation.y=-Math.PI/2;
+   if(phase>.62){const q=(phase-.62)/.38;tanker.position.x=-82;tanker.position.z=-50+q*96;tanker.rotation.y=0}
+   const a=(phase*2)%1;out1.position.x=65+a*120;out1.position.z=60;out1.rotation.y=-Math.PI/2;
+   const b=((phase+.42)*2)%1;out2.position.x=65+b*120;out2.position.z=73;out2.rotation.y=-Math.PI/2;
+   document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
+ }
+ controls.update();renderer.render(scene,camera)}
+ animate();
+}
 </script>
 </body>
 </html>

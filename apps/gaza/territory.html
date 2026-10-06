@@ -60,7 +60,7 @@ section{padding:46px 0;border-top:1px solid rgba(255,255,255,.055)}.section-head
 <section id="territorio"><div class="wrap">
   <div class="section-head"><div class="eyebrow">01 · territorio real</div><div><h2>Planta, accesos y red viaria sobre cartografía real.</h2><p>La capa operativa utiliza OpenStreetMap/Leaflet para el prototipo interactivo sin credenciales. La ubicación de planta se toma del mapa embebido por Leche Gaza en su propia web. A la derecha se mantiene una referencia visual directa de Google Maps.</p></div></div>
   <div class="map-layout">
-    <div class="map-shell"><div class="map-top"><div><h3>Mapa operativo · Coreses / Zamora</h3><p>Planta real + radio de captación público &lt;50 km + rutas demo calculadas sobre red viaria.</p></div><div class="map-badges"><span>OSM tiles</span><span>OSRM routes</span><span>Open-Meteo LIVE</span><span>DGT DATEX2 source</span></div></div><div id="map"></div></div>
+    <div class="map-shell"><div class="map-top"><div><h3>Mapa operativo · Coreses / Zamora</h3><p>Planta real + radio de captación público &lt;50 km + rutas demo calculadas sobre red viaria.</p></div><div class="map-badges"><span>OSM tiles</span><span>80+ farms · network demo</span><span>OSRM routes</span><span>Open-Meteo LIVE</span><span>DGT DATEX2 source</span></div></div><div id="map"></div></div>
     <div class="side">
       <div class="card"><span class="status"><i></i>METEOROLOGÍA REAL</span><h3 style="margin-top:10px">Condiciones actuales en planta</h3><p>Consulta directa a Open-Meteo sobre la coordenada de la planta. Si la consulta externa no está disponible, la interfaz mantiene el último estado conocido como no verificado.</p><div class="weather-row"><div class="metric"><div class="v" id="temp">-- °C</div><div class="l">temperatura</div></div><div class="metric"><div class="v" id="wind">-- km/h</div><div class="l">viento</div></div><div class="metric"><div class="v" id="weather">--</div><div class="l">condición</div></div><div class="metric"><div class="v" id="weatherTime">--</div><div class="l">actualización</div></div></div></div>
       <div class="card"><h3>Referencia Google Maps · planta real</h3><p>Mapa embebido de la ubicación pública utilizada por Leche Gaza.</p><iframe class="google-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4224.306709903095!2d-5.604126176771143!3d41.525162564246195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd38e7094cd30eed:0xad6c1b88156fc6ba!2sLeche+Gaza+Coreses+Zamora!5e0!3m2!1ses!2ses!4v1609268196738!5m2!1ses!2ses"></iframe><div class="smallnote">Dirección pública: P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora).</div></div>
@@ -127,6 +127,20 @@ const icon=L.divIcon({className:'',html:'<div class="plant-marker"></div>',iconS
 L.marker([plant.lat,plant.lon],{icon}).addTo(map).bindPopup('<b>Leche Gaza · planta Coreses</b><br>P.I. El Pinar, Parcela 10<br>Ubicación pública oficial.');
 L.circle([plant.lat,plant.lon],{radius:50000,color:'#77c85d',weight:1.5,fillColor:'#77c85d',fillOpacity:.04,dashArray:'7,7'}).addTo(map).bindPopup('Radio visual de 50 km · referencia a la cercanía publicada por Gaza.');
 destinations.forEach(d=>L.circleMarker([d.lat,d.lon],{radius:5,color:'#8db2ff',fillColor:'#2d6cdf',fillOpacity:.85,weight:1.5}).addTo(map).bindPopup('<b>'+d.name+'</b><br>Destino de demostración; no implica cliente real.'));
+
+const farmNetwork=L.layerGroup().addTo(map);
+function seeded(i){const x=Math.sin(i*999.91+17.31)*43758.5453;return x-Math.floor(x)}
+for(let i=1;i<=82;i++){
+  const angle=seeded(i)*Math.PI*2;
+  const radiusKm=5+Math.sqrt(seeded(i+120))*43;
+  const dLat=(radiusKm/111)*Math.cos(angle);
+  const dLon=(radiusKm/(111*Math.cos(plant.lat*Math.PI/180)))*Math.sin(angle);
+  const lat=plant.lat+dLat,lon=plant.lon+dLon;
+  L.circleMarker([lat,lon],{radius:2.5,color:'#77c85d',weight:.8,fillColor:'#77c85d',fillOpacity:.58})
+    .addTo(farmNetwork)
+    .bindPopup('<b>GANADERÍA-DEMO-'+String(i).padStart(2,'0')+'</b><br>Nodo anonimizado/sintético dentro del radio de captación. No representa una explotación identificada.');
+}
+L.control.layers(null,{'Red 80+ ganaderías · simulada':farmNetwork},{collapsed:false,position:'bottomleft'}).addTo(map);
 
 function fmtDuration(sec){const m=Math.round(sec/60);if(m<60)return m+' min';const h=Math.floor(m/60),r=m%60;return h+' h '+r+' min'}
 function gmapsRouteUrl(d){return 'https://www.google.com/maps/dir/?api=1&origin='+plant.lat+','+plant.lon+'&destination='+d.lat+','+d.lon+'&travelmode=driving'}
