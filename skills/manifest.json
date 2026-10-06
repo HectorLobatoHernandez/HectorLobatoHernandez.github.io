@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-06.1",
+  "version": "2026-10-06.2",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -13,6 +13,13 @@
       "name": "video-to-superprompt",
       "source": "MengTo/Skills",
       "path": "agent-skills/codex/video-to-superprompt",
+      "license": "MIT"
+    },
+    {
+      "name": "brag-slim",
+      "source": "latent-spaces/brag",
+      "path": "skills/brag-slim/SKILL.md",
+      "upstream_sha": "0abca94d428335354a5117b2c369af0388bec2a6",
       "license": "MIT"
     },
     {
