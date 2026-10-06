@@ -254,6 +254,7 @@ setInterval(()=>{weatherIndex=(weatherIndex+1)%weatherStates.length;applyWeather
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { loadProductionAssets } from './runtime/asset-registry.js';
+import { createTwinTelemetry } from './runtime/twin-telemetry.js';
 
 const canvas=document.getElementById('twin3d');
 if(canvas){
@@ -481,7 +482,8 @@ if(canvas){
  // Docks.
  for(let i=0;i<4;i++){const x=70+i*14,d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,x,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});const shelter=new THREE.Mesh(new THREE.BoxGeometry(12.2,7.4,.75),mat(0x202a34,.72,.18));shelter.position.set(x,5.2,52.7);groups.plant.add(shelter);for(const bx of [-4.2,4.2]){const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.8,.9),mat(0x11161c,.9,.05));bumper.position.set(x+bx,1.2,53.15);groups.plant.add(bumper)}const signal=new THREE.Mesh(new THREE.SphereGeometry(.65,10,8),mat(i===1?0x73b866:0xefc534,.42,.05));signal.position.set(x+5.4,7.6,53.1);groups.plant.add(signal)}
 
- let running=!freezeMode,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envState={};
+ let running=!freezeMode,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envState={},laneMoving=0;
+ const publishTwinState=createTwinTelemetry('plant');
  const ENV_KEY='gaza:environment:v1';
  function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
  function weatherCodeRain(code){return [51,53,55,61,63,65,80,81,82,95,96,99].includes(Number(code))}
@@ -518,7 +520,7 @@ if(canvas){
    // Lane reservation: each mobile agent reserves its current and look-ahead cell before advancing.
    const cells=28,reserved=new Set();laneAgents.forEach(a=>reserved.add(Math.floor(a.u*cells)%cells));let moving=0;
    laneAgents.forEach(a=>{const du=a.speed*dt*s*envSpeedFactor,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
-   document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;workers.forEach(w=>moveWorker(w,dt,s));document.getElementById('workerCount').textContent=workers.length+'/'+workers.length;
+   laneMoving=moving;document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;workers.forEach(w=>moveWorker(w,dt,s));document.getElementById('workerCount').textContent=workers.length+'/'+workers.length;
    for(let i=0;i<14;i++){let u=(phase+i/14)%1;if(incident&&u>.42&&u<.58)u=.42+(u-.42)*.12;const fp=processFlowCurve.getPointAt(u),ft=processFlowCurve.getTangentAt(u);flowDummy.position.copy(fp);flowDummy.rotation.set(0,-Math.atan2(ft.z,ft.x),0);flowDummy.scale.setScalar(.78+Math.sin((phase+i)*Math.PI*2)*.08);flowDummy.updateMatrix();flowTokens.setMatrixAt(i,flowDummy.matrix)}flowTokens.instanceMatrix.needsUpdate=true;
    if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+seededRain()*20}rainGeo.attributes.position.needsUpdate=true}
    farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
@@ -529,7 +531,7 @@ if(canvas){
    const b=((phase+.42)*2)%1;out2.position.x=65+b*120;out2.position.z=73;out2.rotation.y=-Math.PI/2;
    document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
  }
- controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
+ controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;publishTwinState({simulation:{running,speed:Number(speed.value),phase:Number(phase.toFixed(4)),incident,flowState:incident?'RETENIDO':'NORMAL',laneMoving,laneAgents:laneAgents.length,workers:workers.length,asrsCycles},environment:{factor:Number(envSpeedFactor.toFixed(3)),weatherRisk:envWeatherRisk,roadRisk:envRoadRisk,weather:envState.weather||null,dgt:envState.dgt||null},assets:{state:window.__GAZA_ASSET_REGISTRY__?.state||'loading',loaded:window.__GAZA_ASSET_REGISTRY__?.loaded||0,failed:window.__GAZA_ASSET_REGISTRY__?.failed||0},render:stats,provenance:{public:true,inferred:true,simulated:true}});if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
  laneAgents.forEach(a=>moveLaneAgent(a,a.u));applyEnvironment();
  async function refreshWeather(){
    try{const u='https://api.open-meteo.com/v1/forecast?latitude=41.525162564246195&longitude=-5.604126176771143&current=temperature_2m,weather_code,wind_speed_10m,precipitation&timezone=Europe%2FMadrid';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather '+r.status);const j=await r.json(),w=j.current||{};let risk=0;if(weatherCodeRain(w.weather_code)||Number(w.precipitation||0)>0)risk++;if(Number(w.wind_speed_10m||0)>=35)risk++;if(Number(w.wind_speed_10m||0)>=55||[65,82,95,96,99].includes(Number(w.weather_code)))risk++;const label={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',51:'Llovizna',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'}[w.weather_code]||('Código '+w.weather_code);const prev=readEnv(),next={...prev,weather:{live:true,temp:Number(w.temperature_2m),wind:Number(w.wind_speed_10m),precipitation:Number(w.precipitation||0),code:Number(w.weather_code),label,risk:Math.min(risk,3),observedAt:w.time||null,checkedAt:new Date().toISOString()},source:'GAZA Plant 3D',updatedAt:new Date().toISOString()};localStorage.setItem(ENV_KEY,JSON.stringify(next));applyEnvironment(next)}catch(_){applyEnvironment(readEnv())}}
