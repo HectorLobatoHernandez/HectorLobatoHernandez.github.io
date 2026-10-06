@@ -540,10 +540,13 @@ if(canvas){
    g.name=name;g.userData={kind:'SIMULADO',info:(tanker?'Cisterna':'Tráiler')+' detallado de demostración. Orientación sigue la tangente del vial; marca visual de referencia, no matrícula/flota real.'};cab.name=name;cab.userData=g.userData;clickable.push(cab);groups.vehicles.add(g);return g
  };
  function orientTruck(g,dx,dz){const len=Math.hypot(dx,dz)||1;g.rotation.y=Math.atan2(dz/len,-dx/len)}
- const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf,true),out1=makeTruck('Expedición OUT-01',0x6fb24a),out2=makeTruck('Expedición OUT-02',0xefc534);
- const tankerCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-190,1,-58),new THREE.Vector3(-145,1,-56),new THREE.Vector3(-104,1,-53),new THREE.Vector3(-84,1,-49),new THREE.Vector3(-82,1,-25),new THREE.Vector3(-82,1,12),new THREE.Vector3(-82,1,46)],false,'catmullrom',.12);
- function placeTruckOnCurve(g,curve,u){const p=curve.getPointAt(Math.max(0,Math.min(1,u))),t=curve.getTangentAt(Math.max(0,Math.min(1,u)));g.position.copy(p);orientTruck(g,t.x,t.z)}
- placeTruckOnCurve(tanker,tankerCurve,0);out1.position.set(70,1,60);out2.position.set(110,1,73);orientTruck(out1,1,0);orientTruck(out2,1,0);
+ const tanker=makeTruck('Cisterna red granjas → recepción',0x2d6cdf,true),out1=makeTruck('Expedición OUT-01 · Toro / N-122',0x6fb24a),out2=makeTruck('Expedición OUT-02 · Zamora / N-122',0xefc534);
+ // Campus access choreography uses the contextual N-122 + access road. It is not a surveyed gate/turning plan.
+ const tankerCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-205,1,122),new THREE.Vector3(-150,1,122),new THREE.Vector3(-121,1,119),new THREE.Vector3(-118,1,92),new THREE.Vector3(-118,1,25),new THREE.Vector3(-112,1,-38),new THREE.Vector3(-100,1,-50)],false,'catmullrom',.08);
+ const outCurveEast=new THREE.CatmullRomCurve3([new THREE.Vector3(70,1,60),new THREE.Vector3(15,1,60),new THREE.Vector3(-85,1,60),new THREE.Vector3(-116,1,72),new THREE.Vector3(-118,1,116),new THREE.Vector3(-82,1,122),new THREE.Vector3(205,1,122)],false,'catmullrom',.08);
+ const outCurveWest=new THREE.CatmullRomCurve3([new THREE.Vector3(110,1,73),new THREE.Vector3(35,1,73),new THREE.Vector3(-84,1,72),new THREE.Vector3(-116,1,88),new THREE.Vector3(-118,1,118),new THREE.Vector3(-150,1,122),new THREE.Vector3(-205,1,122)],false,'catmullrom',.08);
+ function placeTruckOnCurve(g,curve,u){const q=Math.max(0,Math.min(1,u)),p=curve.getPointAt(q),t=curve.getTangentAt(Math.min(.999,q));g.position.copy(p);orientTruck(g,t.x,t.z)}
+ placeTruckOnCurve(tanker,tankerCurve,0);placeTruckOnCurve(out1,outCurveEast,0);placeTruckOnCurve(out2,outCurveWest,0);
 
  // Docks: functional reconstruction with shelters, levelers, guides, bay numbers and traffic lights.
  for(let i=0;i<4;i++){
@@ -602,8 +605,8 @@ if(canvas){
    farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
    // Inbound tanker and outbound trailers always orient to their direction of travel.
    placeTruckOnCurve(tanker,tankerCurve,phase);
-   const a=(phase*2)%1;out1.position.x=65+a*120;out1.position.z=60;orientTruck(out1,1,0);
-   const b=((phase+.42)*2)%1;out2.position.x=65+b*120;out2.position.z=73;orientTruck(out2,1,0);
+   placeTruckOnCurve(out1,outCurveEast,(phase*1.32)%1);
+   placeTruckOnCurve(out2,outCurveWest,((phase+.43)*1.18)%1);
    document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
  }
  controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;publishTwinState({simulation:{running,speed:Number(speed.value),phase:Number(phase.toFixed(4)),incident,flowState:incident?'RETENIDO':'NORMAL',laneMoving,laneAgents:laneAgents.length,workers:workers.length,asrsCycles},environment:{factor:Number(envSpeedFactor.toFixed(3)),weatherRisk:envWeatherRisk,roadRisk:envRoadRisk,weather:envState.weather||null,dgt:envState.dgt||null},assets:{state:window.__GAZA_ASSET_REGISTRY__?.state||'loading',loaded:window.__GAZA_ASSET_REGISTRY__?.loaded||0,failed:window.__GAZA_ASSET_REGISTRY__?.failed||0},render:stats,provenance:{public:true,inferred:true,simulated:true}});if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
