@@ -97,3 +97,12 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 - Major OSM roads are rendered separately from contextual building extrusions; GAZA-tagged OSM candidates are highlighted but remain `NOT AS-BUILT`.
 - A deterministic local QA fixture makes visual tests independent of Overpass availability.
 - This page is intentionally separate from the production Plant 3D until public GIS alignment is reviewed; after approval, the same runtime can replace contextual road/building geometry incrementally.
+
+
+## v14 Plant 3D GIS promotion stage
+- Plant 3D now includes the public GIS overlay as a selectable comparison layer and exposes a dedicated `GIS real` camera.
+- The operational model remains procedural/inferred; OSM does **not** replace plant geometry automatically.
+- The UI reports nearest OSM road distance, road identifier, footprint count and GAZA-tagged candidate count.
+- Contextual public road geometry is visually attenuated so the georeferenced OSM overlay can be inspected without being confused with as-built geometry.
+- `data/gis-promotion-contract.json` locks authority order, replacement gates and forbidden claims.
+- Domain QA and visual QA require `COMPARISON_ONLY_NOT_AUTHORITY` until authorised survey/CAD changes that contract.
