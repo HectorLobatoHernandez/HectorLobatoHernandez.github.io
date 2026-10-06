@@ -4,6 +4,10 @@ apps/gaza/.qa/
 apps/gaza/npm-debug.log*
 apps/gaza/.DS_Store
 
+# Generated launch-video output
+brag-output/
+brag-output-*/
+
 # Editor / OS
 .vscode/
 .DS_Store
