@@ -351,17 +351,28 @@ if(canvas){
  const walk=new THREE.Mesh(new THREE.PlaneGeometry(112,3.2),walkMat);walk.rotation.x=-Math.PI/2;walk.position.set(-4,.13,28);groups.process.add(walk);
 
  // ASRS public anchor: 9 levels. Rack geometry, bays and shuttle motion are simulated.
- const asrsShuttles=[],asrsPallets=[];let asrsCycles=0;
+ const asrsShuttles=[];let asrsCycles=0;
+ const rackBeamGeo=new THREE.BoxGeometry(67,.32,1),rackBeamMat=mat(0x6f849b,.55,.35),rackBeams=new THREE.InstancedMesh(rackBeamGeo,rackBeamMat,18),rackDummy=new THREE.Object3D();
+ const palletGeo=new THREE.BoxGeometry(7.1,1.55,6.4),palletLight=new THREE.InstancedMesh(palletGeo,mat(0xbfc9d5,.75,.05),126),palletGold=new THREE.InstancedMesh(palletGeo,mat(0xd7b44b,.75,.05),126);
+ let beamIndex=0,lightIndex=0,goldIndex=0;
  for(let level=0;level<9;level++){
    const y=2.2+level*2.75;
    for(const rz of [-40,-10]){
-     const beam=new THREE.Mesh(new THREE.BoxGeometry(67,.32,1),mat(0x6f849b,.55,.35));beam.position.set(88,y,rz);groups.warehouse.add(beam);
+     rackDummy.position.set(88,y,rz);rackDummy.rotation.set(0,0,0);rackDummy.scale.set(1,1,1);rackDummy.updateMatrix();rackBeams.setMatrixAt(beamIndex++,rackDummy.matrix);
      for(let bay=0;bay<7;bay++){
        const px=59+bay*9.6;
-       if((bay+level+(rz<0?1:0))%4!==0){const p=new THREE.Mesh(new THREE.BoxGeometry(7.1,1.55,6.4),mat((bay+level)%3===0?0xd7b44b:0xbfc9d5,.75,.05));p.position.set(px,y+1,-25+(rz<0?-10:10));groups.warehouse.add(p);asrsPallets.push(p)}
+       if((bay+level+(rz<0?1:0))%4!==0){
+         rackDummy.position.set(px,y+1,-25+(rz<0?-10:10));rackDummy.updateMatrix();
+         if((bay+level)%3===0)palletGold.setMatrixAt(goldIndex++,rackDummy.matrix);else palletLight.setMatrixAt(lightIndex++,rackDummy.matrix);
+       }
      }
    }
  }
+ rackBeams.count=beamIndex;palletLight.count=lightIndex;palletGold.count=goldIndex;
+ for(const inst of [rackBeams,palletLight,palletGold]){inst.instanceMatrix.needsUpdate=true;inst.castShadow=true;inst.receiveShadow=true;inst.computeBoundingSphere();groups.warehouse.add(inst)}
+ const postGeo=new THREE.BoxGeometry(.55,27,.55),postMat=mat(0x52697f,.52,.45),rackPosts=new THREE.InstancedMesh(postGeo,postMat,16);let postIndex=0;
+ for(const x of [55,65,75,85,95,105,115,125])for(const z of [-40,-10]){rackDummy.position.set(x,13.5,z);rackDummy.updateMatrix();rackPosts.setMatrixAt(postIndex++,rackDummy.matrix)}
+ rackPosts.instanceMatrix.needsUpdate=true;rackPosts.castShadow=true;rackPosts.computeBoundingSphere();groups.warehouse.add(rackPosts);
  for(const level of [1,4,7]){const s=new THREE.Mesh(new THREE.BoxGeometry(7.8,1.1,7.2),mat(0xf2c94c,.5,.25));s.position.set(60,3.1+level*2.75,-25);s.castShadow=true;groups.warehouse.add(s);asrsShuttles.push({mesh:s,level,phase:level*.17,lastHalf:0})}
  const lift=new THREE.Mesh(new THREE.BoxGeometry(5,5,8),mat(0x8db2ff,.45,.35));lift.position.set(55,4,-25);groups.warehouse.add(lift);
  const liftMast=new THREE.Mesh(new THREE.BoxGeometry(2,28,10),mat(0x2f4256,.65,.4));liftMast.position.set(54,14,-25);groups.warehouse.add(liftMast);
