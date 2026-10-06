@@ -21,7 +21,7 @@ const targets=[
   {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
-  {name:'territory',url:'/territory.html',width:1600,height:900,dsf:1},
+  {name:'territory',url:'/territory.html?qa=1',width:1600,height:900,dsf:1},
   {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:390,height:844,dsf:2}
 ];
 
