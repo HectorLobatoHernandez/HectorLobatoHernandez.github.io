@@ -40,6 +40,26 @@ function CodexHas([string]$Name) {
   return $LASTEXITCODE -eq 0
 }
 
+function Refresh-Path {
+  $env:Path = [Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [Environment]::GetEnvironmentVariable("Path","User")
+}
+function Winget-Install([string]$Id) {
+  if (!(Have "winget")) { throw "winget is required to auto-install missing prerequisites: $Id" }
+  Write-Host "[INSTALL] $Id" -ForegroundColor Yellow
+  & winget install --id $Id --exact --accept-package-agreements --accept-source-agreements
+  if ($LASTEXITCODE -ne 0) { throw "winget failed installing $Id (exit $LASTEXITCODE)" }
+  Refresh-Path
+}
+
+Step "Automatic prerequisites"
+if (!(Have "git")) { Winget-Install "Git.Git" }
+if (!(Have "node")) { Winget-Install "OpenJS.NodeJS.LTS" }
+if (!(Have "python")) { Winget-Install "Python.Python.3.12" }
+if (!(Have "blender")) {
+  try { Winget-Install "BlenderFoundation.Blender.LTS.4.5" }
+  catch { Write-Warning ("Blender winget install did not complete: " + $_.Exception.Message + ". Install Blender 4.2+ manually and rerun.") }
+}
+
 Step "Prerequisites"
 if (!(Have "git")) { throw "Git is required." }
 if (!(Have "node")) { throw "Node.js is required. threejs-devtools-mcp currently targets Node 22." }
