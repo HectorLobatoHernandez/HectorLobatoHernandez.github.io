@@ -138,7 +138,7 @@ for(const target of targets){
       routeMetric:!!document.getElementById('dgtRouteMatches'),
       routeCopy:document.body.textContent.includes('coincidencia geométrica')||document.body.textContent.includes('coincidencias corredor ruta'),
       site:window.__GAZA_SITE_CONTEXT__||null,
-      correctedCopy:document.body.textContent.includes('ANCLA CORREGIDA')&&document.body.textContent.includes('41.52355')&&document.body.textContent.includes('-5.59993')
+      correctedCopy:document.body.textContent.includes('ANCLA CORREGIDA')&&document.body.textContent.includes('41.52355')&&document.body.textContent.includes('-5.59993'),
       weatherOps:window.__GAZA_WEATHER_OPS__||null,
       weatherRisk24:document.getElementById('weatherRisk24')?.textContent||'',
       forecastSlots:document.querySelectorAll('#forecastStrip .forecast-slot').length,
