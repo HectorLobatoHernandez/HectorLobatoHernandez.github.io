@@ -21,6 +21,7 @@ const targets=[
   {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-roads',url:'/plant-3d.html?camera=roads&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-environment',url:'/plant-3d.html?camera=environment&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'campus-gis',url:'/campus-gis.html?qa=1',width:1600,height:900,dsf:1},
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
   {name:'systems',url:'/systems.html?qa=1',width:1600,height:900,dsf:1},
