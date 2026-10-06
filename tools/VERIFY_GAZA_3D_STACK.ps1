@@ -2,7 +2,7 @@ $ErrorActionPreference = "Continue"
 $checks = @()
 
 function Add-Check($name,$ok,$detail) {
-  $checks += [ordered]@{name=$name;ok=[bool]$ok;detail=[string]$detail}
+  $script:checks += [ordered]@{name=$name;ok=[bool]$ok;detail=[string]$detail}
   $mark = if($ok){"[OK]"}else{"[--]"}
   Write-Host "$mark $name - $detail"
 }
