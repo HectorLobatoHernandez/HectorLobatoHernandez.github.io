@@ -106,11 +106,17 @@ Step "Mint Three.js Skills"
 Run "npx" @("--yes","skills","add","mintdotgg/mint-threejs-skills","-a","codex","-g","-y")
 
 Step "Three.js DevTools MCP -> OpenClaw"
-# Use mcp set so saving the definition never depends on a cold npx startup.
-# The package can take longer than OpenClaw's 5 s default on first launch.
-$threeConfig = '{"command":"npx","args":["-y","threejs-devtools-mcp"],"connectionTimeoutMs":30000,"requestTimeoutMs":60000}'
-Run "openclaw" @("mcp","set","threejs-devtools",$threeConfig)
-Run "openclaw" @("mcp","doctor","threejs-devtools","--probe") -AllowFail
+# Avoid inline JSON here: Windows PowerShell 5.1 legacy native-argument passing
+# can strip the quotes before the Node/OpenClaw CLI receives the JSON.
+if (!(OpenClawHas "threejs-devtools")) {
+  Run "openclaw" @("mcp","add","threejs-devtools","--command","npx","--arg","-y","--arg","threejs-devtools-mcp") -AllowFail
+}
+if (OpenClawHas "threejs-devtools") {
+  Run "openclaw" @("mcp","configure","threejs-devtools","--connect-timeout","30","--timeout","60")
+  Run "openclaw" @("mcp","doctor","threejs-devtools","--probe") -AllowFail
+} else {
+  throw "threejs-devtools definition was not saved by OpenClaw."
+}
 
 Step "Blender MCP gateway"
 Run "python" @("-m","pip","install","--upgrade","blender-mcp-ultra")
@@ -129,10 +135,16 @@ if (!$blenderMcpCommand) {
   Write-Warning "blender-mcp-server was installed but its executable could not be resolved. Rerun VERIFY_GAZA_3D_STACK.ps1 after opening a new terminal."
 } else {
   Write-Host "[OK] blender-mcp-server available: $blenderMcpCommand"
-  $blenderConfig = @{ command = $blenderMcpCommand; connectionTimeoutMs = 30000; requestTimeoutMs = 60000 } | ConvertTo-Json -Compress
-  Run "openclaw" @("mcp","set","blender",$blenderConfig)
-  # The gateway can initialize before Blender is open; Blender-side tools become live after the addon connects on localhost:9876.
-  Run "openclaw" @("mcp","doctor","blender","--probe") -AllowFail
+  if (!(OpenClawHas "blender")) {
+    Run "openclaw" @("mcp","add","blender","--command",$blenderMcpCommand) -AllowFail
+  }
+  if (OpenClawHas "blender") {
+    Run "openclaw" @("mcp","configure","blender","--connect-timeout","30","--timeout","60")
+    # Blender-side tools become live after the addon connects on localhost:9876.
+    Run "openclaw" @("mcp","doctor","blender","--probe") -AllowFail
+  } else {
+    Write-Warning "Blender MCP definition was not saved by OpenClaw; verifier will report it."
+  }
 }
 
 Step "Blender addon package"
