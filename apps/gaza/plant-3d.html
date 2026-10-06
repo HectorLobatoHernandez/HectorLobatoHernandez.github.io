@@ -331,11 +331,17 @@ if(canvas){
 
  // Functional farm outside plant plot, connected by collection road.
  const farmGround=new THREE.Mesh(new THREE.PlaneGeometry(105,80),mat(0x24351e));farmGround.rotation.x=-Math.PI/2;farmGround.position.set(-210,.02,-72);groups.farm.add(farmGround);
- addBox(groups.farm,'Nave ganadera',58,10,28,-222,-78,0x6a5843,{kind:'SIMULADO',info:'Granja funcional de referencia; no representa una explotación concreta de Gaza.'});
- addBox(groups.farm,'Sala de ordeño',26,8,18,-180,-78,0x547a69,{kind:'SIMULADO',info:'Módulo conceptual de ordeño y transferencia.'});
+ const barn=addBox(groups.farm,'Nave ganadera',58,10,28,-222,-78,0x6a5843,{kind:'SIMULADO',info:'Granja funcional de referencia; no representa una explotación concreta de Gaza.'});
+ const barnRoof=new THREE.Mesh(new THREE.CylinderGeometry(18,18,58,3,1,false,0,Math.PI),mat(0x8b7458,.86,.02));barnRoof.rotation.z=Math.PI/2;barnRoof.rotation.y=Math.PI/2;barnRoof.position.set(-222,11,-78);barnRoof.scale.z=.62;groups.farm.add(barnRoof);
+ const milking=addBox(groups.farm,'Sala de ordeño',26,8,18,-180,-78,0x547a69,{kind:'SIMULADO',info:'Módulo conceptual de ordeño y transferencia.'});
  const milkTank=new THREE.Mesh(new THREE.CylinderGeometry(5,5,16,24),mat(0xc7d3dc,.28,.72));milkTank.rotation.z=Math.PI/2;milkTank.position.set(-180,5,-52);milkTank.name='Tanque frío de leche';milkTank.userData={kind:'SIMULADO',info:'Tanque frío: KPI demo 3,8 °C. Capacidad no confirmada.'};groups.farm.add(milkTank);clickable.push(milkTank);
+ for(const sx of [-246,-234]){const silo=new THREE.Mesh(new THREE.CylinderGeometry(3.6,4.3,12,14),mat(0xb9c4cf,.42,.42));silo.position.set(sx,6,-50);const cone=new THREE.Mesh(new THREE.ConeGeometry(4.3,4,14),mat(0x8d99a5,.5,.35));cone.position.set(sx,14,-50);groups.farm.add(silo,cone)}
+ const trough=new THREE.Mesh(new THREE.BoxGeometry(16,1.1,3.2),mat(0x6f8fa8,.72,.12));trough.position.set(-214,.6,-48);groups.farm.add(trough);
+ const paddock=new THREE.Mesh(new THREE.PlaneGeometry(72,30),mat(0x36552b,.95,0));paddock.rotation.x=-Math.PI/2;paddock.position.set(-214,.05,-115);groups.farm.add(paddock);
+ for(let x=-249;x<=-179;x+=7){for(const z of [-130,-100]){const post=new THREE.Mesh(new THREE.BoxGeometry(.22,1.5,.22),mat(0x8a6b45,.85,0));post.position.set(x,.75,z);groups.farm.add(post)}}
+ for(let z=-130;z<=-100;z+=6){for(const x of [-249,-179]){const post=new THREE.Mesh(new THREE.BoxGeometry(.22,1.5,.22),mat(0x8a6b45,.85,0));post.position.set(x,.75,z);groups.farm.add(post)}}
  addLabel(groups.farm,'GRANJA · NODO DEMO',-205,18,-103,'#c9efb5');
- for(let i=0;i<18;i++){const cow=addBox(groups.farm,'Vaca frisona · representación',3,2.3,1.4,-242+(i%6)*8,-88+Math.floor(i/6)*8,0xe8e8e2,{kind:'VISUAL',info:'Representación de bienestar animal; censo real no inferido.'});cow.rotation.y=(i%3)*.35}
+ const farmCows=[];for(let i=0;i<18;i++){const cow=addBox(groups.farm,'Vaca frisona · representación',3,2.3,1.4,-242+(i%6)*8,-121+Math.floor(i/6)*8,0xe8e8e2,{kind:'VISUAL',info:'Representación de bienestar animal; censo real no inferido.'});cow.rotation.y=(i%3)*.35;cow.userData.baseX=cow.position.x;cow.userData.baseZ=cow.position.z;farmCows.push(cow)}
  const connector=new THREE.Mesh(new THREE.PlaneGeometry(120,10),roadMat);connector.rotation.x=-Math.PI/2;connector.rotation.z=-.18;connector.position.set(-157,.08,-61);groups.roads.add(connector);
 
  // Internal forklifts/AGVs use discrete lane-cell reservation to avoid occupying the same corridor cell.
@@ -388,6 +394,7 @@ if(canvas){
    laneAgents.forEach(a=>{const du=a.speed*dt*s*envSpeedFactor,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
    document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;
    if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+Math.random()*20}rainGeo.attributes.position.needsUpdate=true}
+   farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
    // Farm tanker follows collection corridor then enters reception.
    const p=phase<.62?phase/.62:1; tanker.position.x=-190+p*108;tanker.position.z=-58+p*8;tanker.rotation.y=-Math.PI/2;
    if(phase>.62){const q=(phase-.62)/.38;tanker.position.x=-82;tanker.position.z=-50+q*96;tanker.rotation.y=0}
