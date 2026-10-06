@@ -40,6 +40,7 @@ function addRoad(group,f,report){
   const pts=(f.localXZ||[]).map(p=>new THREE.Vector3(Number(p[0]),.35,Number(p[1]))).filter(v=>Number.isFinite(v.x)&&Number.isFinite(v.z));
   if(pts.length<2)return;
   const t=f.properties?.tags||{},major=['motorway','trunk','primary'].includes(t.highway),secondary=['secondary','tertiary'].includes(t.highway);
+  for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1],vx=b.x-a.x,vz=b.z-a.z,den=vx*vx+vz*vz,tt=den?Math.max(0,Math.min(1,-(a.x*vx+a.z*vz)/den)):0,x=a.x+vx*tt,z=a.z+vz*tt,d=Math.hypot(x,z);if(d<(report.nearestRoadDistanceM??Infinity)){report.nearestRoadDistanceM=d;report.nearestRoad={ref:t.ref||null,name:t.name||null,highway:t.highway||null,localXZ:[Number(x.toFixed(2)),Number(z.toFixed(2))]}}}
   const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:major?0x35a7ff:secondary?0x78c5ff:0x8b9bad,transparent:true,opacity:major?.95:.72,depthTest:false}));
   line.name='OSM road · '+(t.ref||t.name||t.highway||f.properties?.osmId||'way');
   line.userData={type:'gis-reference',kind:'OSM ROAD · PUBLIC REFERENCE',info:'Geometría viaria OSM en coordenadas locales. No prueba una ruta comercial real de GAZA.',provenance:'PUBLIC_REFERENCE'};
@@ -76,7 +77,7 @@ function clear(group){while(group.children.length)group.remove(group.children[0]
 
 export async function loadPublicGisOverlay({group,clickable=[],qaMode=false,origin=DEFAULT_ORIGIN,radiusM=900,fixtureUrl='data/campus-gis-qa-fixture.json',onStatus=()=>{}}={}){
   if(!group)throw new Error('GIS overlay group is required');
-  const report={schemaVersion:1,state:'loading',mode:qaMode?'QA_FIXTURE':'OSM_LIVE',origin,radiusM,roads:0,hgvRoads:0,buildings:0,industrial:0,factoryCandidates:0,sourceClass:qaMode?'QA_FIXTURE':'PUBLIC_REFERENCE',geometryPolicy:'OSM_CONTEXT_NOT_AS_BUILT'};
+  const report={schemaVersion:2,state:'loading',mode:qaMode?'QA_FIXTURE':'OSM_LIVE',origin,radiusM,roads:0,hgvRoads:0,buildings:0,industrial:0,factoryCandidates:0,nearestRoadDistanceM:null,nearestRoad:null,sourceClass:qaMode?'QA_FIXTURE':'PUBLIC_REFERENCE',geometryPolicy:'OSM_CONTEXT_NOT_AS_BUILT',promotionStatus:'COMPARISON_ONLY_NOT_AUTHORITY'};
   window.__GAZA_PUBLIC_GIS_3D__=report;onStatus(report);clear(group);
   try{
     let features=[];
@@ -87,7 +88,7 @@ export async function loadPublicGisOverlay({group,clickable=[],qaMode=false,orig
       const r=await fetch(overpassUrl(origin,radiusM),{cache:'no-store',signal:ctrl.signal});clearTimeout(timer);if(!r.ok)throw new Error('Overpass HTTP '+r.status);
       features=((await r.json()).elements||[]).map(e=>featureFromOsm(e,origin)).filter(Boolean);
     }
-    render(features,group,clickable,report);report.state='ready';report.features=features.length;report.updatedAt=new Date().toISOString();
+    render(features,group,clickable,report);report.state='ready';report.features=features.length;if(Number.isFinite(report.nearestRoadDistanceM))report.nearestRoadDistanceM=Number(report.nearestRoadDistanceM.toFixed(2));report.updatedAt=new Date().toISOString();
   }catch(error){report.state='unavailable';report.error=String(error?.message||error);report.updatedAt=new Date().toISOString();}
   window.__GAZA_PUBLIC_GIS_3D__=report;onStatus(report);return report;
 }
