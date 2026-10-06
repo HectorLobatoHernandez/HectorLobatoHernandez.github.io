@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "crs": {
+    "interchange": "EPSG:4326",
+    "metricRecommended": "EPSG:25830"
+  },
+  "plant": {
+    "name": "Leche Gaza · Coreses",
+    "lat": 41.525162564246195,
+    "lon": -5.604126176771143,
+    "address": "P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora)",
+    "status": "PUBLIC_REFERENCE"
+  },
+  "osmContext": {
+    "industrialAreaWay": 734283251,
+    "name": "Polígono Industrial El Pinar",
+    "center": [
+      41.52472,
+      -5.59993
+    ],
+    "status": "PUBLIC_OSM_REFERENCE"
+  },
+  "roadRefs": [
+    {
+      "ref": "N-122",
+      "role": "primary east-west corridor",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "A-11 / E-82",
+      "role": "high-capacity regional corridor",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "ZA-P-1303",
+      "role": "Algodre/A-11 context",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "ZA-711",
+      "role": "Molacillos context",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "ZA-710",
+      "role": "N-122 connector context",
+      "status": "PUBLIC_REFERENCE"
+    }
+  ],
+  "routing": {
+    "engine": "OSRM public demo",
+    "network": "OpenStreetMap",
+    "policy": "Calculated geometry/time is routing output, not proof of actual Gaza route usage."
+  },
+  "signs": [
+    {
+      "type": "speed_limit",
+      "value": 20,
+      "evidence": "public exterior photo",
+      "positionPolicy": "CONTEXTUAL_UNTIL_GEOREFERENCED"
+    }
+  ],
+  "nextSurveyInputs": [
+    "authorized site DWG/DXF/IFC",
+    "georeferenced parcel/building footprints",
+    "gate and dock coordinates",
+    "truck turning radii / vehicle classes",
+    "authorized farm/TMS route export"
+  ]
+}
