@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GAZA · Territory, Routing & Weather</title>
 <link rel="preconnect" href="https://unpkg.com">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynl7ssT5dS0bITXWZ0uFzU7jo9rM=" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
 :root{
   --bg:#070a0f;--panel:#0f141b;--panel2:#141a23;--panel3:#19212c;--line:#26303d;
@@ -121,6 +121,7 @@ const destinations=[
   {name:'Madrid · nodo demo',lat:40.4168,lon:-3.7038}
 ];
 let trafficFactor=1;let routeResults=[];let routeLayers=[];let dgtLayer=null;
+const pageParams=new URLSearchParams(location.search),qaMode=pageParams.get('qa')==='1';
 const ENV_KEY='gaza:environment:v1';
 function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
 function publishEnv(patch){
@@ -193,11 +194,12 @@ async function loadDgt(){
     st.textContent='LIVE';ct.textContent=String(near.length);rm.textContent=String(routeMatches.length);up.textContent=new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});st.style.color='#77c85d';
   }catch(e){publishEnv({dgt:{live:false,count120:null,count40:null,nearestKm:null,risk:0,routeMatches:null,matchedRoutes:[],nearestRouteKm:null,routeRisk:0,corridorKm:1.5,checkedAt:new Date().toISOString(),note:'Feed/CORS no disponible; no se sustituye por dato sintético.'}});st.textContent='NO DISP.';ct.textContent='--';rm.textContent='--';up.textContent='CORS/feed';st.style.color='#f2c94c';console.warn('DGT DATEX2 no disponible',e)}
 }
-document.getElementById('refreshDgt').addEventListener('click',loadDgt);
+document.getElementById('refreshDgt').addEventListener('click',()=>qaMode?applyQaEnvironment():loadDgt());
 
 function weatherText(code){const map={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',48:'Niebla escarchada',51:'Llovizna',53:'Llovizna',55:'Llovizna intensa',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',71:'Nieve',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'};return map[code]||('Código '+code)}
 async function loadWeather(){try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${plant.lat}&longitude=${plant.lon}&current=temperature_2m,weather_code,wind_speed_10m,precipitation&timezone=Europe%2FMadrid`;const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather '+r.status);const j=await r.json();const c=j.current,risk=weatherRisk(c);publishEnv({weather:{live:true,temp:Number(c.temperature_2m),wind:Number(c.wind_speed_10m),precipitation:Number(c.precipitation||0),code:Number(c.weather_code),label:weatherText(c.weather_code),risk,observedAt:c.time||null,checkedAt:new Date().toISOString()}});document.getElementById('temp').textContent=Math.round(c.temperature_2m)+' °C';document.getElementById('wind').textContent=Math.round(c.wind_speed_10m)+' km/h';document.getElementById('weather').textContent=weatherText(c.weather_code);document.getElementById('weatherTime').textContent=(c.time||'').split('T')[1]||'actual';}catch(e){publishEnv({weather:{live:false,risk:0,checkedAt:new Date().toISOString()}});document.getElementById('weather').textContent='No disponible';document.getElementById('weatherTime').textContent='sin verificar'}}
-async function initTerritory(){await Promise.all([calcRoutes(),loadWeather()]);await loadDgt()}initTerritory();
+function applyQaEnvironment(){const now=new Date().toISOString(),fixture={weather:{live:true,temp:17,wind:8,precipitation:0,code:1,label:'QA estable',risk:0,checkedAt:now},dgt:{live:true,count120:2,count40:1,nearestKm:18,risk:1,routeMatches:0,matchedRoutes:[],nearestRouteKm:null,routeRisk:0,corridorKm:1.5,checkedAt:now,note:'Fixture QA determinista; no es DGT live.'}};publishEnv(fixture);document.getElementById('temp').textContent='17 °C';document.getElementById('wind').textContent='8 km/h';document.getElementById('weather').textContent='QA estable';document.getElementById('weatherTime').textContent='fixture';const st=document.getElementById('dgtStatus');st.textContent='QA FIXTURE';st.style.color='#8db2ff';document.getElementById('dgtCount').textContent='2';document.getElementById('dgtRouteMatches').textContent='0';document.getElementById('dgtUpdated').textContent='fixture'}
+async function initTerritory(){if(qaMode){await calcRoutes();applyQaEnvironment()}else{await Promise.all([calcRoutes(),loadWeather()]);await loadDgt()}}initTerritory();
 </script>
 </body>
 </html>
