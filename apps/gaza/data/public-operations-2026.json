@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "updatedAt": "2026-10-06",
   "plant": {
     "name": "Leche Gaza · planta Coreses",
@@ -53,6 +53,13 @@
       "name": "GAZACONTROL",
       "status": "CONFIRMED",
       "detail": "Automation and monitoring of production and logistics; Industry 4.0 productivity objective.",
+      "softwareVersion": "UNKNOWN"
+    },
+    {
+      "id": "intergaza",
+      "name": "INTERGAZA",
+      "status": "CONFIRMED_OFFICIAL_PROJECT",
+      "detail": "2022 Industria Conectada project: system for interconnection of the company's value chain with its environment. Granted project budget €432,460; public resolution does not disclose the deployed software product or interfaces.",
       "softwareVersion": "UNKNOWN"
     },
     {
@@ -208,6 +215,52 @@
       "supports": [
         "leadership.RobertoVizan"
       ]
+    },
+    {
+      "id": "intergaza-mintur",
+      "url": "https://www.mintur.gob.es/PortalAyudas/IndustriaConectada/Concesion/2022/Documents/Resolucion_concesion_global_firmada.pdf",
+      "supports": [
+        "operations.intergaza"
+      ]
+    },
+    {
+      "id": "campo-galego-2026",
+      "url": "https://www.campogalego.es/en-leche-gaza-pagamos-un-precio-bastante-superior-para-que-el-ganadero-pueda-innovar-y-haya-relevo/",
+      "supports": [
+        "currentPublicOperations.observed2026",
+        "leadership.SaulAlonso"
+      ]
+    },
+    {
+      "id": "gaza-home-2026",
+      "url": "https://www.lechegaza.com/",
+      "supports": [
+        "currentPublicOperations.publicWebsiteFarmClaim"
+      ]
+    },
+    {
+      "id": "gustavo-linkedin",
+      "url": "https://es.linkedin.com/in/gustavo-andres-martin",
+      "supports": [
+        "leadership.GustavoAndresMartin"
+      ]
     }
-  ]
+  ],
+  "currentPublicOperations": {
+    "observed2026": {
+      "cowMilkLitresPerDay": 150000,
+      "sheepMilkLitresPerDayRange": [
+        6000,
+        14000
+      ],
+      "annualCowMilkCommercializedLitres": 55000000,
+      "annualSheepMilkCommercializedLitres": 3000000,
+      "memberFarmCountInterview": 70,
+      "note": "Campo Galego interview 2026. Company website separately states 80+ own farms; keep both claims with source context rather than silently reconciling them."
+    },
+    "publicWebsiteFarmClaim": {
+      "count": "80+",
+      "label": "ganaderías propias"
+    }
+  }
 }
