@@ -10,17 +10,20 @@ await fs.mkdir(out,{recursive:true});
 const browser=await chromium.launch({headless:!headed});
 const errors=[],checks=[];
 const targets=[
-  {name:'strategy',url:'/game.html',width:1600,height:900,dsf:2},
-  {name:'strategy-docks',url:'/game.html',width:1600,height:900,dsf:2,action:async page=>page.locator('[data-focus="dock"]').click()},
-  {name:'plant',url:'/plant-3d.html',width:1600,height:900,dsf:2},
-  {name:'plant-asrs',url:'/plant-3d.html',width:1600,height:900,dsf:2,action:async page=>page.locator('[data-camera="asrs"]').click()},
-  {name:'plant-docks',url:'/plant-3d.html',width:1600,height:900,dsf:2,action:async page=>page.locator('[data-camera="docks"]').click()},
+  {name:'strategy',url:'/game.html?camera=overview&freeze=1',width:1600,height:900,dsf:2},
+  {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1',width:1600,height:900,dsf:2},
+  {name:'strategy-asrs',url:'/game.html?camera=asrs&freeze=1',width:1600,height:900,dsf:2},
+  {name:'strategy-docks',url:'/game.html?camera=dock&freeze=1',width:1600,height:900,dsf:2},
+  {name:'plant',url:'/plant-3d.html?camera=exterior&freeze=1',width:1600,height:900,dsf:2},
+  {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1',width:1600,height:900,dsf:2},
+  {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1',width:1600,height:900,dsf:2},
+  {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1',width:1600,height:900,dsf:2},
   {name:'territory',url:'/territory.html',width:1600,height:900,dsf:1},
-  {name:'strategy-mobile',url:'/game.html',width:390,height:844,dsf:2}
+  {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1',width:390,height:844,dsf:2}
 ];
 
 for(const target of targets){
-  const {name,url,width,height,dsf=1,action}=target;
+  const {name,url,width,height,dsf=1}=target;
   const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:dsf});
   const page=await context.newPage();
   page.on('console',m=>{if(m.type()==='error')errors.push({surface:name,type:'console',text:m.text()})});
@@ -46,13 +49,13 @@ for(const target of targets){
     if(!logoOk)errors.push({surface:name,type:'asset',text:'GAZA SVG did not load: '+JSON.stringify(logo)});
   }
 
-  if(action){await action(page);await page.waitForTimeout(900)}
+  await page.waitForTimeout(250);
   await page.screenshot({path:path.join(out,name+'.png'),fullPage:true});
   await context.close();
 }
 
 await browser.close();
-await fs.writeFile(path.join(out,'report.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),targets:targets.map(({action,...x})=>x),checks,errors},null,2));
+await fs.writeFile(path.join(out,'report.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),targets,checks,errors},null,2));
 if(errors.length){
   console.error(JSON.stringify({checks,errors},null,2));
   process.exit(2);
