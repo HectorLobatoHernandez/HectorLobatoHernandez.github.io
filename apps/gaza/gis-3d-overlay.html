@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GAZA · GIS 3D Alignment Lab</title>
+<style>
+:root{--bg:#07101a;--panel:#0d151f;--line:#273646;--text:#edf4fb;--muted:#93a5b6;--blue:#35a7ff;--orange:#ff733b;--green:#6fcf78}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:13px/1.45 Inter,system-ui,sans-serif}.top{height:60px;padding:0 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);background:#09111a;position:relative;z-index:3}.top img{width:92px;height:38px;object-fit:contain;background:#fff;border-radius:7px;padding:3px}.top b{font-size:15px}.top span{color:var(--muted)}.spacer{flex:1}.btn{border:1px solid #34475c;background:#101b27;color:#eaf2fa;border-radius:999px;padding:8px 11px;text-decoration:none;font-size:11px;cursor:pointer}.layout{height:calc(100vh - 60px);display:grid;grid-template-columns:minmax(0,1fr) 330px}.view{position:relative;min-width:0}canvas{width:100%;height:100%;display:block}.hud{position:absolute;left:14px;top:14px;display:flex;gap:7px;flex-wrap:wrap;max-width:80%}.chip{padding:6px 8px;background:rgba(7,12,18,.86);border:1px solid #304154;border-radius:999px;color:#cdd9e5;font-size:9px;backdrop-filter:blur(8px)}.chip.live{color:#aee9bc;border-color:rgba(111,207,120,.35)}.side{border-left:1px solid var(--line);background:#0a1119;padding:14px;overflow:auto}.card{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:13px;margin-bottom:10px}.card h2,.card h3{margin:0 0 7px}.card p{margin:5px 0;color:#aab8c6;font-size:11px}.kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.kpi{border:1px solid #2b3b4d;border-radius:9px;background:#101923;padding:9px}.kpi b{display:block;font-size:17px}.kpi span{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.legend{display:grid;gap:6px;margin-top:8px}.legend div{display:flex;gap:8px;align-items:center;color:#b5c3d1;font-size:10px}.sw{width:12px;height:4px;border-radius:3px}.warn{border-left:3px solid #f0c95a;padding-left:9px;color:#c9bd97!important}.entity{min-height:95px;padding:10px;background:#080e15;border:1px solid #243243;border-radius:10px;margin-top:8px;color:#9fb0c1;font-size:10px}.entity b{color:#fff}.tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.tools button{border:1px solid #324559;background:#0e1925;color:#dce8f4;border-radius:999px;padding:7px 9px;font-size:10px;cursor:pointer}@media(max-width:900px){.layout{height:auto;grid-template-columns:1fr}.view{height:65vh}.side{border-left:0;border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<header class="top"><img src="assets/gaza-logo.svg" alt="GAZA"><div><b>GIS 3D Alignment Lab</b><br><span>OSM público → coordenadas métricas locales → comparación espacial</span></div><div class="spacer"></div><a class="btn" href="campus-gis.html">Campus GIS</a><a class="btn" href="plant-3d.html">Plant 3D</a><a class="btn" href="systems.html">Sistemas</a></header>
+<main class="layout">
+<section class="view"><canvas id="gisCanvas"></canvas><div class="hud"><span class="chip live" id="stateChip">GIS · cargando…</span><span class="chip">ORIGEN · 41.52355, -5.59993</span><span class="chip">X EAST · Z NORTH</span><span class="chip">OSM · CONTEXTO PÚBLICO</span><span class="chip">NO AS-BUILT</span></div></section>
+<aside class="side">
+<div class="card"><h2>Reconstrucción georreferenciada</h2><p>Esta superficie separa la geometría pública real de OSM de la reconstrucción operacional de la planta. Sirve para alinear viales, huellas y accesos antes de promover geometría al Digital Twin.</p><div class="kpis"><div class="kpi"><b id="roads">--</b><span>viales OSM</span></div><div class="kpi"><b id="hgvRoads">--</b><span>viales HGV</span></div><div class="kpi"><b id="buildings">--</b><span>edificios</span></div><div class="kpi"><b id="candidates">--</b><span>candidatos GAZA</span></div></div><div class="tools"><button id="home">Vista general</button><button id="top">Planta</button><button id="toggleGrid">Grid</button></div></div>
+<div class="card"><h3>Leyenda</h3><div class="legend"><div><i class="sw" style="background:#35a7ff"></i>viales principales</div><div><i class="sw" style="background:#78c5ff"></i>viales secundarios</div><div><i class="sw" style="background:#e6b83d"></i>footprints OSM</div><div><i class="sw" style="background:#ff733b"></i>candidato etiquetado GAZA</div><div><i class="sw" style="background:#6fcf78"></i>polígono industrial</div></div></div>
+<div class="card"><h3>Inspector</h3><div class="entity" id="entity"><b>Selecciona un footprint.</b><br>El overlay conserva la procedencia y la frontera de evidencia.</div></div>
+<div class="card"><h3>Regla de promoción</h3><p class="warn">OSM permite ajustar contexto y detectar contradicciones, pero no sustituye un DWG/DXF/IFC o levantamiento. Los edificios GAZA siguen siendo referencia pública hasta disponer de geometría autorizada.</p></div>
+</aside>
+</main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { loadPublicGisOverlay } from './runtime/public-gis-overlay.js';
+
+const params=new URLSearchParams(location.search),qaMode=params.get('qa')==='1',canvas=document.getElementById('gisCanvas');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x07101a);scene.fog=new THREE.Fog(0x07101a,650,1600);
+const camera=new THREE.PerspectiveCamera(47,1,.1,2500);camera.position.set(360,330,380);
+const controls=new OrbitControls(camera,canvas);controls.target.set(0,0,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*.495;controls.minDistance=40;controls.maxDistance=1400;
+scene.add(new THREE.HemisphereLight(0xb9d7ff,0x152419,1.8));const sun=new THREE.DirectionalLight(0xffffff,2.2);sun.position.set(220,350,180);scene.add(sun);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(1900,1900),new THREE.MeshStandardMaterial({color:0x111a17,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.1;scene.add(ground);
+const grid=new THREE.GridHelper(1800,90,0x2d566d,0x1b2d38);grid.position.y=.05;scene.add(grid);
+const origin=new THREE.Mesh(new THREE.CylinderGeometry(3,3,1.2,24),new THREE.MeshStandardMaterial({color:0xff733b,emissive:0x4a1607}));origin.position.y=.6;origin.name='Ancla operativa';origin.userData={kind:'USER_CONFIRMED_APPROXIMATE',info:'41.52355, -5.59993 · referencia aproximada ±30 m, no topográfica.'};scene.add(origin);
+const gis=new THREE.Group();scene.add(gis);const clickable=[origin],ray=new THREE.Raycaster(),mouse=new THREE.Vector2(),entity=document.getElementById('entity');
+canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const h=ray.intersectObjects(clickable,false)[0];if(h){const o=h.object;entity.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'GIS')+'</span><br>'+(o.userData.info||'Referencia espacial.')}});
+function updateReport(r){document.getElementById('stateChip').textContent=r.state==='ready'?'GIS · '+r.mode+' · READY':'GIS · '+r.state;document.getElementById('roads').textContent=r.roads??'--';document.getElementById('hgvRoads').textContent=r.hgvRoads??'--';document.getElementById('buildings').textContent=r.buildings??'--';document.getElementById('candidates').textContent=r.factoryCandidates??'--'}
+loadPublicGisOverlay({group:gis,clickable,qaMode,radiusM:900,onStatus:updateReport}).then(r=>{window.__GAZA_GIS_3D_LAB__={schemaVersion:1,overlay:r,origin:[41.52355,-5.59993],axes:'X_EAST_Z_NORTH',authority:'OSM_PUBLIC_CONTEXT_NOT_AS_BUILT'}});
+document.getElementById('home').onclick=()=>{camera.position.set(360,330,380);controls.target.set(0,0,0)};
+document.getElementById('top').onclick=()=>{camera.position.set(0,720,.1);controls.target.set(0,0,0)};
+document.getElementById('toggleGrid').onclick=()=>grid.visible=!grid.visible;
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2.5);if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+function animate(){requestAnimationFrame(animate);resize();controls.update();renderer.render(scene,camera);window.__GAZA_GIS_3D_RENDER__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,dpr:renderer.getPixelRatio()}}animate();
+</script>
+</body></html>
