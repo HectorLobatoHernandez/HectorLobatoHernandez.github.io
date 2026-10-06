@@ -64,6 +64,11 @@ for(const target of targets){
     const assetsOk=!!assetRegistry&&assetRegistry.state!=='manifest-failed'&&assetRegistry.failed===0;
     checks.push({surface:name,check:'glb-asset-registry',ok:assetsOk,metrics:assetRegistry});
     if(!assetsOk)errors.push({surface:name,type:'asset',text:'GLB asset registry invalid: '+JSON.stringify(assetRegistry)});
+
+    const twinState=await page.evaluate(()=>window.__GAZA_TWIN_STATE__||null);
+    const twinStateOk=!!twinState&&twinState.schemaVersion===1&&['strategy','plant'].includes(twinState.surface)&&!!twinState.simulation&&!!twinState.environment&&!!twinState.provenance;
+    checks.push({surface:name,check:'machine-readable-twin-state',ok:twinStateOk,metrics:twinState});
+    if(!twinStateOk)errors.push({surface:name,type:'telemetry',text:'Twin telemetry snapshot unavailable or invalid'});
   }
 
   if(url.includes('territory.html')){
