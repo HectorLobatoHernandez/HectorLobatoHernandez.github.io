@@ -85,15 +85,25 @@ Current procedural people are synthetic role characters. Do not infer or reprodu
 
 The GAZA wordmark used in the prototype is a referential in-app reconstruction for identification. Do not claim it is an official brand asset. If the demo becomes a client deliverable, replace it with brand files supplied or licensed by the company.
 
-## Next implementation milestones
+## Implementation status and next milestones
 
-- Replace procedural people with rigged GLB characters and walk/idle/work animation blending.
-- Add PPE variants: hairnet, coat, hi-vis, maintenance and driver.
-- Replace procedural trucks/forklifts with optimised GLB assets.
-- Build evidence-guided exterior in Blender with photo-matched facade proportions.
-- Add interior packaging line, stainless piping, conveyors, pallet flow and ASRS rack detail.
-- Add LODs, frustum/distance culling and compressed textures.
-- Add deterministic visual-regression cameras.
+Implemented in browser runtime:
+- deterministic review cameras + freeze/QA modes;
+- manifest-driven GLB/glTF loader with source/license/provenance gate;
+- AnimationMixer support for loaded GLB clips;
+- machine-readable twin/render telemetry for agents and QA;
+- detailed procedural process/CIP/packaging/conveyor/palletising layer;
+- instanced ASRS occupancy, conveyors and exterior repeated context;
+- Playwright multi-camera QA + GitHub Actions + render budgets.
+
+Next production-asset milestones:
+- commit the first licensed rigged GLB character and validate walk/idle animation blending;
+- build PPE variants: food-production coat/hairnet, hi-vis logistics, maintenance and driver;
+- replace procedural tanker/trucks/forklifts with optimised GLB assets while preserving fallbacks;
+- use the now-enabled Blender MCP connection for evidence-guided exterior authoring once localhost:9876 is confirmed;
+- create LOD0/LOD1 variants and compressed texture workflow for repeated production assets;
+- calibrate kinematics only when authoritative dimensions/operational constraints are available;
+- connect a read-only canonical operations adapter only after an authorised WMS/MES/ASRS data contract exists.
 
 
 ## Bootstrap implemented — 2026-10-06
