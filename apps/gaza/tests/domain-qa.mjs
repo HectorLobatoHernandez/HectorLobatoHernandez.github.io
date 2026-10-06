@@ -2,11 +2,13 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 const root=path.resolve('.');
 const read=async p=>JSON.parse(await fs.readFile(path.join(root,p),'utf8'));
-const [ops,farms,adapters,geo]=await Promise.all([
+const [ops,farms,adapters,geo,eventSchema,mapping]=await Promise.all([
   read('data/public-operations-2026.json'),
   read('data/farm-network.json'),
   read('data/integration-adapters.json'),
-  read('data/geospatial-baseline.json')
+  read('data/geospatial-baseline.json'),
+  read('data/canonical-event.schema.json'),
+  read('data/integration-mapping-template.json')
 ]);
 const errors=[];
 const hav=(a,b,c,d)=>{const R=6371,p=Math.PI/180,q=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*R*Math.asin(Math.sqrt(q))};
@@ -34,8 +36,11 @@ if(geo.crs?.interchange!=='EPSG:4326'||geo.crs?.metricRecommended!=='EPSG:25830'
 if(geo.routing?.network!=='OpenStreetMap'||!String(geo.routing?.engine||'').includes('OSRM'))errors.push('GIS routing provenance missing');
 if(!geo.roadRefs?.some(x=>x.ref==='N-122'))errors.push('GIS N-122 anchor missing');
 if(geo.signs?.some(x=>x.positionPolicy!=='CONTEXTUAL_UNTIL_GEOREFERENCED'))errors.push('road sign must remain contextual until georeferenced');
+const requiredEvent=new Set(eventSchema.required||[]);for(const k of ['event_id','source','source_class','observed_at','entity_type','entity_id','event_type','quality','payload'])if(!requiredEvent.has(k))errors.push('canonical event missing required field '+k);
+if(mapping.rows?.some(x=>x.writes!=='DISABLED'))errors.push('integration mapping contains enabled writes');
+if(!mapping.rows?.some(x=>x.source==='GAZACONTROL')||!mapping.rows?.some(x=>String(x.source).includes('StorFast')))errors.push('integration mapping missing core authorities');
 
-const report={checkedAt:new Date().toISOString(),farmNodes:farms.nodes.length,candidateLoops:farms.candidateLoops.length,systems:ops.operations.length,leadership:ops.leadership.length,adapters:adapters.adapters.length,roadRefs:geo.roadRefs?.length||0,errors};
+const report={checkedAt:new Date().toISOString(),farmNodes:farms.nodes.length,candidateLoops:farms.candidateLoops.length,systems:ops.operations.length,leadership:ops.leadership.length,adapters:adapters.adapters.length,roadRefs:geo.roadRefs?.length||0,integrationMappings:mapping.rows?.length||0,errors};
 await fs.mkdir(path.join(root,'.qa'),{recursive:true});await fs.writeFile(path.join(root,'.qa','domain-report.json'),JSON.stringify(report,null,2));
 if(errors.length){console.error(JSON.stringify(report,null,2));process.exit(2)}
 console.log('GAZA domain QA OK:',report);
