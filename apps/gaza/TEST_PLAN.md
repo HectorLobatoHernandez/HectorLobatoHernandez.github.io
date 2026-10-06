@@ -1,0 +1,40 @@
+# GAZA Operations Intelligence — Acceptance Test Plan
+
+## Scope
+Synthetic demonstrator only. No internal Leche GAZA data and no PLC/ASRS control.
+
+## P0 — Interview demo
+1. Open `/apps/gaza/`.
+2. Confirm Digital Twin renders ASRS, staging, docks, trucks, forklifts and pallets.
+3. Press **Ejecutar demo**.
+4. Verify phase rail advances: Order → Gate → Exception → Optimise → Approve → Load → Dispatch.
+5. At Exception, verify **2 PALLETS MISSING** is visible in the twin and GZ-260602 is at risk.
+6. At Scenario Lab, verify current/proposed KPIs are shown.
+7. Approve the recommendation.
+8. Verify GZ-260602 is replanned to D4, the incident clears, KPIs change and HUMAN_APPROVAL is logged.
+9. Verify dispatch completes and the order becomes delivered.
+
+## P0 — Interaction
+- OPERATIONS / FLOW / RISK layers switch without page reload.
+- Pause/resume freezes and resumes simulation time and motion.
+- Speed cycles 1× → 2× → 0.5× → 1×.
+- Zoom +/− and Home camera work.
+- Clicking a truck, forklift, dock, staging or ASRS updates Selected Asset.
+- Orders search and state filter work.
+- Synthetic order injection adds an order.
+- Event Log exports JSON.
+
+## P1 — Responsive
+- Desktop ≥ 1100 px: twin + right operations rail.
+- Tablet: operations rail collapses below twin.
+- Mobile ≤ 700 px: navigation becomes horizontal and map remains usable.
+
+## Safety / governance acceptance
+- Visible synthetic-data notice.
+- No claim of live plant telemetry.
+- No direct PLC/ASRS control.
+- Recommendations require human approval.
+- Event log records simulation and decision events.
+
+## Current limitation
+The plant geometry and operational values are synthetic. Real integration requires an internal audit, validated plant layout, data contracts and read-only connectors before any operational conclusion is made.

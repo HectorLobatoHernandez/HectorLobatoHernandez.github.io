@@ -1,33 +1,26 @@
-# GAZA Operations Intelligence — Digital Twin Demo V2
+# GAZA Operations Intelligence
 
-MVP web responsive inspirado en patrones de warehouse-management visual y logistics control tower observados en las referencias de vídeo aportadas por el usuario.
+Synthetic Logistics Control Tower · Digital Twin · AI Decision Support demonstrator.
 
-## V2 implementado
-- Digital Twin isométrico animado en Canvas, sin dependencias externas.
-- Planta, ASRS, staging, 5 muelles, pallets, camiones y carretillas.
-- Cámara con pan, zoom y home.
-- Selección de activos con inspector lateral.
-- KPIs live: stock, trucks on site, OTIF, dock utilisation, turnaround y dwell time.
-- Shipment tracker de seis estados.
-- Cola de muelles/vehículos y alertas operativas.
-- Secuencia automática de demo end-to-end.
-- Orders & Expeditions con búsqueda, filtros y alta de pedido sintético.
-- Scenario Lab con cuatro incidencias.
-- Comparación current plan vs proposed plan.
-- AI Decision Support explicable.
-- Aprobación/rechazo human-in-the-loop.
-- Audit/event log y exportación JSON.
-- Responsive desktop/tablet/mobile.
+## Current MVP
+- Isometric operational twin with ASRS, staging, docks, trucks, forklifts and pallet flow.
+- OPERATIONS / FLOW / RISK visual layers.
+- Simulation clock, pause/resume and speed control.
+- Guided end-to-end demo with operational phase rail.
+- Orders and expeditions table with search/filter and synthetic order injection.
+- Scenario Lab for missing pallets, carrier delay, dock blockage and incomplete documentation.
+- Current-vs-proposed KPI comparison.
+- Human approval / rejection.
+- Event audit trail and JSON export.
+- Interactive asset selection and inspector.
+- Responsive desktop/tablet/mobile layout.
 
-## Demo end-to-end
-1. Pedido confirmado.
-2. TR-204 llega a planta.
-3. Se detecta falta de 2 pallets.
-4. El motor calcula alternativas.
-5. Se recomienda reasignación a D4.
-6. Se solicita aprobación humana.
-7. La replanificación se refleja en el Digital Twin y en KPIs.
-8. La expedición se libera y queda registrada.
+## Canonical demo
+`Order → Gate → Exception → Optimise → Human approval → Replan/load → Dispatch`
 
-## Principio de seguridad
-Todos los datos son sintéticos. No contiene información interna de Leche GAZA. No existe control PLC/ASRS. Una integración real debe comenzar read-only, separar IT/OT, registrar decisiones y validar las hipótesis mediante auditoría interna.
+The default scenario reproduces a synthetic 18-pallet expedition where two pallets are missing while the truck is already on site. The system evaluates an alternative, proposes D4, waits for human approval, updates the synthetic twin and records the decision.
+
+## Governance
+This is a concept demonstrator. All operational data and geometry are synthetic. It does not contain internal Leche GAZA information and does not control PLCs or ASRS equipment. A real deployment must begin with validated data contracts and read-only integration.
+
+See `TEST_PLAN.md` for acceptance tests.
