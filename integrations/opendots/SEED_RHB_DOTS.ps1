@@ -26,23 +26,23 @@ function Invoke-OD([string]$Method, [string]$Path, $Body = $null) {
 $workspace = Invoke-OD "GET" "/workspace"
 
 $spaceSpecs = @(
-    @{ Name = "RHB STUDIO"; Description = "Dirección técnica, negocio, proyectos y coordinación general de RHB STUDIO." },
-    @{ Name = "GAZA Operations"; Description = "Operaciones, fábrica, logística, rutas, digital twin y evolución de GAZA." },
-    @{ Name = "Engineering & CAD"; Description = "Survey, Photo2CAD, CAD Master, fabricación, planos y documentación técnica." },
-    @{ Name = "Research & Strategy"; Description = "Investigación técnica, normativa, mercado, software, IA y estrategia." },
-    @{ Name = "System Operations"; Description = "OmniRoute, OpenClaw, NEXO CORE, servicios, agentes, automatización y observabilidad." }
+    @{ name = "RHB STUDIO"; description = "Dirección técnica, negocio, proyectos y coordinación general de RHB STUDIO." },
+    @{ name = "GAZA Operations"; description = "Operaciones, fábrica, logística, rutas, digital twin y evolución de GAZA." },
+    @{ name = "Engineering & CAD"; description = "Survey, Photo2CAD, CAD Master, fabricación, planos y documentación técnica." },
+    @{ name = "Research & Strategy"; description = "Investigación técnica, normativa, mercado, software, IA y estrategia." },
+    @{ name = "System Operations"; description = "OmniRoute, OpenClaw, NEXO CORE, servicios, agentes, automatización y observabilidad." }
 )
 
 $spaces = @{}
 foreach ($spec in $spaceSpecs) {
-    $existing = $workspace.spaces | Where-Object { $_.name -eq $spec.Name } | Select-Object -First 1
+    $existing = $workspace.spaces | Where-Object { $_.name -eq $spec.name } | Select-Object -First 1
     if (-not $existing) {
         $existing = Invoke-OD "POST" "/spaces" $spec
-        Write-Host "Created Space: $($spec.Name)"
+        Write-Host "Created Space: $($spec.name)"
     } else {
-        Write-Host "Space exists: $($spec.Name)"
+        Write-Host "Space exists: $($spec.name)"
     }
-    $spaces[$spec.Name] = $existing.id
+    $spaces[$spec.name] = $existing.id
 }
 
 # Refresh after Space creation.
@@ -92,10 +92,10 @@ $dotSpecs = @(
 )
 
 foreach ($spec in $dotSpecs) {
-    $existing = $workspace.dots | Where-Object { $_.name -eq $spec.Name } | Select-Object -First 1
+    $existing = $workspace.dots | Where-Object { $_.name -eq $spec.name } | Select-Object -First 1
     $spaceIds = @($spec.Spaces | ForEach-Object { $spaces[$_] })
     $payload = @{
-        name = $spec.Name
+        name = $spec.name
         instructions = $spec.Instructions
         researchAllowed = [bool]$spec.Research
         memoryAllowed = [bool]$spec.Memory
@@ -106,10 +106,10 @@ foreach ($spec in $dotSpecs) {
 
     if (-not $existing) {
         Invoke-OD "POST" "/dots" $payload | Out-Null
-        Write-Host "Created Dot: $($spec.Name)"
+        Write-Host "Created Dot: $($spec.name)"
     } elseif ($ForceUpdate) {
         $update = @{
-            name = $spec.Name
+            name = $spec.name
             instructions = $spec.Instructions
             researchAllowed = [bool]$spec.Research
             memoryAllowed = [bool]$spec.Memory
@@ -117,9 +117,9 @@ foreach ($spec in $dotSpecs) {
             skillDeliveryEnabled = $false
         }
         Invoke-OD "PUT" ("/dots/" + $existing.id) $update | Out-Null
-        Write-Host "Updated Dot: $($spec.Name)"
+        Write-Host "Updated Dot: $($spec.name)"
     } else {
-        Write-Host "Dot exists: $($spec.Name)"
+        Write-Host "Dot exists: $($spec.name)"
     }
 }
 
