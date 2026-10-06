@@ -298,6 +298,23 @@ if(canvas){
  const road2=new THREE.Mesh(new THREE.PlaneGeometry(18,160),roadMat);road2.rotation.x=-Math.PI/2;road2.position.set(-118,.1,0);groups.roads.add(road2);
  const yard=new THREE.Mesh(new THREE.PlaneGeometry(95,58),mat(0x303942,.95,0));yard.rotation.x=-Math.PI/2;yard.position.set(86,.11,48);groups.roads.add(yard);
 
+ // Public road context. Road names/corridors are real; placement relative to the conceptual parcel is contextual, not surveyed.
+ const contextGround=new THREE.Mesh(new THREE.PlaneGeometry(430,92),mat(0x111914,.98,0));contextGround.rotation.x=-Math.PI/2;contextGround.position.set(0,.025,134);groups.roads.add(contextGround);
+ const n122=new THREE.Mesh(new THREE.PlaneGeometry(430,20),mat(0x242a30,.96,0));n122.rotation.x=-Math.PI/2;n122.position.set(0,.12,122);n122.name='N-122 · corredor público';n122.userData={kind:'CARRETERA PÚBLICA · CONTEXTO',info:'N-122 es un eje real Zamora–Coreses–Toro. Su alineación en esta escena local es contextual; consulta Territory para geometría OSM exacta.'};groups.roads.add(n122);clickable.push(n122);
+ const accessExt=new THREE.Mesh(new THREE.PlaneGeometry(18,52),roadMat);accessExt.rotation.x=-Math.PI/2;accessExt.position.set(-118,.13,99);groups.roads.add(accessExt);
+ const laneWhite=new THREE.MeshBasicMaterial({color:0xf2f2e8,toneMapped:false}),edgeWhite=new THREE.MeshBasicMaterial({color:0xd9dde0,toneMapped:false});
+ for(let x=-205;x<205;x+=14){const dash=new THREE.Mesh(new THREE.PlaneGeometry(7,.32),laneWhite);dash.rotation.x=-Math.PI/2;dash.position.set(x,.145,122);groups.roads.add(dash)}
+ for(const z of [113.7,130.3]){const edge=new THREE.Mesh(new THREE.PlaneGeometry(420,.26),edgeWhite);edge.rotation.x=-Math.PI/2;edge.position.set(0,.145,z);groups.roads.add(edge)}
+ for(let z=82;z<118;z+=11){const dash=new THREE.Mesh(new THREE.PlaneGeometry(.28,5.4),laneWhite);dash.rotation.x=-Math.PI/2;dash.position.set(-118,.15,z);groups.roads.add(dash)}
+ function makeRoadSign(lines,x,z,rotation=0,width=18,height=7,bg='#1557a5',accent='#ffffff'){
+   const cv=document.createElement('canvas');cv.width=1024;cv.height=384;const ctx=cv.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,cv.width,cv.height);ctx.strokeStyle='#fff';ctx.lineWidth=18;ctx.strokeRect(14,14,cv.width-28,cv.height-28);ctx.fillStyle=accent;ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='900 78px Arial';const arr=Array.isArray(lines)?lines:[lines];arr.forEach((s,i)=>ctx.fillText(s,cv.width/2,cv.height*(i+1)/(arr.length+1)));const tx=new THREE.CanvasTexture(cv);tx.colorSpace=THREE.SRGBColorSpace;tx.anisotropy=renderer.capabilities.getMaxAnisotropy();const g=new THREE.Group(),board=new THREE.Mesh(new THREE.BoxGeometry(width,height,.5),new THREE.MeshStandardMaterial({map:tx,roughness:.55,metalness:.15}));board.position.y=8.5;g.add(board);for(const px of [-width*.32,width*.32]){const post=new THREE.Mesh(new THREE.CylinderGeometry(.18,.22,10,8),mat(0x737d86,.45,.65));post.position.set(px,4,0);g.add(post)}g.position.set(x,0,z);g.rotation.y=rotation;g.userData={kind:'SEÑALIZACIÓN CONTEXTUAL',info:'Texto basado en ejes viarios públicos del entorno; ubicación exacta de esta señal no está verificada.'};board.name=arr.join(' · ');board.userData=g.userData;clickable.push(board);groups.roads.add(g);return g
+ }
+ makeRoadSign(['N-122','ZAMORA  ←   →  TORO'],-70,110,0,22,8,'#b5232f');
+ makeRoadSign(['A-11 / E-82','SALIDA 447 · CORESES'],-150,135,Math.PI,22,8,'#1557a5');
+ makeRoadSign(['POL. EL PINAR','LECHE GAZA'], -105,87,Math.PI/2,18,7,'#2c6b3f');
+ addLabel(groups.roads,'N-122 · ZAMORA ↔ CORESES ↔ TORO',15,5,122,'#f4d7d7',54);
+ addLabel(groups.roads,'ACCESO CAMPUS · CONTEXTO',-118,5,96,'#dbe7f5',42);
+
  // Buildings: conceptual geometry totals ~11,800 m² footprint.
  const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
  const process=addBox(groups.plant,'Proceso + envasado',110,18,65,-12,-18,0x315d86,{kind:'SIMULADO',info:'Volumen conceptual para proceso, CIP y envasado.'});
