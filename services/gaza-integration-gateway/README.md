@@ -33,3 +33,24 @@ Endpoints:
 - `REAL_AUTHORIZED` must never be fabricated from demo/public values.
 
 See `apps/gaza/data/integration-adapters.json`.
+
+
+## AEMET official weather bridge
+
+The gateway can proxy AEMET OpenData without exposing credentials to GitHub Pages.
+
+Environment variables:
+
+- `AEMET_API_KEY` — required for upstream AEMET OpenData calls.
+- `AEMET_MUNICIPALITY` — defaults to `49053` (Coreses).
+- `AEMET_STATION` — defaults to `2565` (Coreses observation station).
+- `AEMET_WARNING_AREA` — optional; leave unset until the CAP warning-area code has been verified.
+
+Read-only endpoints:
+
+- `GET /v1/weather/aemet/status`
+- `GET /v1/weather/aemet/forecast`
+- `GET /v1/weather/aemet/observation`
+- `GET /v1/weather/aemet/warnings`
+
+No endpoint exposes `AEMET_API_KEY`. Forecast/observation responses are classified as official public reference data, but they are still not on-site instrumentation and must not drive safety interlocks.
