@@ -96,6 +96,13 @@ for(const target of targets){
     checks.push({surface:name,check:'environment-field-ui',ok:envUiOk,metrics:envUi});
     if(!envUiOk)errors.push({surface:name,type:'quality',text:'Plant environmental UI metrics unavailable'});
     if(!envFieldOk)errors.push({surface:name,type:'quality',text:'Plant environmental field contract/QA fixture unavailable'});
+    const wxOps=await page.evaluate(()=>window.__GAZA_WEATHER_OPS__||null);
+    const wxOpsOk=!!wxOps&&wxOps.schemaVersion===1&&wxOps.advisoryOnly===true&&wxOps.currentRisk===0&&wxOps.forecastRisk===1&&wxOps.opsRisk===1&&wxOps.horizonHours===24&&wxOps.forecast?.maxGustKmh===38&&wxOps.forecast?.minVisibilityM===12000;
+    checks.push({surface:name,check:'weather-ops-24h-contract',ok:wxOpsOk,metrics:wxOps});
+    const wxUi=await page.evaluate(()=>({risk:document.getElementById('ambient24Risk')?.textContent||'',gust:document.getElementById('ambient24Gust')?.textContent||'',visibility:document.getElementById('ambient24Visibility')?.textContent||'',rain:document.getElementById('ambient24Rain')?.textContent||'',advice:document.getElementById('ambientAdvice')?.textContent||''}));
+    const wxUiOk=wxUi.risk==='ATENCIÓN'&&wxUi.gust==='38 km/h'&&wxUi.visibility==='12.0 km'&&wxUi.rain==='35 %'&&wxUi.advice.includes('No actúa sobre seguridad ni control');
+    checks.push({surface:name,check:'weather-ops-24h-ui',ok:wxUiOk,metrics:wxUi});
+    if(!wxOpsOk||!wxUiOk)errors.push({surface:name,type:'quality',text:'24 h weather advisory contract/UI unavailable'});
   }
 
   if(url.includes('campus-gis.html')){
@@ -131,9 +138,12 @@ for(const target of targets){
       routeMetric:!!document.getElementById('dgtRouteMatches'),
       routeCopy:document.body.textContent.includes('coincidencia geométrica')||document.body.textContent.includes('coincidencias corredor ruta'),
       site:window.__GAZA_SITE_CONTEXT__||null,
-      correctedCopy:document.body.textContent.includes('ANCLA CORREGIDA')&&document.body.textContent.includes('41.52355')&&document.body.textContent.includes('-5.59993')
+      correctedCopy:document.body.textContent.includes('ANCLA CORREGIDA')&&document.body.textContent.includes('41.52355')&&document.body.textContent.includes('-5.59993'),
+      weatherOps:window.__GAZA_WEATHER_OPS__||null,
+      weatherRisk24:document.getElementById('weatherRisk24')?.textContent||'',
+      forecastSlots:document.querySelectorAll('#forecastStrip .forecast-slot').length,
     }));
-    const territoryOk=territory.routeMetric&&territory.routeCopy&&territory.correctedCopy&&territory.site?.plant?.lat===41.52355&&territory.site?.plant?.lon===-5.59993&&territory.site?.policy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT';
+    const territoryOk=territory.routeMetric&&territory.routeCopy&&territory.correctedCopy&&territory.site?.plant?.lat===41.52355&&territory.site?.plant?.lon===-5.59993&&territory.site?.policy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT'&&territory.weatherOps?.schemaVersion===1&&territory.weatherOps?.advisoryOnly===true&&territory.weatherOps?.forecastRisk===1&&territory.weatherOps?.forecast?.maxGustKmh===38&&territory.weatherRisk24==='ATENCIÓN'&&territory.forecastSlots>=2;
     checks.push({surface:name,check:'route-aware-dgt-ui',ok:territoryOk,metrics:territory});
     if(!territoryOk)errors.push({surface:name,type:'quality',text:'Territory route-aware DGT UI missing'});
   }
