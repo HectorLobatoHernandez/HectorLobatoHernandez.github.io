@@ -97,10 +97,10 @@ for(const target of targets){
     if(!envUiOk)errors.push({surface:name,type:'quality',text:'Plant environmental UI metrics unavailable'});
     if(!envFieldOk)errors.push({surface:name,type:'quality',text:'Plant environmental field contract/QA fixture unavailable'});
     const wxOps=await page.evaluate(()=>window.__GAZA_WEATHER_OPS__||null);
-    const wxOpsOk=!!wxOps&&wxOps.schemaVersion===1&&wxOps.advisoryOnly===true&&wxOps.currentRisk===0&&wxOps.forecastRisk===1&&wxOps.opsRisk===1&&wxOps.horizonHours===24&&wxOps.forecast?.maxGustKmh===38&&wxOps.forecast?.minVisibilityM===12000;
+    const wxOpsOk=!!wxOps&&wxOps.schemaVersion===2&&wxOps.advisoryOnly===true&&wxOps.currentRisk===0&&wxOps.forecastRisk===1&&wxOps.opsRisk===1&&wxOps.horizonHours===24&&wxOps.forecast?.maxGustKmh===38&&wxOps.forecast?.minVisibilityM===12000&&wxOps.activityRisk?.hgv?.level===1&&wxOps.activityRisk?.docks?.level===0&&wxOps.activityRisk?.outdoor?.level===1&&wxOps.activityRisk?.access?.level===0&&wxOps.worstWindow?.start==='2026-10-07T02:00';
     checks.push({surface:name,check:'weather-ops-24h-contract',ok:wxOpsOk,metrics:wxOps});
-    const wxUi=await page.evaluate(()=>({risk:document.getElementById('ambient24Risk')?.textContent||'',gust:document.getElementById('ambient24Gust')?.textContent||'',visibility:document.getElementById('ambient24Visibility')?.textContent||'',rain:document.getElementById('ambient24Rain')?.textContent||'',advice:document.getElementById('ambientAdvice')?.textContent||''}));
-    const wxUiOk=wxUi.risk==='ATENCIÓN'&&wxUi.gust==='38 km/h'&&wxUi.visibility==='12.0 km'&&wxUi.rain==='35 %'&&wxUi.advice.includes('No actúa sobre seguridad ni control');
+    const wxUi=await page.evaluate(()=>({risk:document.getElementById('ambient24Risk')?.textContent||'',gust:document.getElementById('ambient24Gust')?.textContent||'',visibility:document.getElementById('ambient24Visibility')?.textContent||'',rain:document.getElementById('ambient24Rain')?.textContent||'',window:document.getElementById('ambient24Window')?.textContent||'',hgv:document.getElementById('ambientOpsHgv')?.textContent||'',docks:document.getElementById('ambientOpsDocks')?.textContent||'',outdoor:document.getElementById('ambientOpsOutdoor')?.textContent||'',access:document.getElementById('ambientOpsAccess')?.textContent||'',advice:document.getElementById('ambientAdvice')?.textContent||''}));
+    const wxUiOk=wxUi.risk==='ATENCIÓN'&&wxUi.gust==='38 km/h'&&wxUi.visibility==='12.0 km'&&wxUi.rain==='35 %'&&wxUi.window==='02:00–04:00'&&wxUi.hgv==='ATENCIÓN'&&wxUi.docks==='NORMAL'&&wxUi.outdoor==='ATENCIÓN'&&wxUi.access==='NORMAL'&&wxUi.advice.includes('No actúa sobre seguridad ni control');
     checks.push({surface:name,check:'weather-ops-24h-ui',ok:wxUiOk,metrics:wxUi});
     if(!wxOpsOk||!wxUiOk)errors.push({surface:name,type:'quality',text:'24 h weather advisory contract/UI unavailable'});
   }
@@ -142,8 +142,13 @@ for(const target of targets){
       weatherOps:window.__GAZA_WEATHER_OPS__||null,
       weatherRisk24:document.getElementById('weatherRisk24')?.textContent||'',
       forecastSlots:document.querySelectorAll('#forecastStrip .forecast-slot').length,
+      weatherWindow:document.getElementById('weatherWindow')?.textContent||'',
+      opsHgv:document.getElementById('opsHgv')?.textContent||'',
+      opsDocks:document.getElementById('opsDocks')?.textContent||'',
+      opsOutdoor:document.getElementById('opsOutdoor')?.textContent||'',
+      opsAccess:document.getElementById('opsAccess')?.textContent||'',
     }));
-    const territoryOk=territory.routeMetric&&territory.routeCopy&&territory.correctedCopy&&territory.site?.plant?.lat===41.52355&&territory.site?.plant?.lon===-5.59993&&territory.site?.policy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT'&&territory.weatherOps?.schemaVersion===1&&territory.weatherOps?.advisoryOnly===true&&territory.weatherOps?.forecastRisk===1&&territory.weatherOps?.forecast?.maxGustKmh===38&&territory.weatherRisk24==='ATENCIÓN'&&territory.forecastSlots>=2;
+    const territoryOk=territory.routeMetric&&territory.routeCopy&&territory.correctedCopy&&territory.site?.plant?.lat===41.52355&&territory.site?.plant?.lon===-5.59993&&territory.site?.policy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT'&&territory.weatherOps?.schemaVersion===2&&territory.weatherOps?.advisoryOnly===true&&territory.weatherOps?.forecastRisk===1&&territory.weatherOps?.forecast?.maxGustKmh===38&&territory.weatherOps?.activityRisk?.hgv?.level===1&&territory.weatherOps?.activityRisk?.docks?.level===0&&territory.weatherWindow==='02:00–04:00'&&territory.opsHgv==='ATENCIÓN'&&territory.opsDocks==='NORMAL'&&territory.opsOutdoor==='ATENCIÓN'&&territory.opsAccess==='NORMAL'&&territory.weatherRisk24==='ATENCIÓN'&&territory.forecastSlots>=2;
     checks.push({surface:name,check:'route-aware-dgt-ui',ok:territoryOk,metrics:territory});
     if(!territoryOk)errors.push({surface:name,type:'quality',text:'Territory route-aware DGT UI missing'});
   }
