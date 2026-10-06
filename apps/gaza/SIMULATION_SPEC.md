@@ -79,4 +79,12 @@ Implemented next:
 - shared same-origin environment state from Open-Meteo + DGT proximity;
 - weather/DGT heuristic coupling with freshness guards while preserving deterministic guided-demo timing.
 
-Still pending for higher fidelity: route-intersection-aware DGT matching, authorised/as-built geometry, calibrated vehicle kinematics, real WMS/ASRS task feeds, and screenshot-backed visual regression.
+Implemented in the 2026-10-06 fidelity pass:
+- DGT incidents are geometrically matched to OSRM demo-route corridors (1.5 km threshold) and published separately as `routeRisk`; this is explicitly a spatial match, not an official causal/traffic claim.
+- Strategy and Plant twins prefer fresh `routeRisk` and fall back to proximity risk only for compatibility.
+- deterministic `?camera=<preset>&freeze=1` views for screenshot QA;
+- Playwright high-DPI checks and frozen multi-camera captures for Strategy/Plant/Territory/mobile;
+- improved GAZA branding texture path, evidence legend, industrial roof/pipe/dock detail, PPE workforce and correct tanker geometry;
+- controlled `assets/3d/manifest.json` boundary for future local GLB assets.
+
+Still pending for higher fidelity: authorised/as-built geometry, calibrated vehicle kinematics, real WMS/ASRS task feeds, vendored/validated rigged GLB workforce and vehicles, and review of the generated screenshot baselines on the target Windows/GPU environment.
