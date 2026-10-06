@@ -97,6 +97,13 @@
       "status": "CONFIRMED",
       "detail": "Steam boiler/energy, process water cycle, potable-water treatment, EDARI and waste management.",
       "softwareVersion": "NOT_PUBLIC"
+    },
+    {
+      "id": "farm-delpro-reference",
+      "name": "DeLaval DelPro · SAT ROTE",
+      "status": "CONFIRMED_FARM_REFERENCE_NOT_CENTRAL_GAZA",
+      "detail": "DeLaval publicly documents a DelPro management study day at SAT ROTE. This supports a farm-level digital-management example, not a claim that DelPro is the central Gaza platform.",
+      "softwareVersion": "UNKNOWN"
     }
   ],
   "water": {
@@ -243,6 +250,13 @@
       "url": "https://es.linkedin.com/in/gustavo-andres-martin",
       "supports": [
         "leadership.GustavoAndresMartin"
+      ]
+    },
+    {
+      "id": "delaval-sat-rote",
+      "url": "https://www.delaval.com/es/delaval-al-dia/noticias-y-eventos/eventos/dia-estudio-delpro-sat-rote/",
+      "supports": [
+        "operations.farm-delpro-reference"
       ]
     }
   ],
