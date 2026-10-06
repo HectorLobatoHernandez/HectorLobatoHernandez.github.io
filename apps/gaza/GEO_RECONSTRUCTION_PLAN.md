@@ -8,18 +8,18 @@ Replace the current contextual campus massing progressively with georeferenced, 
 
 There is currently **no authoritative DWG/DXF/IFC/as-built plan in the project**. Until one is supplied, the browser model must not be described as matching an as-built plant plan.
 
-## Canonical public anchor
+## Canonical operational anchor
 
 - Plant: P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora)
-- WGS84 anchor: 41.525162564246195, -5.604126176771143
+- WGS84 operational anchor: 41.52355, -5.59993 — user-confirmed approximate factory reference, cross-checked against OSM industrial context; not a surveyed point.
 - Public scale references: ~60,000 m2 plot, ~12,000 m2 facilities
 - OSM industrial context: Polígono Industrial El Pinar
 
 Suggested geospatial capture boxes around the canonical plant anchor:
 
-- 800 m context: south 41.5179761, west -5.6137253, north 41.5323491, east -5.5945271
-- 1.5 km context: south 41.5116879, west -5.6221244, north 41.5386372, east -5.5861279
-- 3 km context: south 41.4982132, west -5.6401227, north 41.5521119, east -5.5681296
+- 800 m context: south 41.5163635, west -5.6095288, north 41.5307365, east -5.5903312
+- 1.5 km context: south 41.5100753, west -5.6179278, north 41.5370247, east -5.5819322
+- 3 km context: south 41.4966007, west -5.6359256, north 41.5504993, east -5.5639344
 
 ## Reconstruction pipeline
 
