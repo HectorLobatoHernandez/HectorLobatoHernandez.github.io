@@ -19,6 +19,9 @@ const result=await page.evaluate(()=>({
   pixels:document.querySelectorAll('.pixel').length,
   decrypt:document.querySelectorAll('.decrypt').length,
   dock:!!document.querySelector('.dock'),
+  radar:!!document.querySelector('.radar'),
+  crosshair:!!document.querySelector('.crosshair'),
+  glitch:!!document.querySelector('.letter-glitch'),
   projectText:document.body.textContent.includes('GAZA Operations Intelligence'),
   rhbText:document.body.textContent.includes('RHB STUDIO'),
   missionText:document.body.textContent.includes('FROM AMBIGUITY'),
@@ -30,6 +33,9 @@ if(result.nodes<6)errors.push('Expected >=6 technical nodes, got '+result.nodes)
 if(result.pixels<3)errors.push('Expected >=3 pixel project cards, got '+result.pixels);
 if(result.decrypt<2)errors.push('DecryptedText instances missing');
 if(!result.dock)errors.push('Proximity dock missing');
+if(!result.radar)errors.push('System radar missing');
+if(!result.crosshair)errors.push('Crosshair missing');
+if(!result.glitch)errors.push('Letter glitch layer missing');
 if(!result.projectText||!result.rhbText||!result.missionText)errors.push('Core CV content missing');
 if(!result.imageLoaded)errors.push('Portrait image failed to load');
 
