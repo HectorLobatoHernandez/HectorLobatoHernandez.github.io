@@ -1,7 +1,7 @@
 ## 2026-10-06 evidence expansion
 
 ### Roads / territory
-- Public plant anchor used by the prototype: **41.525162564246195, -5.604126176771143**.
+- Operational plant anchor used by the prototype: **41.52355, -5.59993** (`USER_CONFIRMED_APPROXIMATE`, not surveyed). The previous `41.5251626, -5.6041262` point is deprecated because it falls west of the marked factory footprint. OSM places the El Pinar industrial area at ~41.52472, -5.59993 and maps Gaza immediately south of it.
 - Polígono Industrial El Pinar is an OSM industrial area around 41.52472, -5.59993.
 - Public road context used for the model includes **N-122** (Zamora–Coreses–Toro), **A-11 / E-82** access context, and provincial Coreses references **ZA-P-1303 / ZA-711 / ZA-710**.
 - Exact Three.js sign/road placement remains contextual until imported from georeferenced OSM or an authorised survey.
