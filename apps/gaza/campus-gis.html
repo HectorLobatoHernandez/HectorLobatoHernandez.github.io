@@ -7,7 +7,7 @@
 </style></head><body>
 <header class="top"><div><h1>GAZA · Campus GIS / viario real</h1><p>Geometría pública OSM alrededor de P.I. El Pinar, Parcela 10. Esta vista sirve para posición, red viaria y contexto geoespacial. No sustituye DWG/DXF/IFC, catastro autorizado ni levantamiento topográfico.</p></div><nav class="nav"><a href="plant-3d.html">Planta 3D</a><a href="farm-network.html">Granjas &lt;50 km</a><a href="territory.html">Territorio</a><a href="systems.html">Software</a></nav></header>
 <main class="layout"><div id="map"></div><aside class="side">
-<div class="card"><h2>Base geoespacial</h2><div class="facts"><div class="fact"><b>41.525163</b><span>latitud referencia</span></div><div class="fact"><b>-5.604126</b><span>longitud referencia</span></div><div class="fact"><b>EPSG:4326</b><span>intercambio web</span></div><div class="fact"><b>EPSG:25830</b><span>métrica recomendada</span></div></div><p>P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora).</p></div>
+<div class="card"><h2>Base geoespacial</h2><div class="facts"><div class="fact"><b>41.52355</b><span>latitud referencia</span></div><div class="fact"><b>-5.59993</b><span>longitud referencia</span></div><div class="fact"><b>EPSG:4326</b><span>intercambio web</span></div><div class="fact"><b>EPSG:25830</b><span>métrica recomendada</span></div></div><p>P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora).</p></div>
 <div class="card"><h3>Capas</h3><div class="legend"><div><i class="sw" style="background:#4da3ff"></i> carreteras OSM</div><div><i class="sw" style="background:#efc534"></i> edificios OSM</div><div><i class="sw" style="background:#79d27b"></i> uso industrial OSM</div><div><i class="sw" style="background:#e05a5a"></i> rutas OSRM calculadas</div></div><p id="osmStatus" class="status warn">Cargando Overpass…</p></div>
 <div class="card"><h3>Corredores calculados</h3><p>Son rutas del grafo OSM/OSRM desde la planta. No demuestran rutas comerciales reales de Gaza.</p><div id="routes"></div></div>
 <div class="card"><h3>Conversión a 3D</h3><p><b>Origen local:</b> planta = (0,0,0). X = Este y Z = Norte. Cada vértice OSM se transforma además a coordenada métrica local para Blender/Three.js.</p><p>Los footprints OSM son contexto, no ingeniería as-built. DWG/DXF/IFC autorizado prevalecerá sobre OSM.</p><button class="btn" id="exportGeojson" disabled>Exportar snapshot GeoJSON</button><p id="exportStats">Esperando geometría OSM…</p></div>
@@ -15,7 +15,7 @@
 </aside></main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const PLANT=[41.525162564246195,-5.604126176771143],map=L.map('map',{zoomControl:true}).setView(PLANT,15);
+const PLANT=[41.52355,-5.59993],map=L.map('map',{zoomControl:true}).setView(PLANT,15);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
 const roadLayer=L.layerGroup().addTo(map),buildingLayer=L.layerGroup().addTo(map),industrialLayer=L.layerGroup().addTo(map),routeLayer=L.layerGroup().addTo(map);
 const gisFeatures=[],routeFeatures=[];const R=6378137,lat0=PLANT[0]*Math.PI/180;
@@ -23,7 +23,7 @@ function localXZ(lat,lon){return[(lon-PLANT[1])*Math.PI/180*R*Math.cos(lat0),(la
 function featureFromElement(e,kind){const coords=e.geometry.map(p=>[p.lon,p.lat]);const local=e.geometry.map(p=>localXZ(p.lat,p.lon));return{type:'Feature',properties:{osmType:e.type,osmId:e.id,kind,tags:e.tags||{},sourceClass:'PUBLIC_REFERENCE',geometryPolicy:kind==='building'?'OSM_CONTEXT_NOT_AS_BUILT':'OSM_PUBLIC_GEOMETRY'},geometry:{type:kind==='road'?'LineString':'Polygon',coordinates:kind==='road'?coords:[coords]},localXZ:kind==='road'?local:[local]}}
 function exportSnapshot(){const fc={type:'FeatureCollection',name:'GAZA campus public GIS snapshot',crs:'EPSG:4326',metricLocal:{origin:PLANT,axes:'X_EAST_Z_NORTH',recommendedEngineeringCrs:'EPSG:25830'},provenance:{osm:'OpenStreetMap contributors / Overpass runtime',routing:'OSRM calculated',classification:'PUBLIC_REFERENCE'},features:[...gisFeatures,...routeFeatures]};const blob=new Blob([JSON.stringify(fc,null,2)],{type:'application/geo+json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='gaza-campus-public-snapshot.geojson';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 document.getElementById('exportGeojson').onclick=exportSnapshot;
-L.circleMarker(PLANT,{radius:9,color:'#fff',weight:2,fillColor:'#4da3ff',fillOpacity:.95}).addTo(map).bindPopup('<b>Leche Gaza · Coreses</b><br>P.I. El Pinar, Parcela 10<br>Referencia pública; no punto topográfico.');
+L.circleMarker(PLANT,{radius:9,color:'#fff',weight:2,fillColor:'#4da3ff',fillOpacity:.95}).addTo(map).bindPopup('<b>Leche Gaza · Coreses</b><br>P.I. El Pinar, Parcela 10<br>Ancla operativa corregida; aproximada, no topográfica.');
 L.circle(PLANT,{radius:1500,color:'#4da3ff',weight:1,dashArray:'5 7',fillOpacity:0}).addTo(map);
 L.control.layers(null,{'Carreteras OSM':roadLayer,'Edificios OSM':buildingLayer,'Industrial OSM':industrialLayer,'Rutas OSRM':routeLayer},{collapsed:false}).addTo(map);
 const q='[out:json][timeout:25];(way(around:1800,'+PLANT[0]+','+PLANT[1]+')[highway];way(around:1800,'+PLANT[0]+','+PLANT[1]+')[building];way(around:1800,'+PLANT[0]+','+PLANT[1]+')[landuse=industrial];);out geom;';
