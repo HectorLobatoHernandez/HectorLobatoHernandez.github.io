@@ -1,0 +1,66 @@
+{
+  "version": "2026-10-06.1",
+  "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
+  "policy": "curated-vendored",
+  "skills": [
+    {
+      "name": "frontend-design",
+      "source": "anthropics/skills",
+      "path": "skills/frontend-design",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "video-to-superprompt",
+      "source": "MengTo/Skills",
+      "path": "agent-skills/codex/video-to-superprompt",
+      "license": "MIT"
+    },
+    {
+      "name": "3d-web-experience",
+      "source": "davila7/claude-code-templates",
+      "path": "dashboard/public/component-content/skills/creative-design/3d-web-experience.json",
+      "license": "Apache-2.0 (source metadata)"
+    },
+    {
+      "name": "threejs-core",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "threejs-camera",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "threejs-animation",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "threejs-geometry",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "threejs-lighting",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "threejs-materials",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "threejs-performance",
+      "source": "alton47/threejs-skills",
+      "license": "MIT"
+    },
+    {
+      "name": "playwright-interactive",
+      "source": "openai/skills",
+      "path": "skills/.curated/playwright-interactive",
+      "license": "Apache-2.0"
+    }
+  ]
+}
