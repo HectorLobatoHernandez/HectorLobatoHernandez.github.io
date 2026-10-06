@@ -12,7 +12,7 @@
 - Other farm nodes remain synthetic/anonymized.
 
 ### Public systems / suppliers
-- **Solmicro ERP**: Leche Gaza is publicly listed as an ERP customer; current product, version, modules and interfaces remain unknown.
+- **Solmicro ERP**: Leche Gaza is publicly listed as an ERP customer; this does not by itself prove Solmicro is the ERP currently running in 2026. Current product, version, modules and interfaces remain unknown.
 - **WAU Technologies**: currently lists Leche Gaza among clients, but the public page does not identify which WAU/Microsoft/Siemens products are deployed. Do not infer Business Central, Opcenter or EMI Suite at Gaza.
 - **Tetra Pak**: 2022 public reporting identifies Tetra Pak Hispania as principal supplier of production equipment for the new installations; exact line models and automation software remain unknown.
 - **Esnova + Signode StorFast**: public evidence supports a 9-level automated warehouse with Esnova racks and StorFast shuttle carts; WCS/WMS details remain unknown.
