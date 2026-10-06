@@ -29,7 +29,7 @@
 <script>
 const pageParams=new URLSearchParams(location.search),qaMode=pageParams.get('qa')==='1';
 const colors=['#65d8d0','#8db2ff','#c39cff','#f29d70'];
-const map=L.map('map',{zoomControl:true}).setView([41.525162564246195,-5.604126176771143],10);
+const map=L.map('map',{zoomControl:true}).setView([41.52355,-5.59993],10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
 const routeGroup=L.layerGroup().addTo(map),nodeGroup=L.layerGroup().addTo(map);
 function havKm(a,b,c,d){const R=6371,p=Math.PI/180,d1=(c-a)*p,d2=(d-b)*p,q=Math.sin(d1/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(q))}
