@@ -112,7 +112,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
 
 
 <section id="twin-webgl"><div class="wrap">
-  <div class="section-head"><div class="eyebrow">Digital Twin 3D · v6</div><div><h2>Reconstrucción operacional de Coreses + flujo logístico animado.</h2><p>WebGL interactivo: el campus se modela a partir de anclajes públicos de ubicación, escala, fotografías publicadas y sistemas documentados. La volumetría exterior es una <strong>reconstrucción inferida</strong>, no un as-built. El interior funcional conecta granja, recepción, proceso, ASRS de 9 niveles, staging, muelles y transporte.</p></div></div>
+  <div class="section-head"><div class="eyebrow">Digital Twin 3D · v9</div><div><h2>Reconstrucción operacional de Coreses + flujo logístico animado.</h2><p>WebGL interactivo: el campus se modela a partir de anclajes públicos de ubicación, escala, fotografías publicadas y sistemas documentados. La volumetría exterior es una <strong>reconstrucción inferida</strong>, no un as-built. La granja deja de representarse pegada al campus: la red de captación se mueve a una vista territorial &lt;50 km. Este campus se concentra en acceso, recepción, proceso, ASRS de 9 niveles, staging, muelles, utilities y transporte.</p></div></div>
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
@@ -121,7 +121,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
         <div class="layer-list">
-          <label><input type="checkbox" data-layer="farm" checked> Granja</label>
+          <label><input type="checkbox" data-layer="farm"> Granja legacy (oculta)</label>
           <label><input type="checkbox" data-layer="plant" checked> Planta</label>
           <label><input type="checkbox" data-layer="process" checked> Proceso detallado</label>
           <label><input type="checkbox" data-layer="warehouse" checked> ASRS</label>
@@ -132,12 +132,12 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
           <label><input type="checkbox" data-layer="workers" checked> Personal demo</label>
         </div>
       </div>
-      <div class="twin-card"><h3>Simulación farm → factory → dispatch</h3>
+      <div class="twin-card"><h3>Simulación inbound → factory → dispatch</h3>
         <div class="twin-kpis"><div class="twin-kpi"><b id="milkTemp">3.8 °C</b><span>tanque granja</span></div><div class="twin-kpi"><b id="milkLoad">18.4 t</b><span>cisterna demo</span></div><div class="twin-kpi"><b id="twinEta">17 min</b><span>ETA demo + entorno*</span></div><div class="twin-kpi"><b id="asrsOcc">72%</b><span>ocupación ASRS</span></div><div class="twin-kpi"><b id="laneStatus">4/4</b><span>AGV/carretillas móviles</span></div><div class="twin-kpi"><b id="asrsCycles">0</b><span>ciclos shuttle demo</span></div><div class="twin-kpi"><b id="workerCount">10/10</b><span>personal demo en movimiento</span></div><div class="twin-kpi"><b id="flowState">NORMAL</b><span>flujo proceso sintético</span></div><div class="twin-kpi"><b id="shiftState">T2</b><span>turno sintético</span></div></div>
         <input id="simSpeed" class="range" type="range" min="0" max="3" step="0.25" value="1">
-        <div class="twin-actions"><button class="btn primary" id="twinPlay">Pausar</button><button class="btn" id="twinReset">Reset vista</button><button class="btn" id="twinIncident">Inyectar incidencia</button></div><div class="twin-actions" id="cameraPresets"><button class="btn" data-camera="exterior">Exterior</button><button class="btn" data-camera="plant">Planta</button><button class="btn" data-camera="process">Proceso</button><button class="btn" data-camera="asrs">ASRS</button><button class="btn" data-camera="farm">Granja</button><button class="btn" data-camera="docks">Muelles</button></div>
+        <div class="twin-actions"><button class="btn primary" id="twinPlay">Pausar</button><button class="btn" id="twinReset">Reset vista</button><button class="btn" id="twinIncident">Inyectar incidencia</button></div><div class="twin-actions" id="cameraPresets"><button class="btn" data-camera="exterior">Exterior</button><button class="btn" data-camera="plant">Planta</button><button class="btn" data-camera="process">Proceso</button><button class="btn" data-camera="asrs">ASRS</button><button class="btn" data-camera="roads">Acceso N-122</button><button class="btn" data-camera="docks">Muelles</button></div>
         <div class="selection" id="twinSelection"><b>Selecciona un elemento 3D.</b><br>La escena diferencia referencias públicas de geometría funcional simulada.</div>
-        <div class="source-boundary"><b>Frontera de evidencia.</b> Son públicos: 80+ ganaderías, ubicación en Coreses, ≈12.000 m² de instalaciones, ≈60.000 m² de parcela, GAZACONTROL, utilities de Veolia y almacén automático de 9 niveles. La fachada, masas, aparcamiento, vallado y posición relativa se reconstruyen de forma inferida a partir de material público y <b>no son as-built</b>. El impacto meteo/DGT sobre la simulación es un factor heurístico visible, no un tiempo de tráfico medido.</div>
+        <div class="source-boundary"><b>Frontera de evidencia.</b> Son públicos: 80+ ganaderías y captación &lt;50 km, ubicación en Coreses, ≈12.000 m² de instalaciones, ≈60.000 m² de parcela, GAZACONTROL, utilities de Veolia, almacén automático de 9 niveles y ejes viarios N-122/A-11 del entorno. La volumetría y la posición de elementos dentro de parcela siguen siendo <b>reconstrucción inferida, no as-built</b>.</div><div class="twin-actions" style="margin-top:10px"><a class="btn primary" href="farm-network.html">Abrir red de granjas &lt;50 km</a><a class="btn" href="systems.html">Software / acoplamiento</a><a class="btn" href="territory.html">Carreteras reales</a></div><div class="source-boundary" style="margin-top:10px"><b>Dirección pública 2026.</b> José Sánchez · presidente. Saúl Alonso Miñambres · gerente. Gustavo Andrés Martín · área comercial/internacionalización. Roberto Vizán · responsable de marketing. Se representan funciones, <b>no ubicaciones físicas en vivo</b>.</div>
       </div>
     </aside>
   </div>
@@ -278,7 +278,7 @@ if(canvas){
  const sun=new THREE.DirectionalLight(0xffffff,2.75);sun.position.set(150,240,110);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=20;sun.shadow.camera.far=650;sun.shadow.camera.left=-190;sun.shadow.camera.right=190;sun.shadow.camera.top=165;sun.shadow.camera.bottom=-165;sun.shadow.bias=-0.0004;sun.shadow.normalBias=.04;scene.add(sun);
 
  const groups={farm:new THREE.Group(),plant:new THREE.Group(),process:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group(),evidence:new THREE.Group(),workers:new THREE.Group()};
- Object.values(groups).forEach(g=>scene.add(g));
+ Object.values(groups).forEach(g=>scene.add(g));groups.farm.visible=false;
  const clickable=[];let assetRuntime={update:()=>{}};
  loadProductionAssets({groups,scene,clickable,onStatus:r=>{const chip=document.getElementById('assetChip');chip.textContent=r.state==='ready'?'GLB · '+r.loaded+' activos · fallback procedural':r.state==='degraded'?'GLB · '+r.loaded+' activos / '+r.failed+' error':'GLB · '+r.state;chip.title='Manifiesto local controlado · '+r.declared+' declarados · '+r.loaded+' cargados'}}).then(r=>{assetRuntime=r});
  const mat=(color,rough=.72,metal=.08)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
@@ -515,7 +515,7 @@ if(canvas){
  renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
  document.querySelectorAll('[data-layer]').forEach(x=>x.addEventListener('change',()=>{groups[x.dataset.layer].visible=x.checked}));
  document.getElementById('twinPlay').onclick=()=>{running=!running;document.getElementById('twinPlay').textContent=running?'Pausar':'Reanudar'};
- const cameraViews={exterior:{p:[210,125,230],t:[-15,4,8]},plant:{p:[120,85,150],t:[-10,6,-12]},process:{p:[82,54,92],t:[-22,8,-8]},asrs:{p:[158,72,74],t:[88,12,-25]},farm:{p:[-120,80,-5],t:[-210,3,-78]},docks:{p:[170,65,120],t:[92,4,40]}};
+ const cameraViews={exterior:{p:[210,125,230],t:[-15,4,8]},plant:{p:[120,85,150],t:[-10,6,-12]},process:{p:[82,54,92],t:[-22,8,-8]},asrs:{p:[158,72,74],t:[88,12,-25]},roads:{p:[-205,70,185],t:[-95,2,92]},farm:{p:[-120,80,-5],t:[-210,3,-78]},docks:{p:[170,65,120],t:[92,4,40]}};
  function setCameraView(key){const v=cameraViews[key];if(!v)return;camera.position.set(...v.p);controls.target.set(...v.t);controls.update()}
  document.getElementById('twinReset').onclick=()=>setCameraView('exterior');
  document.querySelectorAll('[data-camera]').forEach(b=>b.addEventListener('click',()=>setCameraView(b.dataset.camera)));
