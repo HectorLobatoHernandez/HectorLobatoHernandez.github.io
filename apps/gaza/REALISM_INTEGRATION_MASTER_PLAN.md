@@ -88,3 +88,11 @@ farm_id, collection_run_id, milk_lot_id, quality_sample_id, production_order_id,
 - Spanish design classes recorded for 12.00 m rigid, 16.50 m articulated and 18.75 m road-train envelopes.
 - Plant 3D now treats Campus GIS as access authority and is prohibited by QA from presenting contextual access geometry as as-built.
 - Next geometry gate: authorised gate/kerb/building/dock coordinates or DWG/DXF/IFC, then vehicle-specific swept-path analysis.
+
+
+## Implemented 2026-10-06 — environmental field pass
+- Open-Meteo base state expanded to temperature, RH, surface pressure, cloud cover, precipitation, wind speed/direction and gust.
+- Plant 3D adds a wind vector field and eight proposed perimeter weather nodes.
+- Current field remains a public-grid operational visualisation, explicitly NOT CFD.
+- Proposed sensor nodes are design positions only; future real mode requires calibrated instruments, siting review, gateway ingestion, time synchronisation and commissioning.
+- Environmental data is read-only context. No automatic HVAC/process/safety actuation is permitted in this phase.
