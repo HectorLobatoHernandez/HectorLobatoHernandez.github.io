@@ -72,4 +72,11 @@ Implemented in `game.html`:
 - repeatable Reset → Execute demo vertical slice;
 - richer low-poly truck/forklift geometry while preserving the bright isometric reference grammar.
 
-Still pending for higher fidelity: reconstructed public-evidence parcel massing, multi-vehicle lane reservation/avoidance, richer ASRS rack animation, live DGT DATEX2 ingestion, weather-to-scenario coupling, and screenshot-backed visual regression.
+Implemented next:
+- public-evidence exterior reconstruction layer, explicitly marked not as-built;
+- animated 9-level ASRS racks, shuttle carts and lift;
+- multi-agent forklift/AGV lane-cell reservation with look-ahead avoidance;
+- shared same-origin environment state from Open-Meteo + DGT proximity;
+- weather/DGT heuristic coupling with freshness guards while preserving deterministic guided-demo timing.
+
+Still pending for higher fidelity: route-intersection-aware DGT matching, authorised/as-built geometry, calibrated vehicle kinematics, real WMS/ASRS task feeds, and screenshot-backed visual regression.
