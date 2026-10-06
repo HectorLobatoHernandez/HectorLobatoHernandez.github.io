@@ -56,7 +56,9 @@ if(!$SkipManifestUpdate){
     info="Trabajador ficticio generado por Blender para validar el pipeline GLB; no representa a un empleado real."
   }
   $manifest.assets=@($assets)+@($entry)
-  $manifest | ConvertTo-Json -Depth 20 | Set-Content -Encoding UTF8 $manifestPath
+  $json=$manifest | ConvertTo-Json -Depth 20
+  $utf8NoBom=New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($manifestPath,$json,$utf8NoBom)
   Write-Host "Manifest updated locally: $manifestPath" -ForegroundColor Green
 }
 
