@@ -22,6 +22,18 @@ npx skills add mintdotgg/mint-threejs-skills -a codex -g -y
 
 Use it for scene composition, camera presets, interaction, asset loading, performance and release verification. Mint MCP itself is optional; do not make the project dependent on a paid service.
 
+### 2b. Geospatial specialist skills
+
+The bootstrap now also attempts to install:
+
+- `MartinPuli/geoblender` — MIT; OSM-grounded editable Blender reconstruction from coordinates/place names. This is the primary next tool for the Coreses 800 m/1.5 km context.
+- `cesartevisual/threejs-skills --skill threejs-spatial-data` — MIT; large coordinates, BIM/GIS and spatial-data patterns in Three.js.
+- `CesiumGS/cesiumjs-skills` — Apache-2.0; globe/entities/GeoJSON/3D Tiles expertise for future regional scale. Installing the skill does not add Cesium to the runtime.
+- `znlgis/opengis-skills` — MIT; GDAL/QGIS/PostGIS/Cesium/FreeCAD/OpenSCAD skill index for geospatial/CAD workflows.
+- local `gaza-geospatial-digital-twin` — project policy for Coreses roads, farm network, truck headings, evidence and read-only systems integration.
+
+Runtime remains Three.js + Leaflet/OSRM for now. Do not add a second geospatial rendering engine merely because its skill is installed.
+
 ### 3. Live scene inspection — threejs-devtools-mcp
 Repository: https://github.com/DmitriyGolub/threejs-devtools-mcp
 
@@ -72,8 +84,9 @@ Every meaningful 3D commit must visibly change at least one review camera:
 1. Exterior / facade.
 2. Process / packaging.
 3. ASRS.
-4. Farm.
+4. Roads / N-122 access context.
 5. Docks / logistics.
+6. Separate farm-network map (<50 km).
 
 Use Playwright screenshot comparisons once the local dev harness is added. A change that only alters hidden simulation logic does not count as a visual-fidelity milestone.
 
@@ -149,4 +162,4 @@ npm run dev
 npm run qa
 ```
 
-QA captures deterministic Strategy/Plant process, ASRS, docks, farm, overview, Territory and mobile surfaces into `.qa/`; it also validates GLB registry health, machine-readable twin state and conservative render budgets. GitHub Actions runs the same acceptance path on relevant pushes.
+QA captures deterministic Strategy/Plant process, ASRS, docks, road-access, overview, Territory, Farm Network, Systems and mobile surfaces into `.qa/`; it also validates GLB registry health, machine-readable twin state, public-evidence/domain invariants and conservative render budgets. GitHub Actions runs the same acceptance path on relevant pushes.
