@@ -2,13 +2,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 const root=path.resolve('.');
 const read=async p=>JSON.parse(await fs.readFile(path.join(root,p),'utf8'));
-const [ops,farms,adapters,geo,eventSchema,mapping]=await Promise.all([
+const [ops,farms,adapters,geo,eventSchema,mapping,site]=await Promise.all([
   read('data/public-operations-2026.json'),
   read('data/farm-network.json'),
   read('data/integration-adapters.json'),
   read('data/geospatial-baseline.json'),
   read('data/canonical-event.schema.json'),
-  read('data/integration-mapping-template.json')
+  read('data/integration-mapping-template.json'),
+  read('data/site-reference.json')
 ]);
 const errors=[];
 const hav=(a,b,c,d)=>{const R=6371,p=Math.PI/180,q=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*R*Math.asin(Math.sqrt(q))};
@@ -33,6 +34,11 @@ for(const a of adapters.adapters){
 }
 if(!adapters.rules.some(x=>x.includes('No browser-to-PLC')))errors.push('browser control boundary missing');
 if(geo.crs?.interchange!=='EPSG:4326'||geo.crs?.metricRecommended!=='EPSG:25830')errors.push('GIS CRS contract changed unexpectedly');
+const sameAnchor=(a,b)=>Math.abs(Number(a?.lat)-Number(b?.lat))<1e-9&&Math.abs(Number(a?.lon)-Number(b?.lon))<1e-9;
+if(site.site?.status!=='USER_CONFIRMED_APPROXIMATE'||site.site?.accuracy!=='APPROX_30M_NOT_SURVEYED')errors.push('canonical site provenance/accuracy changed');
+if(!sameAnchor(site.site,geo.plant)||!sameAnchor(site.site,farms.plant))errors.push('plant anchor drift between canonical site, GIS and farm network');
+if(Math.abs(site.site.lat-41.52355)>1e-9||Math.abs(site.site.lon+5.59993)>1e-9)errors.push('corrected factory anchor changed unexpectedly');
+if(!site.deprecated?.some(x=>x.status==='DEPRECATED_WRONG_SITE_POINT'))errors.push('deprecated wrong anchor audit trail missing');
 if(geo.routing?.network!=='OpenStreetMap'||!String(geo.routing?.engine||'').includes('OSRM'))errors.push('GIS routing provenance missing');
 if(!geo.roadRefs?.some(x=>x.ref==='N-122'))errors.push('GIS N-122 anchor missing');
 if(geo.signs?.some(x=>x.positionPolicy!=='CONTEXTUAL_UNTIL_GEOREFERENCED'))errors.push('road sign must remain contextual until georeferenced');
