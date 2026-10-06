@@ -83,14 +83,14 @@ for(const target of targets){
 
   if(url.includes('plant-3d.html')){
     const roads=await page.evaluate(()=>window.__GAZA_ROAD_CONTEXT__||null);
-    const roadsOk=!!roads&&roads.schemaVersion>=2&&roads.truckHeading==='PATH_TANGENT'&&roads.truckArticulation==='TRACTOR_TRAILER_SPLIT_TANGENT'&&roads.wheelMotion==='DISTANCE_BASED'&&roads.refs?.includes('N-122')&&roads.gisSurface==='campus-gis.html';
+    const roadsOk=!!roads&&roads.schemaVersion>=4&&roads.truckHeading==='PATH_TANGENT'&&roads.truckArticulation==='TRACTOR_TRAILER_SPLIT_TANGENT'&&roads.wheelMotion==='DISTANCE_BASED'&&roads.refs?.includes('N-122')&&roads.gisSurface==='campus-gis.html'&&roads.gateStatus==='UNKNOWN_UNTIL_AUTHORISED_SURVEY'&&roads.hgvDesignEnvelope?.outerRadiusM===12.5&&roads.hgvDesignEnvelope?.innerRadiusM===5.3;
     checks.push({surface:name,check:'road-context-and-truck-heading',ok:roadsOk,metrics:roads});
     if(!roadsOk)errors.push({surface:name,type:'quality',text:'Plant road context / tangent truck heading unavailable'});
   }
 
   if(url.includes('campus-gis.html')){
-    const gis=await page.evaluate(()=>({contract:window.__GAZA_GIS__||null,map:!!document.querySelector('.leaflet-container'),exportButton:!!document.getElementById('exportGeojson'),copy:document.body.textContent.includes('EPSG:25830')&&document.body.textContent.includes('Overpass')&&document.body.textContent.includes('OSRM')}));
-    const gisOk=gis.map&&gis.copy&&gis.exportButton&&gis.contract?.schemaVersion>=3&&gis.contract?.geometry==='OSM_RUNTIME'&&gis.contract?.routing==='OSRM_CALCULATED'&&gis.contract?.localAxes==='X_EAST_Z_NORTH'&&gis.contract?.engineeringCrs==='EPSG:25830'&&gis.contract?.factoryCandidatePolicy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT';
+    const gis=await page.evaluate(()=>({contract:window.__GAZA_GIS__||null,map:!!document.querySelector('.leaflet-container'),exportButton:!!document.getElementById('exportGeojson'),accessUi:!!document.getElementById('accessStatus')&&!!document.getElementById('toggleSwept'),copy:document.body.textContent.includes('EPSG:25830')&&document.body.textContent.includes('Overpass')&&document.body.textContent.includes('OSRM')&&document.body.textContent.includes('12,50 m')&&document.body.textContent.includes('5,30 m')}));
+    const gisOk=gis.map&&gis.copy&&gis.exportButton&&gis.accessUi&&gis.contract?.schemaVersion>=4&&gis.contract?.geometry==='OSM_RUNTIME'&&gis.contract?.routing==='OSRM_CALCULATED'&&gis.contract?.localAxes==='X_EAST_Z_NORTH'&&gis.contract?.engineeringCrs==='EPSG:25830'&&gis.contract?.factoryCandidatePolicy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT'&&gis.contract?.accessPolicy==='NEAREST_OSM_ROAD_NOT_GATE'&&gis.contract?.hgvEnvelope?.outerRadiusM===12.5&&gis.contract?.hgvEnvelope?.innerRadiusM===5.3;
     checks.push({surface:name,check:'campus-gis-provenance',ok:gisOk,metrics:gis});
     if(!gisOk)errors.push({surface:name,type:'quality',text:'Campus GIS provenance/runtime contract missing'});
   }
