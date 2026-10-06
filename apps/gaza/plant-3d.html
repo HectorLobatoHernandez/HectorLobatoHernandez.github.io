@@ -255,8 +255,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const canvas=document.getElementById('twin3d');
 if(canvas){
- const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
- renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
+ let renderDpr=0;
+ const targetRenderDpr=()=>Math.min(Math.max(window.devicePixelRatio||1,1),2.5);
+ renderer.setPixelRatio(targetRenderDpr());renderDpr=targetRenderDpr();
  renderer.shadowMap.enabled=true;
  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
@@ -417,7 +419,7 @@ if(canvas){
  document.querySelectorAll('[data-camera]').forEach(b=>b.addEventListener('click',()=>setCameraView(b.dataset.camera)));
  document.getElementById('twinIncident').onclick=()=>{incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min*':Math.round(17/envSpeedFactor)+' min*';sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado. El asterisco indica margen heurístico de entorno.'};
 
- function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.floor(w*renderer.getPixelRatio())||canvas.height!==Math.floor(h*renderer.getPixelRatio()))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+ function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;const dpr=targetRenderDpr();if(Math.abs(dpr-renderDpr)>.01){renderer.setPixelRatio(dpr);renderDpr=dpr}if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
  const clock=new THREE.Clock();
  function animate(){requestAnimationFrame(animate);resize();const dt=Math.min(clock.getDelta(),.05);if(running){const s=Number(speed.value);phase=(phase+dt*s*.055*envSpeedFactor)%1;
    // Nine-level ASRS shuttles + lift. Motion is demonstrative; topology is not claimed as the real control sequence.
