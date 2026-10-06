@@ -32,6 +32,7 @@ ROAD=mat("GAZA GIS Road",(0.08,0.23,0.38))
 BUILDING=mat("GAZA GIS Building Context",(0.55,0.43,0.12))
 INDUSTRIAL=mat("GAZA GIS Industrial",(0.18,0.42,0.22))
 ROUTE=mat("GAZA GIS Calculated Route",(0.55,0.12,0.12))
+FACTORY=mat("GAZA GIS Factory Candidate",(0.95,0.24,0.05))
 
 def curve_obj(name,pts,coll,material,bevel=.7,z=0.06):
     if len(pts)<2:return None
@@ -57,15 +58,17 @@ def main():
     path=argv_snapshot()
     if not path or not os.path.isfile(path):raise SystemExit("Provide exported gaza-campus-public-snapshot.geojson after --")
     data=json.load(open(path,encoding="utf-8"));coll=collection(COLLECTION)
-    counts={"road":0,"building":0,"industrial":0,"calculated_route":0}
+    counts={"road":0,"building":0,"industrial":0,"factory_osm_candidate":0,"calculated_route":0}
     for i,f in enumerate(data.get("features",[])):
         props=f.get("properties",{});kind=props.get("kind","");local=f.get("localXZ");oid=props.get("osmId",i);name=f"GIS_{kind}_{oid}"
         if kind=="road" and local:
             ob=curve_obj(name,local,coll,ROAD,.55);counts[kind]+=bool(ob)
         elif kind=="calculated_route" and local:
             ob=curve_obj(name,local,coll,ROUTE,.32,.12);counts[kind]+=bool(ob)
-        elif kind in ("building","industrial") and local:
-            ob=polygon_obj(name,local,coll,BUILDING if kind=="building" else INDUSTRIAL,3.0 if kind=="building" else .12);counts[kind]+=bool(ob)
+        elif kind in ("building","industrial","factory_osm_candidate") and local:
+            material=FACTORY if kind=="factory_osm_candidate" else (BUILDING if kind=="building" else INDUSTRIAL)
+            height=4.0 if kind=="factory_osm_candidate" else (3.0 if kind=="building" else .12)
+            ob=polygon_obj(name,local,coll,material,height);counts[kind]+=bool(ob)
         else:continue
         if ob:
             ob["gaza_source_class"]=props.get("sourceClass","PUBLIC_REFERENCE")
