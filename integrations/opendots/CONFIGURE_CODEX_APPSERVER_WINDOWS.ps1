@@ -82,16 +82,18 @@ foreach ($flag in @("--listen","--ws-auth","--ws-token-file")) {
 }
 Write-Host "Codex app-server WebSocket auth flags: OK" -ForegroundColor Green
 
-$prevNative = $PSNativeCommandUseErrorActionPreference
-try {
-    if ($null -ne $PSNativeCommandUseErrorActionPreference) {
-        $PSNativeCommandUseErrorActionPreference = $false
-    }
-    $loginStatus = (& codex login status 2>&1 | Out-String).Trim()
+$codexCmdForStatus = Get-Command codex.cmd -ErrorAction SilentlyContinue
+if ($codexCmdForStatus) {
+    $loginStatus = (& cmd.exe /d /s /c "`"`"$($codexCmdForStatus.Source)`" login status 2>&1`"" | Out-String).Trim()
     $loginExit = $LASTEXITCODE
-} finally {
-    if ($null -ne $prevNative) {
-        $PSNativeCommandUseErrorActionPreference = $prevNative
+} else {
+    $savedEap = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = "Continue"
+        $loginStatus = (& codex login status 2>&1 | Out-String).Trim()
+        $loginExit = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $savedEap
     }
 }
 
