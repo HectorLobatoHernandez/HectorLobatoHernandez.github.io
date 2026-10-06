@@ -1,10 +1,12 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "updatedAt": "2026-10-06",
   "plant": {
     "name": "Leche Gaza · Coreses",
-    "lat": 41.525162564246195,
-    "lon": -5.604126176771143
+    "lat": 41.52355,
+    "lon": -5.59993,
+    "status": "USER_CONFIRMED_APPROXIMATE",
+    "canonicalSource": "data/site-reference.json"
   },
   "publicConstraint": {
     "radiusKm": 50,
