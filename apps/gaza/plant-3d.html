@@ -116,7 +116,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
-      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span><span class="hudchip">EVIDENCIA · PÚBLICO / INFERIDO / SIMULADO</span></div>
+      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span><span class="hudchip">EVIDENCIA · PÚBLICO / INFERIDO / SIMULADO</span><span class="hudchip" id="perfChip" hidden>GPU · midiendo…</span></div>
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
@@ -255,7 +255,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const canvas=document.getElementById('twin3d');
 if(canvas){
- const pageParams=new URLSearchParams(location.search),freezeMode=pageParams.get('freeze')==='1';
+ const pageParams=new URLSearchParams(location.search),freezeMode=pageParams.get('freeze')==='1',debugMode=pageParams.get('debug')==='1';
  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
  let renderDpr=0;
  const targetRenderDpr=()=>Math.min(Math.max(window.devicePixelRatio||1,1),2.5);
@@ -460,7 +460,7 @@ if(canvas){
    const b=((phase+.42)*2)%1;out2.position.x=65+b*120;out2.position.z=73;out2.rotation.y=-Math.PI/2;
    document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
  }
- controls.update();renderer.render(scene,camera)}
+ controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
  laneAgents.forEach(a=>moveLaneAgent(a,a.u));applyEnvironment();
  async function refreshWeather(){
    try{const u='https://api.open-meteo.com/v1/forecast?latitude=41.525162564246195&longitude=-5.604126176771143&current=temperature_2m,weather_code,wind_speed_10m,precipitation&timezone=Europe%2FMadrid';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather '+r.status);const j=await r.json(),w=j.current||{};let risk=0;if(weatherCodeRain(w.weather_code)||Number(w.precipitation||0)>0)risk++;if(Number(w.wind_speed_10m||0)>=35)risk++;if(Number(w.wind_speed_10m||0)>=55||[65,82,95,96,99].includes(Number(w.weather_code)))risk++;const label={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',51:'Llovizna',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'}[w.weather_code]||('Código '+w.weather_code);const prev=readEnv(),next={...prev,weather:{live:true,temp:Number(w.temperature_2m),wind:Number(w.wind_speed_10m),precipitation:Number(w.precipitation||0),code:Number(w.weather_code),label,risk:Math.min(risk,3),observedAt:w.time||null,checkedAt:new Date().toISOString()},source:'GAZA Plant 3D',updatedAt:new Date().toISOString()};localStorage.setItem(ENV_KEY,JSON.stringify(next));applyEnvironment(next)}catch(_){applyEnvironment(readEnv())}}
