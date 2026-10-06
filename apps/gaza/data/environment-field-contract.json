@@ -12,6 +12,7 @@
     "classification": "PUBLIC_REFERENCE_LIVE",
     "variables": [
       "temperature_2m",
+      "apparent_temperature",
       "relative_humidity_2m",
       "surface_pressure",
       "weather_code",
@@ -19,7 +20,8 @@
       "wind_speed_10m",
       "wind_direction_10m",
       "wind_gusts_10m",
-      "cloud_cover"
+      "cloud_cover",
+      "visibility"
     ],
     "policy": "Grid weather is not a substitute for calibrated on-site instrumentation or CFD."
   },
@@ -34,19 +36,69 @@
       "No stack/plume dispersion",
       "No sensor calibration",
       "No safety-critical control"
-    ]
+    ],
+    "visualEncoding": "concentric compass rings + animated streamlines around campus",
+    "motion": "ANIMATED_STREAMLINES",
+    "riskInputs": [
+      "weather_code",
+      "precipitation",
+      "wind_speed_10m",
+      "wind_gusts_10m",
+      "visibility"
+    ],
+    "riskPolicy": "Operational context only; gust and low-visibility thresholds affect advisory risk, never safety interlocks."
   },
   "proposedSensorNetwork": {
     "classification": "PROPOSED_NOT_INSTALLED",
     "nodes": [
-      {"id":"WX-PROP-01","localX":-135,"localZ":-85,"role":"SW perimeter"},
-      {"id":"WX-PROP-02","localX":0,"localZ":-92,"role":"South process perimeter"},
-      {"id":"WX-PROP-03","localX":135,"localZ":-82,"role":"SE logistics perimeter"},
-      {"id":"WX-PROP-04","localX":145,"localZ":15,"role":"East ASRS perimeter"},
-      {"id":"WX-PROP-05","localX":130,"localZ":88,"role":"NE yard perimeter"},
-      {"id":"WX-PROP-06","localX":0,"localZ":92,"role":"North road perimeter"},
-      {"id":"WX-PROP-07","localX":-135,"localZ":88,"role":"NW access perimeter"},
-      {"id":"WX-PROP-08","localX":-145,"localZ":10,"role":"West utilities perimeter"}
+      {
+        "id": "WX-PROP-01",
+        "localX": -135,
+        "localZ": -85,
+        "role": "SW perimeter"
+      },
+      {
+        "id": "WX-PROP-02",
+        "localX": 0,
+        "localZ": -92,
+        "role": "South process perimeter"
+      },
+      {
+        "id": "WX-PROP-03",
+        "localX": 135,
+        "localZ": -82,
+        "role": "SE logistics perimeter"
+      },
+      {
+        "id": "WX-PROP-04",
+        "localX": 145,
+        "localZ": 15,
+        "role": "East ASRS perimeter"
+      },
+      {
+        "id": "WX-PROP-05",
+        "localX": 130,
+        "localZ": 88,
+        "role": "NE yard perimeter"
+      },
+      {
+        "id": "WX-PROP-06",
+        "localX": 0,
+        "localZ": 92,
+        "role": "North road perimeter"
+      },
+      {
+        "id": "WX-PROP-07",
+        "localX": -135,
+        "localZ": 88,
+        "role": "NW access perimeter"
+      },
+      {
+        "id": "WX-PROP-08",
+        "localX": -145,
+        "localZ": 10,
+        "role": "West utilities perimeter"
+      }
     ],
     "designChannels": [
       "air_temperature",
