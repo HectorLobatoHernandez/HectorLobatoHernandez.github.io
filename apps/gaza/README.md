@@ -32,3 +32,8 @@ See `TEST_PLAN.md` for acceptance tests.
 - `1 / 2 / 3`: Operations / Flow / Risk layers.
 - `R`: reset.
 - `?demo=1`: automatically starts the guided sequence after load.
+
+## Restored simulation layers
+- `plant-3d.html`: 3D farm-to-dispatch functional model.
+- `territory.html`: OSM/OSRM territory and routing + live Open-Meteo + DGT road-state source links.
+- `PUBLIC_EVIDENCE.md`: source/simulation boundary and requirements for an as-built twin.
