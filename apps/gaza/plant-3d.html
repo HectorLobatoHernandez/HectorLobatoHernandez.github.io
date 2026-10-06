@@ -359,12 +359,13 @@ if(canvas){
  function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
  function weatherCodeRain(code){return [51,53,55,61,63,65,80,81,82,95,96,99].includes(Number(code))}
  const rainGeo=new THREE.BufferGeometry(),rainN=420,rainPos=new Float32Array(rainN*3);for(let i=0;i<rainN;i++){rainPos[i*3]=-145+Math.random()*290;rainPos[i*3+1]=10+Math.random()*85;rainPos[i*3+2]=-95+Math.random()*190}rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));const rainPts=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:0x8db2ff,size:.65,transparent:true,opacity:.55}));rainPts.visible=false;scene.add(rainPts);
+ function fresh(x,ttl){const t=Date.parse(x&&x.checkedAt||'');return Number.isFinite(t)&&(Date.now()-t)<ttl}
  function applyEnvironment(next=readEnv()){
-   envState=next||{};const w=envState.weather||{},d=envState.dgt||{};envWeatherRisk=w.live?Number(w.risk||0):0;envRoadRisk=d.live?Number(d.risk||0):0;
+   envState=next||{};const w=envState.weather||{},d=envState.dgt||{},weatherLive=w.live&&fresh(w,15*60e3),dgtLive=d.live&&fresh(d,5*60e3);envWeatherRisk=weatherLive?Number(w.risk||0):0;envRoadRisk=dgtLive?Number(d.risk||0):0;
    envSpeedFactor=Math.max(.58,1-envWeatherRisk*.11-envRoadRisk*.055);
-   const chip=document.getElementById('envCouplingChip'),parts=[];parts.push(w.live?'METEO LIVE '+(w.label||''):'METEO sin live');parts.push(d.live?'DGT LIVE '+(d.count40||0)+' ≤40 km':'DGT sin live');chip.textContent=parts.join(' · ')+' · factor '+envSpeedFactor.toFixed(2)+'*';chip.title='Factor heurístico de simulación; no equivale a congestión o ETA real.';
-   document.getElementById('twinEta').textContent=Math.round(17/envSpeedFactor)+' min*';document.getElementById('milkTemp').textContent=w.live?(3.8+(Number(w.temp||15)-15)*.006).toFixed(1)+' °C':'3.8 °C';
-   rainPts.visible=!!(w.live&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));scene.fog.color.set(rainPts.visible?0x111b26:0x07101a);scene.background.set(rainPts.visible?0x111b26:0x07101a);sun.intensity=rainPts.visible?1.65:2.8;
+   const chip=document.getElementById('envCouplingChip'),parts=[];parts.push(weatherLive?'METEO LIVE '+(w.label||''):'METEO sin live/fresco');parts.push(dgtLive?'DGT LIVE '+(d.count40||0)+' ≤40 km':'DGT sin live/fresco');chip.textContent=parts.join(' · ')+' · factor '+envSpeedFactor.toFixed(2)+'*';chip.title='Factor heurístico de simulación; no equivale a congestión o ETA real.';
+   document.getElementById('twinEta').textContent=Math.round(17/envSpeedFactor)+' min*';document.getElementById('milkTemp').textContent=weatherLive?(3.8+(Number(w.temp||15)-15)*.006).toFixed(1)+' °C':'3.8 °C';
+   rainPts.visible=!!(weatherLive&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));scene.fog.color.set(rainPts.visible?0x111b26:0x07101a);scene.background.set(rainPts.visible?0x111b26:0x07101a);sun.intensity=rainPts.visible?1.65:2.8;
  }
  window.addEventListener('storage',e=>{if(e.key===ENV_KEY)applyEnvironment()});window.addEventListener('gaza-environment',e=>applyEnvironment(e.detail));
  const speed=document.getElementById('simSpeed');
