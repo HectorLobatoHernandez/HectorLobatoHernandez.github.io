@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GAZA · Plant 3D & Farm Flow</title>
-<link rel="stylesheet" href="assets/style.css">
+
 <style>
-:root{--gaza-blue:#123c8f;--gaza-blue2:#1e63b8;--gaza-green:#6fb24a;--gaza-yellow:#efc534;--gaza-red:#dc4a3f;--ok:#78d95e;--road:#2a2f36;--roadline:#aeb6c4;--sky1:#0a1320;--sky2:#10233f;--ground:#0f1418}
+:root{--line:#27313d;--muted:#96a3b4;--text:#eef3f8;--danger:#ff6f7e;--gaza-blue:#123c8f;--gaza-blue2:#1e63b8;--gaza-green:#6fb24a;--gaza-yellow:#efc534;--gaza-red:#dc4a3f;--ok:#78d95e;--road:#2a2f36;--roadline:#aeb6c4;--sky1:#0a1320;--sky2:#10233f;--ground:#0f1418}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}.wrap{max-width:1480px;margin:auto;padding:0 26px}.nav{position:sticky;top:0;z-index:100;background:rgba(7,10,15,.9);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(14px)}.navin{height:62px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:900;color:#fff;text-decoration:none}.brand i{color:#8db2ff;font-style:normal}.navlinks{display:flex;gap:16px;align-items:center}.navlinks a{color:#aeb9c7;text-decoration:none;font-size:11px}.nav-cta{border:1px solid var(--line);padding:7px 10px;border-radius:999px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-block;border:1px solid var(--line);background:#111720;color:#e8edf4;border-radius:999px;padding:9px 13px;font-size:11px;font-weight:800;cursor:pointer;text-decoration:none}.btn.primary{background:#246bfd;border-color:#246bfd;color:#fff}.section-head{display:grid;grid-template-columns:170px 1fr;gap:22px;margin-bottom:20px}.section-head h2{font-size:clamp(28px,4vw,46px);margin:0}.section-head p{color:var(--muted)}section{padding:44px 0;border-top:1px solid rgba(255,255,255,.055)}.status-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#bfe8b3}.status-badge i{width:7px;height:7px;border-radius:50%;background:var(--ok)}@media(max-width:700px){.wrap{padding:0 14px}.navlinks{display:none}.section-head{grid-template-columns:1fr}}
 body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),transparent 32rem),radial-gradient(circle at 85% 10%,rgba(111,178,74,.13),transparent 28rem),#08090c}
 .gaza-hero{padding:56px 0 26px}.gaza-hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:stretch}.hero-kicker{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(120,217,94,.26);background:rgba(120,217,94,.07);font-size:11px;color:#bde8b2;font-weight:800;letter-spacing:.09em}.hero-kicker i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px rgba(120,217,94,.6)}
 .gaza-hero h1{font-size:clamp(42px,6vw,76px);line-height:.93;letter-spacing:-.055em;margin:12px 0 14px}.gaza-hero h1 span{color:#8d97a8}.gaza-copy{max-width:760px;color:#c8ced8;font-size:18px}.gaza-copy strong{color:#fff}.gaza-logo-card{border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#0e1320,#0c1016);padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}.gaza-logo-card:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(105,173,61,.14),transparent 68%);right:-60px;top:-70px}.gaza-brand{display:flex;align-items:center;gap:16px;position:relative;z-index:1}.logo-ball{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--gaza-blue2),var(--gaza-blue));display:grid;place-items:center;font-weight:900;font-size:22px;letter-spacing:.04em}.brand-lines b{display:block;font-size:28px;letter-spacing:-.04em}.brand-lines small{display:block;color:#c1c8d4;font-size:12px;text-transform:uppercase;letter-spacing:.14em}.brand-note{position:relative;z-index:1;color:#a8b1bf;font-size:13px}.brand-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:1}.brand-tags span{padding:6px 10px;border-radius:999px;background:#171b22;border:1px solid #2a303b;font-size:11px;color:#c6cfdb}
@@ -65,7 +66,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
     </div>
     <div class="gaza-logo-card">
       <div class="gaza-brand"><div class="logo-ball">GZ</div><div class="brand-lines"><b>LECHE GAZA</b><small>Operaciones · logística · control tower</small></div></div>
-      <div class="brand-note">Concepto visual inspirado en una torre de control industrial: una sola vista para supervisar recogida, proceso, almacén, expediciones y transporte.</div>
+      <div class="brand-note">Modelo funcional 3D farm-to-dispatch. La parcela y magnitudes públicas anclan la escala conceptual; la distribución interior exacta permanece simulada hasta disponer de planos o levantamiento autorizado.</div>
       <div class="brand-tags"><span>80+ ganaderías</span><span>Coreses · Zamora</span><span>Lean Manufacturing</span><span>GAZACONTROL</span><span>IA con humano en el circuito</span></div>
     </div>
   </div>
@@ -76,7 +77,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
     <div class="fact confirmed"><div class="v">GAZACONTROL</div><div class="l">automatización y logística</div></div>
     <div class="fact confirmed"><div class="v">Lean</div><div class="l">mejora continua</div></div>
     <div class="fact confirmed"><div class="v">Península</div><div class="l">envío online público</div></div>
-    <div class="fact"><div class="v">v3.0</div><div class="l">escena 3D simulada</div></div>
+    <div class="fact confirmed"><div class="v">12.000 m²</div><div class="l">instalaciones · público</div></div><div class="fact confirmed"><div class="v">60.000 m²</div><div class="l">parcela · público</div></div><div class="fact confirmed"><div class="v">9 niveles</div><div class="l">almacén automático · público</div></div><div class="fact"><div class="v">3D</div><div class="l">geometría funcional simulada</div></div>
   </div>
   <div class="kpi-row">
     <div class="kpi3"><div class="v" id="kpiOtif">96,8%</div><div class="l">OTIF sintético</div></div>
@@ -129,10 +130,10 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
         <div class="tank" style="left:585px;top:225px"></div><div class="tank" style="left:628px;top:225px"></div>
 
         <!-- Utilities -->
-        <div class="iso block utility" style="left:800px;top:65px;--w:90px;--h:80px;--z:32px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:6px;top:8px">UTILITIES</div></div>
+        <div class="iso block utility" style="left:800px;top:65px;--w:90px;--h:80px;--z:32px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:6px;top:8px">VAPOR · AGUA · EDARI</div></div>
 
         <!-- Warehouse -->
-        <div class="iso block warehouse" style="left:455px;top:270px;--w:180px;--h:70px;--z:34px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:9px">ALMACÉN AUTOMÁTICO</div></div>
+        <div class="iso block warehouse" style="left:455px;top:270px;--w:180px;--h:70px;--z:34px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:9px">ALMACÉN AUTOMÁTICO · 9 NIVELES</div></div>
         <div class="iso block office" style="left:275px;top:225px;--w:115px;--h:75px;--z:22px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:8px">CONTROL OT / IT</div></div>
         <div class="iso block plant" style="left:450px;top:460px;--w:90px;--h:60px;--z:16px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:8px">STAGING</div></div>
         <div class="iso block utility" style="left:550px;top:460px;--w:90px;--h:60px;--z:16px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:8px;top:8px">MUELLES</div></div>
