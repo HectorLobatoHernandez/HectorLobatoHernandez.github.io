@@ -11,6 +11,7 @@ const browser=await chromium.launch({headless:!headed});
 const errors=[],checks=[];
 const renderBudget={calls:1200,triangles:3000000,geometries:1500,textures:512};
 const targets=[
+  {name:'tower',url:'/?qa=1',width:1600,height:900,dsf:1},
   {name:'strategy',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'strategy-process',url:'/game.html?camera=process&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
@@ -81,6 +82,21 @@ for(const target of targets){
       checks.push({surface:name,check:'vehicle-path-heading',ok:vehicleOk,metrics:vehicle});
       if(!vehicleOk)errors.push({surface:name,type:'quality',text:'Strategy vehicle tangent-heading contract missing'});
     }
+  }
+
+  if(name==='tower'){
+    const tower=await page.evaluate(()=>({
+      env:window.__GAZA_CONTROL_TOWER_ENV__||null,
+      panel:!!document.getElementById('environmentOps'),
+      risk:document.getElementById('towerWxRisk')?.textContent||'',
+      gust:document.getElementById('towerWxGust24')?.textContent||'',
+      visibility:document.getElementById('towerWxVis24')?.textContent||'',
+      advice:document.getElementById('towerWxAdvice')?.textContent||'',
+      alerts:document.getElementById('alerts')?.textContent||''
+    }));
+    const towerOk=tower.panel&&tower.env?.schemaVersion===1&&tower.env?.weather?.advisoryOnly===true&&tower.env?.weather?.currentRisk===0&&tower.env?.weather?.forecastRisk===1&&tower.env?.weather?.opsRisk===1&&tower.env?.weather?.forecast?.maxGustKmh===38&&tower.env?.weather?.forecast?.minVisibilityM===12000&&tower.risk==='ATENCIÓN'&&tower.gust==='38 km/h'&&tower.visibility==='12.0 km'&&tower.advice.includes('Rachas ≥ 35 km/h')&&tower.alerts.includes('METEO 24H · ATENCIÓN');
+    checks.push({surface:name,check:'control-tower-weather-ops',ok:towerOk,metrics:tower});
+    if(!towerOk)errors.push({surface:name,type:'quality',text:'Control Tower Weather Ops contract/UI unavailable'});
   }
 
   if(url.includes('plant-3d.html')){
