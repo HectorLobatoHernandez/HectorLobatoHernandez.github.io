@@ -46,3 +46,33 @@ export function ProximityDock({items=[]}){
   return h('div',{className:'dock',onPointerMove:e=>setMx(e.clientX),onPointerLeave:()=>setMx(-9999)},items.map((it,i)=>h(DockItem,{it,mx,key:i})))
 }
 function DockItem({it,mx}){const ref=useRef(null),[size,setSize]=useState(46);useEffect(()=>{const r=ref.current?.getBoundingClientRect();if(!r)return;const d=Math.abs(mx-(r.left+r.width/2));setSize(46+Math.max(0,1-d/130)*30)},[mx]);return h('button',{ref,style:{width:size,height:size},onClick:it.onClick,'aria-label':it.label},h('b',null,it.icon),h('span',null,it.label))}
+
+
+export function LetterGlitch({density=900,opacity=.16}){
+  const ref=useRef(null);
+  useEffect(()=>{const cv=ref.current;if(!cv)return;const ctx=cv.getContext('2d'),dpr=Math.min(devicePixelRatio||1,2),chars='01<>[]{}:/\\|+-=*SYSNETAVAIOT';let raf=0,W=1,H=1,last=0;
+    const resize=()=>{W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)};resize();addEventListener('resize',resize);
+    const draw=t=>{if(t-last>70){last=t;ctx.clearRect(0,0,W,H);ctx.font='11px ui-monospace,monospace';for(let i=0;i<density;i++){const x=Math.random()*W,y=Math.random()*H,a=Math.random()*opacity;ctx.fillStyle='rgba(91,140,255,'+a+')';ctx.fillText(chars[(Math.random()*chars.length)|0],x,y)}}raf=requestAnimationFrame(draw)};raf=requestAnimationFrame(draw);
+    return()=>{cancelAnimationFrame(raf);removeEventListener('resize',resize)}
+  },[density,opacity]);
+  return h('canvas',{ref,className:'letter-glitch','aria-hidden':'true'})
+}
+
+export function Crosshair(){
+  const ref=useRef(null);
+  useEffect(()=>{const el=ref.current;if(!el)return;const move=e=>{el.style.transform='translate3d('+(e.clientX-16)+'px,'+(e.clientY-16)+'px,0)';el.dataset.active=(e.target.closest('a,button,[tabindex]')?'1':'0')};addEventListener('pointermove',move,{passive:true});return()=>removeEventListener('pointermove',move)},[]);
+  return h('div',{ref,className:'crosshair','aria-hidden':'true'},h('i',{className:'ch-h'}),h('i',{className:'ch-v'}),h('b',null,'+'))
+}
+
+export function RadarScope(){
+  const rings=[18,34,50,66,82];
+  const blips=[['CTRL',64,28],['AV',29,46],['NET',72,61],['AI',46,74],['OPS',83,44]];
+  return h('div',{className:'radar'},
+    h('div',{className:'radar-grid'}),
+    rings.map((r,i)=>h('i',{key:i,className:'radar-ring',style:{width:r+'%',height:r+'%'}})),
+    h('div',{className:'radar-sweep'}),
+    h('div',{className:'radar-axis x'}),h('div',{className:'radar-axis y'}),
+    blips.map(([n,x,y])=>h('span',{key:n,className:'radar-blip',style:{left:x+'%',top:y+'%'}},h('b'),h('em',null,n))),
+    h('div',{className:'radar-core'},'HL')
+  )
+}
