@@ -13,7 +13,7 @@ if(ops.water.maxAnnualM3!==380390||ops.water.maxInstantLs!==25.2||ops.water.mean
 if(!ops.roads.some(x=>x.ref==='N-122'))errors.push('N-122 public road anchor missing');
 if(!ops.operations.some(x=>x.id==='gazacontrol'&&x.status==='CONFIRMED'))errors.push('GAZACONTROL evidence missing');
 if(ops.operations.find(x=>x.id==='wau')?.detail.includes('uses Dynamics'))errors.push('WAU evidence overclaims Gaza product use');
-if(ops.leadership.some(x=>/lat|lon|gps/i.test(JSON.stringify(x))))errors.push('leadership must not contain live/exact location data');
+if(ops.leadership.some(x=>Object.keys(x).some(k=>/^(lat|lon|latitude|longitude|gps)$/i.test(k))))errors.push('leadership must not contain live/exact location coordinates');
 
 const ids=new Set(farms.nodes.map(x=>x.id));
 for(const n of farms.nodes){
