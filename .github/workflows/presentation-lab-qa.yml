@@ -1,0 +1,59 @@
+name: Presentation Lab QA
+
+on:
+  pull_request:
+    paths:
+      - 'apps/presentation-lab/**'
+      - 'index.html'
+      - 'apps/index.html'
+      - '.github/workflows/presentation-lab-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  presentation-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Syntax check
+        run: |
+          node --check apps/presentation-lab/app.js
+          node --check apps/presentation-lab/tests/smoke.mjs
+          test -f apps/presentation-lab/THIRD_PARTY_NOTICES.md
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start static site
+        run: |
+          python3 -m http.server 4174 --directory . >/tmp/presentation-http.log 2>&1 &
+          echo $! > /tmp/presentation-http.pid
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4174/apps/presentation-lab/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/presentation-http.log
+          exit 1
+
+      - name: Browser smoke test
+        run: node apps/presentation-lab/tests/smoke.mjs
+
+      - name: Upload QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: presentation-lab-qa
+          path: .qa/
+          if-no-files-found: ignore
