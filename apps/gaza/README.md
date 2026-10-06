@@ -34,7 +34,8 @@ See `TEST_PLAN.md` for acceptance tests.
 - `?demo=1`: automatically starts the guided sequence after load.
 
 ## Current surfaces
-- `plant-3d.html`: Coreses campus 3D with detailed trucks, N-122 contextual access, process, ASRS, utilities and docks. Farms are hidden from the campus by default.
+- `plant-3d.html`: Coreses campus 3D with articulated tractor/semi vehicles, contextual access, process, ASRS, utilities and docks. Farms are hidden from the campus by default.
+- `campus-gis.html`: real-coordinate OSM/Overpass campus context around Parcela 10, plus OSRM corridor calculations. This is the road/position authority until surveyed CAD/GIS arrives.
 - `territory.html`: OSM/OSRM territory and routing + live Open-Meteo + DGT route-corridor context.
 - `farm-network.html`: separate <50 km milk-collection network with real-road OSRM candidate circuits and explicit confirmed/anonymized node classes.
 - `systems.html`: verified public software/OT evidence, public leadership roles and read-only coupling architecture.
@@ -61,3 +62,14 @@ See `TEST_PLAN.md` for acceptance tests.
 - GitHub Actions runs Playwright visual QA with screenshots, GLB/telemetry checks and conservative WebGL render budgets.
 
 See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial integration boundary.
+
+
+## v10 GIS + integration contract
+- Added `campus-gis.html` so exact public OSM geometry is no longer conflated with the conceptual 3D parcel.
+- Plant trucks use an explicit -X forward-axis contract, quaternion tangent alignment and a separately articulated semitrailer tangent.
+- Farm Network adds an OSRM Trip optimization scenario across the demo nodes. It is labelled calculated/synthetic and never presented as an actual collection schedule.
+- Systems surface exposes the discovery checklist and canonical IDs needed to correlate ERP/MES/quality/ASRS/docks/routes/utilities.
+- Public evidence includes INTERGAZA and the SAT ROTE / DeLaval DelPro farm-management reference with scope restrictions.
+- `data/geospatial-baseline.json` is the machine-readable GIS provenance manifest.
+- `skills/gaza-geospatial-industrial-twin/SKILL.md` and `GIS_AGENT_STACK.md` define the GIS/3D agent discipline and selected external skill stack.
+- Visual QA now covers Campus GIS, the articulated truck contract and the integration discovery contract.
