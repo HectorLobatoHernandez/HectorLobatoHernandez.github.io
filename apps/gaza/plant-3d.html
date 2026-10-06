@@ -116,7 +116,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
-      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span></div>
+      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span><span class="hudchip">EVIDENCIA · PÚBLICO / INFERIDO / SIMULADO</span></div>
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
@@ -255,6 +255,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const canvas=document.getElementById('twin3d');
 if(canvas){
+ const pageParams=new URLSearchParams(location.search),freezeMode=pageParams.get('freeze')==='1';
  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
  let renderDpr=0;
  const targetRenderDpr=()=>Math.min(Math.max(window.devicePixelRatio||1,1),2.5);
@@ -337,6 +338,11 @@ if(canvas){
  // Tanks / silos.
  for(let i=0;i<4;i++){const t=new THREE.Mesh(new THREE.CylinderGeometry(5.2,5.2,18,24),mat(0xaeb9c4,.3,.65));t.position.set(-70+i*14,9,-70);t.castShadow=true;groups.plant.add(t)}
  addLabel(groups.plant,'SILOS',-49,22,-70);
+ // Industrial visual language: repeated roof extractors + external pipe rack. Geometry is simulated, not as-built.
+ const fanGeo=new THREE.CylinderGeometry(2.2,2.5,2.1,16),fanMat=mat(0x9aa9b7,.42,.48),fans=new THREE.InstancedMesh(fanGeo,fanMat,6),fanDummy=new THREE.Object3D();
+ for(let i=0;i<6;i++){fanDummy.position.set(-52+i*17,20.1,-24+(i%2)*13);fanDummy.updateMatrix();fans.setMatrixAt(i,fanDummy.matrix)}fans.castShadow=true;groups.plant.add(fans);
+ const pipeMat=mat(0xb8c5cf,.28,.72);for(const y of [8.5,11.5,14.5]){const pipe=new THREE.Mesh(new THREE.CylinderGeometry(.62,.62,76,12),pipeMat);pipe.rotation.z=Math.PI/2;pipe.position.set(-51,y,-55);pipe.castShadow=true;groups.plant.add(pipe)}
+ for(let x=-86;x<=-16;x+=14){const support=new THREE.Mesh(new THREE.BoxGeometry(.7,15,.7),mat(0x53616e,.55,.42));support.position.set(x,7.5,-55);groups.plant.add(support)}
 
  // Functional farm outside plant plot, connected by collection road.
  const farmGround=new THREE.Mesh(new THREE.PlaneGeometry(105,80),mat(0x24351e));farmGround.rotation.x=-Math.PI/2;farmGround.position.set(-210,.02,-72);groups.farm.add(farmGround);
@@ -392,18 +398,19 @@ if(canvas){
  const out2=makeTruck('Expedición OUT-02',0xefc534);out2.position.set(110,1,60);
 
  // Docks.
- for(let i=0;i<4;i++){const d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,70+i*14,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});}
+ for(let i=0;i<4;i++){const x=70+i*14,d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,x,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});const shelter=new THREE.Mesh(new THREE.BoxGeometry(12.2,7.4,.75),mat(0x202a34,.72,.18));shelter.position.set(x,5.2,52.7);groups.plant.add(shelter);for(const bx of [-4.2,4.2]){const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.8,.9),mat(0x11161c,.9,.05));bumper.position.set(x+bx,1.2,53.15);groups.plant.add(bumper)}const signal=new THREE.Mesh(new THREE.SphereGeometry(.65,10,8),mat(i===1?0x73b866:0xefc534,.42,.05));signal.position.set(x+5.4,7.6,53.1);groups.plant.add(signal)}
 
- let running=true,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envState={};
+ let running=!freezeMode,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envState={};
  const ENV_KEY='gaza:environment:v1';
  function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
  function weatherCodeRain(code){return [51,53,55,61,63,65,80,81,82,95,96,99].includes(Number(code))}
- const rainGeo=new THREE.BufferGeometry(),rainN=420,rainPos=new Float32Array(rainN*3);for(let i=0;i<rainN;i++){rainPos[i*3]=-145+Math.random()*290;rainPos[i*3+1]=10+Math.random()*85;rainPos[i*3+2]=-95+Math.random()*190}rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));const rainPts=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:0x8db2ff,size:.65,transparent:true,opacity:.55}));rainPts.visible=false;scene.add(rainPts);
+ let rainSeed=0x47a2c31;function seededRain(){rainSeed=(Math.imul(rainSeed,1664525)+1013904223)>>>0;return rainSeed/4294967296}
+ const rainGeo=new THREE.BufferGeometry(),rainN=420,rainPos=new Float32Array(rainN*3);for(let i=0;i<rainN;i++){rainPos[i*3]=-145+seededRain()*290;rainPos[i*3+1]=10+seededRain()*85;rainPos[i*3+2]=-95+seededRain()*190}rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));const rainPts=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:0x8db2ff,size:.65,transparent:true,opacity:.55}));rainPts.visible=false;scene.add(rainPts);
  function fresh(x,ttl){const t=Date.parse(x&&x.checkedAt||'');return Number.isFinite(t)&&(Date.now()-t)<ttl}
  function applyEnvironment(next=readEnv()){
-   envState=next||{};const w=envState.weather||{},d=envState.dgt||{},weatherLive=w.live&&fresh(w,15*60e3),dgtLive=d.live&&fresh(d,5*60e3);envWeatherRisk=weatherLive?Number(w.risk||0):0;envRoadRisk=dgtLive?Number(d.risk||0):0;
+   envState=next||{};const w=envState.weather||{},d=envState.dgt||{},weatherLive=w.live&&fresh(w,15*60e3),dgtLive=d.live&&fresh(d,5*60e3),hasRoute=dgtLive&&d.routeMatches!=null&&Number.isFinite(Number(d.routeRisk));envWeatherRisk=weatherLive?Number(w.risk||0):0;envRoadRisk=dgtLive?(hasRoute?Number(d.routeRisk):Number(d.risk||0)):0;
    envSpeedFactor=Math.max(.58,1-envWeatherRisk*.11-envRoadRisk*.055);
-   const chip=document.getElementById('envCouplingChip'),parts=[];parts.push(weatherLive?'METEO LIVE '+(w.label||''):'METEO sin live/fresco');parts.push(dgtLive?'DGT LIVE '+(d.count40||0)+' ≤40 km':'DGT sin live/fresco');chip.textContent=parts.join(' · ')+' · factor '+envSpeedFactor.toFixed(2)+'*';chip.title='Factor heurístico de simulación; no equivale a congestión o ETA real.';
+   const chip=document.getElementById('envCouplingChip'),parts=[];parts.push(weatherLive?'METEO LIVE '+(w.label||''):'METEO sin live/fresco');parts.push(dgtLive?(hasRoute?'DGT CORREDOR '+Number(d.routeMatches||0)+' coincid.':'DGT PROX '+(d.count40||0)+' ≤40 km'):'DGT sin live/fresco');chip.textContent=parts.join(' · ')+' · factor '+envSpeedFactor.toFixed(2)+'*';chip.title=hasRoute?'Factor usa coincidencia geométrica DGT↔OSRM; no confirma afección oficial ni congestión.':'Fallback heurístico por proximidad; no equivale a congestión o ETA real.';
    document.getElementById('twinEta').textContent=Math.round(17/envSpeedFactor)+' min*';document.getElementById('milkTemp').textContent=weatherLive?(3.8+(Number(w.temp||15)-15)*.006).toFixed(1)+' °C':'3.8 °C';
    rainPts.visible=!!(weatherLive&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));scene.fog.color.set(rainPts.visible?0x111b26:0x07101a);scene.background.set(rainPts.visible?0x111b26:0x07101a);sun.intensity=rainPts.visible?1.65:2.8;
  }
@@ -418,6 +425,7 @@ if(canvas){
  function setCameraView(key){const v=cameraViews[key];if(!v)return;camera.position.set(...v.p);controls.target.set(...v.t);controls.update()}
  document.getElementById('twinReset').onclick=()=>setCameraView('exterior');
  document.querySelectorAll('[data-camera]').forEach(b=>b.addEventListener('click',()=>setCameraView(b.dataset.camera)));
+ const requestedCamera=pageParams.get('camera');if(requestedCamera)setCameraView(requestedCamera);if(freezeMode){document.getElementById('twinPlay').textContent='Reanudar';document.body.dataset.freeze='1'}
  document.getElementById('twinIncident').onclick=()=>{incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min*':Math.round(17/envSpeedFactor)+' min*';sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado. El asterisco indica margen heurístico de entorno.'};
 
  function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;const dpr=targetRenderDpr();if(Math.abs(dpr-renderDpr)>.01){renderer.setPixelRatio(dpr);renderDpr=dpr}if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
@@ -430,7 +438,7 @@ if(canvas){
    const cells=28,reserved=new Set();laneAgents.forEach(a=>reserved.add(Math.floor(a.u*cells)%cells));let moving=0;
    laneAgents.forEach(a=>{const du=a.speed*dt*s*envSpeedFactor,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
    document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;workers.forEach(w=>moveWorker(w,dt,s));document.getElementById('workerCount').textContent=workers.length+'/'+workers.length;
-   if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+Math.random()*20}rainGeo.attributes.position.needsUpdate=true}
+   if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+seededRain()*20}rainGeo.attributes.position.needsUpdate=true}
    farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
    // Farm tanker follows collection corridor then enters reception.
    const p=phase<.62?phase/.62:1; tanker.position.x=-190+p*108;tanker.position.z=-58+p*8;tanker.rotation.y=-Math.PI/2;
