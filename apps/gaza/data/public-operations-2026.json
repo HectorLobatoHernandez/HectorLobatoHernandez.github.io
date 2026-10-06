@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "plant": {
+    "name": "Leche Gaza · planta Coreses",
+    "address": "P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora)",
+    "coordinates": [
+      41.525162564246195,
+      -5.604126176771143
+    ],
+    "coordinatesProvenance": "public map embed used by Leche Gaza / current prototype",
+    "publicScale": {
+      "plotM2": 60000,
+      "facilitiesM2": 12000,
+      "classification": "PUBLIC_REFERENCE_APPROX"
+    }
+  },
+  "roads": [
+    {
+      "ref": "N-122",
+      "kind": "national",
+      "fact": "Coreses lies on N-122; corridor connects Zamora ↔ Coreses ↔ Toro",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "A-11 / E-82",
+      "kind": "motorway",
+      "fact": "Coreses access via A-11; public references identify exit 447 connecting to ZA-P-1303",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "ZA-P-1303",
+      "kind": "provincial",
+      "fact": "Coreses ↔ Algodre / A-11 exit context",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "ZA-711",
+      "kind": "regional",
+      "fact": "Coreses ↔ Molacillos",
+      "status": "PUBLIC_REFERENCE"
+    },
+    {
+      "ref": "ZA-710",
+      "kind": "regional",
+      "fact": "Coreses ↔ N-122 connector",
+      "status": "PUBLIC_REFERENCE"
+    }
+  ],
+  "operations": [
+    {
+      "id": "gazacontrol",
+      "name": "GAZACONTROL",
+      "status": "CONFIRMED",
+      "detail": "Automation and monitoring of production and logistics; Industry 4.0 productivity objective.",
+      "softwareVersion": "UNKNOWN"
+    },
+    {
+      "id": "erp",
+      "name": "Solmicro ERP reference",
+      "status": "CONFIRMED_CUSTOMER_REFERENCE",
+      "detail": "Solmicro publicly lists Leche Gaza as an ERP customer.",
+      "softwareVersion": "UNKNOWN",
+      "modules": "UNKNOWN"
+    },
+    {
+      "id": "wau",
+      "name": "WAU Technologies customer reference",
+      "status": "CONFIRMED_CUSTOMER_REFERENCE",
+      "detail": "WAU currently lists Leche Gaza among its clients but does not identify which current WAU/Microsoft/Siemens products are deployed at Gaza.",
+      "softwareVersion": "UNKNOWN"
+    },
+    {
+      "id": "tetrapak",
+      "name": "Tetra Pak production equipment",
+      "status": "CONFIRMED_SUPPLIER_REFERENCE",
+      "detail": "2022 reporting identifies Tetra Pak Hispania as principal supplier of production equipment for the new installations.",
+      "softwareVersion": "NOT_PUBLIC"
+    },
+    {
+      "id": "asrs",
+      "name": "Esnova + Signode StorFast ASRS",
+      "status": "CONFIRMED",
+      "detail": "Automated warehouse with 9 storage levels; Esnova racks and Signode StorFast shuttle carts.",
+      "softwareVersion": "UNKNOWN"
+    },
+    {
+      "id": "utilities",
+      "name": "Veolia utilities",
+      "status": "CONFIRMED",
+      "detail": "Steam boiler/energy, process water cycle, potable-water treatment, EDARI and waste management.",
+      "softwareVersion": "NOT_PUBLIC"
+    }
+  ],
+  "water": {
+    "status": "CONFIRMED_OFFICIAL",
+    "maxAnnualM3": 380390,
+    "maxInstantLs": 25.2,
+    "meanEquivalentLs": 12.06,
+    "groundwaterBody": "400038 Tordesillas-Toro",
+    "concessionYears": 25,
+    "resolutionDate": "2025-05-14"
+  },
+  "leadership": [
+    {
+      "name": "José Sánchez",
+      "role": "Presidente",
+      "status": "PUBLIC_CURRENT_2026",
+      "workplace": "Leche Gaza / governance",
+      "locationPolicy": "ROLE_ONLY_NO_LIVE_LOCATION"
+    },
+    {
+      "name": "Saúl Alonso Miñambres",
+      "role": "Gerente",
+      "status": "PUBLIC_REGISTERED_FROM_2025-12-18",
+      "workplace": "Leche Gaza",
+      "locationPolicy": "ROLE_ONLY_NO_LIVE_LOCATION"
+    },
+    {
+      "name": "Gustavo Andrés Martín",
+      "role": "Área comercial / internacionalización",
+      "status": "PUBLIC_PROFESSIONAL_AFFILIATION_2026",
+      "workplace": "Leche Gaza",
+      "locationPolicy": "ROLE_ONLY_NO_LIVE_LOCATION"
+    },
+    {
+      "name": "Roberto Vizán",
+      "role": "Responsable de marketing",
+      "status": "PUBLIC_MEDIA_REFERENCE_2026-09",
+      "workplace": "Leche Gaza",
+      "locationPolicy": "ROLE_ONLY_NO_LIVE_LOCATION"
+    }
+  ],
+  "sources": [
+    {
+      "id": "gaza-contact",
+      "url": "https://www.lechegaza.com/contacto.html",
+      "supports": [
+        "plant.address"
+      ]
+    },
+    {
+      "id": "gaza-rdi",
+      "url": "https://www.lechegaza.com/I%2BD%2Bi.html",
+      "supports": [
+        "operations.gazacontrol"
+      ]
+    },
+    {
+      "id": "solmicro",
+      "url": "https://www.solmicro.com/clientes-erp/clientes-erp-solmicro/102277-leche-gaza-zamora",
+      "supports": [
+        "operations.erp"
+      ]
+    },
+    {
+      "id": "wau",
+      "url": "https://wautechnologies.com/casos-de-exito/",
+      "supports": [
+        "operations.wau"
+      ]
+    },
+    {
+      "id": "tetrapak-report",
+      "url": "https://www.elespanol.com/castilla-y-leon/region/zamora/20220224/escuela-internacional-industrias-lacteas-formacion-especializada-zamora/652685153_0.html",
+      "supports": [
+        "operations.tetrapak"
+      ]
+    },
+    {
+      "id": "esnova",
+      "url": "https://www.linkedin.com/posts/esnova_almac%C3%A9n-autom%C3%A1tico-fabricado-por-esnova-racks-activity-6778236573809987584-akRa",
+      "supports": [
+        "operations.asrs"
+      ]
+    },
+    {
+      "id": "veolia",
+      "url": "https://www.veolia.es/casos-exito/leche-gaza",
+      "supports": [
+        "operations.utilities"
+      ]
+    },
+    {
+      "id": "water-boe",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2025-18363&lang=es",
+      "supports": [
+        "water"
+      ]
+    },
+    {
+      "id": "president-2026",
+      "url": "https://www.benaventedigital.es/jose-sanchez-asume-la-presidencia-de-leche-gaza-con-el-reto-de-impulsar-nuevos-productos-y-consolidar-el-crecimiento/",
+      "supports": [
+        "leadership.JoseSanchez"
+      ]
+    },
+    {
+      "id": "manager-register",
+      "url": "https://www.empresia.es/empresa/leche-gaza/",
+      "supports": [
+        "leadership.SaulAlonso"
+      ]
+    },
+    {
+      "id": "marketing-2026",
+      "url": "https://enfoquezamora.com/2026/09/19/la-vaca-florita-el-cruce-de-tokio-y-el-atasco-interminable-del-gran-dia-de-fromago/",
+      "supports": [
+        "leadership.RobertoVizan"
+      ]
+    }
+  ]
+}
