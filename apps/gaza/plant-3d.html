@@ -66,6 +66,13 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
 .range{width:100%;margin:10px 0}.twin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .selection{min-height:98px;margin-top:10px;padding:10px;border-radius:10px;border:1px solid #293545;background:#0b1017;font-size:10px;color:#aab6c5}
 .source-boundary{margin-top:10px;padding:10px;border-left:3px solid #efc534;background:rgba(239,197,52,.05);font-size:9px;color:#b9c2ce}
+
+.weather-live-panel{position:absolute;right:12px;top:12px;z-index:4;width:min(292px,42%);padding:11px 12px;border:1px solid rgba(141,178,255,.28);border-radius:14px;background:linear-gradient(180deg,rgba(7,12,20,.92),rgba(8,14,23,.76));backdrop-filter:blur(12px);box-shadow:0 12px 30px rgba(0,0,0,.28);pointer-events:none}
+.weather-live-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.weather-live-head b{font-size:10px;letter-spacing:.08em;text-transform:uppercase}.weather-live-source{font-size:8px;color:#8db2ff;border:1px solid rgba(141,178,255,.22);border-radius:999px;padding:3px 6px}
+.weather-live-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.weather-live-metric{padding:7px 8px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(255,255,255,.035)}.weather-live-metric strong{display:block;font-size:13px;line-height:1.1}.weather-live-metric span{display:block;margin-top:3px;font-size:7px;color:#8f9cad;text-transform:uppercase;letter-spacing:.06em}
+.weather-live-foot{display:flex;justify-content:space-between;gap:8px;margin-top:7px;font-size:7px;color:#768397}.weather-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#7acb66;box-shadow:0 0 10px rgba(122,203,102,.7);margin-right:5px}.weather-live-dot.off{background:#7f8997;box-shadow:none}
+@media(max-width:760px){.weather-live-panel{width:calc(100% - 24px);max-width:none;top:auto;bottom:12px}.weather-live-grid{grid-template-columns:repeat(3,1fr)}}
+
 @media(max-width:980px){.webgl-layout{grid-template-columns:1fr}.webgl-shell,#twin3d{height:560px;min-height:560px}}
 @media(max-width:600px){.webgl-shell,#twin3d{height:470px;min-height:470px}.layer-list{grid-template-columns:1fr}.webgl-hud{max-width:92%}}
 </style>
@@ -117,6 +124,22 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
       <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles · Esnova + StorFast</span><span class="hudchip">AGUA · 380.390 m³/a · BOE 2025</span><span class="hudchip">TETRA PAK · proveedor equipo ref. pública</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span><span class="hudchip">EVIDENCIA · PÚBLICO / INFERIDO / SIMULADO</span><span class="hudchip" id="assetChip">GLB · leyendo manifiesto…</span><span class="hudchip" id="perfChip" hidden>GPU · midiendo…</span></div>
+
+      <div class="weather-live-panel" id="weatherLivePanel">
+        <div class="weather-live-head"><b><span class="weather-live-dot off" id="weatherLiveDot"></span>Microclima · planta</b><span class="weather-live-source">OPEN-METEO · 5 MIN</span></div>
+        <div class="weather-live-grid">
+          <div class="weather-live-metric"><strong id="wxTemp">-- °C</strong><span>temperatura</span></div>
+          <div class="weather-live-metric"><strong id="wxWind">-- km/h</strong><span>viento 10 m</span></div>
+          <div class="weather-live-metric"><strong id="wxGust">-- km/h</strong><span>racha</span></div>
+          <div class="weather-live-metric"><strong id="wxDir">--</strong><span>dirección</span></div>
+          <div class="weather-live-metric"><strong id="wxHum">-- %</strong><span>humedad</span></div>
+          <div class="weather-live-metric"><strong id="wxRain">-- mm</strong><span>precipitación</span></div>
+          <div class="weather-live-metric"><strong id="wxPressure">-- hPa</strong><span>presión</span></div>
+          <div class="weather-live-metric"><strong id="wxCloud">-- %</strong><span>nubosidad</span></div>
+          <div class="weather-live-metric"><strong id="wxVis">-- km</strong><span>visibilidad</span></div>
+        </div>
+        <div class="weather-live-foot"><span id="wxState">Esperando datos meteorológicos…</span><span id="wxTime">--:--</span></div>
+      </div>
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
@@ -128,6 +151,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
           <label><input type="checkbox" data-layer="utilities" checked> Utilities</label>
           <label><input type="checkbox" data-layer="vehicles" checked> Vehículos</label>
           <label><input type="checkbox" data-layer="roads" checked> Viales</label>
+          <label><input type="checkbox" data-layer="weather" checked> Meteo LIVE / viento</label>
           <label><input type="checkbox" data-layer="evidence" checked> Exterior inferido</label>
           <label><input type="checkbox" data-layer="workers" checked> Personal demo</label>
         </div>
@@ -277,7 +301,7 @@ if(canvas){
  scene.add(new THREE.HemisphereLight(0xb9d7ff,0x18210f,1.85));
  const sun=new THREE.DirectionalLight(0xffffff,2.75);sun.position.set(150,240,110);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=20;sun.shadow.camera.far=650;sun.shadow.camera.left=-190;sun.shadow.camera.right=190;sun.shadow.camera.top=165;sun.shadow.camera.bottom=-165;sun.shadow.bias=-0.0004;sun.shadow.normalBias=.04;scene.add(sun);
 
- const groups={farm:new THREE.Group(),plant:new THREE.Group(),process:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group(),evidence:new THREE.Group(),workers:new THREE.Group()};
+ const groups={farm:new THREE.Group(),plant:new THREE.Group(),process:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group(),weather:new THREE.Group(),evidence:new THREE.Group(),workers:new THREE.Group()};
  Object.values(groups).forEach(g=>scene.add(g));groups.farm.visible=false;
  const clickable=[];let assetRuntime={update:()=>{}};
  loadProductionAssets({groups,scene,clickable,onStatus:r=>{const chip=document.getElementById('assetChip');chip.textContent=r.state==='ready'?'GLB · '+r.loaded+' activos · fallback procedural':r.state==='degraded'?'GLB · '+r.loaded+' activos / '+r.failed+' error':'GLB · '+r.state;chip.title='Manifiesto local controlado · '+r.declared+' declarados · '+r.loaded+' cargados'}}).then(r=>{assetRuntime=r});
@@ -290,6 +314,28 @@ if(canvas){
  // 60,000 m² conceptual plot: 300 m x 200 m.
  const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,200),mat(0x172218));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
  const border=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(300,.3,200)),new THREE.LineBasicMaterial({color:0x52735d}));border.position.y=.2;scene.add(border);
+
+  // Architectural weather field: diagrammatic compass rings + animated wind vectors around the plant.
+  // Open-Meteo is a public weather-model/current-data source, not an on-site certified sensor.
+  const weatherField={dir:new THREE.Vector3(1,0,0),perp:new THREE.Vector3(0,0,1),windSpeed:0,streamers:[],live:false};
+  const weatherRingMat=new THREE.LineBasicMaterial({color:0x9ebcff,transparent:true,opacity:.32,depthWrite:false});
+  [72,101,132].forEach(radius=>{const pts=[];for(let i=0;i<128;i++){const a=i/128*Math.PI*2;pts.push(new THREE.Vector3(Math.cos(a)*radius,.36,Math.sin(a)*radius))}const loop=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts),weatherRingMat.clone());groups.weather.add(loop)});
+  for(let i=0;i<8;i++){const a=i*Math.PI/4,inner=62,outer=142;const pts=[new THREE.Vector3(Math.sin(a)*inner,.35,-Math.cos(a)*inner),new THREE.Vector3(Math.sin(a)*outer,.35,-Math.cos(a)*outer)];const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color:0x8ba7d0,transparent:true,opacity:.2,dashSize:5,gapSize:5}));line.computeLineDistances();groups.weather.add(line)}
+  addLabel(groups.weather,'N',0,2,-146,'#dce8ff',20);addLabel(groups.weather,'E',146,2,0,'#dce8ff',20);addLabel(groups.weather,'S',0,2,146,'#dce8ff',20);addLabel(groups.weather,'W',-146,2,0,'#dce8ff',20);
+  addLabel(groups.weather,'METEO FIELD · LIVE',0,4,-119,'#8db2ff',54);
+  for(let i=0;i<22;i++){const a=new THREE.ArrowHelper(new THREE.Vector3(1,0,0),new THREE.Vector3(),12,0x69d7ff,4.2,2.2);a.line.material.transparent=true;a.line.material.opacity=.58;a.cone.material.transparent=true;a.cone.material.opacity=.82;groups.weather.add(a);weatherField.streamers.push({arrow:a,u:(i/22),cross:-118+(i%11)*23.5,y:2.2+(i%3)*1.1})}
+  function windCompass(deg){if(!Number.isFinite(deg))return '--';const p=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];return p[Math.round((((deg%360)+360)%360)/22.5)%16]+' '+Math.round(deg)+'°'}
+  function updateWeatherField(w,live){
+    weatherField.live=!!live;weatherField.windSpeed=Number(w.wind||0);const from=Number(w.direction);const to=((Number.isFinite(from)?from:0)+180)%360,rad=to*Math.PI/180;weatherField.dir.set(Math.sin(rad),0,-Math.cos(rad)).normalize();weatherField.perp.set(-weatherField.dir.z,0,weatherField.dir.x).normalize();
+    weatherField.streamers.forEach((o,i)=>{o.arrow.visible=!!live;o.arrow.setDirection(weatherField.dir);o.arrow.setLength(9+Math.min(18,weatherField.windSpeed*.32)+(i%3),4.2,2.2)});
+    const q=id=>document.getElementById(id),n=(v,d=0)=>Number.isFinite(Number(v))?Number(v).toFixed(d):'--';
+    q('weatherLiveDot').classList.toggle('off',!live);q('wxTemp').textContent=n(w.temp,1)+' °C';q('wxWind').textContent=n(w.wind,1)+' km/h';q('wxGust').textContent=n(w.gust,1)+' km/h';q('wxDir').textContent=windCompass(Number(w.direction));q('wxHum').textContent=n(w.humidity,0)+' %';q('wxRain').textContent=n(w.precipitation,1)+' mm';q('wxPressure').textContent=n(w.pressure,0)+' hPa';q('wxCloud').textContent=n(w.cloud,0)+' %';q('wxVis').textContent=Number.isFinite(Number(w.visibility))?(Number(w.visibility)/1000).toFixed(1)+' km':'-- km';q('wxState').textContent=live?(w.label||'Meteo LIVE'):'Datos no frescos / no disponibles';q('wxTime').textContent=(w.observedAt||'').split('T')[1]?.slice(0,5)||'--:--';
+  }
+  function animateWeatherField(dt,s){
+    if(!weatherField.live||!groups.weather.visible)return;const adv=Math.max(5,weatherField.windSpeed*.75)*dt*Math.max(.5,s);
+    weatherField.streamers.forEach(o=>{o.u=(o.u+adv/310)%1;const along=-155+o.u*310;o.arrow.position.set(weatherField.dir.x*along+weatherField.perp.x*o.cross,o.y,weatherField.dir.z*along+weatherField.perp.z*o.cross)});
+  }
+
  const grid=new THREE.GridHelper(300,30,0x2f4d3a,0x203128);grid.position.y=.05;scene.add(grid);
 
  // Internal roads / yards.
@@ -318,7 +364,7 @@ if(canvas){
  for(const [x,z,rot] of [[-165,118,-Math.PI/2],[-55,126,Math.PI/2],[85,118,-Math.PI/2],[170,126,Math.PI/2]]){const arrow=new THREE.Mesh(new THREE.PlaneGeometry(7,3.4),laneWhite);arrow.rotation.x=-Math.PI/2;arrow.rotation.z=rot;arrow.position.set(x,.155,z);groups.roads.add(arrow)}
  addLabel(groups.roads,'N-122 · ZAMORA ↔ CORESES ↔ TORO',15,5,122,'#f4d7d7',54);
  addLabel(groups.roads,'ACCESO CAMPUS · CONTEXTO',-118,5,96,'#dbe7f5',42);
- window.__GAZA_ROAD_CONTEXT__={schemaVersion:3,refs:['N-122','A-11 / E-82','ZA-P-1303','ZA-711','ZA-710'],plant:[41.52355,-5.59993],localGeometry:'CONTEXTUAL_NOT_SURVEYED',gisSurface:'campus-gis.html',truckForwardAxis:'-X',truckHeading:'PATH_TANGENT',truckArticulation:'TRACTOR_TRAILER_SPLIT_TANGENT',wheelMotion:'DISTANCE_BASED'};
+ window.__GAZA_ROAD_CONTEXT__={schemaVersion:3,refs:['N-122','A-11 / E-82','ZA-P-1303','ZA-711','ZA-710'],plant:[41.52472,-5.59993],localGeometry:'CONTEXTUAL_NOT_SURVEYED',gisSurface:'campus-gis.html',truckForwardAxis:'-X',truckHeading:'PATH_TANGENT',truckArticulation:'TRACTOR_TRAILER_SPLIT_TANGENT',wheelMotion:'DISTANCE_BASED'};
 
  // Buildings: conceptual geometry totals ~11,800 m² footprint.
  const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
@@ -605,7 +651,7 @@ if(canvas){
    envSpeedFactor=Math.max(.58,1-envWeatherRisk*.11-envRoadRisk*.055);
    const chip=document.getElementById('envCouplingChip'),parts=[];parts.push(weatherLive?'METEO LIVE '+(w.label||''):'METEO sin live/fresco');parts.push(dgtLive?(hasRoute?'DGT CORREDOR '+Number(d.routeMatches||0)+' coincid.':'DGT PROX '+(d.count40||0)+' ≤40 km'):'DGT sin live/fresco');chip.textContent=parts.join(' · ')+' · factor '+envSpeedFactor.toFixed(2)+'*';chip.title=hasRoute?'Factor usa coincidencia geométrica DGT↔OSRM; no confirma afección oficial ni congestión.':'Fallback heurístico por proximidad; no equivale a congestión o ETA real.';
    document.getElementById('twinEta').textContent=Math.round(17/envSpeedFactor)+' min*';document.getElementById('milkTemp').textContent=weatherLive?(3.8+(Number(w.temp||15)-15)*.006).toFixed(1)+' °C':'3.8 °C';
-   rainPts.visible=!!(weatherLive&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));scene.fog.color.set(rainPts.visible?0x111b26:0x07101a);scene.background.set(rainPts.visible?0x111b26:0x07101a);sun.intensity=rainPts.visible?1.65:2.8;
+   rainPts.visible=!!(weatherLive&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));const cloud=Math.max(0,Math.min(100,Number(w.cloud||0)));scene.fog.color.set(rainPts.visible?0x111b26:cloud>70?0x0d1620:0x07101a);scene.background.set(rainPts.visible?0x111b26:cloud>70?0x0d1620:0x07101a);sun.intensity=rainPts.visible?1.55:Math.max(1.65,2.8-cloud*.009);updateWeatherField(w,weatherLive);
  }
  window.addEventListener('storage',e=>{if(e.key===ENV_KEY)applyEnvironment()});window.addEventListener('gaza-environment',e=>applyEnvironment(e.detail));
  const speed=document.getElementById('simSpeed');
@@ -632,7 +678,7 @@ if(canvas){
    laneAgents.forEach(a=>{const du=a.speed*dt*s*envSpeedFactor,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
    laneMoving=moving;document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;workers.forEach(w=>moveWorker(w,dt,s));document.getElementById('workerCount').textContent=workers.length+'/'+workers.length;
    updateProcessFlowTokens(phase,incident);
-   if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+seededRain()*20}rainGeo.attributes.position.needsUpdate=true}
+   if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3]-=weatherField.dir.x*dt*weatherField.windSpeed*.16*s;p[i*3+2]-=weatherField.dir.z*dt*weatherField.windSpeed*.16*s;p[i*3+1]-=dt*42*s;if(p[i*3+1]<1){p[i*3+1]=80+seededRain()*20;p[i*3]=-145+seededRain()*290;p[i*3+2]=-95+seededRain()*190}}rainGeo.attributes.position.needsUpdate=true}animateWeatherField(dt,s);
    farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
    // Inbound tanker and outbound trailers always orient to their direction of travel.
    placeTruckOnCurve(tanker,tankerCurve,phase);
@@ -643,8 +689,8 @@ if(canvas){
  controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;publishTwinState({simulation:{running,speed:Number(speed.value),phase:Number(phase.toFixed(4)),incident,flowState:incident?'RETENIDO':'NORMAL',laneMoving,laneAgents:laneAgents.length,workers:workers.length,asrsCycles},environment:{factor:Number(envSpeedFactor.toFixed(3)),weatherRisk:envWeatherRisk,roadRisk:envRoadRisk,weather:envState.weather||null,dgt:envState.dgt||null},assets:{state:window.__GAZA_ASSET_REGISTRY__?.state||'loading',loaded:window.__GAZA_ASSET_REGISTRY__?.loaded||0,failed:window.__GAZA_ASSET_REGISTRY__?.failed||0},render:stats,provenance:{public:true,inferred:true,simulated:true}});if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
  laneAgents.forEach(a=>moveLaneAgent(a,a.u));applyEnvironment();
  async function refreshWeather(){
-   try{const u='https://api.open-meteo.com/v1/forecast?latitude=41.52355&longitude=-5.59993&current=temperature_2m,weather_code,wind_speed_10m,precipitation&timezone=Europe%2FMadrid';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather '+r.status);const j=await r.json(),w=j.current||{};let risk=0;if(weatherCodeRain(w.weather_code)||Number(w.precipitation||0)>0)risk++;if(Number(w.wind_speed_10m||0)>=35)risk++;if(Number(w.wind_speed_10m||0)>=55||[65,82,95,96,99].includes(Number(w.weather_code)))risk++;const label={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',51:'Llovizna',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'}[w.weather_code]||('Código '+w.weather_code);const prev=readEnv(),next={...prev,weather:{live:true,temp:Number(w.temperature_2m),wind:Number(w.wind_speed_10m),precipitation:Number(w.precipitation||0),code:Number(w.weather_code),label,risk:Math.min(risk,3),observedAt:w.time||null,checkedAt:new Date().toISOString()},source:'GAZA Plant 3D',updatedAt:new Date().toISOString()};localStorage.setItem(ENV_KEY,JSON.stringify(next));applyEnvironment(next)}catch(_){applyEnvironment(readEnv())}}
- if(qaMode){const now=new Date().toISOString(),qaEnv={weather:{live:true,temp:17,wind:8,precipitation:0,code:1,label:'QA estable',risk:0,checkedAt:now},dgt:{live:true,count120:2,count40:1,nearestKm:18,risk:1,routeMatches:0,matchedRoutes:[],nearestRouteKm:null,routeRisk:0,corridorKm:1.5,checkedAt:now,note:'Fixture QA determinista'},source:'GAZA QA fixture',updatedAt:now};applyEnvironment(qaEnv)}else{refreshWeather();setInterval(refreshWeather,300000)}animate();
+   try{const u='https://api.open-meteo.com/v1/forecast?latitude=41.52472&longitude=-5.59993&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,cloud_cover,surface_pressure,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation&timezone=Europe%2FMadrid';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather '+r.status);const j=await r.json(),w=j.current||{};let risk=0;if(weatherCodeRain(w.weather_code)||Number(w.precipitation||0)>0)risk++;if(Number(w.wind_speed_10m||0)>=35)risk++;if(Number(w.wind_speed_10m||0)>=55||[65,82,95,96,99].includes(Number(w.weather_code)))risk++;const label={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',51:'Llovizna',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'}[w.weather_code]||('Código '+w.weather_code);const prev=readEnv(),next={...prev,weather:{live:true,temp:Number(w.temperature_2m),apparent:Number(w.apparent_temperature),humidity:Number(w.relative_humidity_2m),wind:Number(w.wind_speed_10m),direction:Number(w.wind_direction_10m),gust:Number(w.wind_gusts_10m),precipitation:Number(w.precipitation||0),pressure:Number(w.surface_pressure),cloud:Number(w.cloud_cover),visibility:Number(w.visibility),code:Number(w.weather_code),label,risk:Math.min(risk,3),observedAt:w.time||null,checkedAt:new Date().toISOString()},source:'GAZA Plant 3D',updatedAt:new Date().toISOString()};localStorage.setItem(ENV_KEY,JSON.stringify(next));applyEnvironment(next)}catch(_){applyEnvironment(readEnv())}}
+ if(qaMode){const now=new Date().toISOString(),qaEnv={weather:{live:true,temp:17,apparent:17,humidity:54,wind:18,direction:285,gust:31,precipitation:0,pressure:960,cloud:28,visibility:24000,code:1,label:'QA estable',risk:0,observedAt:now,checkedAt:now},dgt:{live:true,count120:2,count40:1,nearestKm:18,risk:1,routeMatches:0,matchedRoutes:[],nearestRouteKm:null,routeRisk:0,corridorKm:1.5,checkedAt:now,note:'Fixture QA determinista'},source:'GAZA QA fixture',updatedAt:now};applyEnvironment(qaEnv)}else{refreshWeather();setInterval(refreshWeather,300000)}animate();
 }
 </script>
 </body>
