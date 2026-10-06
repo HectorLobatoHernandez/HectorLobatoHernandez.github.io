@@ -20,7 +20,9 @@ const targets=[
   {name:'plant-process',url:'/plant-3d.html?camera=process&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
-  {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-roads',url:'/plant-3d.html?camera=roads&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
+  {name:'systems',url:'/systems.html?qa=1',width:1600,height:900,dsf:1},
   {name:'territory',url:'/territory.html?qa=1',width:1600,height:900,dsf:1},
   {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:390,height:844,dsf:2}
 ];
@@ -70,6 +72,27 @@ for(const target of targets){
     const twinStateOk=!!twinState&&twinState.schemaVersion===1&&['strategy','plant'].includes(twinState.surface)&&!!twinState.simulation&&!!twinState.environment&&!!twinState.provenance;
     checks.push({surface:name,check:'machine-readable-twin-state',ok:twinStateOk,metrics:twinState});
     if(!twinStateOk)errors.push({surface:name,type:'telemetry',text:'Twin telemetry snapshot unavailable or invalid'});
+  }
+
+  if(url.includes('plant-3d.html')){
+    const roads=await page.evaluate(()=>window.__GAZA_ROAD_CONTEXT__||null);
+    const roadsOk=!!roads&&roads.truckHeading==='PATH_TANGENT'&&roads.refs?.includes('N-122');
+    checks.push({surface:name,check:'road-context-and-truck-heading',ok:roadsOk,metrics:roads});
+    if(!roadsOk)errors.push({surface:name,type:'quality',text:'Plant road context / tangent truck heading unavailable'});
+  }
+
+  if(url.includes('farm-network.html')){
+    const farm=await page.evaluate(()=>({status:document.getElementById('netStatus')?.textContent||'',rows:document.querySelectorAll('#nodeRows tr').length,routes:document.querySelectorAll('#routes .route').length,copy:document.body.textContent.includes('SAT ROTE')&&document.body.textContent.includes('50 km')}));
+    const farmOk=farm.rows>=9&&farm.routes>=4&&farm.copy&&!farm.status.startsWith('ERROR');
+    checks.push({surface:name,check:'farm-network-boundary',ok:farmOk,metrics:farm});
+    if(!farmOk)errors.push({surface:name,type:'quality',text:'Farm network did not render expected evidence boundary'});
+  }
+
+  if(url.includes('systems.html')){
+    const systems=await page.evaluate(()=>({rows:document.querySelectorAll('#systemsRows tr').length,people:document.querySelectorAll('#people .person').length,copy:['GAZACONTROL','Solmicro','Tetra Pak','StorFast','380.390'].every(x=>document.body.textContent.includes(x))}));
+    const systemsOk=systems.rows>=6&&systems.people>=4&&systems.copy;
+    checks.push({surface:name,check:'systems-discovery-matrix',ok:systemsOk,metrics:systems});
+    if(!systemsOk)errors.push({surface:name,type:'quality',text:'Systems discovery matrix incomplete'});
   }
 
   if(url.includes('territory.html')){
