@@ -90,7 +90,7 @@ for(const target of targets){
 
   if(url.includes('campus-gis.html')){
     const gis=await page.evaluate(()=>({contract:window.__GAZA_GIS__||null,map:!!document.querySelector('.leaflet-container'),exportButton:!!document.getElementById('exportGeojson'),copy:document.body.textContent.includes('EPSG:25830')&&document.body.textContent.includes('Overpass')&&document.body.textContent.includes('OSRM')}));
-    const gisOk=gis.map&&gis.copy&&gis.exportButton&&gis.contract?.schemaVersion>=2&&gis.contract?.geometry==='OSM_RUNTIME'&&gis.contract?.routing==='OSRM_CALCULATED'&&gis.contract?.localAxes==='X_EAST_Z_NORTH'&&gis.contract?.engineeringCrs==='EPSG:25830';
+    const gisOk=gis.map&&gis.copy&&gis.exportButton&&gis.contract?.schemaVersion>=3&&gis.contract?.geometry==='OSM_RUNTIME'&&gis.contract?.routing==='OSRM_CALCULATED'&&gis.contract?.localAxes==='X_EAST_Z_NORTH'&&gis.contract?.engineeringCrs==='EPSG:25830'&&gis.contract?.factoryCandidatePolicy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT';
     checks.push({surface:name,check:'campus-gis-provenance',ok:gisOk,metrics:gis});
     if(!gisOk)errors.push({surface:name,type:'quality',text:'Campus GIS provenance/runtime contract missing'});
   }
