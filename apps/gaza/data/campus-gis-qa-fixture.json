@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "name": "GAZA campus GIS QA fixture",
+  "metricLocal": {
+    "origin": [41.52355, -5.59993],
+    "axes": "X_EAST_Z_NORTH",
+    "recommendedEngineeringCrs": "EPSG:25830"
+  },
+  "provenance": {
+    "classification": "QA_FIXTURE",
+    "note": "Deterministic local geometry for browser QA only. Not public/site evidence."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"kind":"road","sourceClass":"QA_FIXTURE","geometryPolicy":"QA_ONLY","tags":{"ref":"N-122","highway":"primary"}},
+      "geometry": {"type":"LineString","coordinates":[]},
+      "localXZ": [[-190,122],[-80,121],[20,120],[110,119],[190,118]]
+    },
+    {
+      "type": "Feature",
+      "properties": {"kind":"road","sourceClass":"QA_FIXTURE","geometryPolicy":"QA_ONLY","tags":{"highway":"service","name":"Campus access QA"}},
+      "geometry": {"type":"LineString","coordinates":[]},
+      "localXZ": [[-118,125],[-118,90],[-117,45],[-115,5],[-112,-70]]
+    },
+    {
+      "type": "Feature",
+      "properties": {"kind":"building","sourceClass":"QA_FIXTURE","geometryPolicy":"QA_ONLY","tags":{"building":"industrial","name":"QA process hall"}},
+      "geometry": {"type":"Polygon","coordinates":[]},
+      "localXZ": [[[-78,-48],[28,-48],[28,28],[-78,28],[-78,-48]]]
+    },
+    {
+      "type": "Feature",
+      "properties": {"kind":"factory_osm_candidate","sourceClass":"QA_FIXTURE","geometryPolicy":"QA_ONLY","tags":{"building":"industrial","name":"GAZA QA candidate"}},
+      "geometry": {"type":"Polygon","coordinates":[]},
+      "localXZ": [[[42,-45],[122,-45],[122,12],[42,12],[42,-45]]]
+    },
+    {
+      "type": "Feature",
+      "properties": {"kind":"industrial","sourceClass":"QA_FIXTURE","geometryPolicy":"QA_ONLY","tags":{"landuse":"industrial","name":"El Pinar QA"}},
+      "geometry": {"type":"Polygon","coordinates":[]},
+      "localXZ": [[[-215,-130],[210,-130],[210,165],[-215,165],[-215,-130]]]
+    }
+  ]
+}

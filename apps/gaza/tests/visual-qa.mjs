@@ -22,6 +22,7 @@ const targets=[
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-roads',url:'/plant-3d.html?camera=roads&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'campus-gis',url:'/campus-gis.html?qa=1',width:1600,height:900,dsf:1},
+  {name:'gis-3d',url:'/gis-3d-overlay.html?qa=1',width:1600,height:900,dsf:2},
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
   {name:'systems',url:'/systems.html?qa=1',width:1600,height:900,dsf:1},
   {name:'territory',url:'/territory.html?qa=1',width:1600,height:900,dsf:1},
@@ -97,6 +98,13 @@ for(const target of targets){
     const gisOk=gis.map&&gis.copy&&gis.exportButton&&gis.accessUi&&gis.contract?.schemaVersion>=4&&gis.contract?.geometry==='OSM_RUNTIME'&&gis.contract?.routing==='OSRM_CALCULATED'&&gis.contract?.localAxes==='X_EAST_Z_NORTH'&&gis.contract?.engineeringCrs==='EPSG:25830'&&gis.contract?.factoryCandidatePolicy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT'&&gis.contract?.accessPolicy==='NEAREST_OSM_ROAD_NOT_GATE'&&gis.contract?.hgvEnvelope?.outerRadiusM===12.5&&gis.contract?.hgvEnvelope?.innerRadiusM===5.3;
     checks.push({surface:name,check:'campus-gis-provenance',ok:gisOk,metrics:gis});
     if(!gisOk)errors.push({surface:name,type:'quality',text:'Campus GIS provenance/runtime contract missing'});
+  }
+
+  if(url.includes('gis-3d-overlay.html')){
+    const gis3d=await page.evaluate(()=>({lab:window.__GAZA_GIS_3D_LAB__||null,overlay:window.__GAZA_PUBLIC_GIS_3D__||null,render:window.__GAZA_GIS_3D_RENDER__||null,canvas:!!document.getElementById('gisCanvas'),copy:document.body.textContent.includes('NO AS-BUILT')&&document.body.textContent.includes('OSM público')}));
+    const gis3dOk=gis3d.canvas&&gis3d.copy&&gis3d.lab?.schemaVersion===1&&gis3d.lab?.authority==='OSM_PUBLIC_CONTEXT_NOT_AS_BUILT'&&gis3d.overlay?.state==='ready'&&gis3d.overlay?.mode==='QA_FIXTURE'&&gis3d.overlay?.roads>=2&&gis3d.overlay?.buildings>=2&&gis3d.overlay?.factoryCandidates>=1&&Number.isFinite(gis3d.render?.calls);
+    checks.push({surface:name,check:'gis-3d-alignment-lab',ok:gis3dOk,metrics:gis3d});
+    if(!gis3dOk)errors.push({surface:name,type:'quality',text:'GIS 3D alignment lab fixture/runtime contract invalid'});
   }
 
   if(url.includes('farm-network.html')){
