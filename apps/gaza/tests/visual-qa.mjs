@@ -112,9 +112,11 @@ for(const target of targets){
   if(url.includes('territory.html')){
     const territory=await page.evaluate(()=>({
       routeMetric:!!document.getElementById('dgtRouteMatches'),
-      routeCopy:document.body.textContent.includes('coincidencia geométrica')||document.body.textContent.includes('coincidencias corredor ruta')
+      routeCopy:document.body.textContent.includes('coincidencia geométrica')||document.body.textContent.includes('coincidencias corredor ruta'),
+      site:window.__GAZA_SITE_CONTEXT__||null,
+      correctedCopy:document.body.textContent.includes('ANCLA CORREGIDA')&&document.body.textContent.includes('41.52355')&&document.body.textContent.includes('-5.59993')
     }));
-    const territoryOk=territory.routeMetric&&territory.routeCopy;
+    const territoryOk=territory.routeMetric&&territory.routeCopy&&territory.correctedCopy&&territory.site?.plant?.lat===41.52355&&territory.site?.plant?.lon===-5.59993&&territory.site?.policy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT';
     checks.push({surface:name,check:'route-aware-dgt-ui',ok:territoryOk,metrics:territory});
     if(!territoryOk)errors.push({surface:name,type:'quality',text:'Territory route-aware DGT UI missing'});
   }
