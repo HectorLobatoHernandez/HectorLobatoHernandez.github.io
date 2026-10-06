@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "mode": "READ_ONLY_DISCOVERY",
+  "updatedAt": "2026-10-06",
+  "purpose": "Template to complete with Gaza/approved vendors. No row asserts an undocumented protocol.",
+  "rows": [
+    {
+      "source": "Solmicro ERP",
+      "authority": "ERP",
+      "entities": [
+        "production_order",
+        "sku",
+        "shipment"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "order_id",
+        "sku_id",
+        "shipment_id"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "source": "GAZACONTROL",
+      "authority": "production/logistics automation",
+      "entities": [
+        "process_batch",
+        "asset",
+        "alarm",
+        "quality_sample"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "batch_id",
+        "asset_id",
+        "alarm_id"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "source": "INTERGAZA",
+      "authority": "value-chain interconnection",
+      "entities": [
+        "collection_run",
+        "milk_lot",
+        "shipment"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "external_reference"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "source": "Tetra Pak",
+      "authority": "production equipment",
+      "entities": [
+        "asset",
+        "process_batch",
+        "alarm"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "equipment_id",
+        "batch_id"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "source": "Esnova / Signode StorFast",
+      "authority": "ASRS/WCS",
+      "entities": [
+        "pallet",
+        "asrs_task"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "pallet_id",
+        "task_id",
+        "location_id"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "source": "Veolia",
+      "authority": "utilities",
+      "entities": [
+        "utility_meter",
+        "asset",
+        "alarm"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "meter_id",
+        "asset_id"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "source": "Farm/TMS/GPS",
+      "authority": "collection fleet",
+      "entities": [
+        "farm",
+        "collection_run",
+        "vehicle",
+        "milk_lot"
+      ],
+      "interface": "DISCOVERY_REQUIRED",
+      "keyFields": [
+        "farm_id",
+        "run_id",
+        "vehicle_id",
+        "lot_id"
+      ],
+      "writes": "DISABLED"
+    }
+  ],
+  "correlationSpine": [
+    "farm_id",
+    "collection_run_id",
+    "milk_lot_id",
+    "production_order_id",
+    "batch_id",
+    "sku_id",
+    "pallet_id",
+    "asrs_task_id",
+    "dock_id",
+    "shipment_id"
+  ]
+}
