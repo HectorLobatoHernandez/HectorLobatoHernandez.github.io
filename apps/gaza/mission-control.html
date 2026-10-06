@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05090d">
+<title>GAZA Mission Control · Digital Twin</title>
+<style>
+:root{--bg:#05090d;--panel:#0b1219;--panel2:#0f1923;--line:#243443;--text:#eaf3fb;--muted:#8194a5;--blue:#4da3ff;--cyan:#61dad1;--green:#73c86c;--amber:#efc534;--red:#df625d}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+button,a{font:inherit}.shell{height:100vh;display:grid;grid-template-rows:58px minmax(0,1fr) 42px;background:radial-gradient(circle at 55% 0%,rgba(77,163,255,.07),transparent 34%),#05090d}
+.top{display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid var(--line);background:rgba(5,9,13,.94);z-index:5}.logo{width:102px;height:38px;object-fit:contain;background:#fff;border-radius:7px;padding:3px}.title{display:grid;gap:1px}.title b{font-size:12px;letter-spacing:.08em}.title span{font:700 8px ui-monospace,monospace;color:#6f8498}.live{display:flex;align-items:center;gap:6px;margin-left:8px;font:800 9px ui-monospace,monospace;color:#9ce095}.live i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}.top-kpis{display:flex;gap:7px;margin-left:auto}.top-kpi{min-width:92px;border-left:1px solid var(--line);padding-left:10px}.top-kpi span{display:block;font:700 7px ui-monospace,monospace;color:#64798d}.top-kpi b{display:block;font:800 10px ui-monospace,monospace;margin-top:3px}.top a{color:#a9c8ff;text-decoration:none;border:1px solid #2d4054;border-radius:7px;padding:7px 9px;font:800 8px ui-monospace,monospace}
+.main{min-height:0;display:grid;grid-template-columns:86px minmax(0,1fr) 296px}.rail{border-right:1px solid var(--line);background:#070c12;padding:9px 7px;display:flex;flex-direction:column;gap:7px;overflow:auto}.mode{border:1px solid transparent;background:transparent;color:#71869b;border-radius:10px;padding:9px 4px;min-height:62px;cursor:pointer;font-size:8px;font-weight:800;display:grid;place-items:center;gap:3px;text-align:center}.mode b{font-size:18px;line-height:1;color:#8da0b2}.mode:hover,.mode.on{background:#0f1a25;border-color:#2a3c50;color:#dbe9f7}.mode.on b{color:#69adff}.mode.presentation{margin-top:auto;border-color:rgba(239,197,52,.25);color:#d8c780}.stage{position:relative;min-width:0;background:#030609;overflow:hidden}.stage iframe{width:100%;height:100%;border:0;background:#071018;display:block;opacity:1;transition:opacity .22s ease;transform:translateZ(0)}.stage iframe.loading{opacity:.14}.stage-hud{position:absolute;top:10px;left:10px;right:10px;z-index:3;display:flex;align-items:flex-start;pointer-events:none}.scene-label{pointer-events:auto;min-width:230px;max-width:480px;border:1px solid rgba(128,159,192,.24);background:rgba(4,9,14,.84);backdrop-filter:blur(12px);border-radius:10px;padding:9px 11px}.scene-label small{display:block;font:800 7px ui-monospace,monospace;color:#6c8298;letter-spacing:.1em}.scene-label b{display:block;font-size:15px;margin-top:3px}.scene-label span{display:block;color:#8498ab;font-size:9px;margin-top:3px}.source-chip{margin-left:auto;border:1px solid rgba(97,218,209,.25);background:rgba(4,11,15,.84);border-radius:999px;padding:7px 10px;color:#92d9d3;font:800 8px ui-monospace,monospace}.corner-grid{position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(90deg,rgba(77,163,255,.06) 1px,transparent 1px),linear-gradient(rgba(77,163,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.45),transparent 24%);opacity:.35}.loading-bar{position:absolute;top:0;left:0;height:2px;width:0;background:var(--blue);box-shadow:0 0 15px var(--blue);z-index:6;transition:width .4s ease}.loading-bar.on{width:78%;animation:load 1.2s ease-in-out infinite}@keyframes load{0%{transform:translateX(-70%)}100%{transform:translateX(140%)}}
+.side{border-left:1px solid var(--line);background:#071019;padding:10px;overflow:auto}.card{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px;margin-bottom:9px}.card h3{margin:0 0 7px;font-size:11px}.card p{margin:5px 0;color:#91a3b4;font-size:9px;line-height:1.5}.matrix{display:grid;grid-template-columns:1fr 1fr;gap:6px}.metric{border:1px solid #263747;background:#0d1720;border-radius:8px;padding:8px;min-height:60px}.metric span{display:block;color:#657b90;font:700 7px ui-monospace,monospace}.metric b{display:block;font-size:15px;margin-top:6px}.metric small{color:#7f91a2;font-size:7px}.state-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #1c2935}.state-row:last-child{border-bottom:0}.state-row span{font-size:9px;color:#8fa1b3}.state-row b{font:800 8px ui-monospace,monospace}.ok{color:#92da8b}.calc{color:#85baff}.infer{color:#f0d477}.synthetic{color:#e59791}.bar{height:4px;background:#15222e;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .4s}.briefing{font-size:10px!important}.briefing strong{color:#cfe2f3}.eventlog{font:500 8px/1.7 ui-monospace,monospace;color:#7890a4;max-height:165px;overflow:auto}.eventlog b{color:#9fb6cc}.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.action{border:1px solid #2a3c4d;background:#101c27;color:#d9e6f2;border-radius:8px;padding:8px;font-size:8px;font-weight:800;cursor:pointer}.action.primary{border-color:#2f6db5;background:#12345b;color:#fff}.bottom{display:flex;align-items:center;gap:11px;padding:0 12px;border-top:1px solid var(--line);background:#070d13;color:#778b9f;font:700 8px ui-monospace,monospace;overflow:hidden}.bottom .spacer{flex:1}.legend{display:flex;gap:10px}.legend span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;background:#777}.legend .pub:before{background:var(--green)}.legend .cal:before{background:var(--blue)}.legend .inf:before{background:var(--amber)}.legend .syn:before{background:var(--red)}.pulse{animation:pulse 1.5s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media(max-width:1000px){.main{grid-template-columns:68px minmax(0,1fr)}.side{display:none}.top-kpi:nth-child(n+3){display:none}}@media(max-width:650px){.main{grid-template-columns:54px minmax(0,1fr)}.rail{padding:6px 4px}.mode{min-height:52px;font-size:0}.mode b{font-size:16px}.top-kpis{display:none}.title span{display:none}.stage-hud{left:6px;right:6px}.scene-label{min-width:0;max-width:74%}.bottom{font-size:7px}.legend{display:none}}
+@media(prefers-reduced-motion:reduce){.pulse,.loading-bar.on{animation:none}.stage iframe{transition:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top">
+  <img class="logo" src="assets/gaza-logo.svg" alt="GAZA">
+  <div class="title"><b>MISSION CONTROL · V15</b><span>DIGITAL TWIN / GIS / WEATHER / OPERATIONS</span></div>
+  <div class="live"><i></i> PRESENTATION RUNTIME</div>
+  <div class="top-kpis">
+    <div class="top-kpi"><span>VIEW</span><b id="topView">PLANT 3D</b></div>
+    <div class="top-kpi"><span>WEATHER</span><b id="topWeather">SYNCING</b></div>
+    <div class="top-kpi"><span>FLOW</span><b id="topFlow">NORMAL*</b></div>
+    <div class="top-kpi"><span>EVIDENCE</span><b>BOUNDARIES ON</b></div>
+  </div>
+  <a href="index.html">CONTROL TOWER ↗</a>
+</header>
+<div class="main">
+  <nav class="rail" aria-label="Mission Control views">
+    <button class="mode on" data-mode="plant"><b>▦</b><span>PLANT 3D</span></button>
+    <button class="mode" data-mode="strategy"><b>◆</b><span>STRATEGY</span></button>
+    <button class="mode" data-mode="gis"><b>⌗</b><span>GIS 3D</span></button>
+    <button class="mode" data-mode="territory"><b>⌖</b><span>TERRITORY</span></button>
+    <button class="mode" data-mode="campus"><b>⊞</b><span>CAMPUS GIS</span></button>
+    <button class="mode" data-mode="systems"><b>≋</b><span>SYSTEMS</span></button>
+    <button class="mode" data-mode="tower"><b>⌂</b><span>CONTROL</span></button>
+    <button class="mode presentation" id="tour"><b>▶</b><span>AUTO TOUR</span></button>
+  </nav>
+  <section class="stage">
+    <div class="loading-bar" id="loadingBar"></div>
+    <div class="corner-grid"></div>
+    <div class="stage-hud">
+      <div class="scene-label"><small id="sceneClass">ENGINEERING DIGITAL TWIN</small><b id="sceneTitle">Plant 3D · operational campus</b><span id="sceneDesc">ASRS · proceso · utilities · camiones · personal demo · clima espacial · GIS OSM</span></div>
+      <div class="source-chip" id="sourceChip">INFERRED + PUBLIC CONTEXT</div>
+    </div>
+    <iframe id="viewFrame" src="plant-3d.html?camera=exterior&debug=1" title="GAZA Plant 3D"></iframe>
+  </section>
+  <aside class="side">
+    <div class="card"><h3>SYSTEM PULSE</h3><div class="matrix">
+      <div class="metric"><span>TWIN STATE</span><b id="twinState">BOOT</b><small id="twinDetail">waiting child runtime</small></div>
+      <div class="metric"><span>WEATHER RISK</span><b id="weatherRisk">--</b><small>advisory / non-CFD</small></div>
+      <div class="metric"><span>ASRS CYCLES</span><b id="asrsCycles">--</b><small>demo telemetry</small></div>
+      <div class="metric"><span>GIS FEATURES</span><b id="gisFeatures">--</b><small>public OSM context</small></div>
+    </div><div class="bar"><i id="heartbeat"></i></div></div>
+    <div class="card"><h3>EVIDENCE MATRIX</h3>
+      <div class="state-row"><span>Public sources</span><b class="ok">ENABLED</b></div>
+      <div class="state-row"><span>Calculated routes / GIS</span><b class="calc">LABELLED</b></div>
+      <div class="state-row"><span>Plant geometry</span><b class="infer">INFERRED</b></div>
+      <div class="state-row"><span>Operational state</span><b class="synthetic">SYNTHETIC*</b></div>
+    </div>
+    <div class="card"><h3>BRIEFING</h3><p class="briefing" id="briefing"><strong>Plant 3D.</strong> Vista de ingeniería del campus con proceso, ASRS, viales, flota, personal demo y campo ambiental. La geometría interna no se presenta como as-built.</p></div>
+    <div class="card"><h3>MISSION LOG</h3><div class="eventlog" id="eventLog"></div></div>
+    <div class="card"><h3>PRESENTATION</h3><div class="actions"><button class="action primary" id="nextView">NEXT VIEW</button><button class="action" id="full">FULLSCREEN</button><button class="action" id="incident">INCIDENT*</button><button class="action" id="freeze">FREEZE</button></div><p>*Acción de demostración sobre runtimes sintéticos cuando está disponible; nunca control OT real.</p></div>
+  </aside>
+</div>
+<footer class="bottom">
+  <span>GAZA OPERATIONS INTELLIGENCE · CONCEPT DEMONSTRATOR</span>
+  <span class="spacer"></span>
+  <div class="legend"><span class="pub">PUBLIC</span><span class="cal">CALCULATED</span><span class="inf">INFERRED</span><span class="syn">SYNTHETIC</span></div>
+  <span id="clock">--:--:--</span>
+</footer>
+</div>
+<script>
+const params=new URLSearchParams(location.search);
+const qa=params.get('qa')==='1';
+const views={
+  plant:{title:'Plant 3D · operational campus',class:'ENGINEERING DIGITAL TWIN',desc:'ASRS · proceso · utilities · camiones · personal demo · clima espacial · GIS OSM',src:'plant-3d.html?camera=exterior&debug=1'+(qa?'&qa=1&freeze=1':''),source:'INFERRED + PUBLIC CONTEXT',brief:'<strong>Plant 3D.</strong> Vista de ingeniería del campus con proceso, ASRS, viales, flota, personal demo y campo ambiental. La geometría interna no se presenta como as-built.'},
+  strategy:{title:'Strategy Twin · warehouse operations',class:'OPERATIONS SIMULATION',desc:'order → gate → exception → optimisation → approval → load → dispatch',src:'game.html?camera=overview&debug=1'+(qa?'&qa=1&freeze=1':''),source:'SYNTHETIC OPERATIONS',brief:'<strong>Strategy Twin.</strong> Simulación operacional para explicar flujo, incidencias, priorización y decisión humana sin afirmar conexión productiva.'},
+  gis:{title:'GIS 3D · spatial alignment',class:'PUBLIC GEOSPATIAL CONTEXT',desc:'OSM roads · footprints · industrial land-use · corrected plant anchor',src:'gis-3d-overlay.html'+(qa?'?qa=1':''),source:'PUBLIC OSM CONTEXT',brief:'<strong>GIS 3D.</strong> Geometría pública transformada a coordenadas métricas locales. Sirve para alinear contexto; CAD/topografía autorizados prevalecen.'},
+  territory:{title:'Territory · routes + weather + DGT',class:'TERRITORIAL INTELLIGENCE',desc:'weather · road context · route-aware traffic · regional nodes',src:'territory.html'+(qa?'?qa=1':''),source:'PUBLIC + CALCULATED',brief:'<strong>Territorio.</strong> Capa regional de rutas, meteorología y tráfico. Las coincidencias viarias son contexto de decisión, no telemetría de flota GAZA.'},
+  campus:{title:'Campus GIS · access + HGV',class:'CAMPUS SPATIAL ANALYSIS',desc:'OSM roads · candidate access · HGV envelope · OSRM corridors',src:'campus-gis.html'+(qa?'?qa=1':''),source:'PUBLIC + CALCULATED',brief:'<strong>Campus GIS.</strong> Acceso candidato derivado de geometría OSM y chequeo HGV preliminar. La puerta real sigue pendiente de geometría autorizada.'},
+  systems:{title:'Systems · IT/OT discovery',class:'INTEGRATION ARCHITECTURE',desc:'GAZACONTROL · ASRS · ERP references · adapters · read-only gateway',src:'systems.html'+(qa?'?qa=1':''),source:'PUBLIC EVIDENCE + PROPOSAL',brief:'<strong>Sistemas.</strong> Matriz de evidencia y arquitectura de acoplamiento preparada para discovery. Escrituras deshabilitadas en esta fase.'},
+  tower:{title:'Operations Control Tower',class:'DECISION SUPPORT',desc:'orders · docks · pallets · incidents · human approval',src:'index.html',source:'SYNTHETIC MVP',brief:'<strong>Control Tower.</strong> MVP navegable con pedidos, muelles, pallets, incidencias y aprobación humana. Estado operativo sintético hasta acceso a sistemas reales.'}
+};
+const order=['plant','strategy','gis','territory','campus','systems','tower'];
+let current='plant',tourTimer=null,paused=false;
+const frame=document.getElementById('viewFrame'),log=document.getElementById('eventLog'),bar=document.getElementById('loadingBar');
+const stamp=()=>new Date().toLocaleTimeString('es-ES',{hour12:false});
+function addLog(msg){const d=document.createElement('div');d.innerHTML='<b>'+stamp()+'</b>  '+msg;log.prepend(d);while(log.children.length>8)log.removeChild(log.lastChild)}
+function selectMode(key){
+  const v=views[key];if(!v)return;current=key;
+  document.querySelectorAll('.mode[data-mode]').forEach(x=>x.classList.toggle('on',x.dataset.mode===key));
+  document.getElementById('sceneTitle').textContent=v.title;document.getElementById('sceneClass').textContent=v.class;document.getElementById('sceneDesc').textContent=v.desc;document.getElementById('sourceChip').textContent=v.source;document.getElementById('briefing').innerHTML=v.brief;document.getElementById('topView').textContent=key.toUpperCase();
+  frame.classList.add('loading');bar.classList.add('on');frame.src=v.src;frame.title=v.title;addLog('VIEW → '+key.toUpperCase()+' · '+v.source);
+}
+frame.addEventListener('load',()=>{frame.classList.remove('loading');bar.classList.remove('on');addLog('RUNTIME READY · '+current.toUpperCase())});
+document.querySelectorAll('.mode[data-mode]').forEach(b=>b.onclick=()=>selectMode(b.dataset.mode));
+function next(){const i=order.indexOf(current);selectMode(order[(i+1)%order.length])}
+document.getElementById('nextView').onclick=next;
+document.getElementById('tour').onclick=()=>{if(tourTimer){clearInterval(tourTimer);tourTimer=null;document.getElementById('tour').classList.remove('on');addLog('AUTO TOUR STOP')}else{document.getElementById('tour').classList.add('on');addLog('AUTO TOUR START · 11s cadence');next();tourTimer=setInterval(next,11000)}};
+document.getElementById('full').onclick=()=>document.documentElement.requestFullscreen?.();
+document.getElementById('freeze').onclick=()=>{paused=!paused;document.getElementById('freeze').textContent=paused?'UNFREEZE':'FREEZE';try{const w=frame.contentWindow;if(w?.document){const p=w.document.getElementById('twinPlay');if(p)p.click()}}catch(e){}addLog(paused?'CHILD SIM FREEZE REQUEST':'CHILD SIM RESUME REQUEST')};
+document.getElementById('incident').onclick=()=>{let sent=false;try{const d=frame.contentDocument;const b=d?.getElementById('twinIncident')||d?.getElementById('injectIncident')||d?.getElementById('runDemo');if(b){b.click();sent=true}}catch(e){}addLog(sent?'DEMO INCIDENT TRIGGERED':'INCIDENT CONTROL UNAVAILABLE IN '+current.toUpperCase())};
+function readChild(){
+  try{
+    const w=frame.contentWindow;if(!w)return;
+    const twin=w.__GAZA_TWIN_STATE__;const env=w.__GAZA_ENV_FIELD__;const gis=w.__GAZA_PUBLIC_GIS_3D__||w.__GAZA_GIS_3D_LAB__?.overlay;
+    if(twin){document.getElementById('twinState').textContent=twin.simulation?.flowState||'READY';document.getElementById('twinDetail').textContent=twin.surface||current;document.getElementById('asrsCycles').textContent=twin.simulation?.asrsCycles??'--';document.getElementById('topFlow').textContent=(twin.simulation?.flowState||'NORMAL')+'*';const risk=twin.environment?.weatherRisk??env?.metrics?.risk;document.getElementById('weatherRisk').textContent=Number.isFinite(risk)?String(risk):'--';const wt=twin.environment?.weather?.label||twin.environment?.weather?.temp;document.getElementById('topWeather').textContent=wt?String(wt).slice(0,14):'SYNCING'}
+    if(gis){document.getElementById('gisFeatures').textContent=gis.features??((gis.roads||0)+(gis.buildings||0));}
+  }catch(e){}
+  document.getElementById('heartbeat').style.width=(36+(Date.now()/40)%64)+'%';
+}
+setInterval(readChild,700);
+setInterval(()=>document.getElementById('clock').textContent=stamp(),500);
+window.__GAZA_MISSION_CONTROL__={schemaVersion:1,views:Object.keys(views),evidenceBoundary:true,writeControl:'DISABLED',mode:()=>current};
+addLog('MISSION CONTROL READY · evidence boundaries active');
+if(qa){document.getElementById('tour').disabled=true;}
+</script>
+</body></html>

@@ -22,6 +22,8 @@ const targets=[
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-roads',url:'/plant-3d.html?camera=roads&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-environment',url:'/plant-3d.html?camera=environment&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-gis',url:'/plant-3d.html?camera=gis&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'mission-control',url:'/mission-control.html?qa=1',width:1600,height:900,dsf:1},
   {name:'campus-gis',url:'/campus-gis.html?qa=1',width:1600,height:900,dsf:1},
   {name:'gis-3d',url:'/gis-3d-overlay.html?qa=1',width:1600,height:900,dsf:2},
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
@@ -103,6 +105,29 @@ for(const target of targets){
     const wxUiOk=wxUi.risk==='ATENCIÓN'&&wxUi.gust==='38 km/h'&&wxUi.visibility==='12.0 km'&&wxUi.rain==='35 %'&&wxUi.advice.includes('No actúa sobre seguridad ni control');
     checks.push({surface:name,check:'weather-ops-24h-ui',ok:wxUiOk,metrics:wxUi});
     if(!wxOpsOk||!wxUiOk)errors.push({surface:name,type:'quality',text:'24 h weather advisory contract/UI unavailable'});
+    const plantGis=await page.evaluate(()=>window.__GAZA_PUBLIC_GIS_3D__||null);
+    const plantGisOk=!!plantGis&&plantGis.state==='ready'&&plantGis.mode==='QA_FIXTURE'&&plantGis.roads>=2&&plantGis.buildings>=2&&plantGis.factoryCandidates>=1;
+    checks.push({surface:name,check:'plant-public-gis-overlay',ok:plantGisOk,metrics:plantGis});
+    if(!plantGisOk)errors.push({surface:name,type:'quality',text:'Plant 3D public GIS comparison layer unavailable'});
+  }
+
+  if(url.includes('mission-control.html')){
+    const mission=await page.evaluate(()=>({
+      contract:window.__GAZA_MISSION_CONTROL__||null,
+      iframe:document.getElementById('viewFrame')?.getAttribute('src')||'',
+      modes:document.querySelectorAll('.mode[data-mode]').length,
+      evidence:['PUBLIC','CALCULATED','INFERRED','SYNTHETIC'].every(x=>document.body.textContent.includes(x)),
+      title:document.getElementById('sceneTitle')?.textContent||''
+    }));
+    const missionOk=mission.contract?.schemaVersion===1&&mission.contract?.evidenceBoundary===true&&mission.contract?.writeControl==='DISABLED'&&mission.modes>=7&&mission.evidence&&mission.iframe.includes('plant-3d.html')&&mission.title.includes('Plant 3D');
+    checks.push({surface:name,check:'mission-control-orchestration',ok:missionOk,metrics:mission});
+    if(!missionOk)errors.push({surface:name,type:'quality',text:'Mission Control orchestration/evidence contract invalid'});
+    await page.locator('[data-mode="gis"]').click();
+    await page.waitForTimeout(900);
+    const switched=await page.evaluate(()=>({src:document.getElementById('viewFrame')?.getAttribute('src')||'',title:document.getElementById('sceneTitle')?.textContent||'',mode:window.__GAZA_MISSION_CONTROL__?.mode?.()}));
+    const switchOk=switched.src.includes('gis-3d-overlay.html')&&switched.title.includes('GIS 3D')&&switched.mode==='gis';
+    checks.push({surface:name,check:'mission-control-view-switch',ok:switchOk,metrics:switched});
+    if(!switchOk)errors.push({surface:name,type:'quality',text:'Mission Control failed to switch to GIS 3D'});
   }
 
   if(url.includes('campus-gis.html')){
