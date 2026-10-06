@@ -156,6 +156,23 @@
         "temperature logger API"
       ],
       "writes": "DISABLED"
+    },
+    {
+      "id": "farm-delpro-reference",
+      "authority": "Farm management / DelPro reference",
+      "status": "FARM_DISCOVERY_REQUIRED",
+      "confirmed": "Public DeLaval material documents DelPro use/training at SAT ROTE.",
+      "unknown": [
+        "current version",
+        "API availability",
+        "which data Gaza receives from member farms",
+        "consent/data-governance model"
+      ],
+      "preferredReadMethods": [
+        "farm-approved export/API",
+        "aggregated collection/quality feed"
+      ],
+      "writes": "DISABLED"
     }
   ],
   "serverBoundary": {
