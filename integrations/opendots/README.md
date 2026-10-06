@@ -62,6 +62,13 @@ Seeded Spaces:
 - Research & Strategy
 - System Operations
 
+RHB patch enabled during install:
+
+- read-only `rhb_system_health` tool available to Dots
+- TCP verification of OmniRoute, OpenClaw and NEXO CORE
+- HTTP verification of OmniRoute monitoring health
+- `npm run typecheck` after patching; installation stops if the bridge is incompatible with the current OpenDots source
+
 Seeded Dots:
 
 - RHB CORE
