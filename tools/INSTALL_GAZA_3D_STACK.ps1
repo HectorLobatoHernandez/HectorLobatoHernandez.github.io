@@ -43,6 +43,20 @@ function CodexHas([string]$Name) {
 function Refresh-Path {
   $env:Path = [Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [Environment]::GetEnvironmentVariable("Path","User")
 }
+function Have-Blender {
+  if (Have "blender") { return $true }
+  $roots = @(
+    (Join-Path $env:ProgramFiles "Blender Foundation"),
+    (Join-Path $env:LOCALAPPDATA "Programs\Blender Foundation")
+  )
+  foreach ($root in $roots) {
+    if (Test-Path $root) {
+      $exe = Get-ChildItem -Path $root -Filter "blender.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+      if ($exe) { return $true }
+    }
+  }
+  return $false
+}
 function Winget-Install([string]$Id) {
   if (!(Have "winget")) { throw "winget is required to auto-install missing prerequisites: $Id" }
   Write-Host "[INSTALL] $Id" -ForegroundColor Yellow
@@ -55,9 +69,11 @@ Step "Automatic prerequisites"
 if (!(Have "git")) { Winget-Install "Git.Git" }
 if (!(Have "node")) { Winget-Install "OpenJS.NodeJS.LTS" }
 if (!(Have "python")) { Winget-Install "Python.Python.3.12" }
-if (!(Have "blender")) {
+if (!(Have-Blender)) {
   try { Winget-Install "BlenderFoundation.Blender.LTS.4.5" }
   catch { Write-Warning ("Blender winget install did not complete: " + $_.Exception.Message + ". Install Blender 4.2+ manually and rerun.") }
+} else {
+  Write-Host "[OK] Blender already installed"
 }
 
 Step "Prerequisites"
@@ -90,11 +106,10 @@ Step "Mint Three.js Skills"
 Run "npx" @("--yes","skills","add","mintdotgg/mint-threejs-skills","-a","codex","-g","-y")
 
 Step "Three.js DevTools MCP -> OpenClaw"
-if (!(OpenClawHas "threejs-devtools")) {
-  Run "openclaw" @("mcp","add","threejs-devtools","--command","npx","--arg","-y","--arg","threejs-devtools-mcp")
-} else {
-  Write-Host "[OK] threejs-devtools already configured"
-}
+# Use mcp set so saving the definition never depends on a cold npx startup.
+# The package can take longer than OpenClaw's 5 s default on first launch.
+$threeConfig = '{"command":"npx","args":["-y","threejs-devtools-mcp"],"connectionTimeoutMs":30000,"requestTimeoutMs":60000}'
+Run "openclaw" @("mcp","set","threejs-devtools",$threeConfig)
 Run "openclaw" @("mcp","doctor","threejs-devtools","--probe") -AllowFail
 
 Step "Blender MCP gateway"
