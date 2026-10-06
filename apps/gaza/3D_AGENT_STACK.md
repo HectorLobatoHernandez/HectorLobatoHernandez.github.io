@@ -94,3 +94,37 @@ The GAZA wordmark used in the prototype is a referential in-app reconstruction f
 - Add interior packaging line, stainless piping, conveyors, pallet flow and ASRS rack detail.
 - Add LODs, frustum/distance culling and compressed textures.
 - Add deterministic visual-regression cameras.
+
+
+## Bootstrap implemented — 2026-10-06
+
+The repository now includes an idempotent Windows bootstrap and verifier:
+
+```powershell
+cd "$env:USERPROFILE\Desktop\HectorLobatoHernandez.github.io"
+powershell -ExecutionPolicy Bypass -File .\tools\INSTALL_GAZA_3D_STACK.ps1
+powershell -ExecutionPolicy Bypass -File .\tools\VERIFY_GAZA_3D_STACK.ps1
+powershell -ExecutionPolicy Bypass -File .\tools\START_GAZA_3D_DEV.ps1
+```
+
+Use `-MintLogin` on the installer only when an interactive Mint OAuth/account login is desired. Mint is an optional development-time asset service; the browser runtime must not depend on a paid Mint session.
+
+The bootstrap installs/copies the curated GAZA skills, Mint Three.js Skills, registers Three.js DevTools MCP in OpenClaw, installs the Blender MCP gateway, prepares the Blender addon package when the release provides it, registers Blender MCP, registers Mint MCP for Codex/OpenClaw, and installs the local Playwright/Chromium QA harness.
+
+### Hard version gates
+
+- Node.js 22+ for the current Three.js DevTools MCP build.
+- Python 3.10+ for Blender MCP gateway.
+- Blender 4.2+ / 5.x for the selected Blender MCP implementation.
+
+### Local QA
+
+From `apps/gaza`:
+
+```powershell
+npm run dev
+# another terminal
+npm run qa
+```
+
+QA captures Strategy Twin, Plant 3D, Territory and a 390x844 mobile Strategy Twin screenshot into `.qa/` and fails on page/console errors.
