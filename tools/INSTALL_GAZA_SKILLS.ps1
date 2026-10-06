@@ -6,6 +6,7 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $Sources = @(
   "skills\gaza-strategy-digital-twin",
+  "skills\gaza-geospatial-digital-twin",
   "skills\vendor\anthropic\frontend-design",
   "skills\vendor\mengto\video-to-superprompt",
   "skills\vendor\davila\3d-web-experience",
