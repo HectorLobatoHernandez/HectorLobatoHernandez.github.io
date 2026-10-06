@@ -5,7 +5,8 @@ param(
     [string]$OmniRouteApiKey = "omniroute-local",
     [switch]$ConfigureIntelligence,
     [switch]$StartAfterInstall,
-    [switch]$SeedAfterStart
+    [switch]$SeedAfterStart,
+    [switch]$EnableComputers
 )
 
 $ErrorActionPreference = "Stop"
@@ -115,6 +116,20 @@ try {
 
     Write-Host "Configured .env for OmniRoute: $OmniRouteBaseUrl"
     Write-Host "Model: $OmniRouteModel"
+
+    if ($EnableComputers) {
+        Write-Host "Enabling isolated per-Dot computers..."
+        $integrationRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+        $computerScript = Join-Path $integrationRoot "ENABLE_RHB_DOT_COMPUTERS.ps1"
+        $temporaryComputerScript = $null
+        if (-not (Test-Path $computerScript)) {
+            $temporaryComputerScript = Join-Path $env:TEMP "ENABLE_RHB_DOT_COMPUTERS.ps1"
+            Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io/integration/opendots-rhb/integrations/opendots/ENABLE_RHB_DOT_COMPUTERS.ps1" -OutFile $temporaryComputerScript
+            $computerScript = $temporaryComputerScript
+        }
+        & $computerScript -InstallDir $InstallDir
+        if ($temporaryComputerScript -and (Test-Path $temporaryComputerScript)) { Remove-Item $temporaryComputerScript -Force }
+    }
 
     # Validate the OpenAI-compatible endpoint. A non-empty API key is required by OpenDots;
     # OmniRoute may ignore this value or require its own token.
