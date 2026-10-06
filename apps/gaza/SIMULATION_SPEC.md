@@ -85,6 +85,14 @@ Implemented in the 2026-10-06 fidelity pass:
 - deterministic `?camera=<preset>&freeze=1` views for screenshot QA;
 - Playwright high-DPI checks and frozen multi-camera captures for Strategy/Plant/Territory/mobile;
 - improved GAZA branding texture path, evidence legend, industrial roof/pipe/dock detail, PPE workforce and correct tanker geometry;
-- controlled `assets/3d/manifest.json` boundary for future local GLB assets.
+- controlled `assets/3d/manifest.json` boundary for future local GLB assets;
+- manifest-driven GLB runtime loader with license/provenance validation, target groups, selection metadata and AnimationMixer playback;
+- machine-readable `window.__GAZA_TWIN_STATE__` snapshots and `gaza-twin-state` events for agent/devtool inspection;
+- deterministic `qa=1` environment fixtures and GitHub Actions visual QA;
+- conservative WebGL budgets for draw calls, triangles, geometries and textures;
+- dedicated Strategy + Plant process cameras;
+- synthetic process/CIP/pasteurisation/packaging/conveyor/palletising/wrapping layer and visible product-flow state;
+- instanced ASRS occupancy/racks and repeated exterior/process geometry to reduce draw-call growth;
+- richer inferred exterior context (parking, lighting and landscaping), still explicitly non-surveyed.
 
-Still pending for higher fidelity: authorised/as-built geometry, calibrated vehicle kinematics, real WMS/ASRS task feeds, vendored/validated rigged GLB workforce and vehicles, and review of the generated screenshot baselines on the target Windows/GPU environment.
+Still pending for higher fidelity: authorised/as-built geometry, calibrated vehicle kinematics, real WMS/MES/ASRS task feeds, first vendored/validated rigged GLB workforce and vehicles, Blender-authored LOD assets, and review of the generated screenshot baselines on the target Windows/GPU environment.
