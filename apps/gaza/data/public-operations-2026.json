@@ -58,8 +58,8 @@
     {
       "id": "erp",
       "name": "Solmicro ERP reference",
-      "status": "CONFIRMED_CUSTOMER_REFERENCE",
-      "detail": "Solmicro publicly lists Leche Gaza as an ERP customer.",
+      "status": "PUBLIC_CUSTOMER_REFERENCE_CURRENTNESS_UNVERIFIED",
+      "detail": "Solmicro publicly lists Leche Gaza as an ERP customer; public evidence does not prove which ERP/product/version is currently running in 2026.",
       "softwareVersion": "UNKNOWN",
       "modules": "UNKNOWN"
     },
