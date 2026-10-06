@@ -86,6 +86,10 @@ for(const target of targets){
     const roadsOk=!!roads&&roads.schemaVersion>=2&&roads.truckHeading==='PATH_TANGENT'&&roads.truckArticulation==='TRACTOR_TRAILER_SPLIT_TANGENT'&&roads.wheelMotion==='DISTANCE_BASED'&&roads.refs?.includes('N-122')&&roads.gisSurface==='campus-gis.html';
     checks.push({surface:name,check:'road-context-and-truck-heading',ok:roadsOk,metrics:roads});
     if(!roadsOk)errors.push({surface:name,type:'quality',text:'Plant road context / tangent truck heading unavailable'});
+    const weather=await page.evaluate(()=>({panel:!!document.getElementById('weatherLivePanel'),layer:!!document.querySelector('[data-layer="weather"]'),temp:document.getElementById('wxTemp')?.textContent||'',wind:document.getElementById('wxWind')?.textContent||'',gust:document.getElementById('wxGust')?.textContent||'',dir:document.getElementById('wxDir')?.textContent||'',state:window.__GAZA_TWIN_STATE__?.environment?.weather||null}));
+    const weatherOk=weather.panel&&weather.layer&&/17\.0 °C/.test(weather.temp)&&/18\.0 km\/h/.test(weather.wind)&&/31\.0 km\/h/.test(weather.gust)&&weather.dir.includes('285°')&&weather.state?.sourceType==='PUBLIC_WEATHER_MODEL'&&weather.state?.sensor===false&&weather.state?.fieldModel==='UNIFORM_10M_REFERENCE'&&weather.state?.coordinates?.[0]===41.52472&&weather.state?.coordinates?.[1]===-5.59993;
+    checks.push({surface:name,check:'live-weather-field-contract',ok:weatherOk,metrics:weather});
+    if(!weatherOk)errors.push({surface:name,type:'quality',text:'Plant weather field / provenance contract unavailable'});
   }
 
   if(url.includes('campus-gis.html')){
