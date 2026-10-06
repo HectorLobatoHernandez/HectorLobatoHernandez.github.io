@@ -13,6 +13,12 @@
     precipitationProbability:{attention:70}
   };
   const LEVELS=['NORMAL','ATENCIÓN','ALTO','SEVERO'];
+  const ACTIVITY_RULES={
+    hgv:{label:'Maniobra HGV',gustKmh:[35,50,70],visibilityM:[5000,2000,1000],precipitationMmH:[2.5,7.5,15],stormLevel:2},
+    docks:{label:'Carga / muelles',gustKmh:[45,60,75],visibilityM:[3000,1500,800],precipitationMmH:[5,10,20],stormLevel:2},
+    outdoor:{label:'Personal exterior',gustKmh:[35,50,70],visibilityM:[5000,2000,1000],precipitationMmH:[5,10,20],stormLevel:2},
+    access:{label:'Accesos viarios',gustKmh:[50,65,80],visibilityM:[5000,2000,1000],precipitationMmH:[2.5,7.5,15],stormLevel:2}
+  };
 
   function num(v,fallback=null){const n=Number(v);return Number.isFinite(n)?n:fallback}
   function weatherText(code){return LABELS[Number(code)]||('Código '+code)}
@@ -47,6 +53,21 @@
     return {level,label:levelLabel(level),reasons,basis:'PROJECT_ADVISORY_THRESHOLDS_NOT_SAFETY_CONTROL'};
   }
 
+  function assessActivity(metrics={},rule={}){
+    const gust=num(metrics.gust,0),visibility=num(metrics.visibility,999999),rain=num(metrics.precipitation,0),code=num(metrics.code,0);
+    let level=0;const reasons=[];const raise=(n,msg)=>{level=Math.max(level,n);if(msg&&!reasons.includes(msg))reasons.push(msg)};
+    const g=rule.gustKmh||[35,50,70],v=rule.visibilityM||[5000,2000,1000],p=rule.precipitationMmH||[2.5,7.5,15];
+    if(STORM_CODES.has(code))raise(code===99?3:(rule.stormLevel||2),'Tormenta');
+    if(gust>=g[2])raise(3,'racha ≥ '+g[2]+' km/h');else if(gust>=g[1])raise(2,'racha ≥ '+g[1]+' km/h');else if(gust>=g[0])raise(1,'racha ≥ '+g[0]+' km/h');
+    if(visibility<v[2])raise(3,'visibilidad < '+(v[2]/1000).toFixed(v[2]<1000?1:0)+' km');else if(visibility<v[1])raise(2,'visibilidad < '+(v[1]/1000).toFixed(v[1]<1000?1:0)+' km');else if(visibility<v[0])raise(1,'visibilidad < '+(v[0]/1000).toFixed(v[0]<1000?1:0)+' km');
+    if(rain>=p[2])raise(3,'precipitación ≥ '+p[2]+' mm/h');else if(rain>=p[1])raise(2,'precipitación ≥ '+p[1]+' mm/h');else if(rain>=p[0])raise(1,'precipitación ≥ '+p[0]+' mm/h');
+    return {level,label:levelLabel(level),reasons,activity:rule.label||'Operación',advisoryOnly:true};
+  }
+
+  function activityMatrix(metrics={}){
+    const out={};Object.entries(ACTIVITY_RULES).forEach(([key,rule])=>{out[key]=assessActivity(metrics,rule)});return out;
+  }
+
   function hourlyPoint(hourly,i){
     const p={
       time:hourly.time?.[i]||null,
@@ -60,7 +81,7 @@
       gust:num(hourly.wind_gusts_10m?.[i])
     };
     const a=assess(p);
-    return {...p,label:weatherText(p.code),risk:a.level,riskLabel:a.label,reasons:a.reasons};
+    return {...p,label:weatherText(p.code),risk:a.level,riskLabel:a.label,reasons:a.reasons,activities:activityMatrix(p)};
   }
 
   function summarizeHourly(hourly={},currentTime=null){
@@ -82,6 +103,16 @@
       p.reasons.forEach(x=>{if(!reasons.includes(x))reasons.push(x)});
     });
     const sampleIdx=[0,4,8,12,16,20].filter(i=>i<next.length);
+    const activityRisk={};
+    Object.keys(ACTIVITY_RULES).forEach(key=>{
+      let peak={level:0,label:'NORMAL',worstAt:null,reasons:[]};
+      next.forEach(p=>{const a=p.activities?.[key];if(a&&a.level>peak.level)peak={level:a.level,label:a.label,worstAt:p.time,reasons:[...a.reasons]};else if(a&&a.level===peak.level&&a.level>0)a.reasons.forEach(x=>{if(!peak.reasons.includes(x))peak.reasons.push(x)})});
+      activityRisk[key]={...peak,activity:ACTIVITY_RULES[key].label};
+    });
+    const peakIndex=Math.max(0,next.findIndex(p=>p.risk===risk));
+    let ws=peakIndex,we=peakIndex;
+    while(ws>0&&next[ws-1].risk===risk)ws--;while(we<next.length-1&&next[we+1].risk===risk)we++;
+    const worstWindow={start:next[ws]?.time||worstAt,end:next[we]?.time||worstAt,risk,riskLabel:levelLabel(risk)};
     return {
       horizonHours:24,
       risk,
@@ -92,6 +123,8 @@
       minVisibilityM:Number.isFinite(minVisibility)?Math.round(minVisibility):null,
       maxPrecipMm:Number(maxPrecip.toFixed(1)),
       maxPrecipProbability:Math.round(maxProb),
+      worstWindow,
+      activityRisk,
       slots:sampleIdx.map(i=>next[i]),
       basis:'PROJECT_ADVISORY_THRESHOLDS_NOT_SAFETY_CONTROL'
     };
@@ -139,5 +172,5 @@
     return normalize(await response.json());
   }
 
-  global.GAZAWeatherOps={schemaVersion:1,thresholds:THRESHOLDS,weatherText,assess,summarizeHourly,normalize,url,fetchWeather,levelLabel};
+  global.GAZAWeatherOps={schemaVersion:2,thresholds:THRESHOLDS,activityRules:ACTIVITY_RULES,weatherText,assess,assessActivity,activityMatrix,summarizeHourly,normalize,url,fetchWeather,levelLabel};
 })(window);
