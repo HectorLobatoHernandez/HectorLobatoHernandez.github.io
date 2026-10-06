@@ -4,7 +4,8 @@ param(
     [string]$OmniRouteModel = "auto/best-coding",
     [string]$OmniRouteApiKey = "omniroute-local",
     [switch]$ConfigureIntelligence,
-    [switch]$StartAfterInstall
+    [switch]$StartAfterInstall,
+    [switch]$SeedAfterStart
 )
 
 $ErrorActionPreference = "Stop"
@@ -79,6 +80,21 @@ try {
     Write-Host "Installing exact npm dependencies..."
     npm ci
 
+    Write-Host "Applying RHB STUDIO OpenDots bridge..."
+    $integrationRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+    $patchScript = Join-Path $integrationRoot "PATCH_RHB_OPENDOTS.ps1"
+    $temporaryPatch = $null
+    if (-not (Test-Path $patchScript)) {
+        $temporaryPatch = Join-Path $env:TEMP "PATCH_RHB_OPENDOTS.ps1"
+        Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io/integration/opendots-rhb/integrations/opendots/PATCH_RHB_OPENDOTS.ps1" -OutFile $temporaryPatch
+        $patchScript = $temporaryPatch
+    }
+    & $patchScript -InstallDir $InstallDir
+    if ($temporaryPatch -and (Test-Path $temporaryPatch)) { Remove-Item $temporaryPatch -Force }
+
+    Write-Host "Type-checking patched OpenDots..."
+    npm run typecheck
+
     $envPath = Join-Path $InstallDir ".env"
     if (-not (Test-Path $envPath)) {
         Copy-Item ".env.example" $envPath
@@ -150,6 +166,21 @@ try {
 
         if ($ready) {
             Write-Host "OpenDots API ready on http://127.0.0.1:4310"
+
+            if ($SeedAfterStart) {
+                Write-Host "Seeding RHB/GAZA Spaces and Dots..."
+                $integrationRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+                $seedScript = Join-Path $integrationRoot "SEED_RHB_DOTS.ps1"
+                $temporarySeed = $null
+                if (-not (Test-Path $seedScript)) {
+                    $temporarySeed = Join-Path $env:TEMP "SEED_RHB_DOTS.ps1"
+                    Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io/integration/opendots-rhb/integrations/opendots/SEED_RHB_DOTS.ps1" -OutFile $temporarySeed
+                    $seedScript = $temporarySeed
+                }
+                & $seedScript
+                if ($temporarySeed -and (Test-Path $temporarySeed)) { Remove-Item $temporarySeed -Force }
+            }
+
             Start-Process "http://127.0.0.1:5173"
         } else {
             Write-Warning "OpenDots did not become ready within the startup probe window. Inspect the opened PowerShell window."
