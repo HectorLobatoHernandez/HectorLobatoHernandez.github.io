@@ -10,16 +10,16 @@ await fs.mkdir(out,{recursive:true});
 const browser=await chromium.launch({headless:!headed});
 const errors=[],checks=[];
 const targets=[
-  {name:'strategy',url:'/game.html?camera=overview&freeze=1',width:1600,height:900,dsf:2},
-  {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1',width:1600,height:900,dsf:2},
-  {name:'strategy-asrs',url:'/game.html?camera=asrs&freeze=1',width:1600,height:900,dsf:2},
-  {name:'strategy-docks',url:'/game.html?camera=dock&freeze=1',width:1600,height:900,dsf:2},
-  {name:'plant',url:'/plant-3d.html?camera=exterior&freeze=1',width:1600,height:900,dsf:2},
-  {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1',width:1600,height:900,dsf:2},
-  {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1',width:1600,height:900,dsf:2},
-  {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1',width:1600,height:900,dsf:2},
+  {name:'strategy',url:'/game.html?camera=overview&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'strategy-asrs',url:'/game.html?camera=asrs&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'strategy-docks',url:'/game.html?camera=dock&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'plant',url:'/plant-3d.html?camera=exterior&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1&debug=1',width:1600,height:900,dsf:2},
   {name:'territory',url:'/territory.html',width:1600,height:900,dsf:1},
-  {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1',width:390,height:844,dsf:2}
+  {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1',width:390,height:844,dsf:2}
 ];
 
 for(const target of targets){
@@ -47,6 +47,11 @@ for(const target of targets){
     const logoOk=logo.complete&&logo.naturalWidth>0&&logo.naturalHeight>0;
     checks.push({surface:name,check:'brand-svg-load',ok:logoOk,metrics:logo});
     if(!logoOk)errors.push({surface:name,type:'asset',text:'GAZA SVG did not load: '+JSON.stringify(logo)});
+
+    const renderStats=await page.evaluate(()=>window.__GAZA_RENDER_STATS__||null);
+    const statsOk=!!renderStats&&Number.isFinite(renderStats.calls)&&Number.isFinite(renderStats.triangles);
+    checks.push({surface:name,check:'webgl-render-stats',ok:statsOk,metrics:renderStats});
+    if(!statsOk)errors.push({surface:name,type:'quality',text:'WebGL render telemetry unavailable'});
   }
 
   await page.waitForTimeout(250);
