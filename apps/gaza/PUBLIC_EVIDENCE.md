@@ -80,3 +80,13 @@ To replace the functional 3D model with an as-built twin we need at least one au
 - `territory.html` publishes a same-origin environment state containing Open-Meteo observations and DGT incidents filtered by distance to Coreses.
 - DGT proximity is **not** treated as route congestion. The 3D/strategy twins convert fresh weather/DGT context into a clearly labelled heuristic simulation factor only.
 - Freshness guards: weather state expires after 15 minutes; DGT state after 5 minutes in the twins. Stale data is not displayed as live.
+
+
+## Evidence expansion — 2026-10-06 evening pass
+- **INTERGAZA** is an official 2022 Industria Conectada project for interconnecting Leche Gaza's value chain with its environment. The public grant resolution supports the project and budget, but does not identify the deployed software product, API, database or protocol.
+- **2026 operating reference:** a February 2026 interview reports approximately 150,000 L/day cow milk and 6,000–14,000 L/day sheep milk, with 55M L/year cow milk and 3M L/year sheep milk commercialized. Treat these as public operating references, not live telemetry.
+- **Farm-count discrepancy is preserved:** the corporate website says 80+ own farms; the 2026 interview says 70 shareholder/member farms. The twin must show source/date context rather than silently choosing one.
+- **SAT ROTE** is a publicly documented Gaza-linked dairy farm in the Toro area. Public DeLaval material documents DelPro management-software activity at SAT ROTE. This is evidence for a farm-level digital-management example, not evidence that DelPro is Gaza's central ERP/MES.
+- **Solmicro:** current Zucchetti/Solmicro public customer material lists Leche Gaza among ERP customers. This supports a Solmicro ERP customer relationship, but does not establish the exact current product/version/modules/interfaces at Coreses.
+- **Road signage:** a public exterior photograph shows a 20 km/h sign at/near the Gaza access. The 3D sign can therefore be labelled public-reference, but its exact reconstructed coordinate remains contextual until georeferenced evidence or survey is available.
+- **Truck heading:** vehicle local forward axis is explicitly declared and aligned to road tangent by quaternion. Truck routes remain synthetic/contextual until yard/access geometry is surveyed.
