@@ -82,10 +82,26 @@ foreach ($flag in @("--listen","--ws-auth","--ws-token-file")) {
 }
 Write-Host "Codex app-server WebSocket auth flags: OK" -ForegroundColor Green
 
-$loginStatus = (& codex login status 2>&1 | Out-String).Trim()
+$prevNative = $PSNativeCommandUseErrorActionPreference
+try {
+    if ($null -ne $PSNativeCommandUseErrorActionPreference) {
+        $PSNativeCommandUseErrorActionPreference = $false
+    }
+    $loginStatus = (& codex login status 2>&1 | Out-String).Trim()
+    $loginExit = $LASTEXITCODE
+} finally {
+    if ($null -ne $prevNative) {
+        $PSNativeCommandUseErrorActionPreference = $prevNative
+    }
+}
+
 Write-Host "Codex login status:"
 Write-Host $loginStatus
-if ($LASTEXITCODE -ne 0 -or $loginStatus -match "not logged|not signed|unauth|login required") {
+
+$loggedIn = ($loginStatus -match "Logged in using ChatGPT|logged in|signed in") -and
+            ($loginStatus -notmatch "not logged|not signed|unauth|login required")
+
+if (-not $loggedIn -and $loginExit -ne 0) {
     Write-Host ""
     Write-Host "Codex is not authenticated. Run this and complete the browser/device login:" -ForegroundColor Yellow
     Write-Host "  codex login --device-auth"
@@ -128,8 +144,13 @@ if ($codexListener) {
     Write-Host "Codex app-server already listening on :$CodexPort (PID $($codexListener.OwningProcess))."
 } else {
     Write-Host "Starting Codex app-server on $wsUrl ..." -ForegroundColor Cyan
-    $cmd = "codex app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`""
-    Start-Process powershell.exe -ArgumentList @("-NoExit","-ExecutionPolicy","Bypass","-Command",$cmd)
+    $codexCmd = (Get-Command codex.cmd -ErrorAction SilentlyContinue)
+    if ($codexCmd) {
+        Start-Process cmd.exe -ArgumentList @("/k", "`"`"$($codexCmd.Source)`" app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`"`"")
+    } else {
+        $cmd = "codex app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`""
+        Start-Process powershell.exe -ArgumentList @("-NoExit","-ExecutionPolicy","Bypass","-Command",$cmd)
+    }
 }
 
 $codexReady = $false
