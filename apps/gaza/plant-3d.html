@@ -116,7 +116,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
-      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span></div>
+      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · SVG LOCAL</span></div>
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
@@ -277,8 +277,7 @@ if(canvas){
  const mat=(color,rough=.72,metal=.08)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
  const addBox=(group,name,w,h,d,x,z,color,meta={})=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.position.set(x,h/2,z);m.castShadow=true;m.receiveShadow=true;m.name=name;m.userData=meta;group.add(m);clickable.push(m);return m};
  const addLabel=(group,text,x,y,z,color='#dbe7f5',scale=68)=>{const cv=document.createElement('canvas');cv.width=512;cv.height=96;const ctx=cv.getContext('2d');ctx.fillStyle='rgba(5,9,14,.82)';ctx.roundRect(2,2,508,92,18);ctx.fill();ctx.font='700 30px system-ui';ctx.fillStyle=color;ctx.textAlign='center';ctx.fillText(text,256,58);const tx=new THREE.CanvasTexture(cv);tx.colorSpace=THREE.SRGBColorSpace;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false}));s.position.set(x,y,z);s.scale.set(scale,scale*.19,1);group.add(s);return s};
- const makeGazaTexture=(inverse=false)=>{const cv=document.createElement('canvas');cv.width=1024;cv.height=420;const x=cv.getContext('2d');x.clearRect(0,0,cv.width,cv.height);x.fillStyle=inverse?'#123c8f':'#f7f8fb';x.fillRect(0,0,1024,420);x.textAlign='center';x.fillStyle=inverse?'#fff':'#123c8f';x.font='900 230px Arial Black,system-ui';x.fillText('gaza',512,245);x.font='700 42px system-ui';x.fillText('GANADEROS DE ZAMORA',512,320);x.fillStyle='#dc304e';x.beginPath();x.ellipse(385,365,65,13,-.08,0,Math.PI*2);x.fill();x.fillStyle='#86b93f';x.beginPath();x.ellipse(610,367,150,15,-.09,0,Math.PI*2);x.fill();const t=new THREE.CanvasTexture(cv);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t};
- const gazaTex=makeGazaTexture(false),gazaTexInv=makeGazaTexture(true);
+ const gazaTex=new THREE.TextureLoader().load('assets/gaza-logo.svg');gazaTex.colorSpace=THREE.SRGBColorSpace;gazaTex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());const gazaTexInv=gazaTex;
 
  // 60,000 m² conceptual plot: 300 m x 200 m.
  const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,200),mat(0x172218));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
