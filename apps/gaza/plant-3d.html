@@ -477,18 +477,44 @@ if(canvas){
  const workers=workerDefs.map((d,i)=>{const curve=new THREE.CatmullRomCurve3(d[4].map(p=>new THREE.Vector3(p[0],.1,p[1])),true,'catmullrom',.18),mesh=makeWorker(d[0],d[1],d[2],d[3]);return{mesh,curve,u:(i*.137)%1,speed:.025+(i%3)*.004}});
  function moveWorker(w,dt,s){w.u=(w.u+dt*w.speed*s*envSpeedFactor)%1;const p=w.curve.getPointAt(w.u),t=w.curve.getTangentAt(w.u);w.mesh.position.set(p.x,.05,p.z);w.mesh.rotation.y=-Math.atan2(t.z,t.x);const gait=Math.sin(w.u*Math.PI*36);w.mesh.userData.legL.rotation.z=gait*.34;w.mesh.userData.legR.rotation.z=-gait*.34;w.mesh.userData.armL.rotation.z=-gait*.28;w.mesh.userData.armR.rotation.z=gait*.28}
 
- // Trucks with visible GAZA branding.
- const makeTruck=(name,color,tanker=false)=>{const g=new THREE.Group(),cabMat=mat(color,.55,.12),glass=mat(0x7ba8c6,.18,.12),rubber=mat(0x11161c,.88,.04),lamp=new THREE.MeshBasicMaterial({color:0xfff0b0,toneMapped:false});
-   const cab=new THREE.Mesh(new THREE.BoxGeometry(7,5,7),cabMat);cab.position.set(-6,3,0);cab.castShadow=true;
-   const wind=new THREE.Mesh(new THREE.BoxGeometry(.24,2.6,5.3),glass);wind.position.set(-9.55,3.65,0);
-   let trailer;if(tanker){trailer=new THREE.Mesh(new THREE.CylinderGeometry(3.45,3.45,14,20),mat(0xc7d2dc,.28,.72));trailer.rotation.z=Math.PI/2;trailer.position.set(5,4.1,0)}else{trailer=new THREE.Mesh(new THREE.BoxGeometry(15,6,7),mat(0xd9e0e7,.4,.45));trailer.position.set(5,3.5,0)}trailer.castShadow=true;
-   g.add(cab,wind,trailer);
-   for(const x of [-7,1,7])for(const z of [-3.55,3.55]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(1.25,1.25,.72,14),rubber);wheel.rotation.x=Math.PI/2;wheel.position.set(x,1.25,z);g.add(wheel)}
-   for(const z of [-2.1,2.1]){const light=new THREE.Mesh(new THREE.SphereGeometry(.38,8,6),lamp);light.position.set(-9.72,2.8,z);g.add(light)}
-   const decalMat=new THREE.MeshBasicMaterial({map:gazaTex,toneMapped:false}),decalW=tanker?7.8:10,decalH=tanker?3.1:4.1;const d1=new THREE.Mesh(new THREE.PlaneGeometry(decalW,decalH),decalMat);d1.position.set(tanker?5:5,tanker?4.25:3.6,tanker?3.46:3.53);const d2=d1.clone();d2.position.z=tanker?-3.46:-3.53;d2.rotation.y=Math.PI;g.add(d1,d2);g.name=name;groups.vehicles.add(g);return g};
- const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf,true);tanker.position.set(-190,1,-58);
- const out1=makeTruck('Expedición OUT-01',0x6fb24a);out1.position.set(70,1,60);
- const out2=makeTruck('Expedición OUT-02',0xefc534);out2.position.set(110,1,60);
+ // Trucks: tractor + semi/tanker, with local forward axis = -X.
+ const makeTruck=(name,color,tanker=false)=>{
+   const g=new THREE.Group(),cabMat=mat(color,.46,.22),glass=mat(0x6d96b4,.14,.22),rubber=mat(0x11161c,.9,.02),steel=mat(0x7e8994,.35,.65),chrome=mat(0xc9d2d9,.2,.85),lampWhite=new THREE.MeshBasicMaterial({color:0xfff2c4,toneMapped:false}),lampRed=new THREE.MeshBasicMaterial({color:0xff3d35,toneMapped:false});
+   // Tractor: front is -X.
+   const cab=new THREE.Mesh(new THREE.BoxGeometry(6.8,5.6,6.8),cabMat);cab.position.set(-7.2,3.7,0);cab.castShadow=true;g.add(cab);
+   const roof=new THREE.Mesh(new THREE.BoxGeometry(6.2,.65,6.5),cabMat);roof.position.set(-7.0,6.8,0);g.add(roof);
+   const wind=new THREE.Mesh(new THREE.BoxGeometry(.22,2.55,5.35),glass);wind.position.set(-10.66,4.35,0);g.add(wind);
+   const grille=new THREE.Mesh(new THREE.BoxGeometry(.18,1.45,4.25),steel);grille.position.set(-10.78,2.55,0);g.add(grille);
+   const bumper=new THREE.Mesh(new THREE.BoxGeometry(.5,.75,6.5),chrome);bumper.position.set(-10.9,1.25,0);g.add(bumper);
+   const plate=new THREE.Mesh(new THREE.BoxGeometry(.08,.48,1.8),new THREE.MeshBasicMaterial({color:0xf4f4f1,toneMapped:false}));plate.position.set(-11.18,1.55,0);g.add(plate);
+   for(const z of [-2.35,2.35]){const head=new THREE.Mesh(new THREE.SphereGeometry(.38,8,6),lampWhite);head.position.set(-11.02,3.05,z);g.add(head);const mirrorArm=new THREE.Mesh(new THREE.BoxGeometry(.18,.18,1.1),steel);mirrorArm.position.set(-8.65,5.1,z>0?3.75:-3.75);g.add(mirrorArm);const mirror=new THREE.Mesh(new THREE.BoxGeometry(.28,1.0,.72),steel);mirror.position.set(-8.65,5.1,z>0?4.2:-4.2);g.add(mirror)}
+   const chassis=new THREE.Mesh(new THREE.BoxGeometry(18,.65,2.0),steel);chassis.position.set(2.0,1.65,0);g.add(chassis);
+   const fifth=new THREE.Mesh(new THREE.CylinderGeometry(1.45,1.45,.35,14),steel);fifth.position.set(-1.2,2.15,0);g.add(fifth);
+   let trailer;
+   if(tanker){
+     trailer=new THREE.Mesh(new THREE.CylinderGeometry(3.35,3.35,14.5,24),chrome);trailer.rotation.z=Math.PI/2;trailer.position.set(5.7,4.35,0);trailer.castShadow=true;g.add(trailer);
+     for(const x of [-1.55,12.95]){const cap=new THREE.Mesh(new THREE.SphereGeometry(3.35,18,12),chrome);cap.scale.x=.28;cap.position.set(x,4.35,0);g.add(cap)}
+     const catwalk=new THREE.Mesh(new THREE.BoxGeometry(10.5,.18,1.2),steel);catwalk.position.set(5.8,7.78,0);g.add(catwalk);
+     const hatch=new THREE.Mesh(new THREE.CylinderGeometry(.65,.65,.5,12),steel);hatch.position.set(5.8,8.15,0);g.add(hatch);
+     for(let y=2.1;y<7.5;y+=1.15){const rung=new THREE.Mesh(new THREE.BoxGeometry(.18,.18,2.1),steel);rung.position.set(12.55,y,-3.5);g.add(rung)}
+   }else{
+     trailer=new THREE.Mesh(new THREE.BoxGeometry(15.5,6.3,7.2),mat(0xd9e0e7,.42,.42));trailer.position.set(5.7,4.0,0);trailer.castShadow=true;g.add(trailer);
+     const roofTrim=new THREE.Mesh(new THREE.BoxGeometry(15.7,.25,7.35),chrome);roofTrim.position.set(5.7,7.25,0);g.add(roofTrim);
+     const rear=new THREE.Mesh(new THREE.BoxGeometry(.2,5.7,6.5),mat(0xb9c3cc,.5,.35));rear.position.set(13.52,4.0,0);g.add(rear);
+   }
+   const wheelPairs=[[-8.1],[-3.2],[7.7],[10.6]];
+   for(const [x] of wheelPairs)for(const z of [-3.65,3.65]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(1.28,1.28,.78,16),rubber);wheel.rotation.x=Math.PI/2;wheel.position.set(x,1.28,z);g.add(wheel);const hub=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.82,12),chrome);hub.rotation.x=Math.PI/2;hub.position.copy(wheel.position);g.add(hub)}
+   for(const z of [-2.3,2.3]){const tail=new THREE.Mesh(new THREE.SphereGeometry(.3,8,6),lampRed);tail.position.set(13.68,2.3,z);g.add(tail)}
+   const underrunL=new THREE.Mesh(new THREE.BoxGeometry(10,.3,.3),steel),underrunR=underrunL.clone();underrunL.position.set(6.2,1.35,3.75);underrunR.position.set(6.2,1.35,-3.75);g.add(underrunL,underrunR);
+   const decalMat=new THREE.MeshBasicMaterial({map:gazaTex,toneMapped:false}),decalW=tanker?7.8:10,decalH=tanker?3.1:4.1;
+   const d1=new THREE.Mesh(new THREE.PlaneGeometry(decalW,decalH),decalMat);d1.position.set(5.7,tanker?4.45:4.05,tanker?3.38:3.62);const d2=d1.clone();d2.position.z=tanker?-3.38:-3.62;d2.rotation.y=Math.PI;g.add(d1,d2);
+   g.name=name;g.userData={kind:'SIMULADO',info:(tanker?'Cisterna':'Tráiler')+' detallado de demostración. Orientación sigue la tangente del vial; marca visual de referencia, no matrícula/flota real.'};cab.name=name;cab.userData=g.userData;clickable.push(cab);groups.vehicles.add(g);return g
+ };
+ function orientTruck(g,dx,dz){const len=Math.hypot(dx,dz)||1;g.rotation.y=Math.atan2(dz/len,-dx/len)}
+ const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf,true),out1=makeTruck('Expedición OUT-01',0x6fb24a),out2=makeTruck('Expedición OUT-02',0xefc534);
+ const tankerCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-190,1,-58),new THREE.Vector3(-145,1,-56),new THREE.Vector3(-104,1,-53),new THREE.Vector3(-84,1,-49),new THREE.Vector3(-82,1,-25),new THREE.Vector3(-82,1,12),new THREE.Vector3(-82,1,46)],false,'catmullrom',.12);
+ function placeTruckOnCurve(g,curve,u){const p=curve.getPointAt(Math.max(0,Math.min(1,u))),t=curve.getTangentAt(Math.max(0,Math.min(1,u)));g.position.copy(p);orientTruck(g,t.x,t.z)}
+ placeTruckOnCurve(tanker,tankerCurve,0);out1.position.set(70,1,60);out2.position.set(110,1,73);orientTruck(out1,1,0);orientTruck(out2,1,0);
 
  // Docks.
  for(let i=0;i<4;i++){const x=70+i*14,d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,x,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});const shelter=new THREE.Mesh(new THREE.BoxGeometry(12.2,7.4,.75),mat(0x202a34,.72,.18));shelter.position.set(x,5.2,52.7);groups.plant.add(shelter);for(const bx of [-4.2,4.2]){const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.8,.9),mat(0x11161c,.9,.05));bumper.position.set(x+bx,1.2,53.15);groups.plant.add(bumper)}const signal=new THREE.Mesh(new THREE.SphereGeometry(.65,10,8),mat(i===1?0x73b866:0xefc534,.42,.05));signal.position.set(x+5.4,7.6,53.1);groups.plant.add(signal)}
@@ -535,11 +561,10 @@ if(canvas){
    updateProcessFlowTokens(phase,incident);
    if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+seededRain()*20}rainGeo.attributes.position.needsUpdate=true}
    farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
-   // Farm tanker follows collection corridor then enters reception.
-   const p=phase<.62?phase/.62:1; tanker.position.x=-190+p*108;tanker.position.z=-58+p*8;tanker.rotation.y=-Math.PI/2;
-   if(phase>.62){const q=(phase-.62)/.38;tanker.position.x=-82;tanker.position.z=-50+q*96;tanker.rotation.y=0}
-   const a=(phase*2)%1;out1.position.x=65+a*120;out1.position.z=60;out1.rotation.y=-Math.PI/2;
-   const b=((phase+.42)*2)%1;out2.position.x=65+b*120;out2.position.z=73;out2.rotation.y=-Math.PI/2;
+   // Inbound tanker and outbound trailers always orient to their direction of travel.
+   placeTruckOnCurve(tanker,tankerCurve,phase);
+   const a=(phase*2)%1;out1.position.x=65+a*120;out1.position.z=60;orientTruck(out1,1,0);
+   const b=((phase+.42)*2)%1;out2.position.x=65+b*120;out2.position.z=73;orientTruck(out2,1,0);
    document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
  }
  controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;publishTwinState({simulation:{running,speed:Number(speed.value),phase:Number(phase.toFixed(4)),incident,flowState:incident?'RETENIDO':'NORMAL',laneMoving,laneAgents:laneAgents.length,workers:workers.length,asrsCycles},environment:{factor:Number(envSpeedFactor.toFixed(3)),weatherRisk:envWeatherRisk,roadRisk:envRoadRisk,weather:envState.weather||null,dgt:envState.dgt||null},assets:{state:window.__GAZA_ASSET_REGISTRY__?.state||'loading',loaded:window.__GAZA_ASSET_REGISTRY__?.loaded||0,failed:window.__GAZA_ASSET_REGISTRY__?.failed||0},render:stats,provenance:{public:true,inferred:true,simulated:true}});if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
