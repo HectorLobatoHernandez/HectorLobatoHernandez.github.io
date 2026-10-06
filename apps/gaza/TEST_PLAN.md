@@ -60,3 +60,5 @@ The plant geometry and operational values are synthetic. Real integration requir
 - Territory attempts DGT NAP DATEX2 v3.7 load; success shows `LIVE`, count and query time, with nearby georeferenced records mapped.
 - If DGT CKAN/XML/CORS fails, status is `NO DISP.` and no traffic incident is presented as live.
 - Congestion multiplier buttons remain labelled `What-if` and must not be described as DGT traffic.
+
+- Strategy Twin: `D` starts the deterministic demo, `R` resets simulation state, `F` toggles fullscreen, and `game.html?demo=1` auto-starts after load.
