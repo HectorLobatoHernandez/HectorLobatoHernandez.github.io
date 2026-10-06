@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "mode": "READ_ONLY_DISCOVERY",
+  "updatedAt": "2026-10-06",
+  "rules": [
+    "No browser-to-PLC/ASRS/MES writes.",
+    "No credential storage in browser or repository.",
+    "Every adapter must identify source system, timestamp, quality and provenance.",
+    "Synthetic/demo events must never be merged into REAL telemetry without explicit source tagging."
+  ],
+  "canonicalEvent": {
+    "required": [
+      "event_id",
+      "source",
+      "source_class",
+      "observed_at",
+      "entity_type",
+      "entity_id",
+      "event_type",
+      "quality",
+      "payload"
+    ],
+    "source_class": [
+      "REAL_AUTHORIZED",
+      "PUBLIC_REFERENCE",
+      "SIMULATED"
+    ],
+    "quality": [
+      "GOOD",
+      "STALE",
+      "UNCERTAIN",
+      "BAD"
+    ]
+  },
+  "adapters": [
+    {
+      "id": "erp",
+      "authority": "Solmicro ERP reference",
+      "status": "DISCOVERY_REQUIRED",
+      "confirmed": "Leche Gaza is publicly listed as an ERP customer.",
+      "unknown": [
+        "current product/version",
+        "modules",
+        "database",
+        "API/file integration method"
+      ],
+      "preferredReadMethods": [
+        "vendor-supported API",
+        "read replica/reporting DB",
+        "scheduled export"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "id": "gazacontrol",
+      "authority": "GAZACONTROL",
+      "status": "DISCOVERY_REQUIRED",
+      "confirmed": "Public project describes monitoring/automation of production and logistics.",
+      "unknown": [
+        "vendor",
+        "protocols",
+        "tag namespace",
+        "historian",
+        "MES/SCADA topology"
+      ],
+      "preferredReadMethods": [
+        "OPC UA read-only gateway",
+        "MQTT subscriber",
+        "historian API",
+        "REST/SQL read adapter"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "id": "tetrapak",
+      "authority": "Tetra Pak production equipment",
+      "status": "DISCOVERY_REQUIRED",
+      "confirmed": "Public reporting identifies Tetra Pak as principal production-equipment supplier.",
+      "unknown": [
+        "line models",
+        "PlantMaster/automation software",
+        "PLC platform",
+        "available interfaces"
+      ],
+      "preferredReadMethods": [
+        "vendor historian/reporting interface",
+        "approved OPC UA/SQL/API"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "id": "asrs",
+      "authority": "Esnova / Signode StorFast",
+      "status": "DISCOVERY_REQUIRED",
+      "confirmed": "9-level ASRS with Signode StorFast shuttle carts.",
+      "unknown": [
+        "WCS/WMS product/version",
+        "host interface",
+        "task/event API"
+      ],
+      "preferredReadMethods": [
+        "WCS event/API feed",
+        "read-only DB/export"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "id": "utilities",
+      "authority": "Veolia",
+      "status": "DISCOVERY_REQUIRED",
+      "confirmed": "Steam, water treatment, EDARI and waste operation.",
+      "unknown": [
+        "BMS/SCADA platform",
+        "meter protocol",
+        "historian/API"
+      ],
+      "preferredReadMethods": [
+        "approved meter/SCADA API",
+        "OPC UA/Modbus gateway via server-side collector"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "id": "fleet",
+      "authority": "Milk collection / dispatch fleet",
+      "status": "NOT_PUBLIC",
+      "confirmed": "Public Gaza material describes GPS/telemetry as sector traceability capability, not a confirmed Gaza fleet platform.",
+      "unknown": [
+        "TMS",
+        "GPS provider",
+        "temperature logger",
+        "driver app"
+      ],
+      "preferredReadMethods": [
+        "TMS API",
+        "GPS webhook/API",
+        "temperature logger API"
+      ],
+      "writes": "DISABLED"
+    }
+  ],
+  "serverBoundary": {
+    "proposedService": "GAZA Integration Gateway",
+    "responsibilities": [
+      "authentication",
+      "rate limiting",
+      "protocol conversion",
+      "schema validation",
+      "time sync",
+      "quality flags",
+      "audit",
+      "PII minimisation",
+      "store-and-forward"
+    ],
+    "browserReceives": [
+      "canonical events",
+      "aggregated KPIs",
+      "authorized asset state",
+      "route/environment state"
+    ],
+    "browserNeverReceives": [
+      "PLC credentials",
+      "database credentials",
+      "raw safety-control endpoints"
+    ]
+  }
+}
