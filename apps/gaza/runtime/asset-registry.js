@@ -12,12 +12,13 @@ function validEntry(a){
   return !!a&&typeof a.id==='string'&&typeof a.path==='string'&&LOCAL_PATH.test(a.path)&&
     typeof a.license==='string'&&typeof a.sourceUrl==='string'&&ALLOWED_PROVENANCE.has(a.provenance);
 }
-function markRenderable(root,entry){
+function markRenderable(root,entry,clickable){
   root.traverse(o=>{
     if(o.isMesh){
       o.castShadow=entry.castShadow!==false;
       o.receiveShadow=entry.receiveShadow!==false;
-      o.userData={...o.userData,assetId:entry.id,provenance:entry.provenance,license:entry.license,sourceUrl:entry.sourceUrl};
+      o.userData={...o.userData,assetId:entry.id,kind:entry.kind||'GLB',info:entry.info||('Asset GLB · '+entry.provenance),provenance:entry.provenance,license:entry.license,sourceUrl:entry.sourceUrl};
+      if(entry.clickable!==false)clickable.push(o);
     }
   });
 }
@@ -63,12 +64,11 @@ export async function loadProductionAssets({
         root.position.copy(vec3(entry.position,[0,0,0]));
         root.rotation.set(...vec3(entry.rotation,[0,0,0]).toArray());
         root.scale.copy(vec3(entry.scale,[1,1,1]));
-        root.userData={...root.userData,assetId:entry.id,kind:entry.kind||'GLB',provenance:entry.provenance,license:entry.license,sourceUrl:entry.sourceUrl};
-        markRenderable(root,entry);
+        root.userData={...root.userData,type:'asset',status:'ASSET GLB',prov:entry.provenance,rows:[['Asset',entry.id],['Licencia',entry.license],['Procedencia',entry.provenance]],assetId:entry.id,kind:entry.kind||'GLB',info:entry.info||'Asset GLB controlado por manifiesto.',provenance:entry.provenance,license:entry.license,sourceUrl:entry.sourceUrl};
+        markRenderable(root,entry,clickable);
         const target=groups[entry.targetGroup]||scene;
         target.add(root);
-        if(entry.clickable!==false)clickable.push(root);
-        let mixer=null,clip=null;
+                let mixer=null,clip=null;
         if(gltf.animations?.length&&entry.playAnimation!==false){
           clip=pickClip(gltf.animations,entry.animation);
           if(clip){mixer=new THREE.AnimationMixer(root);mixer.clipAction(clip).play();report.mixers.push(mixer)}
