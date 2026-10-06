@@ -27,6 +27,7 @@ const targets=[
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
   {name:'systems',url:'/systems.html?qa=1',width:1600,height:900,dsf:1},
   {name:'territory',url:'/territory.html?qa=1',width:1600,height:900,dsf:1},
+  {name:'mission-control',url:'/mission-control.html?qa=1',width:1600,height:900,dsf:1},
   {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:390,height:844,dsf:2}
 ];
 
@@ -146,6 +147,21 @@ for(const target of targets){
     const territoryOk=territory.routeMetric&&territory.routeCopy&&territory.correctedCopy&&territory.site?.plant?.lat===41.52355&&territory.site?.plant?.lon===-5.59993&&territory.site?.policy==='OSM_NAME_OPERATOR_MATCH_NOT_AS_BUILT'&&territory.weatherOps?.schemaVersion===1&&territory.weatherOps?.advisoryOnly===true&&territory.weatherOps?.forecastRisk===1&&territory.weatherOps?.forecast?.maxGustKmh===38&&territory.weatherRisk24==='ATENCIÓN'&&territory.forecastSlots>=2;
     checks.push({surface:name,check:'route-aware-dgt-ui',ok:territoryOk,metrics:territory});
     if(!territoryOk)errors.push({surface:name,type:'quality',text:'Territory route-aware DGT UI missing'});
+  }
+
+  if(url.includes('mission-control.html')){
+    const mission=await page.evaluate(()=>({
+      tabs:document.querySelectorAll('[data-view]').length,
+      matrix:!!document.getElementById('matrixView'),
+      plantFrame:document.querySelector('[data-pane="plant"] iframe')?.getAttribute('src')||'',
+      risk:document.getElementById('risk')?.textContent||'',
+      temp:document.getElementById('temp')?.textContent||'',
+      boundary:document.body.textContent.includes('No automatic process, safety or PLC control'),
+      title:document.title
+    }));
+    const missionOk=mission.tabs>=5&&mission.matrix&&mission.plantFrame.includes('qa=1')&&mission.risk==='NORMAL'&&mission.temp==='17.0 °C'&&mission.boundary&&mission.title.includes('Mission Control');
+    checks.push({surface:name,check:'mission-control-shell',ok:missionOk,metrics:mission});
+    if(!missionOk)errors.push({surface:name,type:'quality',text:'Mission Control shell/QA fixture invalid'});
   }
 
   await page.waitForTimeout(250);
