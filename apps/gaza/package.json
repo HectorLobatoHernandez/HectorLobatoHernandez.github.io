@@ -9,7 +9,8 @@
     "qa:headed": "node ./tests/visual-qa.mjs --headed",
     "qa:ci": "node ./tests/visual-qa.mjs",
     "qa:manifest": "node ./tests/manifest-qa.mjs",
-    "qa:all": "npm run qa:manifest && npm run qa"
+    "qa:all": "npm run qa:manifest && npm run qa:domain && npm run qa",
+    "qa:domain": "node ./tests/domain-qa.mjs"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
