@@ -367,15 +367,21 @@ if(canvas){
  function moveLaneAgent(a,u){const p=laneCurve.getPointAt(u),t=laneCurve.getTangentAt(u);a.mesh.position.set(p.x,0,p.z);a.mesh.rotation.y=-Math.atan2(t.z,t.x)}
 
  // Stylised plant personnel. Roles and paths are synthetic, not real employee tracking.
- const makeWorker=(role,dept,color,manager=false)=>{const g=new THREE.Group(),skin=mat(0xd8a47f,.85,.01),uniform=mat(0xf1f4f6,.82,.02),accent=mat(color,.65,.08),dark=mat(0x26313c,.75,.04);
+ const makeWorker=(role,dept,color,manager=false)=>{const g=new THREE.Group(),skin=mat(0xd8a47f,.85,.01),uniform=mat(0xf1f4f6,.82,.02),accent=mat(color,.65,.08),dark=mat(0x26313c,.75,.04),black=mat(0x111820,.78,.06),reflective=new THREE.MeshBasicMaterial({color:0xd8ff72,toneMapped:false});
    const torso=new THREE.Mesh(new THREE.BoxGeometry(2.1,2.8,1.25),uniform);torso.position.y=4.2;torso.name=role;torso.userData={kind:'PERSONAL SINTÉTICO',info:dept+' · personaje demostrativo; no representa ni rastrea a un empleado real.'};
-   const vest=new THREE.Mesh(new THREE.BoxGeometry(2.22,1.25,1.34),accent);vest.position.y=4.25;
-   const head=new THREE.Mesh(new THREE.SphereGeometry(.78,10,8),skin);head.position.y=6.25;
-   const cap=new THREE.Mesh(new THREE.SphereGeometry(.83,10,5,0,Math.PI*2,0,Math.PI*.48),manager?accent:uniform);cap.position.y=6.48;
-   const legL=new THREE.Mesh(new THREE.BoxGeometry(.65,2.4,.7),dark),legR=legL.clone();legL.position.set(-.55,2,.0);legR.position.set(.55,2,0);
+   const vest=new THREE.Mesh(new THREE.BoxGeometry(2.22,1.35,1.34),accent);vest.position.y=4.25;
+   const stripeA=new THREE.Mesh(new THREE.BoxGeometry(2.3,.12,1.38),reflective),stripeB=stripeA.clone();stripeA.position.y=4.05;stripeB.position.y=4.48;
+   const head=new THREE.Mesh(new THREE.SphereGeometry(.78,12,9),skin);head.position.y=6.25;
+   const eyeL=new THREE.Mesh(new THREE.SphereGeometry(.085,7,5),black),eyeR=eyeL.clone();eyeL.position.set(-.25,6.35,.72);eyeR.position.set(.25,6.35,.72);
+   const cap=new THREE.Mesh(new THREE.SphereGeometry(.83,12,6,0,Math.PI*2,0,Math.PI*.48),manager?accent:uniform);cap.position.y=6.5;
+   const brim=new THREE.Mesh(new THREE.BoxGeometry(1.72,.12,.88),manager?accent:uniform);brim.position.set(0,6.48,.36);
+   const legL=new THREE.Mesh(new THREE.BoxGeometry(.65,2.4,.7),dark),legR=legL.clone();legL.position.set(-.55,2,0);legR.position.set(.55,2,0);
+   const shoeL=new THREE.Mesh(new THREE.BoxGeometry(.76,.38,1.02),black),shoeR=shoeL.clone();shoeL.position.set(-.55,.72,.18);shoeR.position.set(.55,.72,.18);
    const armL=new THREE.Mesh(new THREE.BoxGeometry(.48,2.4,.48),uniform),armR=armL.clone();armL.position.set(-1.35,4.1,0);armR.position.set(1.35,4.1,0);
-   const badge=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.55),new THREE.MeshBasicMaterial({map:gazaTexInv,toneMapped:false}));badge.position.set(0,4.6,.68);
-   g.add(torso,vest,head,cap,legL,legR,armL,armR,badge);g.scale.setScalar(.72);g.userData={role,dept,legL,legR,armL,armR};groups.workers.add(g);clickable.push(torso);if(manager)addLabel(g,role,0,8.1,0,'#dce9ff',25);return g};
+   const badge=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.55),new THREE.MeshBasicMaterial({map:gazaTexInv,toneMapped:false}));badge.position.set(0,4.72,.68);
+   const pack=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.65,.48),accent);pack.position.set(0,4.15,-.86);pack.visible=/Expediciones|Mantenimiento|Accesos/.test(dept);
+   const tool=new THREE.Mesh(new THREE.BoxGeometry(.22,1.8,.22),dept.includes('Mantenimiento')?accent:black);tool.position.set(1.7,3.65,.25);tool.rotation.z=-.32;tool.visible=/Mantenimiento|Calidad|Accesos/.test(dept);
+   g.add(torso,vest,stripeA,stripeB,head,eyeL,eyeR,cap,brim,legL,legR,shoeL,shoeR,armL,armR,badge,pack,tool);g.scale.setScalar(.72);g.userData={role,dept,legL,legR,armL,armR};groups.workers.add(g);clickable.push(torso);if(manager)addLabel(g,role,0,8.1,0,'#dce9ff',25);return g};
  const workerDefs=[
    ['Jefe turno','Producción',0x2d6cdf,true,[[-62,-38],[-30,-38],[-10,-48],[-48,-52]]],
    ['Calidad 01','Calidad',0x60d8cf,false,[[-94,-54],[-76,-54],[-76,-38],[-94,-38]]],
@@ -392,8 +398,15 @@ if(canvas){
  function moveWorker(w,dt,s){w.u=(w.u+dt*w.speed*s*envSpeedFactor)%1;const p=w.curve.getPointAt(w.u),t=w.curve.getTangentAt(w.u);w.mesh.position.set(p.x,.05,p.z);w.mesh.rotation.y=-Math.atan2(t.z,t.x);const gait=Math.sin(w.u*Math.PI*36);w.mesh.userData.legL.rotation.z=gait*.34;w.mesh.userData.legR.rotation.z=-gait*.34;w.mesh.userData.armL.rotation.z=-gait*.28;w.mesh.userData.armR.rotation.z=gait*.28}
 
  // Trucks with visible GAZA branding.
- const makeTruck=(name,color)=>{const g=new THREE.Group();const cab=new THREE.Mesh(new THREE.BoxGeometry(7,5,7),mat(color));cab.position.set(-6,3,0);const box=new THREE.Mesh(new THREE.BoxGeometry(15,6,7),mat(0xd9e0e7,.4,.45));box.position.set(5,3.5,0);const decalMat=new THREE.MeshBasicMaterial({map:gazaTex,transparent:true,toneMapped:false});const d1=new THREE.Mesh(new THREE.PlaneGeometry(10,4.1),decalMat);d1.position.set(5,3.6,3.53);const d2=d1.clone();d2.position.z=-3.53;d2.rotation.y=Math.PI;g.add(cab,box,d1,d2);g.name=name;groups.vehicles.add(g);return g};
- const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf);tanker.position.set(-190,1,-58);
+ const makeTruck=(name,color,tanker=false)=>{const g=new THREE.Group(),cabMat=mat(color,.55,.12),glass=mat(0x7ba8c6,.18,.12),rubber=mat(0x11161c,.88,.04),lamp=new THREE.MeshBasicMaterial({color:0xfff0b0,toneMapped:false});
+   const cab=new THREE.Mesh(new THREE.BoxGeometry(7,5,7),cabMat);cab.position.set(-6,3,0);cab.castShadow=true;
+   const wind=new THREE.Mesh(new THREE.BoxGeometry(.24,2.6,5.3),glass);wind.position.set(-9.55,3.65,0);
+   let trailer;if(tanker){trailer=new THREE.Mesh(new THREE.CylinderGeometry(3.45,3.45,14,20),mat(0xc7d2dc,.28,.72));trailer.rotation.z=Math.PI/2;trailer.position.set(5,4.1,0)}else{trailer=new THREE.Mesh(new THREE.BoxGeometry(15,6,7),mat(0xd9e0e7,.4,.45));trailer.position.set(5,3.5,0)}trailer.castShadow=true;
+   g.add(cab,wind,trailer);
+   for(const x of [-7,1,7])for(const z of [-3.55,3.55]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(1.25,1.25,.72,14),rubber);wheel.rotation.x=Math.PI/2;wheel.position.set(x,1.25,z);g.add(wheel)}
+   for(const z of [-2.1,2.1]){const light=new THREE.Mesh(new THREE.SphereGeometry(.38,8,6),lamp);light.position.set(-9.72,2.8,z);g.add(light)}
+   const decalMat=new THREE.MeshBasicMaterial({map:gazaTex,toneMapped:false}),decalW=tanker?7.8:10,decalH=tanker?3.1:4.1;const d1=new THREE.Mesh(new THREE.PlaneGeometry(decalW,decalH),decalMat);d1.position.set(tanker?5:5,tanker?4.25:3.6,tanker?3.46:3.53);const d2=d1.clone();d2.position.z=tanker?-3.46:-3.53;d2.rotation.y=Math.PI;g.add(d1,d2);g.name=name;groups.vehicles.add(g);return g};
+ const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf,true);tanker.position.set(-190,1,-58);
  const out1=makeTruck('Expedición OUT-01',0x6fb24a);out1.position.set(70,1,60);
  const out2=makeTruck('Expedición OUT-02',0xefc534);out2.position.set(110,1,60);
 
