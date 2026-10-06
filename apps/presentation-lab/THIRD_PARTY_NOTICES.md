@@ -19,3 +19,14 @@ Copyright (c) 2026 David Haz.
 These components are used and modified as part of this portfolio/application. They are not redistributed or sold as a standalone component library.
 
 Local changes include build-free ESM loading, JSX-free wrappers, reduced dependency surface, custom visual language and technical CV-specific composition.
+
+
+Additional React Bits-inspired behaviors used in CV WOW v3:
+- LetterGlitch
+- Crosshair
+- Dock / proximity navigation
+- ElectricBorder
+- PixelTransition
+- 3D card tilt / cursor-reactive grid
+
+Local implementations are adapted for the static GitHub Pages runtime and retain the project attribution/license boundary above.
