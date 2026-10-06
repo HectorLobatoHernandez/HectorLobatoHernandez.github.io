@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaza-3d-manifest.schema.json",
+  "title": "GAZA 3D production asset manifest",
+  "type": "object",
+  "required": ["schemaVersion", "runtime", "policy", "assets"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "runtime": { "const": "three.js" },
+    "policy": { "type": "object" },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "sourceUrl", "license", "provenance", "targetGroup"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "path": { "type": "string", "pattern": "^[A-Za-z0-9_./-]+\\.(glb|gltf)$" },
+          "sourceUrl": { "type": "string", "format": "uri" },
+          "license": { "type": "string", "minLength": 1 },
+          "provenance": { "enum": ["PUBLIC_REFERENCE", "INFERRED_RECONSTRUCTION", "SIMULATED"] },
+          "targetGroup": { "type": "string", "minLength": 1 },
+          "enabled": { "type": "boolean" },
+          "clickable": { "type": "boolean" },
+          "castShadow": { "type": "boolean" },
+          "receiveShadow": { "type": "boolean" },
+          "position": { "$ref": "#/$defs/vec3" },
+          "rotation": { "$ref": "#/$defs/vec3" },
+          "scale": { "$ref": "#/$defs/vec3" },
+          "animation": { "type": "string" },
+          "playAnimation": { "type": "boolean" },
+          "kind": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "$defs": {
+    "vec3": {
+      "type": "array",
+      "prefixItems": [{"type":"number"},{"type":"number"},{"type":"number"}],
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "additionalProperties": false
+}
