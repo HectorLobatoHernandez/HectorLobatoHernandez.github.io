@@ -30,7 +30,7 @@ function Get-EnvValue([string]$Path, [string]$Name) {
     return $line.Substring($Name.Length + 1)
 }
 
-Write-Host "=== RHB STUDIO · OmniRoute -> OpenDots recovery ===" -ForegroundColor Cyan
+Write-Host "=== RHB STUDIO - OmniRoute -> OpenDots recovery ===" -ForegroundColor Cyan
 
 foreach ($required in @($OmniLauncher,$RhbSettings,(Join-Path $OpenDotsDir ".env"))) {
     if (-not (Test-Path $required)) { throw "Required path not found: $required" }
@@ -63,9 +63,21 @@ Write-Host "API key source: USER ENV '$keyEnv' (secret not displayed)"
 Write-Host "OpenDots candidate model: $currentModel"
 
 $already = Get-NetTCPConnection -LocalPort 20128 -State Listen -ErrorAction SilentlyContinue
-if (-not $already) {
+if ($already) {
+    $pidInfo = ($already | Select-Object -First 1).OwningProcess
+    Write-Host "Reusing existing OmniRoute listener on :20128 (PID $pidInfo)."
+} else {
     Write-Host "Starting OmniRoute with canonical launcher..."
     & $OmniLauncher
+    Start-Sleep -Seconds 2
+
+    $afterStart = Get-NetTCPConnection -LocalPort 20128 -State Listen -ErrorAction SilentlyContinue
+    if ($afterStart) {
+        $pidInfo = ($afterStart | Select-Object -First 1).OwningProcess
+        Write-Host "OmniRoute listener detected on :20128 (PID $pidInfo)."
+    } else {
+        Write-Host "No TCP listener yet; continuing with health polling because the launcher may have reused an existing Next.js dev server."
+    }
 }
 
 $healthy = $false
