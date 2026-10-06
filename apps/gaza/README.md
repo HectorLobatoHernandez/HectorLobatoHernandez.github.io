@@ -37,3 +37,7 @@ See `TEST_PLAN.md` for acceptance tests.
 - `plant-3d.html`: 3D farm-to-dispatch functional model.
 - `territory.html`: OSM/OSRM territory and routing + live Open-Meteo + DGT road-state source links.
 - `PUBLIC_EVIDENCE.md`: source/simulation boundary and requirements for an as-built twin.
+
+
+## Strategy Twin
+`game.html` is the reference-video-oriented strategy view. The current vertical slice is deterministic and spatial: anonymised farm node → tanker route → reception/quality → forklift pallet task → animated dock → outbound truck. Vehicle/task values remain synthetic; the public anchors are the 80+ farm network, Coreses site identity and documented systems listed in `PUBLIC_EVIDENCE.md`.

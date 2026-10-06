@@ -60,3 +60,16 @@ Run **Ejecutar demo** and verify:
 8. KPIs and queue update.
 9. Dispatch is logged.
 10. Export JSON contains synthetic=true and the final state.
+
+
+## Strategy Twin fidelity update — 2026-10-06
+Implemented in `game.html`:
+- deterministic fixed-step simulation clock separated from rendering;
+- route-following tanker and outbound truck;
+- task-path forklift with physical pallet pickup/carry/drop;
+- animated dock shutter and semantic dock state;
+- smooth camera focus tween on selection;
+- repeatable Reset → Execute demo vertical slice;
+- richer low-poly truck/forklift geometry while preserving the bright isometric reference grammar.
+
+Still pending for higher fidelity: reconstructed public-evidence parcel massing, multi-vehicle lane reservation/avoidance, richer ASRS rack animation, live DGT DATEX2 ingestion, weather-to-scenario coupling, and screenshot-backed visual regression.

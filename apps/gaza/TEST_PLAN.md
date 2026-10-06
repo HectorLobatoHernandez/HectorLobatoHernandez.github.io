@@ -41,3 +41,15 @@ Synthetic demonstrator only. No internal Leche GAZA data and no PLC/ASRS control
 
 ## Current limitation
 The plant geometry and operational values are synthetic. Real integration requires an internal audit, validated plant layout, data contracts and read-only connectors before any operational conclusion is made.
+
+
+## P0 — Strategy Twin (`/apps/gaza/game.html`)
+- **Ejecutar demo** starts deterministic seed `GAZA-DEMO-01`.
+- Tanker follows the farm → plant route instead of translating arbitrarily.
+- FL-01 follows a staging → dock task path, physically carries PAL-201, and drops it at D3.
+- D3 shutter opens as the pallet arrives; dock state remains selectable.
+- GZ-TR-204 follows the outbound yard/road path after loading.
+- Clicking an entity eases the orthographic camera to that asset and updates the inspector.
+- **Reset** restores tanker, pallet, forklift, truck, dock, KPI and incident state.
+- **Incidencia** remains visibly labelled synthetic and changes risk state without claiming live DGT telemetry.
+- Repeating Reset → Ejecutar demo produces the same sequence.
