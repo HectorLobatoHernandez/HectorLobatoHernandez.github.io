@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GAZA · Red de granjas y recogida &lt;50 km</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root{--bg:#070a0f;--panel:#10161e;--panel2:#151d27;--line:#293545;--text:#edf3f8;--muted:#9aa9ba;--blue:#2f72d8;--green:#79c85b;--amber:#f2c94c;--red:#df5b55;--cyan:#65d8d0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{max-width:1500px;margin:auto;padding:0 24px}.nav{position:sticky;top:0;z-index:1000;background:rgba(7,10,15,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.navin{height:62px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font-weight:900;letter-spacing:.08em}.links{display:flex;gap:8px;flex-wrap:wrap}.links a,.btn{color:#eaf1f8;text-decoration:none;border:1px solid #334153;border-radius:999px;padding:8px 11px;background:#101722;font-size:11px}.hero{padding:34px 0 20px}.eyebrow{color:#8db2ff;font-weight:900;font-size:11px;letter-spacing:.16em;text-transform:uppercase}.hero h1{font-size:clamp(34px,5vw,66px);line-height:.96;margin:9px 0 14px;letter-spacing:-.045em}.hero p{max-width:980px;color:#b5c1cf;font-size:16px}.boundary{margin-top:16px;padding:13px 15px;border:1px solid rgba(242,201,76,.3);background:rgba(242,201,76,.06);border-radius:14px;color:#d9cfa9}.facts{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0}.fact{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px}.fact b{font-size:22px;display:block}.fact span{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(330px,.7fr);gap:14px;align-items:start}.mapbox,.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.maphead{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.maphead h2,.card h3{margin:0}.maphead p,.card p{margin:5px 0 0;color:var(--muted)}#map{height:690px;background:#0b1118}.side{display:grid;gap:12px}.card{padding:16px}.legend{display:grid;gap:8px;margin-top:12px}.legend div{display:flex;gap:8px;align-items:flex-start;color:#bdc8d4;font-size:12px}.dot{width:10px;height:10px;border-radius:50%;margin-top:4px;flex:0 0 auto}.route{padding:11px 0;border-bottom:1px solid #25303d}.route:last-child{border-bottom:0}.route .top{display:flex;justify-content:space-between;gap:10px}.route b{font-size:12px}.route small{display:block;color:var(--muted);margin-top:4px}.pill{display:inline-flex;border:1px solid #344356;border-radius:999px;padding:3px 7px;font-size:9px;color:#b9c7d8}.roadrefs{color:#8db2ff!important}.tablewrap{margin:16px 0 36px;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid #25303d;font-size:11px}th{color:#93a5b8;text-transform:uppercase;letter-spacing:.08em;background:#0d131b}.confirmed{color:#a9e69a}.synthetic{color:#ffd77e}.status{font-weight:900}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#101720;color:#edf3f8}.leaflet-popup-content{font:12px/1.45 Inter,system-ui}.leaflet-control-attribution{font-size:9px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.facts{grid-template-columns:repeat(2,1fr)}#map{height:560px}}@media(max-width:600px){.facts{grid-template-columns:1fr}.links{display:none}.wrap{padding:0 14px}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap navin"><div class="brand">GAZA · FARM NETWORK</div><div class="links"><a href="plant-3d.html">Plant 3D</a><a href="territory.html">Territorio</a><a href="systems.html">Sistemas / acoplamiento</a><a href="game.html">Strategy Twin</a></div></div></nav>
+<header class="hero"><div class="wrap"><div class="eyebrow">Red territorial · captación de leche · v1</div><h1>Granjas separadas de la planta.<br>Cosidas por carreteras reales.</h1><p>Esta vista saca la granja del campus industrial y trabaja a escala territorial. El radio de 50 km procede de la comunicación pública de Leche Gaza; las geometrías de carretera se calculan con OSRM sobre OpenStreetMap. Los nodos no confirmados se mantienen anónimos/sintéticos y no se presentan como explotaciones reales de Gaza.</p><div class="boundary"><b>Regla de evidencia:</b> SAT ROTE / Toro aparece como proveedor confirmado públicamente, pero el pin se coloca a nivel de municipio y no pretende señalar la finca exacta. El resto son nodos de captación de demostración para diseñar rutas, capacidad y telemetría sin atribuir granjas reales.</div>
+<div class="facts"><div class="fact"><b>80+</b><span>ganaderías · dato público</span></div><div class="fact"><b>&lt;50 km</b><span>recorrido leche → fábrica · público</span></div><div class="fact"><b id="routeKm">--</b><span>km circuitos calculados</span></div><div class="fact"><b id="routeTime">--</b><span>tiempo base OSRM</span></div><div class="fact"><b id="dgtRisk">--</b><span>riesgo corredor DGT*</span></div></div></div></header>
+<main class="wrap">
+<div class="layout">
+ <section class="mapbox"><div class="maphead"><div><h2>Red de captación · Coreses</h2><p>OpenStreetMap + OSRM · carreteras reales; agenda de recogida todavía no real.</p></div><span class="pill" id="netStatus">Cargando…</span></div><div id="map"></div></section>
+ <aside class="side">
+  <div class="card"><h3>Qué es real aquí</h3><div class="legend"><div><i class="dot" style="background:#2f72d8"></i><span><b>Planta:</b> coordenada pública Coreses.</span></div><div><i class="dot" style="background:#79c85b"></i><span><b>SAT ROTE:</b> relación de suministro a Gaza confirmada públicamente; posición sólo municipal.</span></div><div><i class="dot" style="background:#f2c94c"></i><span><b>Nodos demo:</b> anónimos, usados para calcular circuitos.</span></div><div><i class="dot" style="background:#65d8d0"></i><span><b>Rutas:</b> geometría calculada por OSRM sobre red OSM.</span></div></div></div>
+  <div class="card"><h3>Corredores candidatos</h3><p>No son horarios reales. Son circuitos calculados para preparar el modelo de recogida.</p><div id="routes"></div></div>
+  <div class="card"><h3>Ejes viarios de referencia</h3><p><b>N-122</b> Zamora–Coreses–Toro · <b>A-11/E-82</b> salida 447 · <b>ZA-P-1303</b> Algodre · <b>ZA-711</b> Molacillos · <b>ZA-710</b> conexión con N-122.</p></div>
+ </aside>
+</div>
+<div class="tablewrap"><table><thead><tr><th>Nodo</th><th>Clase</th><th>Precisión</th><th>Distancia aérea</th><th>Uso en modelo</th></tr></thead><tbody id="nodeRows"></tbody></table></div>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const pageParams=new URLSearchParams(location.search),qaMode=pageParams.get('qa')==='1';
+const colors=['#65d8d0','#8db2ff','#c39cff','#f29d70'];
+const map=L.map('map',{zoomControl:true}).setView([41.525162564246195,-5.604126176771143],10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const routeGroup=L.layerGroup().addTo(map),nodeGroup=L.layerGroup().addTo(map);
+function havKm(a,b,c,d){const R=6371,p=Math.PI/180,d1=(c-a)*p,d2=(d-b)*p,q=Math.sin(d1/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(q))}
+function fmtSec(s){const h=Math.floor(s/3600),m=Math.round((s%3600)/60);return h?(h+' h '+m+' min'):(m+' min')}
+function readEnv(){try{return JSON.parse(localStorage.getItem('gaza:environment:v1')||'{}')}catch(_){return {}}}
+function updateDgt(){const d=readEnv().dgt||{};document.getElementById('dgtRisk').textContent=d.routeRisk!=null?('R'+d.routeRisk):'N/D'}
+async function init(){
+ const data=await fetch('data/farm-network.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('farm-network '+r.status);return r.json()});
+ const p=data.plant;L.circle([p.lat,p.lon],{radius:data.publicConstraint.radiusKm*1000,color:'#2f72d8',weight:1,fillColor:'#2f72d8',fillOpacity:.035,dashArray:'7 7'}).addTo(map);
+ L.circleMarker([p.lat,p.lon],{radius:9,color:'#fff',weight:2,fillColor:'#2f72d8',fillOpacity:1}).addTo(nodeGroup).bindPopup('<b>'+p.name+'</b><br>P.I. El Pinar · Parcela 10<br><span style="color:#8db2ff">PUBLIC_REFERENCE</span>');
+ const byId=new Map(data.nodes.map(n=>[n.id,n]));
+ document.getElementById('nodeRows').innerHTML=data.nodes.map(n=>{const km=havKm(p.lat,p.lon,n.lat,n.lon),confirmed=n.kind.startsWith('CONFIRMED');L.circleMarker([n.lat,n.lon],{radius:confirmed?7:5,color:confirmed?'#79c85b':'#f2c94c',weight:2,fillColor:confirmed?'#79c85b':'#f2c94c',fillOpacity:.88}).addTo(nodeGroup).bindPopup('<b>'+n.name+'</b><br>'+n.detail+'<br><span style="color:'+(confirmed?'#a9e69a':'#ffd77e')+'">'+n.kind+'</span>');return '<tr><td><b>'+n.name+'</b></td><td class="'+(confirmed?'confirmed':'synthetic')+'">'+n.kind+'</td><td>'+n.precision+'</td><td>'+km.toFixed(1)+' km</td><td>'+(confirmed?'Referencia pública de origen':'Diseño de rutas sin atribución real')+'</td></tr>'}).join('');
+ let totalKm=0,totalSec=0,done=0;const cards=[];
+ for(let i=0;i<data.candidateLoops.length;i++){
+  const loop=data.candidateLoops[i],nodes=loop.nodeIds.map(id=>byId.get(id)),pts=[p,...nodes,p],coord=pts.map(x=>x.lon+','+x.lat).join(';');
+  if(qaMode){const latlng=pts.map(x=>[x.lat,x.lon]);L.polyline(latlng,{color:colors[i%colors.length],weight:4,opacity:.8,dashArray:'8 7'}).addTo(routeGroup);const km=pts.slice(1).reduce((s,x,j)=>s+havKm(pts[j].lat,pts[j].lon,x.lat,x.lon),0)*1.16,sec=km/55*3600;totalKm+=km;totalSec+=sec;cards.push({name:loop.name,km,sec,refs:'QA · geometría simplificada'});done++;continue}
+  try{
+   const u='https://router.project-osrm.org/route/v1/driving/'+coord+'?overview=full&geometries=geojson&steps=true&alternatives=false';
+   const j=await fetch(u).then(r=>{if(!r.ok)throw new Error('OSRM '+r.status);return r.json()});const rt=j.routes&&j.routes[0];if(!rt)throw new Error('sin ruta');
+   L.geoJSON(rt.geometry,{style:{color:colors[i%colors.length],weight:5,opacity:.78}}).addTo(routeGroup);totalKm+=rt.distance/1000;totalSec+=rt.duration;
+   const refs=[...new Set((rt.legs||[]).flatMap(l=>(l.steps||[]).map(s=>s.ref||s.name).filter(Boolean)))].slice(0,7).join(' · ');
+   cards.push({name:loop.name,km:rt.distance/1000,sec:rt.duration,refs:refs||'OSRM / OSM'});done++;
+  }catch(e){cards.push({name:loop.name,error:e.message})}
+ }
+ document.getElementById('routes').innerHTML=cards.map((r,i)=>'<div class="route"><div class="top"><b>'+r.name+'</b><span class="pill">'+(r.error?'N/D':r.km.toFixed(1)+' km')+'</span></div><small>'+(r.error?'OSRM no disponible: '+r.error:fmtSec(r.sec)+' · circuito candidato')+'</small><small class="roadrefs">'+(r.refs||'')+'</small></div>').join('');
+ document.getElementById('routeKm').textContent=totalKm?Math.round(totalKm)+' km':'N/D';document.getElementById('routeTime').textContent=totalSec?fmtSec(totalSec):'N/D';document.getElementById('netStatus').textContent=done+'/'+data.candidateLoops.length+' corredores calculados';updateDgt();
+}
+window.addEventListener('storage',e=>{if(e.key==='gaza:environment:v1')updateDgt()});init().catch(e=>{document.getElementById('netStatus').textContent='ERROR · '+e.message});
+</script></body></html>
