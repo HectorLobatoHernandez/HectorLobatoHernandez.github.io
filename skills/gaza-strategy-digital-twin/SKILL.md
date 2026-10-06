@@ -1,6 +1,6 @@
 ---
 name: gaza-strategy-digital-twin
-description: Build and refine the GAZA Operations Intelligence demonstrator as a branded isometric strategy-game digital twin. Use for GAZA UI, Three.js/WebGL, farm-to-factory logistics, warehouse simulation, territory/routing, scenario design, visual QA, and interview demo preparation.
+description: Build and refine the GAZA Operations Intelligence demonstrator as a branded isometric strategy-game digital twin. Use for GAZA UI, Three.js/WebGL, farm-to-factory logistics, warehouse simulation, territory/routing, scenario design, visual QA, interview demo preparation, and launch/demo media.
 ---
 
 # GAZA Strategy Digital Twin
@@ -149,6 +149,20 @@ Use GAZA branding on:
 - pallet/order labels where appropriate.
 
 Do not brand third-party carriers as GAZA unless the scenario explicitly says the vehicle is synthetic.
+
+## Launch / demo video
+When the request is to present, pitch, publish or demonstrate the build as a short video, delegate the media workflow to the vendored `brag-slim` skill.
+
+For GAZA/RHB outputs:
+- use the real app UI, real project assets and deterministic scenario rather than generic mockups;
+- preserve PUBLIC / LIVE PUBLIC / SYNTHETIC / TO VALIDATE provenance in any claim that appears on screen;
+- never invent factory KPIs, fleet counts, savings, production throughput, customer names or internal claims for marketing impact;
+- prefer a 18–22 s vertical or landscape sequence showing: territory/factory reveal -> one live operational flow -> incident/replan -> branded operational overview;
+- keep the GAZA visual system and logo unchanged;
+- output `brag.mp4`, `brag.jpg`, `share-copy.txt` and `brag-plan.md` under `brag-output*/`;
+- treat generated media as an export artifact, not source-of-truth project data.
+
+The full Hyperframes-backed `/brag` plugin is not part of the canonical GAZA stack yet. Use `brag-slim` unless the project explicitly adopts and validates Hyperframes.
 
 ## Verification gate
 Before calling a build testable:
