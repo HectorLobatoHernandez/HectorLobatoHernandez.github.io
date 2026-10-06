@@ -114,15 +114,24 @@ Run "openclaw" @("mcp","doctor","threejs-devtools","--probe") -AllowFail
 
 Step "Blender MCP gateway"
 Run "python" @("-m","pip","install","--upgrade","blender-mcp-ultra")
-if (!(Have "blender-mcp-server")) {
-  Write-Warning "blender-mcp-server is not on PATH yet. Open a new terminal after installation if Python Scripts was added to PATH."
+$blenderMcpCommand = $null
+$blenderMcpResolved = Get-Command "blender-mcp-server" -ErrorAction SilentlyContinue
+if ($blenderMcpResolved) {
+  $blenderMcpCommand = $blenderMcpResolved.Source
 } else {
-  Write-Host "[OK] blender-mcp-server available"
-  if (!(OpenClawHas "blender")) {
-    Run "openclaw" @("mcp","add","blender","--command","blender-mcp-server")
-  } else {
-    Write-Host "[OK] blender MCP already configured"
+  $pythonScripts = (& python -c "import sysconfig; print(sysconfig.get_path('scripts'))" 2>$null | Out-String).Trim()
+  if ($pythonScripts) {
+    $candidate = Join-Path $pythonScripts "blender-mcp-server.exe"
+    if (Test-Path $candidate) { $blenderMcpCommand = $candidate }
   }
+}
+if (!$blenderMcpCommand) {
+  Write-Warning "blender-mcp-server was installed but its executable could not be resolved. Rerun VERIFY_GAZA_3D_STACK.ps1 after opening a new terminal."
+} else {
+  Write-Host "[OK] blender-mcp-server available: $blenderMcpCommand"
+  $blenderConfig = @{ command = $blenderMcpCommand; connectionTimeoutMs = 30000; requestTimeoutMs = 60000 } | ConvertTo-Json -Compress
+  Run "openclaw" @("mcp","set","blender",$blenderConfig)
+  # The gateway can initialize before Blender is open; Blender-side tools become live after the addon connects on localhost:9876.
   Run "openclaw" @("mcp","doctor","blender","--probe") -AllowFail
 }
 
