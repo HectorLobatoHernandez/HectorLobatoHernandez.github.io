@@ -97,3 +97,13 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 - Major OSM roads are rendered separately from contextual building extrusions; GAZA-tagged OSM candidates are highlighted but remain `NOT AS-BUILT`.
 - A deterministic local QA fixture makes visual tests independent of Overpass availability.
 - This page is intentionally separate from the production Plant 3D until public GIS alignment is reviewed; after approval, the same runtime can replace contextual road/building geometry incrementally.
+
+
+## v15 Mission Control
+- `mission-control.html` is the fullscreen orchestration surface for live demos and technical presentations.
+- It unifies Plant 3D, Strategy Twin, GIS 3D, Territory, Campus GIS, Systems and Control Tower behind a single mode rail.
+- Plant 3D now loads the public OSM 3D overlay as an explicit comparison layer and exposes a dedicated GIS camera.
+- Mission Control reads same-origin child telemetry when available, but does not write to OT/PLC systems.
+- Evidence classes remain visible at all times: PUBLIC / CALCULATED / INFERRED / SYNTHETIC.
+- Demo controls can request synthetic incident/freeze actions only when the loaded child surface supports them.
+- `window.__GAZA_MISSION_CONTROL__` exposes a machine-readable presentation contract for QA.
