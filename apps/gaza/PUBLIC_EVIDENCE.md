@@ -1,3 +1,38 @@
+## 2026-10-06 evidence expansion
+
+### Roads / territory
+- Public plant anchor used by the prototype: **41.525162564246195, -5.604126176771143**.
+- Polígono Industrial El Pinar is an OSM industrial area around 41.52472, -5.59993.
+- Public road context used for the model includes **N-122** (Zamora–Coreses–Toro), **A-11 / E-82** access context, and provincial Coreses references **ZA-P-1303 / ZA-711 / ZA-710**.
+- Exact Three.js sign/road placement remains contextual until imported from georeferenced OSM or an authorised survey.
+
+### Farm network
+- Gaza publicly states **80+ farms** and milk travelling **less than 50 km** to the factory.
+- **SAT ROTE / Toro** is currently the only individually named supplier relationship promoted into the model from public research. Public reporting confirms the supply relationship; the model deliberately uses a municipality-level reference rather than an exact farm pin.
+- Other farm nodes remain synthetic/anonymized.
+
+### Public systems / suppliers
+- **Solmicro ERP**: Leche Gaza is publicly listed as an ERP customer; current product, version, modules and interfaces remain unknown.
+- **WAU Technologies**: currently lists Leche Gaza among clients, but the public page does not identify which WAU/Microsoft/Siemens products are deployed. Do not infer Business Central, Opcenter or EMI Suite at Gaza.
+- **Tetra Pak**: 2022 public reporting identifies Tetra Pak Hispania as principal supplier of production equipment for the new installations; exact line models and automation software remain unknown.
+- **Esnova + Signode StorFast**: public evidence supports a 9-level automated warehouse with Esnova racks and StorFast shuttle carts; WCS/WMS details remain unknown.
+- **Veolia**: public case material supports steam/energy, water treatment, EDARI and waste-management services.
+
+### Official water concession
+BOE 2025 public values:
+- 380,390 m3/year maximum annual volume.
+- 25.20 l/s maximum instantaneous flow.
+- 12.06 l/s mean equivalent flow.
+- groundwater body 400038 Tordesillas–Toro.
+- 25-year concession term.
+
+### Public leadership roles
+Textual role references only; never live-location tracking:
+- **José Sánchez** — announced as president in July 2026.
+- **Saúl Alonso Miñambres** — manager/gerente registered from 18 December 2025 and referenced by company communications in 2026.
+- **Gustavo Andrés Martín** — public professional affiliation in commercial/international activity.
+- **Roberto Vizán** — publicly described as marketing manager/responsible in September 2026.
+
 # GAZA — Public Evidence / Simulation Boundary
 
 ## Confirmed public anchors
