@@ -29,7 +29,7 @@ function SpotlightCard({ children, className = '', spotlightColor = 'rgba(87, 14
 
 function ScrollReveal({ children, enableBlur = true, baseOpacity = 0.12, baseRotation = 2, blurStrength = 5, className = '' }) {
   const ref = useRef(null);
-  const words = useMemo(() => String(children).split(/(\\s+)/), [children]);
+  const words = useMemo(() => String(children).split(/(\s+)/), [children]);
 
   useEffect(() => {
     const el = ref.current;
@@ -68,7 +68,7 @@ function ScrollReveal({ children, enableBlur = true, baseOpacity = 0.12, baseRot
   }, [enableBlur, baseOpacity, baseRotation, blurStrength]);
 
   return html`<div ref=${ref} className=${'scroll-reveal ' + className}>
-    ${words.map((w, i) => /^\\s+$/.test(w) ? w : html`<span className="rb-word" key=${i}>${w}</span>`)}
+    ${words.map((w, i) => /^\s+$/.test(w) ? w : html`<span className="rb-word" key=${i}>${w}</span>`)}
   </div>`;
 }
 
