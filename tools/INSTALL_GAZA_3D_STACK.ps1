@@ -31,13 +31,29 @@ function VersionMajor([string]$Text) {
 }
 function OpenClawHas([string]$Name) {
   if (!(Have "openclaw")) { return $false }
-  & openclaw mcp show $Name --json *> $null
-  return $LASTEXITCODE -eq 0
+  $oldPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = "SilentlyContinue"
+    & openclaw mcp show $Name --json 1>$null 2>$null
+    return $LASTEXITCODE -eq 0
+  } catch {
+    return $false
+  } finally {
+    $ErrorActionPreference = $oldPreference
+  }
 }
 function CodexHas([string]$Name) {
   if (!(Have "codex")) { return $false }
-  & codex mcp get $Name --json *> $null
-  return $LASTEXITCODE -eq 0
+  $oldPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = "SilentlyContinue"
+    & codex mcp get $Name --json 1>$null 2>$null
+    return $LASTEXITCODE -eq 0
+  } catch {
+    return $false
+  } finally {
+    $ErrorActionPreference = $oldPreference
+  }
 }
 
 function Refresh-Path {
@@ -153,21 +169,40 @@ if (!$blenderMcpCommand) {
 Step "Blender addon package"
 $addonZip = Join-Path $ToolRoot "blender_mcp_ultra.zip"
 if (!$SkipBlenderAddonDownload) {
+  $addonReady = $false
   try {
     $release = Invoke-RestMethod "https://api.github.com/repos/carlosh7/blender-mcp/releases/latest" -Headers @{"User-Agent"="RHB-STUDIO-GAZA-3D"}
     $asset = $release.assets | Where-Object { $_.name -eq "blender_mcp_ultra.zip" } | Select-Object -First 1
     if ($asset) {
       Invoke-WebRequest $asset.browser_download_url -OutFile $addonZip
-      Write-Host "[OK] Blender addon downloaded: $addonZip"
-    } else {
-      Write-Warning "Latest release has no blender_mcp_ultra.zip asset. Use the repository INSTALL.md method."
+      $addonReady = Test-Path $addonZip
+      if ($addonReady) { Write-Host "[OK] Blender addon downloaded: $addonZip" }
     }
   } catch {
-    Write-Warning ("Could not download Blender addon automatically: " + $_.Exception.Message)
+    Write-Warning ("Release addon download unavailable: " + $_.Exception.Message)
+  }
+
+  if (!$addonReady) {
+    Write-Host "[INFO] Release has no addon ZIP; building it from the official addon/ source."
+    $sourceRoot = Join-Path $ToolRoot "blender-mcp-source"
+    $stageRoot = Join-Path $ToolRoot "blender-addon-stage"
+    Remove-Item $sourceRoot -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item $stageRoot -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item $addonZip -Force -ErrorAction SilentlyContinue
+    Run "git" @("clone","--depth","1","https://github.com/carlosh7/blender-mcp.git",$sourceRoot)
+    $addonSource = Join-Path $sourceRoot "addon"
+    if (!(Test-Path $addonSource)) { throw "Official Blender MCP repository has no addon/ directory." }
+    $addonStage = Join-Path $stageRoot "blender_mcp_ultra"
+    New-Item -ItemType Directory -Force -Path $addonStage | Out-Null
+    Copy-Item (Join-Path $addonSource "*") $addonStage -Recurse -Force
+    Compress-Archive -Path $addonStage -DestinationPath $addonZip -Force
+    $addonReady = Test-Path $addonZip
+    if (!$addonReady) { throw "Failed to build Blender addon ZIP." }
+    Write-Host "[OK] Blender addon built from official source: $addonZip"
   }
 }
 if (Test-Path $addonZip) {
-  Write-Host "Blender GUI step: Edit > Preferences > Add-ons > Install from Disk... > $addonZip"
+  Write-Host "Blender GUI step: Edit > Preferences > Add-ons/Get Extensions > Install from Disk... > $addonZip"
   Write-Host "Enable blender-mcp-ultra, open the N-panel MCP tab, and click Connect/Start Server."
 }
 
