@@ -38,11 +38,11 @@ section{padding:46px 0;border-top:1px solid rgba(255,255,255,.055)}.section-head
       <h1>GAZA Operations<br><span>sobre territorio real.</span></h1>
       <div class="lead"><strong>Propuesta técnica independiente</strong> para convertir información de expediciones, planta, rutas, utilidades y sistemas existentes en una capa operativa común. Esta versión abandona el mapa inventado y trabaja sobre la <strong>ubicación real de la planta en Coreses</strong>, red viaria real y cálculo dinámico de rutas.</div>
       <div class="boundary"><strong>Frontera de datos:</strong> ubicación, red viaria, fuentes públicas, meteorología y distancias calculadas proceden de fuentes reales. Pedidos, expediciones, pallets, turnos, muelles, clientes y carga de tráfico interno son escenarios de demostración hasta disponer de acceso autorizado a ERP/WMS/MES/OT.</div>
-      <div class="actions"><a class="btn primary" href="#territorio">Abrir mapa operativo</a><a class="btn" href="farm-network.html">Red de granjas &lt;50 km</a><a class="btn" href="systems.html">Software / acoplamiento</a><a class="btn" target="_blank" href="https://www.google.com/maps/search/?api=1&query=41.52355,-5.59993">Abrir planta en Google Maps</a></div>
+      <div class="actions"><a class="btn primary" href="#territorio">Abrir mapa operativo</a><a class="btn" href="farm-network.html">Red de granjas &lt;50 km</a><a class="btn" href="systems.html">Software / acoplamiento</a><a class="btn" target="_blank" href="https://www.google.com/maps/search/?api=1&query=41.52472,-5.59993">Abrir planta en Google Maps</a></div>
     </div>
     <div class="brandcard">
       <div class="gaza-mark"><div class="gaza-word">gaza<small>GANADEROS DE ZAMORA · OPERATIONS CONCEPT</small></div></div>
-      <div class="geo"><b>Planta pública:</b><br>P.I. El Pinar · Parcela 10<br>49530 Coreses · Zamora<br><br><b>Centro operativo corregido:</b><br>41.52355, -5.59993<br><small>aprox. · usuario + contexto OSM · no topográfico</small></div>
+      <div class="geo"><b>Planta pública:</b><br>P.I. El Pinar · Parcela 10<br>49530 Coreses · Zamora<br><br><b>Centro operativo corregido:</b><br>41.52472, -5.59993<br><small>aprox. · usuario + contexto OSM · no topográfico</small></div>
       <div class="brand-meta"><span>GAZACONTROL</span><span>Lean Manufacturing</span><span>Solmicro ERP · referencia pública</span><span>Veolia utilities</span><span>Read-only first</span></div>
     </div>
   </div>
@@ -63,7 +63,7 @@ section{padding:46px 0;border-top:1px solid rgba(255,255,255,.055)}.section-head
     <div class="map-shell"><div class="map-top"><div><h3>Mapa operativo · Coreses / Zamora</h3><p>Planta real + radio de captación público &lt;50 km + rutas demo calculadas sobre red viaria.</p></div><div class="map-badges"><span>OSM tiles</span><span>80+ farms · network demo</span><span>OSRM routes</span><span>Open-Meteo LIVE</span><span>DGT DATEX2 source</span></div></div><div id="map"></div></div>
     <div class="side">
       <div class="card"><span class="status"><i></i>METEOROLOGÍA REAL</span><h3 style="margin-top:10px">Condiciones actuales en planta</h3><p>Consulta directa a Open-Meteo sobre la coordenada de la planta. Si la consulta externa no está disponible, la interfaz mantiene el último estado conocido como no verificado.</p><div class="weather-row"><div class="metric"><div class="v" id="temp">-- °C</div><div class="l">temperatura</div></div><div class="metric"><div class="v" id="wind">-- km/h</div><div class="l">viento</div></div><div class="metric"><div class="v" id="weather">--</div><div class="l">condición</div></div><div class="metric"><div class="v" id="weatherTime">--</div><div class="l">actualización</div></div></div></div>
-      <div class="card"><span class="status"><i></i>ANCLA CORREGIDA</span><h3 style="margin-top:10px">Referencia cartográfica · fábrica GAZA</h3><p>Centro operativo aproximado corregido a partir de tu identificación visual y contraste con el contexto OSM. No es un punto topográfico ni un levantamiento as-built.</p><div class="weather-row"><div class="metric"><div class="v">41.52355</div><div class="l">latitud</div></div><div class="metric"><div class="v">-5.59993</div><div class="l">longitud</div></div></div><iframe class="google-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=41.52355,-5.59993&z=18&output=embed"></iframe><div class="smallnote">P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora) · punto anterior 41.5251626, -5.6041262 retirado.</div></div>
+      <div class="card"><span class="status"><i></i>ANCLA CORREGIDA</span><h3 style="margin-top:10px">Referencia cartográfica · fábrica GAZA</h3><p>Centro operativo aproximado corregido a partir de tu identificación visual y contraste con el contexto OSM. No es un punto topográfico ni un levantamiento as-built.</p><div class="weather-row"><div class="metric"><div class="v">41.52472</div><div class="l">latitud</div></div><div class="metric"><div class="v">-5.59993</div><div class="l">longitud</div></div></div><iframe class="google-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=41.52472,-5.59993&z=18&output=embed"></iframe><div class="smallnote">P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora) · punto anterior 41.5251626, -5.6041262 retirado.</div></div>
     </div>
   </div>
 </div></section>
@@ -112,7 +112,7 @@ section{padding:46px 0;border-top:1px solid rgba(255,255,255,.055)}.section-head
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-const plant={name:'Leche Gaza · Coreses',lat:41.52355,lon:-5.59993};
+const plant={name:'Leche Gaza · Coreses',lat:41.52472,lon:-5.59993};
 const destinations=[
   {name:'Zamora · nodo demo',lat:41.5034,lon:-5.7447},
   {name:'Toro · nodo demo',lat:41.5242,lon:-5.3951},
