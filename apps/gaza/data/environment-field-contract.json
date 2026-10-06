@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "purpose": "Operational environmental field for the GAZA digital twin. Public weather data can drive the visual field; proposed on-site sensors remain design placeholders until installed and commissioned.",
+  "plantAnchor": {
+    "lat": 41.52355,
+    "lon": -5.59993,
+    "authority": "data/site-reference.json"
+  },
+  "publicWeatherSource": {
+    "provider": "Open-Meteo",
+    "classification": "PUBLIC_REFERENCE_LIVE",
+    "variables": [
+      "temperature_2m",
+      "relative_humidity_2m",
+      "surface_pressure",
+      "weather_code",
+      "precipitation",
+      "wind_speed_10m",
+      "wind_direction_10m",
+      "wind_gusts_10m",
+      "cloud_cover"
+    ],
+    "policy": "Grid weather is not a substitute for calibrated on-site instrumentation or CFD."
+  },
+  "spatialField": {
+    "classification": "DERIVED_VISUAL_FIELD_NOT_CFD",
+    "model": "uniform base vector across campus with explicit non-CFD label",
+    "axes": "X_EAST_Z_NORTH",
+    "windConvention": "meteorological FROM degrees clockwise from north; renderer converts to flow-to vector",
+    "limitations": [
+      "No building-wake physics",
+      "No terrain CFD",
+      "No stack/plume dispersion",
+      "No sensor calibration",
+      "No safety-critical control"
+    ]
+  },
+  "proposedSensorNetwork": {
+    "classification": "PROPOSED_NOT_INSTALLED",
+    "nodes": [
+      {"id":"WX-PROP-01","localX":-135,"localZ":-85,"role":"SW perimeter"},
+      {"id":"WX-PROP-02","localX":0,"localZ":-92,"role":"South process perimeter"},
+      {"id":"WX-PROP-03","localX":135,"localZ":-82,"role":"SE logistics perimeter"},
+      {"id":"WX-PROP-04","localX":145,"localZ":15,"role":"East ASRS perimeter"},
+      {"id":"WX-PROP-05","localX":130,"localZ":88,"role":"NE yard perimeter"},
+      {"id":"WX-PROP-06","localX":0,"localZ":92,"role":"North road perimeter"},
+      {"id":"WX-PROP-07","localX":-135,"localZ":88,"role":"NW access perimeter"},
+      {"id":"WX-PROP-08","localX":-145,"localZ":10,"role":"West utilities perimeter"}
+    ],
+    "designChannels": [
+      "air_temperature",
+      "relative_humidity",
+      "barometric_pressure",
+      "wind_speed",
+      "wind_direction",
+      "wind_gust",
+      "precipitation"
+    ],
+    "commissioningRequired": true
+  },
+  "controlBoundary": {
+    "writes": "DISABLED",
+    "allowedUse": [
+      "visualisation",
+      "alerts",
+      "operational context",
+      "historical correlation",
+      "future HVAC/energy optimisation recommendations with human approval"
+    ],
+    "prohibitedUntilEngineeringApproval": [
+      "automatic safety control",
+      "process interlocks",
+      "ventilation shutdown",
+      "emergency action"
+    ]
+  }
+}
