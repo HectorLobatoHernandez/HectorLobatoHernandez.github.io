@@ -1,0 +1,10 @@
+# GAZA local development
+apps/gaza/node_modules/
+apps/gaza/.qa/
+apps/gaza/npm-debug.log*
+apps/gaza/.DS_Store
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
