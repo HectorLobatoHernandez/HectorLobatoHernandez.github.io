@@ -1,0 +1,42 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GAZA · Campus GIS real</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#071018;--panel:#0d1721;--line:#263746;--text:#e8f0f7;--muted:#93a7b8;--blue:#4da3ff;--green:#79d27b;--amber:#efc534;--red:#e05a5a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,Arial}.top{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:center;justify-content:space-between}.top h1{margin:0;font-size:22px}.top p{margin:4px 0 0;color:var(--muted);max-width:900px}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a,.btn{color:var(--text);text-decoration:none;border:1px solid var(--line);background:#111d28;border-radius:8px;padding:8px 11px;cursor:pointer}.nav a:hover,.btn:hover{border-color:#4b6a82}.layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;min-height:calc(100vh - 86px)}#map{min-height:720px;background:#101820}.side{border-left:1px solid var(--line);padding:16px;background:#09121b;overflow:auto}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}.card h2,.card h3{margin:0 0 8px}.card p{color:var(--muted);margin:6px 0}.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fact{border:1px solid var(--line);border-radius:9px;padding:10px;background:#101b26}.fact b{display:block;font-size:16px}.fact span{font-size:11px;color:var(--muted)}.legend{display:grid;gap:7px}.legend div{display:flex;align-items:center;gap:8px;color:var(--muted)}.sw{width:16px;height:5px;border-radius:5px}.status{font-size:12px;padding:6px 8px;border-radius:7px;background:#101b26;border:1px solid var(--line);display:inline-block}.ok{color:var(--green)}.warn{color:var(--amber)}.route{padding:9px;border:1px solid var(--line);border-radius:8px;margin:7px 0}.route b{display:block}.route span{color:var(--muted);font-size:12px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#0d1721;color:#e8f0f7}.leaflet-control-attribution{font-size:10px}@media(max-width:900px){.layout{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}#map{min-height:58vh}.top{align-items:flex-start;flex-direction:column}}
+</style></head><body>
+<header class="top"><div><h1>GAZA · Campus GIS / viario real</h1><p>Geometría pública OSM alrededor de P.I. El Pinar, Parcela 10. Esta vista sirve para posición, red viaria y contexto geoespacial. No sustituye DWG/DXF/IFC, catastro autorizado ni levantamiento topográfico.</p></div><nav class="nav"><a href="plant-3d.html">Planta 3D</a><a href="farm-network.html">Granjas &lt;50 km</a><a href="territory.html">Territorio</a><a href="systems.html">Software</a></nav></header>
+<main class="layout"><div id="map"></div><aside class="side">
+<div class="card"><h2>Base geoespacial</h2><div class="facts"><div class="fact"><b>41.525163</b><span>latitud referencia</span></div><div class="fact"><b>-5.604126</b><span>longitud referencia</span></div><div class="fact"><b>EPSG:4326</b><span>intercambio web</span></div><div class="fact"><b>EPSG:25830</b><span>métrica recomendada</span></div></div><p>P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora).</p></div>
+<div class="card"><h3>Capas</h3><div class="legend"><div><i class="sw" style="background:#4da3ff"></i> carreteras OSM</div><div><i class="sw" style="background:#efc534"></i> edificios OSM</div><div><i class="sw" style="background:#79d27b"></i> uso industrial OSM</div><div><i class="sw" style="background:#e05a5a"></i> rutas OSRM calculadas</div></div><p id="osmStatus" class="status warn">Cargando Overpass…</p></div>
+<div class="card"><h3>Corredores calculados</h3><p>Son rutas del grafo OSM/OSRM desde la planta. No demuestran rutas comerciales reales de Gaza.</p><div id="routes"></div></div>
+<div class="card"><h3>Conversión a 3D</h3><p><b>Origen local:</b> planta = (0,0,0). X = Este, Z = Norte/Sur según convención Three.js. La siguiente fase importará estas polilíneas como spline/road mesh en Blender y las simplificará por LOD.</p><p>Antes de convertir edificios a as-built necesitamos plano autorizado o geometría contrastada. Los footprints OSM son contexto, no ingeniería.</p></div>
+<div class="card"><h3>Procedencia</h3><p>Mapa base © OpenStreetMap contributors. Overpass aporta objetos OSM; OSRM calcula geometría, distancia y duración sobre la red. Cada resultado se mantiene separado de datos REAL_AUTHORIZED.</p></div>
+</aside></main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const PLANT=[41.525162564246195,-5.604126176771143],map=L.map('map',{zoomControl:true}).setView(PLANT,15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const roadLayer=L.layerGroup().addTo(map),buildingLayer=L.layerGroup().addTo(map),industrialLayer=L.layerGroup().addTo(map),routeLayer=L.layerGroup().addTo(map);
+L.circleMarker(PLANT,{radius:9,color:'#fff',weight:2,fillColor:'#4da3ff',fillOpacity:.95}).addTo(map).bindPopup('<b>Leche Gaza · Coreses</b><br>P.I. El Pinar, Parcela 10<br>Referencia pública; no punto topográfico.');
+L.circle(PLANT,{radius:1500,color:'#4da3ff',weight:1,dashArray:'5 7',fillOpacity:0}).addTo(map);
+L.control.layers(null,{'Carreteras OSM':roadLayer,'Edificios OSM':buildingLayer,'Industrial OSM':industrialLayer,'Rutas OSRM':routeLayer},{collapsed:false}).addTo(map);
+const q='[out:json][timeout:25];(way(around:1800,'+PLANT[0]+','+PLANT[1]+')[highway];way(around:1800,'+PLANT[0]+','+PLANT[1]+')[building];way(around:1800,'+PLANT[0]+','+PLANT[1]+')[landuse=industrial];);out geom;';
+function popup(tags){const t=tags||{},bits=[];for(const k of ['name','ref','highway','building','landuse','surface','maxspeed'])if(t[k])bits.push('<b>'+k+'</b>: '+String(t[k]).replace(/[<>]/g,''));return bits.join('<br>')||'Objeto OSM';}
+fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(q)).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(j=>{
+ let roads=0,buildings=0,industrial=0;for(const e of j.elements||[]){if(!e.geometry||e.geometry.length<2)continue;const ll=e.geometry.map(p=>[p.lat,p.lon]),t=e.tags||{};
+  if(t.highway){L.polyline(ll,{color:'#4da3ff',weight:['motorway','trunk','primary'].includes(t.highway)?5:3,opacity:.88}).bindPopup(popup(t)).addTo(roadLayer);roads++}
+  else if(t.building){L.polygon(ll,{color:'#efc534',weight:1,fillColor:'#efc534',fillOpacity:.16}).bindPopup(popup(t)).addTo(buildingLayer);buildings++}
+  else if(t.landuse==='industrial'){L.polygon(ll,{color:'#79d27b',weight:2,fillColor:'#79d27b',fillOpacity:.08}).bindPopup(popup(t)).addTo(industrialLayer);industrial++}
+ }
+ const s=document.getElementById('osmStatus');s.className='status ok';s.textContent='OSM cargado · '+roads+' viales · '+buildings+' edificios · '+industrial+' polígonos industriales';
+}).catch(e=>{const s=document.getElementById('osmStatus');s.textContent='Overpass no disponible: '+e.message+' · el mapa base OSM sigue operativo';});
+const destinations=[
+ {name:'Zamora · corredor oeste',ll:[41.50347,-5.74456]},
+ {name:'Toro · corredor este',ll:[41.52417,-5.39534]},
+ {name:'Villalpando · escenario NE',ll:[41.865,-5.412]}
+];
+async function routeTo(d,i){const url='https://router.project-osrm.org/route/v1/driving/'+PLANT[1]+','+PLANT[0]+';'+d.ll[1]+','+d.ll[0]+'?overview=full&geometries=geojson';const r=await fetch(url);if(!r.ok)throw new Error('OSRM '+r.status);const j=await r.json(),x=j.routes&&j.routes[0];if(!x)throw new Error('sin ruta');const latlng=x.geometry.coordinates.map(p=>[p[1],p[0]]);L.polyline(latlng,{color:'#e05a5a',weight:3,opacity:.75,dashArray:i?'8 5':null}).addTo(routeLayer);return{name:d.name,km:x.distance/1000,min:x.duration/60}}
+Promise.allSettled(destinations.map(routeTo)).then(rs=>{document.getElementById('routes').innerHTML=rs.map((r,i)=>r.status==='fulfilled'?'<div class="route"><b>'+r.value.name+'</b><span>'+r.value.km.toFixed(1)+' km · '+Math.round(r.value.min)+' min base OSRM</span></div>':'<div class="route"><b>'+destinations[i].name+'</b><span>ruta no disponible</span></div>').join('')});
+window.__GAZA_GIS__={schemaVersion:1,plant:PLANT,sourceClass:'PUBLIC_REFERENCE',geometry:'OSM_RUNTIME',routing:'OSRM_CALCULATED'};
+</script></body></html>
