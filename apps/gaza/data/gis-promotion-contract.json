@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "stage": "GIS_COMPARISON",
+  "status": "COMPARISON_ONLY_NOT_AUTHORITY",
+  "authorities": {
+    "publicContext": "OpenStreetMap / public GIS",
+    "operationalAnchor": "data/site-reference.json",
+    "authoritativePlantGeometry": "NOT_AVAILABLE",
+    "futureAuthorityOrder": [
+      "authorised survey / topography",
+      "authorised DWG/DXF/IFC",
+      "approved owner/vendor layout",
+      "public cadastral/context data",
+      "OSM context",
+      "inferred reconstruction"
+    ]
+  },
+  "currentPromotion": {
+    "roads": "VISIBLE_COMPARISON_LAYER",
+    "buildingFootprints": "VISIBLE_COMPARISON_LAYER",
+    "industrialPolygon": "VISIBLE_COMPARISON_LAYER",
+    "realGate": "UNKNOWN",
+    "realDocks": "UNKNOWN",
+    "realBuildingHeights": "UNKNOWN_UNLESS_OSM_TAGGED",
+    "plantProceduralFallback": "REQUIRED"
+  },
+  "acceptanceForReplacement": [
+    "alignment reviewed against corrected plant anchor",
+    "source revision recorded",
+    "geometry provenance attached",
+    "no contradiction with authorised CAD/topography",
+    "visual QA passes",
+    "truck paths recomputed against promoted road geometry",
+    "HGV swept-path revalidated",
+    "fallback retained until promoted geometry is proven stable"
+  ],
+  "forbiddenClaims": [
+    "OSM footprint equals as-built building",
+    "nearest OSM road point equals confirmed gate",
+    "contextual dock position equals real dock",
+    "contextual building height equals real height",
+    "public road context proves Gaza commercial route"
+  ],
+  "runtimeContracts": [
+    "window.__GAZA_PUBLIC_GIS_3D__",
+    "window.__GAZA_ROAD_CONTEXT__",
+    "window.__GAZA_TWIN_STATE__"
+  ]
+}
