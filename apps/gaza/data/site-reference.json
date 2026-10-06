@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "site": {
+    "name": "Leche Gaza · Coreses",
+    "address": "P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora)",
+    "lat": 41.52355,
+    "lon": -5.59993,
+    "crs": "EPSG:4326",
+    "status": "USER_CONFIRMED_APPROXIMATE",
+    "accuracy": "APPROX_30M_NOT_SURVEYED"
+  },
+  "evidence": [
+    {
+      "type": "OFFICIAL_ADDRESS",
+      "value": "P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora)",
+      "source": "https://www.lechegaza.com/contacto.html"
+    },
+    {
+      "type": "OSM_INDUSTRIAL_CONTEXT",
+      "osmWay": 734283251,
+      "lat": 41.52472,
+      "lon": -5.59993,
+      "note": "Polígono Industrial El Pinar; public OSM context. Gaza factory is mapped nearby/south."
+    },
+    {
+      "type": "USER_VISUAL_CORRECTION",
+      "date": "2026-10-06",
+      "note": "User marked the factory footprint on the OSM view; operational anchor moved from the deprecated west-side point to the marked factory area."
+    }
+  ],
+  "deprecated": [
+    {
+      "lat": 41.525162564246195,
+      "lon": -5.604126176771143,
+      "status": "DEPRECATED_WRONG_SITE_POINT",
+      "reason": "Falls west of the user-confirmed factory footprint and is inconsistent with OSM factory context."
+    }
+  ],
+  "policy": "Use this operational anchor for weather, routing origin, farm-radius calculations and GIS local origin until an authorised survey/DWG/DXF/IFC supplies a surveyed reference."
+}
