@@ -17,9 +17,9 @@ function Step([string]$Text) {
   Write-Host ""
   Write-Host "=== $Text ===" -ForegroundColor Cyan
 }
-function Run([string]$Exe, [string[]]$Args, [switch]$AllowFail) {
-  Write-Host ("> " + $Exe + " " + ($Args -join " ")) -ForegroundColor DarkGray
-  & $Exe @Args
+function Run([string]$Exe, [string[]]$ArgumentList, [switch]$AllowFail) {
+  Write-Host ("> " + $Exe + " " + ($ArgumentList -join " ")) -ForegroundColor DarkGray
+  & $Exe @ArgumentList
   $code = $LASTEXITCODE
   if ($code -ne 0 -and -not $AllowFail) { throw "$Exe failed with exit code $code" }
   return $code
@@ -81,7 +81,10 @@ if (!(Have "openclaw")) { throw "OpenClaw CLI is required for the shared MCP reg
 Write-Host ("[OK] " + ((& openclaw --version 2>&1 | Out-String).Trim()))
 
 Step "Curated repository skills"
-Run "powershell" @("-NoProfile","-ExecutionPolicy","Bypass","-File",(Join-Path $PSScriptRoot "INSTALL_GAZA_SKILLS.ps1"))
+$skillsInstaller = Join-Path $PSScriptRoot "INSTALL_GAZA_SKILLS.ps1"
+Write-Host ("> " + $skillsInstaller) -ForegroundColor DarkGray
+& $skillsInstaller
+if (-not $?) { throw "INSTALL_GAZA_SKILLS.ps1 failed." }
 
 Step "Mint Three.js Skills"
 Run "npx" @("--yes","skills","add","mintdotgg/mint-threejs-skills","-a","codex","-g","-y")
