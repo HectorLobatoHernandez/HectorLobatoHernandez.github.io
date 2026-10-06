@@ -322,6 +322,17 @@ if(canvas){
  const warehouse=addBox(groups.warehouse,'Almacén automático · 9 niveles',70,28,45,88,-25,0x455b74,{kind:'PÚBLICO + RECONSTRUCCIÓN',info:'9 niveles es dato público; envolvente y posición son reconstrucción funcional, no as-built.'});warehouse.material.transparent=true;warehouse.material.opacity=.17;warehouse.material.depthWrite=false;
  const staging=addBox(groups.plant,'Staging + muelles',58,10,25,91,38,0x875e37,{kind:'SIMULADO',info:'Preparación y expedición. Número/posición de muelles no confirmado.'});
  const utilities=addBox(groups.utilities,'Utilities · vapor / agua / EDARI',30,11,20,-94,22,0x58753c,{kind:'PÚBLICO + SIMULADO',info:'Veolia confirma vapor, agua y EDARI; geometría/posición conceptual.'});
+
+ // Reception / access detail. Layout is functional reconstruction, not surveyed.
+ const weighDeck=new THREE.Mesh(new THREE.BoxGeometry(4.6,.28,20),mat(0x66727d,.62,.42));weighDeck.position.set(-118,.28,47);groups.roads.add(weighDeck);
+ for(const x of [-121,-115]){const rail=new THREE.Mesh(new THREE.BoxGeometry(.18,.5,20),mat(0xefc534,.6,.12));rail.position.set(x,.55,47);groups.roads.add(rail)}
+ const weighKiosk=addBox(groups.evidence,'Báscula / control acceso · demo',5,3.4,4,-108,48,0xd8dde2,{kind:'RECONSTRUCCIÓN FUNCIONAL',info:'Báscula y control representados para el flujo de cisternas; ubicación/equipo real pendientes de plano autorizado.'});
+ addLabel(groups.evidence,'BÁSCULA · DEMO',-108,7,48,'#dbe7f5',30);
+ const unloadPad=new THREE.Mesh(new THREE.PlaneGeometry(30,12),mat(0x3b4650,.88,.05));unloadPad.rotation.x=-Math.PI/2;unloadPad.position.set(-107,.15,-50);groups.roads.add(unloadPad);
+ for(const x of [-119,-95])for(const z of [-55,-45]){const bollard=new THREE.Mesh(new THREE.CylinderGeometry(.32,.38,1.8,10),mat(0xefc534,.6,.08));bollard.position.set(x,.9,z);groups.evidence.add(bollard)}
+ const hoseStand=new THREE.Group(),hosePost=new THREE.Mesh(new THREE.CylinderGeometry(.35,.45,4.2,10),inoxDark),hoseLoop=new THREE.Mesh(new THREE.TorusGeometry(1.4,.18,8,18),new THREE.MeshStandardMaterial({color:0x22272d,roughness:.85}));hosePost.position.y=2.1;hoseLoop.rotation.y=Math.PI/2;hoseLoop.position.set(0,3.1,0);hoseStand.add(hosePost,hoseLoop);hoseStand.position.set(-96,0,-48);hoseStand.name='Puesto descarga cisterna · demo';hoseStand.userData={kind:'SIMULADO',info:'Punto de descarga y manguera conceptual; conexión real pendiente de ingeniería.'};groups.evidence.add(hoseStand);
+ addLabel(groups.evidence,'RECEPCIÓN CISTERNA',-107,7,-50,'#dbe7f5',36);
+
  addLabel(groups.plant,'PROCESO / ENVASADO',-12,27,-18);
  addLabel(groups.warehouse,'ASRS · 9 NIVELES',88,38,-25,'#9fc2ff');
  addLabel(groups.utilities,'VAPOR · AGUA · EDARI',-94,20,22,'#cceca8');
@@ -534,8 +545,18 @@ if(canvas){
  function placeTruckOnCurve(g,curve,u){const p=curve.getPointAt(Math.max(0,Math.min(1,u))),t=curve.getTangentAt(Math.max(0,Math.min(1,u)));g.position.copy(p);orientTruck(g,t.x,t.z)}
  placeTruckOnCurve(tanker,tankerCurve,0);out1.position.set(70,1,60);out2.position.set(110,1,73);orientTruck(out1,1,0);orientTruck(out2,1,0);
 
- // Docks.
- for(let i=0;i<4;i++){const x=70+i*14,d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,x,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});const shelter=new THREE.Mesh(new THREE.BoxGeometry(12.2,7.4,.75),mat(0x202a34,.72,.18));shelter.position.set(x,5.2,52.7);groups.plant.add(shelter);for(const bx of [-4.2,4.2]){const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.8,.9),mat(0x11161c,.9,.05));bumper.position.set(x+bx,1.2,53.15);groups.plant.add(bumper)}const signal=new THREE.Mesh(new THREE.SphereGeometry(.65,10,8),mat(i===1?0x73b866:0xefc534,.42,.05));signal.position.set(x+5.4,7.6,53.1);groups.plant.add(signal)}
+ // Docks: functional reconstruction with shelters, levelers, guides, bay numbers and traffic lights.
+ for(let i=0;i<4;i++){
+   const x=70+i*14,d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,x,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad/posición real pendiente de plano autorizado.'});
+   const shelter=new THREE.Mesh(new THREE.BoxGeometry(12.2,7.4,.75),mat(0x202a34,.72,.18));shelter.position.set(x,5.2,52.7);groups.plant.add(shelter);
+   const leveler=new THREE.Mesh(new THREE.BoxGeometry(8.2,.32,5.6),mat(0x66727d,.48,.55));leveler.position.set(x,1.72,52.1);leveler.rotation.x=-.08;groups.plant.add(leveler);
+   for(const bx of [-4.2,4.2]){const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.8,.9),mat(0x11161c,.9,.05));bumper.position.set(x+bx,1.2,53.15);groups.plant.add(bumper)}
+   for(const gx of [-3.6,3.6]){const guide=new THREE.Mesh(new THREE.BoxGeometry(.38,.38,13),mat(0xefc534,.62,.08));guide.position.set(x+gx,.45,61);groups.roads.add(guide)}
+   const stop=new THREE.Mesh(new THREE.PlaneGeometry(10,.45),new THREE.MeshBasicMaterial({color:0xf3f3e8,toneMapped:false}));stop.rotation.x=-Math.PI/2;stop.position.set(x,.16,69);groups.roads.add(stop);
+   const signalPole=new THREE.Mesh(new THREE.CylinderGeometry(.14,.18,4.6,8),mat(0x66727d,.5,.55));signalPole.position.set(x+5.4,4.8,53.1);groups.plant.add(signalPole);
+   const signal=new THREE.Mesh(new THREE.SphereGeometry(.65,10,8),new THREE.MeshBasicMaterial({color:i===1?0x73d65a:0xefc534,toneMapped:false}));signal.position.set(x+5.4,7.25,53.1);groups.plant.add(signal);
+   addLabel(groups.plant,'D'+String(i+1).padStart(2,'0'),x,10.2,51.8,'#ffffff',24);
+ }
 
  let running=!freezeMode,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envState={},laneMoving=0;
  const publishTwinState=createTwinTelemetry('plant');
