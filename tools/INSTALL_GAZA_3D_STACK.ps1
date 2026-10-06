@@ -19,8 +19,17 @@ function Step([string]$Text) {
 }
 function Run([string]$Exe, [string[]]$ArgumentList, [switch]$AllowFail) {
   Write-Host ("> " + $Exe + " " + ($ArgumentList -join " ")) -ForegroundColor DarkGray
-  & $Exe @ArgumentList
-  $code = $LASTEXITCODE
+  # PowerShell 5.1 can promote native stderr into NativeCommandError when the
+  # script-wide preference is Stop. Capture the process exit code first so
+  # -AllowFail actually works as intended.
+  $oldPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = "Continue"
+    & $Exe @ArgumentList
+    $code = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $oldPreference
+  }
   if ($code -ne 0 -and -not $AllowFail) { throw "$Exe failed with exit code $code" }
   return $code
 }
