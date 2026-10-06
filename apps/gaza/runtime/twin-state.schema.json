@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaza-twin-state.schema.json",
+  "title": "GAZA browser twin telemetry snapshot",
+  "type": "object",
+  "required": ["schemaVersion", "surface", "emittedAt", "simulation", "environment", "provenance"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "surface": { "enum": ["strategy", "plant"] },
+    "emittedAt": { "type": "string", "format": "date-time" },
+    "simulation": { "type": "object" },
+    "environment": { "type": "object" },
+    "assets": { "type": "object" },
+    "render": { "type": ["object", "null"] },
+    "provenance": {
+      "type": "object",
+      "required": ["public", "inferred", "simulated"],
+      "properties": {
+        "public": { "type": "boolean" },
+        "inferred": { "type": "boolean" },
+        "simulated": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": true
+}
