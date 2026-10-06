@@ -40,13 +40,13 @@ button,input{font:inherit}.app{height:100%;display:grid;grid-template-rows:58px 
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const canvas=document.getElementById('scene'), renderer=new THREE.WebGLRenderer({canvas,antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.setClearColor(0xf4f7fb);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;renderer.setClearColor(0xf4f7fb);
 const scene=new THREE.Scene();scene.background=new THREE.Color(0xf4f7fb);
 let aspect=1,frustum=260;const camera=new THREE.OrthographicCamera(-frustum,frustum,frustum*.6,-frustum*.6,-1000,1000);camera.position.set(260,230,260);camera.lookAt(0,0,0);
 const controls=new OrbitControls(camera,canvas);controls.target.set(5,0,0);controls.enableDamping=true;controls.enableRotate=true;controls.maxPolarAngle=Math.PI*.48;controls.minPolarAngle=.35;controls.zoomSpeed=.7;controls.panSpeed=.6;
 scene.add(new THREE.HemisphereLight(0xffffff,0xb7c7d9,2.8));const sun=new THREE.DirectionalLight(0xffffff,3.2);sun.position.set(-120,250,160);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-260;sun.shadow.camera.right=260;sun.shadow.camera.top=260;sun.shadow.camera.bottom=-260;scene.add(sun);
 const M={blue:new THREE.MeshStandardMaterial({color:0x2768c7,roughness:.78}),blue2:new THREE.MeshStandardMaterial({color:0x5b8fdc,roughness:.82}),white:new THREE.MeshStandardMaterial({color:0xfdfefe,roughness:.82}),road:new THREE.MeshStandardMaterial({color:0xe3ebf5,roughness:1}),yard:new THREE.MeshStandardMaterial({color:0xf0f4f9,roughness:1}),green:new THREE.MeshStandardMaterial({color:0x73b866,roughness:.9}),tree:new THREE.MeshStandardMaterial({color:0x56a875,roughness:.92}),wood:new THREE.MeshStandardMaterial({color:0xd5a86b,roughness:.9}),yellow:new THREE.MeshStandardMaterial({color:0xf2b53f,roughness:.78}),dark:new THREE.MeshStandardMaterial({color:0x26374a,roughness:.85}),red:new THREE.MeshStandardMaterial({color:0xd94a4a,roughness:.8}),silver:new THREE.MeshStandardMaterial({color:0xc9d4df,roughness:.35,metalness:.45})};
-const groups={plant:new THREE.Group(),vehicles:new THREE.Group(),pallets:new THREE.Group(),farms:new THREE.Group(),routes:new THREE.Group(),risk:new THREE.Group()};Object.values(groups).forEach(g=>scene.add(g));const selectables=[];let running=true,speed=1,simT=0,risk=false,selected=null,fixedAcc=0,demoRunning=false,demoT=0,carrying=false,delivered=false;let focusTween=null,envFactor=1;
+const groups={plant:new THREE.Group(),vehicles:new THREE.Group(),pallets:new THREE.Group(),farms:new THREE.Group(),routes:new THREE.Group(),risk:new THREE.Group(),workers:new THREE.Group()};Object.values(groups).forEach(g=>scene.add(g));const selectables=[];let running=true,speed=1,simT=0,risk=false,selected=null,fixedAcc=0,demoRunning=false,demoT=0,carrying=false,delivered=false;let focusTween=null,envFactor=1;
 const ENV_KEY='gaza:environment:v1';
 function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
 function fresh(x,ttl){const t=Date.parse(x&&x.checkedAt||'');return Number.isFinite(t)&&(Date.now()-t)<ttl}
@@ -87,6 +87,32 @@ function forklift(x,z,id){const g=new THREE.Group();const body=new THREE.Mesh(ne
 const forks=[forklift(12,56,'FL-01'),forklift(28,46,'FL-02'),forklift(55,48,'FL-03'),forklift(70,84,'FL-04'),forklift(101,82,'FL-05')];
 function truck(x,z,id,tanker=false){const g=new THREE.Group();const cab=new THREE.Mesh(new THREE.BoxGeometry(10,9,9),M.white);cab.position.set(-11,5,0);const wind=new THREE.Mesh(new THREE.BoxGeometry(.2,4.2,6.4),new THREE.MeshStandardMaterial({color:0x8db8d8,roughness:.25,metalness:.05}));wind.position.set(-16.05,6.1,0);const trailer=tanker?new THREE.Mesh(new THREE.CylinderGeometry(5,5,22,18),M.silver):new THREE.Mesh(new THREE.BoxGeometry(24,11,10),M.white);if(tanker){trailer.rotation.z=Math.PI/2;trailer.position.set(5,6,0)}else trailer.position.set(6,6,0);g.add(cab,wind,trailer);for(const x0 of [-12,-7,2,10])for(const z0 of [-4.8,4.8]){const w=new THREE.Mesh(new THREE.CylinderGeometry(1.7,1.7,1,14),M.dark);w.rotation.x=Math.PI/2;w.position.set(x0,1.7,z0);g.add(w)}const brand=new THREE.Mesh(new THREE.PlaneGeometry(13,5.5),new THREE.MeshBasicMaterial({map:gazaTex}));brand.position.set(6,6,5.08);g.add(brand);g.position.set(x,0,z);g.name=id;g.userData={type:tanker?'tanker':'truck',status:tanker?'EN RUTA':'EN PLANTA',prov:'SINTÉTICO',rows:tanker?[['Origen','GANADERÍA-DEMO-27'],['Carga','18.4 t demo'],['ETA','17 min']]:[['Pedido','GZ-260602'],['Muelle','D3'],['Carga','12 / 18 pallets']]};groups.vehicles.add(g);selectables.push(g);return g}
 const tanker=truck(-265,-82,'GZ-TK-04',true),tr1=truck(70,135,'GZ-TR-118'),tr2=truck(120,166,'GZ-TR-204');
+// Low-poly workforce layer: synthetic roles/routes, never real employee tracking.
+function worker(role,dept,color,x,z,lead=false){const g=new THREE.Group(),skin=new THREE.MeshStandardMaterial({color:0xd8a47f,roughness:.9}),uni=M.white,accent=new THREE.MeshStandardMaterial({color,roughness:.78});
+ const torso=new THREE.Mesh(new THREE.BoxGeometry(3.2,4.4,2),uni);torso.position.y=6.2;
+ const vest=new THREE.Mesh(new THREE.BoxGeometry(3.4,1.8,2.15),accent);vest.position.y=6.3;
+ const head=new THREE.Mesh(new THREE.SphereGeometry(1.2,10,8),skin);head.position.y=9.4;
+ const cap=new THREE.Mesh(new THREE.SphereGeometry(1.27,10,5,0,Math.PI*2,0,Math.PI*.48),lead?accent:uni);cap.position.y=9.75;
+ const legL=new THREE.Mesh(new THREE.BoxGeometry(.9,3.6,1),M.dark),legR=legL.clone();legL.position.set(-.8,3.1,0);legR.position.set(.8,3.1,0);
+ const armL=new THREE.Mesh(new THREE.BoxGeometry(.7,3.5,.7),uni),armR=armL.clone();armL.position.set(-2,6.1,0);armR.position.set(2,6.1,0);
+ const badge=new THREE.Mesh(new THREE.PlaneGeometry(1.8,.8),new THREE.MeshBasicMaterial({map:gazaTex}));badge.position.set(0,6.9,1.03);
+ g.add(torso,vest,head,cap,legL,legR,armL,armR,badge);g.position.set(x,0,z);g.name=role;g.userData={type:'person',status:'EN TURNO · DEMO',prov:'SINTÉTICO',rows:[['Rol',role],['Área',dept],['Identidad','Personaje ficticio']],legL,legR,armL,armR};groups.workers.add(g);selectables.push(g);if(lead)label(role,0,12,0,g,'#1554a3');return g}
+const workerSpecs=[
+ ['Jefe turno','Producción',0x2768c7,-55,-15,true,[[-65,-20],[-20,-20],[-20,22],[-65,22]]],
+ ['Calidad 01','Recepción / laboratorio',0x50b9b0,-128,62,false,[[-145,48],[-105,48],[-105,75],[-145,75]]],
+ ['Calidad 02','Recepción / laboratorio',0x50b9b0,-115,70,false,[[-135,55],[-100,55],[-100,82],[-135,82]]],
+ ['Operario 01','Proceso',0x2768c7,-40,5,false,[[-80,-25],[-10,-25],[-10,35],[-80,35]]],
+ ['Operario 02','Proceso',0x2768c7,5,12,false,[[-15,-32],[20,-32],[20,35],[-15,35]]],
+ ['Operario 03','Envasado',0x2768c7,-5,38,false,[[-55,30],[20,30],[20,50],[-55,50]]],
+ ['Mantenimiento','Utilities',0xf2b53f,-132,-48,true,[[-150,-78],[-105,-78],[-105,-48],[-150,-48]]],
+ ['Logística 01','Staging',0x73b866,55,76,false,[[20,70],[105,70],[105,90],[20,90]]],
+ ['Logística 02','Muelles',0x73b866,105,54,false,[[80,48],[125,48],[125,92],[80,92]]],
+ ['Logística 03','Muelles',0x73b866,115,82,false,[[90,70],[128,70],[128,100],[90,100]]],
+ ['Seguridad','Acceso',0xd94a4a,-210,132,true,[[-225,130],[-190,130],[-190,158],[-225,158]]],
+ ['Conductor','Patio',0x8d6ad8,80,126,false,[[55,118],[120,118],[120,142],[55,142]]]
+];
+const people=workerSpecs.map((d,i)=>{const curve=new THREE.CatmullRomCurve3(d[6].map(p=>new THREE.Vector3(p[0],0,p[1])),true,'catmullrom',.18);return{mesh:worker(d[0],d[1],d[2],d[3],d[4],d[5]),curve,u:(i*.083)%1,speed:.018+(i%4)*.003}});
+function stepPeople(dt){people.forEach((p,i)=>{p.u=(p.u+dt*p.speed*speed*(demoRunning?1:envFactor))%1;const q=p.curve.getPointAt(p.u),t=p.curve.getTangentAt(p.u);p.mesh.position.set(q.x,0,q.z);p.mesh.rotation.y=-Math.atan2(t.z,t.x);const gait=Math.sin(p.u*Math.PI*42+i);p.mesh.userData.legL.rotation.z=gait*.32;p.mesh.userData.legR.rotation.z=-gait*.32;p.mesh.userData.armL.rotation.z=-gait*.25;p.mesh.userData.armR.rotation.z=gait*.25})}
 // farm reference node
 const farm=meshBox('GANADERÍA-DEMO-27',65,15,38,-265,-110,M.white,groups.farms,{type:'farm',status:'RECOGIDA PROGRAMADA',prov:'SINTÉTICO',rows:[['Nodo','Anonimizado'],['Tanque','3.8 °C demo'],['Próxima recogida','10:20']]});logoPlane(-265,11,-90.8,0,23,10,groups.farms);label('GANADERÍA-DEMO-27',-265,25,-110,groups.farms,'#4c8a3f');
 for(let i=0;i<12;i++){const cow=new THREE.Mesh(new THREE.BoxGeometry(4,3,2),i%3?M.white:M.dark);cow.position.set(-288+(i%6)*10,1.5,-140+Math.floor(i/6)*9);groups.farms.add(cow)}
@@ -129,7 +155,7 @@ function stepSim(dt){
     moveOn(tanker,curve,(simT%36)/36);
     const idle=(Math.sin(simT*.5)+1)/2;forks.slice(1).forEach((f,i)=>{f.rotation.y=Math.sin(simT*.12+i)*.35;f.position.y=Math.sin(simT*1.4+i)*.05*idle});
   }
-  docks.forEach(d=>{d.open=THREE.MathUtils.damp(d.open,d.targetOpen,6,dt);d.shutter.position.y=6+d.open*8;});
+  stepPeople(dt);docks.forEach(d=>{d.open=THREE.MathUtils.damp(d.open,d.targetOpen,6,dt);d.shutter.position.y=6+d.open*8;});
   ring.scale.setScalar(1+Math.sin(simT*4)*.12);
   document.getElementById('clock').textContent='09:'+String(41+Math.floor((simT/6)%19)).padStart(2,'0');
 }
