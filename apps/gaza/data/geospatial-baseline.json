@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "updatedAt": "2026-10-06",
   "crs": {
     "interchange": "EPSG:4326",
@@ -7,10 +7,17 @@
   },
   "plant": {
     "name": "Leche Gaza · Coreses",
-    "lat": 41.525162564246195,
-    "lon": -5.604126176771143,
+    "lat": 41.52355,
+    "lon": -5.59993,
     "address": "P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora)",
-    "status": "PUBLIC_REFERENCE"
+    "status": "USER_CONFIRMED_APPROXIMATE",
+    "accuracy": "APPROX_30M_NOT_SURVEYED",
+    "canonicalSource": "data/site-reference.json",
+    "deprecatedAnchor": {
+      "lat": 41.525162564246195,
+      "lon": -5.604126176771143,
+      "status": "DEPRECATED_WRONG_SITE_POINT"
+    }
   },
   "osmContext": {
     "industrialAreaWay": 734283251,
