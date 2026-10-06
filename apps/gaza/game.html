@@ -176,7 +176,7 @@ const routePts=[new THREE.Vector3(-265,.3,-82),new THREE.Vector3(-215,.3,-45),ne
 const curve=new THREE.CatmullRomCurve3(routePts);const routeMesh=new THREE.Mesh(new THREE.TubeGeometry(curve,80,1.2,6,false),new THREE.MeshBasicMaterial({color:0x4d8fe8,transparent:true,opacity:.7}));groups.routes.add(routeMesh);groups.routes.visible=false;
 const forkCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(25,.2,78),new THREE.Vector3(48,.2,72),new THREE.Vector3(78,.2,62),new THREE.Vector3(112,.2,55),new THREE.Vector3(126,.2,55)]);
 const outCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(126,.2,63),new THREE.Vector3(160,.2,63),new THREE.Vector3(160,.2,150),new THREE.Vector3(300,.2,150)]);
-function moveOn(o,c,u){const q=Math.max(0,Math.min(1,u)),p=c.getPointAt(q),t=c.getTangentAt(Math.min(.999,q));o.position.set(p.x,0,p.z);o.rotation.y=-Math.atan2(t.z,t.x)}
+function moveOn(o,c,u){const q=Math.max(0,Math.min(1,u)),p=c.getPointAt(q),t=c.getTangentAt(Math.min(.999,q));o.position.set(p.x,0,p.z);o.rotation.y=Math.atan2(t.z,-t.x)}
 function focusOn(o,zoom=1.65){const wp=new THREE.Vector3();o.getWorldPosition(wp);focusTween={fromTarget:controls.target.clone(),toTarget:wp.clone(),fromPos:camera.position.clone(),toPos:camera.position.clone().add(wp.clone().sub(controls.target)),fromZoom:camera.zoom,toZoom:zoom,t:0,d:.62};}
 // risk marker
 const ring=new THREE.Mesh(new THREE.RingGeometry(11,14,32),new THREE.MeshBasicMaterial({color:0xd94a4a,side:THREE.DoubleSide,transparent:true,opacity:.8}));ring.rotation.x=-Math.PI/2;ring.position.set(-180,.6,150);groups.risk.add(ring);groups.risk.visible=false;
