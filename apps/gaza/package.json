@@ -7,7 +7,9 @@
     "dev": "http-server . -p 4173 -c-1 --cors",
     "qa": "node ./tests/visual-qa.mjs",
     "qa:headed": "node ./tests/visual-qa.mjs --headed",
-    "qa:ci": "node ./tests/visual-qa.mjs"
+    "qa:ci": "node ./tests/visual-qa.mjs",
+    "qa:manifest": "node ./tests/manifest-qa.mjs",
+    "qa:all": "npm run qa:manifest && npm run qa"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
