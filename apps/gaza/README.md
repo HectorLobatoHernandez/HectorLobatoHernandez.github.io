@@ -41,3 +41,10 @@ See `TEST_PLAN.md` for acceptance tests.
 
 ## Strategy Twin
 `game.html` is the reference-video-oriented strategy view. The current vertical slice is deterministic and spatial: anonymised farm node → tanker route → reception/quality → forklift pallet task → animated dock → outbound truck. Vehicle/task values remain synthetic; the public anchors are the 80+ farm network, Coreses site identity and documented systems listed in `PUBLIC_EVIDENCE.md`.
+
+
+## v6 environment + plant fidelity
+- `territory.html` is the public-data environment producer (Open-Meteo + DGT DATEX2 proximity + synthetic what-if factor).
+- `plant-3d.html` consumes that state with TTL guards, animates a 9-level ASRS and four lane-reserved mobile agents, and adds an exterior Coreses reconstruction layer.
+- `game.html` consumes the same fresh environment state for non-guided ambient motion while the canonical guided demo remains deterministic.
+- DGT proximity is not presented as measured congestion or confirmed route impact.
