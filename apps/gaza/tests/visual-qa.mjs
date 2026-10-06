@@ -72,6 +72,12 @@ for(const target of targets){
     const twinStateOk=!!twinState&&twinState.schemaVersion===1&&['strategy','plant'].includes(twinState.surface)&&!!twinState.simulation&&!!twinState.environment&&!!twinState.provenance;
     checks.push({surface:name,check:'machine-readable-twin-state',ok:twinStateOk,metrics:twinState});
     if(!twinStateOk)errors.push({surface:name,type:'telemetry',text:'Twin telemetry snapshot unavailable or invalid'});
+    if(url.includes('game.html')){
+      const vehicle=await page.evaluate(()=>window.__GAZA_VEHICLE_CONTEXT__||null);
+      const vehicleOk=vehicle?.forwardAxis==='-X'&&vehicle?.heading==='PATH_TANGENT';
+      checks.push({surface:name,check:'vehicle-path-heading',ok:vehicleOk,metrics:vehicle});
+      if(!vehicleOk)errors.push({surface:name,type:'quality',text:'Strategy vehicle tangent-heading contract missing'});
+    }
   }
 
   if(url.includes('plant-3d.html')){
