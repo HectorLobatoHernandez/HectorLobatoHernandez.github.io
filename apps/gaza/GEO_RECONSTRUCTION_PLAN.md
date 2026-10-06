@@ -67,3 +67,12 @@ When a DWG/DXF/IFC/PDF plan is supplied:
 5. rebuild plant footprint from plan;
 6. mark source/revision in every exported GLB;
 7. rerun all QA cameras.
+
+
+## Implemented 2026-10-06 — browser GIS alignment pass
+- Added `runtime/public-gis-overlay.js` for live OSM → local metric Three.js geometry.
+- Added `gis-3d-overlay.html` as a comparison/alignment lab rather than silently replacing the operational model.
+- Roads, OSM building footprints, industrial outlines and GAZA-tagged candidates preserve public-reference provenance.
+- Added deterministic QA fixture and CI screenshot target.
+- Promotion gate remains unchanged: OSM context may correct roads/exterior massing, but authorised DWG/DXF/IFC/topography overrides it.
+- Next: review live overlay against the corrected plant anchor, then promote verified road/access geometry into `plant-3d.html` while preserving procedural fallback.
