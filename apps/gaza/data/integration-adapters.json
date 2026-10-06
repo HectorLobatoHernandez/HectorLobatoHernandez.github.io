@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "mode": "READ_ONLY_DISCOVERY",
   "updatedAt": "2026-10-06",
   "rules": [
@@ -48,6 +48,25 @@
         "vendor-supported API",
         "read replica/reporting DB",
         "scheduled export"
+      ],
+      "writes": "DISABLED"
+    },
+    {
+      "id": "intergaza",
+      "authority": "INTERGAZA",
+      "status": "DISCOVERY_REQUIRED",
+      "confirmed": "Official 2022 project describes interconnection of the company value chain with its environment.",
+      "unknown": [
+        "deployed product/platform",
+        "source/target systems",
+        "message schemas",
+        "APIs/queues/files",
+        "current operational scope"
+      ],
+      "preferredReadMethods": [
+        "documented API/event bus",
+        "read-only integration database",
+        "scheduled signed export"
       ],
       "writes": "DISABLED"
     },
@@ -163,5 +182,33 @@
       "database credentials",
       "raw safety-control endpoints"
     ]
-  }
+  },
+  "discoveryChecklist": [
+    "Solmicro exact product/version/modules and supported integration interface",
+    "GAZACONTROL vendor/architecture, historian, tag namespace and source-of-truth boundaries",
+    "INTERGAZA deployed architecture and current scope",
+    "Tetra Pak line/equipment model list and approved reporting interfaces",
+    "Signode StorFast WCS/WMS host interface, task IDs and event timestamps",
+    "Veolia metering/SCADA read interface and utility tag dictionary",
+    "NTP/PTP/timezone policy across ERP/OT/ASRS",
+    "canonical IDs for lot, production order, pallet, SKU, dock, shipment, farm and collection",
+    "network zones/DMZ/firewall rules and read-only service accounts",
+    "data retention, food traceability and audit requirements"
+  ],
+  "targetCanonicalEntities": [
+    "farm",
+    "collection_run",
+    "milk_lot",
+    "production_order",
+    "process_batch",
+    "sku",
+    "pallet",
+    "asrs_task",
+    "dock",
+    "shipment",
+    "utility_meter",
+    "quality_sample",
+    "asset",
+    "alarm"
+  ]
 }
