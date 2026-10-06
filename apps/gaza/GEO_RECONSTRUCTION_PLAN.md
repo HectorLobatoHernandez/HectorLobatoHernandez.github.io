@@ -76,3 +76,12 @@ When a DWG/DXF/IFC/PDF plan is supplied:
 - Added deterministic QA fixture and CI screenshot target.
 - Promotion gate remains unchanged: OSM context may correct roads/exterior massing, but authorised DWG/DXF/IFC/topography overrides it.
 - Next: review live overlay against the corrected plant anchor, then promote verified road/access geometry into `plant-3d.html` while preserving procedural fallback.
+
+
+## Implemented 2026-10-06 — Plant 3D GIS promotion v14
+- Promoted the OSM runtime from the isolated GIS lab into Plant 3D as a comparison-only layer.
+- Added a dedicated GIS camera and alignment metrics in the 3D operations surface.
+- Added nearest-road diagnostics around the corrected plant anchor.
+- Added `gis-promotion-contract.json` to prevent accidental promotion of OSM context into authoritative plant geometry.
+- Procedural roads/buildings remain available as fallback; contextual N-122/access surfaces are visually de-emphasised when compared with the OSM overlay.
+- Next promotion gate: align exact parcel/building/gate geometry from authorised CAD/topography, then recompute truck trajectories and HGV swept paths against that promoted geometry.
