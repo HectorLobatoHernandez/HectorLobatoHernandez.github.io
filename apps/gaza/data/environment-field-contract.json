@@ -126,5 +126,24 @@
       "ventilation shutdown",
       "emergency action"
     ]
+  },
+  "officialWeatherBridge": {
+    "provider": "AEMET OpenData",
+    "classification": "OFFICIAL_PUBLIC_REFERENCE_OPTIONAL",
+    "credentialBoundary": "SERVER_SIDE_GATEWAY_ONLY",
+    "gatewayEndpoints": [
+      "/v1/weather/aemet/status",
+      "/v1/weather/aemet/forecast",
+      "/v1/weather/aemet/observation",
+      "/v1/weather/aemet/warnings"
+    ],
+    "defaults": {
+      "municipalityId": "49053",
+      "municipalityName": "Coreses",
+      "observationIdema": "2565",
+      "observationName": "Coreses",
+      "warningZoneName": "Meseta de Zamora"
+    },
+    "policy": "AEMET augments Open-Meteo with official forecast/observation/warnings when configured. API credentials must never be embedded in browser code. Official off-site observations do not replace calibrated on-site sensors."
   }
 }
