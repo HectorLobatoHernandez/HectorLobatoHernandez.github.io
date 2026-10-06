@@ -21,6 +21,7 @@ const targets=[
   {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-roads',url:'/plant-3d.html?camera=roads&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-gis',url:'/plant-3d.html?camera=gis&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'campus-gis',url:'/campus-gis.html?qa=1',width:1600,height:900,dsf:1},
   {name:'gis-3d',url:'/gis-3d-overlay.html?qa=1',width:1600,height:900,dsf:2},
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
@@ -91,6 +92,10 @@ for(const target of targets){
     const envFieldOk=!!envField&&envField.schemaVersion===1&&envField.spatialModel==='UNIFORM_VECTOR_FIELD_NOT_CFD'&&envField.proposedSensors===8&&envField.sourceClass==='PUBLIC_REFERENCE_LIVE'&&envField.metrics?.wind===8&&envField.metrics?.windDirection===280;
     checks.push({surface:name,check:'environment-field-contract',ok:envFieldOk,metrics:envField});
     if(!envFieldOk)errors.push({surface:name,type:'quality',text:'Plant environmental field contract/QA fixture unavailable'});
+    const gisOverlay=await page.evaluate(()=>window.__GAZA_PUBLIC_GIS_3D__||null);
+    const gisOverlayOk=!!gisOverlay&&gisOverlay.schemaVersion>=2&&gisOverlay.state==='ready'&&gisOverlay.mode==='QA_FIXTURE'&&gisOverlay.promotionStatus==='COMPARISON_ONLY_NOT_AUTHORITY'&&gisOverlay.roads>=2&&gisOverlay.buildings>=2&&Number.isFinite(gisOverlay.nearestRoadDistanceM);
+    checks.push({surface:name,check:'plant-public-gis-comparison-layer',ok:gisOverlayOk,metrics:gisOverlay});
+    if(!gisOverlayOk)errors.push({surface:name,type:'quality',text:'Plant public GIS comparison layer unavailable or promoted beyond authority'});
   }
 
   if(url.includes('campus-gis.html')){
