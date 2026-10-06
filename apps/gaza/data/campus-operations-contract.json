@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "authority": {
+    "siteReference": "data/site-reference.json",
+    "geospatialBaseline": "data/geospatial-baseline.json",
+    "plantAnchor": {
+      "lat": 41.52355,
+      "lon": -5.59993,
+      "status": "USER_CONFIRMED_APPROXIMATE",
+      "accuracy": "APPROX_30M_NOT_SURVEYED"
+    }
+  },
+  "accessModel": {
+    "status": "CALCULATED_CANDIDATE_ONLY",
+    "method": "nearest point from canonical plant anchor to public OSM highway geometry loaded by Campus GIS",
+    "gateCoordinates": null,
+    "gateStatus": "UNKNOWN_UNTIL_AUTHORISED_SURVEY",
+    "policy": "The nearest OSM-road point is a spatial candidate for access analysis only. It must never be labelled as the real gate without authorised survey/CAD evidence."
+  },
+  "vehicleDesignClasses": [
+    {
+      "id": "RIGID_12M",
+      "label": "Rigid truck design envelope",
+      "overallLengthM": 12.0,
+      "maxWidthM": 2.55,
+      "maxHeightM": 4.0,
+      "sourceClass": "REGULATORY_REFERENCE",
+      "scope": "Spanish maximum dimensional envelope; not proof of Gaza fleet dimensions"
+    },
+    {
+      "id": "ARTICULATED_16_5M",
+      "label": "Articulated tractor-semitrailer design envelope",
+      "overallLengthM": 16.5,
+      "maxWidthM": 2.55,
+      "maxHeightM": 4.0,
+      "outerSweptRadiusM": 12.5,
+      "innerSweptRadiusM": 5.3,
+      "sourceClass": "REGULATORY_REFERENCE",
+      "scope": "Engineering manoeuvrability envelope; not proof of Gaza fleet dimensions"
+    },
+    {
+      "id": "ROAD_TRAIN_18_75M",
+      "label": "Road train design envelope",
+      "overallLengthM": 18.75,
+      "maxWidthM": 2.55,
+      "maxHeightM": 4.0,
+      "sourceClass": "REGULATORY_REFERENCE",
+      "scope": "Spanish maximum dimensional envelope; scenario class only"
+    }
+  ],
+  "manoeuvrePolicy": {
+    "outerRadiusM": 12.5,
+    "innerRadiusM": 5.3,
+    "classification": "REGULATORY_REFERENCE",
+    "use": "GIS sanity-check and swept-path planning only; final yard/access validation requires vehicle-specific swept-path analysis and surveyed geometry"
+  },
+  "sources": [
+    {
+      "id": "BOE-RGV-2025",
+      "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2025-15231",
+      "note": "Spanish maximum authorised dimensions: 12.00 m rigid, 16.50 m articulated, 18.75 m road train, general width 2.55 m and height 4.00 m."
+    },
+    {
+      "id": "EU-MANOEUVRABILITY",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02021R0535-20240411",
+      "note": "Vehicle manoeuvrability verification uses concentric circles with 12.50 m outer radius and 5.30 m inner radius."
+    }
+  ],
+  "acceptance": [
+    "Nearest-road candidate derived from OSM geometry, not hard-coded as gate",
+    "Candidate distance exported with provenance",
+    "HGV swept-path reference shown separately from actual campus geometry",
+    "Exact gate/dock coordinates remain UNKNOWN until authorised survey",
+    "3D access geometry must remain contextual until GIS/CAD alignment is approved"
+  ]
+}
