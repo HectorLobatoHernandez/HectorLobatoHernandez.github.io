@@ -123,6 +123,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
         <div class="layer-list">
           <label><input type="checkbox" data-layer="farm" checked> Granja</label>
           <label><input type="checkbox" data-layer="plant" checked> Planta</label>
+          <label><input type="checkbox" data-layer="process" checked> Proceso detallado</label>
           <label><input type="checkbox" data-layer="warehouse" checked> ASRS</label>
           <label><input type="checkbox" data-layer="utilities" checked> Utilities</label>
           <label><input type="checkbox" data-layer="vehicles" checked> Vehículos</label>
@@ -134,7 +135,7 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
       <div class="twin-card"><h3>Simulación farm → factory → dispatch</h3>
         <div class="twin-kpis"><div class="twin-kpi"><b id="milkTemp">3.8 °C</b><span>tanque granja</span></div><div class="twin-kpi"><b id="milkLoad">18.4 t</b><span>cisterna demo</span></div><div class="twin-kpi"><b id="twinEta">17 min</b><span>ETA demo + entorno*</span></div><div class="twin-kpi"><b id="asrsOcc">72%</b><span>ocupación ASRS</span></div><div class="twin-kpi"><b id="laneStatus">4/4</b><span>AGV/carretillas móviles</span></div><div class="twin-kpi"><b id="asrsCycles">0</b><span>ciclos shuttle demo</span></div><div class="twin-kpi"><b id="workerCount">10/10</b><span>personal demo en movimiento</span></div><div class="twin-kpi"><b id="shiftState">T2</b><span>turno sintético</span></div></div>
         <input id="simSpeed" class="range" type="range" min="0" max="3" step="0.25" value="1">
-        <div class="twin-actions"><button class="btn primary" id="twinPlay">Pausar</button><button class="btn" id="twinReset">Reset vista</button><button class="btn" id="twinIncident">Inyectar incidencia</button></div><div class="twin-actions" id="cameraPresets"><button class="btn" data-camera="exterior">Exterior</button><button class="btn" data-camera="plant">Planta</button><button class="btn" data-camera="asrs">ASRS</button><button class="btn" data-camera="farm">Granja</button><button class="btn" data-camera="docks">Muelles</button></div>
+        <div class="twin-actions"><button class="btn primary" id="twinPlay">Pausar</button><button class="btn" id="twinReset">Reset vista</button><button class="btn" id="twinIncident">Inyectar incidencia</button></div><div class="twin-actions" id="cameraPresets"><button class="btn" data-camera="exterior">Exterior</button><button class="btn" data-camera="plant">Planta</button><button class="btn" data-camera="process">Proceso</button><button class="btn" data-camera="asrs">ASRS</button><button class="btn" data-camera="farm">Granja</button><button class="btn" data-camera="docks">Muelles</button></div>
         <div class="selection" id="twinSelection"><b>Selecciona un elemento 3D.</b><br>La escena diferencia referencias públicas de geometría funcional simulada.</div>
         <div class="source-boundary"><b>Frontera de evidencia.</b> Son públicos: 80+ ganaderías, ubicación en Coreses, ≈12.000 m² de instalaciones, ≈60.000 m² de parcela, GAZACONTROL, utilities de Veolia y almacén automático de 9 niveles. La fachada, masas, aparcamiento, vallado y posición relativa se reconstruyen de forma inferida a partir de material público y <b>no son as-built</b>. El impacto meteo/DGT sobre la simulación es un factor heurístico visible, no un tiempo de tráfico medido.</div>
       </div>
@@ -275,7 +276,7 @@ if(canvas){
  scene.add(new THREE.HemisphereLight(0xb9d7ff,0x18210f,1.85));
  const sun=new THREE.DirectionalLight(0xffffff,2.75);sun.position.set(150,240,110);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=20;sun.shadow.camera.far=650;sun.shadow.camera.left=-190;sun.shadow.camera.right=190;sun.shadow.camera.top=165;sun.shadow.camera.bottom=-165;sun.shadow.bias=-0.0004;sun.shadow.normalBias=.04;scene.add(sun);
 
- const groups={farm:new THREE.Group(),plant:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group(),evidence:new THREE.Group(),workers:new THREE.Group()};
+ const groups={farm:new THREE.Group(),plant:new THREE.Group(),process:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group(),evidence:new THREE.Group(),workers:new THREE.Group()};
  Object.values(groups).forEach(g=>scene.add(g));
  const clickable=[];let assetRuntime={update:()=>{}};
  loadProductionAssets({groups,scene,clickable,onStatus:r=>{const chip=document.getElementById('assetChip');chip.textContent=r.state==='ready'?'GLB · '+r.loaded+' activos · fallback procedural':r.state==='degraded'?'GLB · '+r.loaded+' activos / '+r.failed+' error':'GLB · '+r.state;chip.title='Manifiesto local controlado · '+r.declared+' declarados · '+r.loaded+' cargados'}}).then(r=>{assetRuntime=r});
@@ -305,6 +306,49 @@ if(canvas){
  addLabel(groups.plant,'PROCESO / ENVASADO',-12,27,-18);
  addLabel(groups.warehouse,'ASRS · 9 NIVELES',88,38,-25,'#9fc2ff');
  addLabel(groups.utilities,'VAPOR · AGUA · EDARI',-94,20,22,'#cceca8');
+
+ // Detailed process layer. Equipment topology is a synthetic industrial reference, not an as-built representation.
+ const inox=mat(0xc9d4dd,.24,.78),inoxDark=mat(0x81909d,.32,.66),safety=mat(0xefc534,.72,.05),processBlue=mat(0x4f89c6,.48,.22);
+ const makeTank=(name,x,z,r=4.1,h=12)=>{const g=new THREE.Group(),body=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,24),inox),top=new THREE.Mesh(new THREE.ConeGeometry(r,2.2,24),inox),legGeo=new THREE.BoxGeometry(.42,2.2,.42);body.position.y=4+h/2;top.position.y=4+h+1.1;g.add(body,top);for(const lx of [-r*.58,r*.58])for(const lz of [-r*.58,r*.58]){const leg=new THREE.Mesh(legGeo,inoxDark);leg.position.set(lx,1.1,lz);g.add(leg)}g.position.set(x,0,z);g.name=name;g.userData={kind:'SIMULADO',info:'Tanque de proceso conceptual; capacidad y posición no representan ingeniería as-built.'};groups.process.add(g);clickable.push(body);body.name=name;body.userData=g.userData;return g};
+ [['TK-P01',-54,-34],['TK-P02',-42,-34],['TK-P03',-30,-34],['TK-P04',-54,-18],['TK-P05',-42,-18],['TK-P06',-30,-18]].forEach(v=>makeTank(v[0],v[1],v[2]));
+ addLabel(groups.process,'TANQUES DE PROCESO · SIM',-42,22,-27,'#dbe7f5',54);
+
+ // CIP reference skid: three vessels, pump skid and service header.
+ for(let i=0;i<3;i++){const t=makeTank('CIP '+(i+1),-78+i*8,-7,2.7,8);t.scale.set(.82,.82,.82)}
+ const cipSkid=addBox(groups.process,'Skid CIP demo',19,2.2,7,-70,3,0x70889b,{kind:'SIMULADO',info:'CIP conceptual para lectura de proceso; secuencia real pendiente de integración.'});
+ for(let i=0;i<4;i++){const pump=new THREE.Mesh(new THREE.CylinderGeometry(1.15,1.15,2.2,14),processBlue);pump.rotation.z=Math.PI/2;pump.position.set(-77+i*4.6,3.4,3);groups.process.add(pump)}
+ addLabel(groups.process,'CIP',-70,13,3,'#a8d8ff',32);
+
+ // Plate heat exchanger / pasteurisation reference.
+ const pasteur=addBox(groups.process,'Pasteurizador / intercambiador demo',16,8,8,-5,-36,0xaebbc7,{kind:'SIMULADO',info:'Intercambiador de placas conceptual; no reproduce el equipo real.'});
+ for(let i=0;i<8;i++){const plate=new THREE.Mesh(new THREE.BoxGeometry(.28,6.2,6.1),i%2?inox:processBlue);plate.position.set(-11+i*1.55,5,-36);groups.process.add(plate)}
+ addLabel(groups.process,'PASTEURIZACIÓN · SIM',-5,15,-36,'#dbe7f5',42);
+
+ // Packaging machines.
+ for(let i=0;i<3;i++){const x=-5+i*18,m=addBox(groups.process,'Llenadora demo '+(i+1),12,8,10,x,-10,0x9aa9b7,{kind:'SIMULADO',info:'Módulo de llenado/envasado conceptual.'});const top=new THREE.Mesh(new THREE.BoxGeometry(8,2.1,7),processBlue);top.position.set(x,9,-10);groups.process.add(top)}
+ addLabel(groups.process,'ENVASADO · SIM',13,16,-10,'#dbe7f5',42);
+
+ // Two conveyor lanes using instanced rollers to control draw calls.
+ const rollerGeo=new THREE.CylinderGeometry(.42,.42,7.2,10),rollerMat=mat(0x697987,.45,.55),rollerCount=64,rollers=new THREE.InstancedMesh(rollerGeo,rollerMat,rollerCount),rollerDummy=new THREE.Object3D();
+ let ri=0;for(const z of [3,14])for(let x=-18;x<42;x+=3.75){rollerDummy.position.set(x,2.25,z);rollerDummy.rotation.x=Math.PI/2;rollerDummy.updateMatrix();rollers.setMatrixAt(ri++,rollerDummy.matrix)}rollers.count=ri;rollers.castShadow=true;rollers.receiveShadow=true;rollers.computeBoundingSphere();groups.process.add(rollers);
+ for(const z of [3,14]){for(const side of [-4.1,4.1]){const rail=new THREE.Mesh(new THREE.BoxGeometry(64,.55,.35),inoxDark);rail.position.set(11.5,2.65,z+side);groups.process.add(rail)}}
+ addLabel(groups.process,'TRANSPORTADORES',12,9,9,'#dbe7f5',38);
+
+ // Palletiser + wrapper cells.
+ const robotBase=new THREE.Mesh(new THREE.CylinderGeometry(2.4,2.8,1.3,16),safety);robotBase.position.set(49,1,6);groups.process.add(robotBase);
+ const robotArm1=new THREE.Mesh(new THREE.BoxGeometry(1.7,8,1.7),safety),robotArm2=new THREE.Mesh(new THREE.BoxGeometry(1.45,7,1.45),safety);robotArm1.position.set(49,5,6);robotArm1.rotation.z=-.32;robotArm2.position.set(52,9,6);robotArm2.rotation.z=.62;groups.process.add(robotArm1,robotArm2);
+ const wrapperRing=new THREE.Mesh(new THREE.TorusGeometry(4.3,.55,10,28),processBlue);wrapperRing.rotation.x=Math.PI/2;wrapperRing.position.set(57,5,17);groups.process.add(wrapperRing);
+ const wrapperBase=addBox(groups.process,'Enfardadora demo',10,1,10,57,17,0x53616e,{kind:'SIMULADO',info:'Celda de enfardado conceptual.'});
+ addLabel(groups.process,'PALLETIZADO / WRAP',53,15,12,'#ffe99c',42);
+
+ // Overhead process/service pipes.
+ for(const [z,y,color] of [[-4,15,0x8db2ff],[0,16.2,0xd7b44b],[4,17.4,0xb8c5cf]]){const p=new THREE.Mesh(new THREE.CylinderGeometry(.48,.48,94,10),mat(color,.3,.58));p.rotation.z=Math.PI/2;p.position.set(-17,y,z);groups.process.add(p)}
+ for(let x=-62;x<=28;x+=15){const drop=new THREE.Mesh(new THREE.CylinderGeometry(.38,.38,10,10),inoxDark);drop.position.set(x,11,-4);groups.process.add(drop)}
+
+ // Floor safety/pedestrian markings.
+ const floorLineMat=new THREE.MeshBasicMaterial({color:0xefc534,toneMapped:false}),walkMat=new THREE.MeshBasicMaterial({color:0x65a9df,toneMapped:false,transparent:true,opacity:.65});
+ for(let x=-62;x<=56;x+=8){const mark=new THREE.Mesh(new THREE.PlaneGeometry(4.5,.42),floorLineMat);mark.rotation.x=-Math.PI/2;mark.position.set(x,.14,24);groups.process.add(mark)}
+ const walk=new THREE.Mesh(new THREE.PlaneGeometry(112,3.2),walkMat);walk.rotation.x=-Math.PI/2;walk.position.set(-4,.13,28);groups.process.add(walk);
 
  // ASRS public anchor: 9 levels. Rack geometry, bays and shuttle motion are simulated.
  const asrsShuttles=[],asrsPallets=[];let asrsCycles=0;
@@ -436,7 +480,7 @@ if(canvas){
  renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
  document.querySelectorAll('[data-layer]').forEach(x=>x.addEventListener('change',()=>{groups[x.dataset.layer].visible=x.checked}));
  document.getElementById('twinPlay').onclick=()=>{running=!running;document.getElementById('twinPlay').textContent=running?'Pausar':'Reanudar'};
- const cameraViews={exterior:{p:[210,125,230],t:[-15,4,8]},plant:{p:[120,85,150],t:[-10,6,-12]},asrs:{p:[158,72,74],t:[88,12,-25]},farm:{p:[-120,80,-5],t:[-210,3,-78]},docks:{p:[170,65,120],t:[92,4,40]}};
+ const cameraViews={exterior:{p:[210,125,230],t:[-15,4,8]},plant:{p:[120,85,150],t:[-10,6,-12]},process:{p:[82,54,92],t:[-22,8,-8]},asrs:{p:[158,72,74],t:[88,12,-25]},farm:{p:[-120,80,-5],t:[-210,3,-78]},docks:{p:[170,65,120],t:[92,4,40]}};
  function setCameraView(key){const v=cameraViews[key];if(!v)return;camera.position.set(...v.p);controls.target.set(...v.t);controls.update()}
  document.getElementById('twinReset').onclick=()=>setCameraView('exterior');
  document.querySelectorAll('[data-camera]').forEach(b=>b.addEventListener('click',()=>setCameraView(b.dataset.camera)));
