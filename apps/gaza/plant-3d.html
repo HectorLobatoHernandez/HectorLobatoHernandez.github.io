@@ -318,7 +318,7 @@ if(canvas){
  for(const [x,z,rot] of [[-165,118,-Math.PI/2],[-55,126,Math.PI/2],[85,118,-Math.PI/2],[170,126,Math.PI/2]]){const arrow=new THREE.Mesh(new THREE.PlaneGeometry(7,3.4),laneWhite);arrow.rotation.x=-Math.PI/2;arrow.rotation.z=rot;arrow.position.set(x,.155,z);groups.roads.add(arrow)}
  addLabel(groups.roads,'N-122 · ZAMORA ↔ CORESES ↔ TORO',15,5,122,'#f4d7d7',54);
  addLabel(groups.roads,'ACCESO CAMPUS · CONTEXTO',-118,5,96,'#dbe7f5',42);
- window.__GAZA_ROAD_CONTEXT__={schemaVersion:3,refs:['N-122','A-11 / E-82','ZA-P-1303','ZA-711','ZA-710'],plant:[41.52355,-5.59993],localGeometry:'CONTEXTUAL_NOT_SURVEYED',gisSurface:'campus-gis.html',truckForwardAxis:'-X',truckHeading:'PATH_TANGENT',truckArticulation:'TRACTOR_TRAILER_SPLIT_TANGENT'};
+ window.__GAZA_ROAD_CONTEXT__={schemaVersion:3,refs:['N-122','A-11 / E-82','ZA-P-1303','ZA-711','ZA-710'],plant:[41.52355,-5.59993],localGeometry:'CONTEXTUAL_NOT_SURVEYED',gisSurface:'campus-gis.html',truckForwardAxis:'-X',truckHeading:'PATH_TANGENT',truckArticulation:'TRACTOR_TRAILER_SPLIT_TANGENT',wheelMotion:'DISTANCE_BASED'};
 
  // Buildings: conceptual geometry totals ~11,800 m² footprint.
  const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
