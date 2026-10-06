@@ -127,14 +127,26 @@ The bootstrap installs/copies the curated GAZA skills, Mint Three.js Skills, reg
 - Python 3.10+ for Blender MCP gateway.
 - Blender 4.2+ / 5.x for the selected Blender MCP implementation.
 
+### Local project-created GLB smoke asset
+
+Before relying on third-party character packs, the repository can generate a small animated project-owned worker GLB through Blender:
+
+```powershell
+cd "$env:USERPROFILE\Desktop\HectorLobatoHernandez.github.io"
+powershell -ExecutionPolicy Bypass -File .\tools\BUILD_GAZA_GLBS.ps1
+```
+
+The wrapper locates Blender, runs `tools/blender/GAZA_BUILD_WORKER_GLBS.py` headlessly, writes `apps/gaza/assets/3d/generated/worker_demo.glb` and updates the local manifest. Do not commit the generated binary/manifest change until QA passes. This worker is a pipeline smoke asset, not the final rigged production character.
+
 ### Local QA
 
 From `apps/gaza`:
 
 ```powershell
+npm run qa:manifest
 npm run dev
 # another terminal
 npm run qa
 ```
 
-QA captures Strategy Twin, Plant 3D, Territory and a 390x844 mobile Strategy Twin screenshot into `.qa/` and fails on page/console errors.
+QA captures deterministic Strategy/Plant process, ASRS, docks, farm, overview, Territory and mobile surfaces into `.qa/`; it also validates GLB registry health, machine-readable twin state and conservative render budgets. GitHub Actions runs the same acceptance path on relevant pushes.
