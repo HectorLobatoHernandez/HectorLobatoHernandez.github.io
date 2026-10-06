@@ -9,17 +9,18 @@ await fs.mkdir(out,{recursive:true});
 
 const browser=await chromium.launch({headless:!headed});
 const errors=[],checks=[];
+const renderBudget={calls:1200,triangles:3000000,geometries:1500,textures:512};
 const targets=[
-  {name:'strategy',url:'/game.html?camera=overview&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'strategy-asrs',url:'/game.html?camera=asrs&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'strategy-docks',url:'/game.html?camera=dock&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'plant',url:'/plant-3d.html?camera=exterior&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1',width:1600,height:900,dsf:2},
-  {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1&debug=1',width:1600,height:900,dsf:2},
+  {name:'strategy',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-asrs',url:'/game.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-docks',url:'/game.html?camera=dock&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant',url:'/plant-3d.html?camera=exterior&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'plant-farm',url:'/plant-3d.html?camera=farm&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'territory',url:'/territory.html',width:1600,height:900,dsf:1},
-  {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1',width:390,height:844,dsf:2}
+  {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:390,height:844,dsf:2}
 ];
 
 for(const target of targets){
@@ -52,6 +53,26 @@ for(const target of targets){
     const statsOk=!!renderStats&&Number.isFinite(renderStats.calls)&&Number.isFinite(renderStats.triangles);
     checks.push({surface:name,check:'webgl-render-stats',ok:statsOk,metrics:renderStats});
     if(!statsOk)errors.push({surface:name,type:'quality',text:'WebGL render telemetry unavailable'});
+    if(statsOk){
+      const budgetOk=renderStats.calls<=renderBudget.calls&&renderStats.triangles<=renderBudget.triangles&&renderStats.geometries<=renderBudget.geometries&&renderStats.textures<=renderBudget.textures;
+      checks.push({surface:name,check:'webgl-render-budget',ok:budgetOk,metrics:renderStats,budget:renderBudget});
+      if(!budgetOk)errors.push({surface:name,type:'performance',text:'Render budget exceeded: '+JSON.stringify({renderStats,renderBudget})});
+    }
+
+    const assetRegistry=await page.evaluate(()=>{const r=window.__GAZA_ASSET_REGISTRY__;return r?{state:r.state,declared:r.declared,enabled:r.enabled,loaded:r.loaded,failed:r.failed,skipped:r.skipped,assets:r.assets}:null});
+    const assetsOk=!!assetRegistry&&assetRegistry.state!=='manifest-failed'&&assetRegistry.failed===0;
+    checks.push({surface:name,check:'glb-asset-registry',ok:assetsOk,metrics:assetRegistry});
+    if(!assetsOk)errors.push({surface:name,type:'asset',text:'GLB asset registry invalid: '+JSON.stringify(assetRegistry)});
+  }
+
+  if(url.includes('territory.html')){
+    const territory=await page.evaluate(()=>({
+      routeMetric:!!document.getElementById('dgtRouteMatches'),
+      routeCopy:document.body.textContent.includes('coincidencia geométrica')||document.body.textContent.includes('coincidencias corredor ruta')
+    }));
+    const territoryOk=territory.routeMetric&&territory.routeCopy;
+    checks.push({surface:name,check:'route-aware-dgt-ui',ok:territoryOk,metrics:territory});
+    if(!territoryOk)errors.push({surface:name,type:'quality',text:'Territory route-aware DGT UI missing'});
   }
 
   await page.waitForTimeout(250);
@@ -60,7 +81,7 @@ for(const target of targets){
 }
 
 await browser.close();
-await fs.writeFile(path.join(out,'report.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),targets,checks,errors},null,2));
+await fs.writeFile(path.join(out,'report.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),renderBudget,targets,checks,errors},null,2));
 if(errors.length){
   console.error(JSON.stringify({checks,errors},null,2));
   process.exit(2);
