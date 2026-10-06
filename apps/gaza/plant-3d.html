@@ -112,11 +112,11 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
 
 
 <section id="twin-webgl"><div class="wrap">
-  <div class="section-head"><div class="eyebrow">Digital Twin 3D · v5</div><div><h2>Parcela, granja, planta y flujo logístico en 3D real.</h2><p>WebGL interactivo: una granja funcional de referencia alimenta la recepción mediante cisterna; la leche continúa por proceso, almacén automático de 9 niveles, staging, muelles y transporte. La escala de edificios se ajusta a ≈12.000 m² construidos dentro de una parcela conceptual de 60.000 m²; la distribución interior sigue marcada como simulada hasta disponer de DWG/IFC o levantamiento autorizado.</p></div></div>
+  <div class="section-head"><div class="eyebrow">Digital Twin 3D · v6</div><div><h2>Reconstrucción operacional de Coreses + flujo logístico animado.</h2><p>WebGL interactivo: el campus se modela a partir de anclajes públicos de ubicación, escala, fotografías publicadas y sistemas documentados. La volumetría exterior es una <strong>reconstrucción inferida</strong>, no un as-built. El interior funcional conecta granja, recepción, proceso, ASRS de 9 niveles, staging, muelles y transporte.</p></div></div>
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
-      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span></div>
+      <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles públicos</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span></div>
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
@@ -127,14 +127,15 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
           <label><input type="checkbox" data-layer="utilities" checked> Utilities</label>
           <label><input type="checkbox" data-layer="vehicles" checked> Vehículos</label>
           <label><input type="checkbox" data-layer="roads" checked> Viales</label>
+          <label><input type="checkbox" data-layer="evidence" checked> Exterior inferido</label>
         </div>
       </div>
       <div class="twin-card"><h3>Simulación farm → factory → dispatch</h3>
-        <div class="twin-kpis"><div class="twin-kpi"><b id="milkTemp">3.8 °C</b><span>tanque granja</span></div><div class="twin-kpi"><b id="milkLoad">18.4 t</b><span>cisterna demo</span></div><div class="twin-kpi"><b id="twinEta">17 min</b><span>ETA recepción</span></div><div class="twin-kpi"><b id="asrsOcc">72%</b><span>ocupación ASRS</span></div></div>
+        <div class="twin-kpis"><div class="twin-kpi"><b id="milkTemp">3.8 °C</b><span>tanque granja</span></div><div class="twin-kpi"><b id="milkLoad">18.4 t</b><span>cisterna demo</span></div><div class="twin-kpi"><b id="twinEta">17 min</b><span>ETA demo + entorno*</span></div><div class="twin-kpi"><b id="asrsOcc">72%</b><span>ocupación ASRS</span></div><div class="twin-kpi"><b id="laneStatus">4/4</b><span>AGV/carretillas móviles</span></div><div class="twin-kpi"><b id="asrsCycles">0</b><span>ciclos shuttle demo</span></div></div>
         <input id="simSpeed" class="range" type="range" min="0" max="3" step="0.25" value="1">
         <div class="twin-actions"><button class="btn primary" id="twinPlay">Pausar</button><button class="btn" id="twinReset">Reset vista</button><button class="btn" id="twinIncident">Inyectar incidencia</button></div>
         <div class="selection" id="twinSelection"><b>Selecciona un elemento 3D.</b><br>La escena diferencia referencias públicas de geometría funcional simulada.</div>
-        <div class="source-boundary"><b>Frontera de evidencia.</b> Son públicos: 80+ ganaderías, ubicación en Coreses, ≈12.000 m² de instalaciones, ≈60.000 m² de parcela, GAZACONTROL, utilities de Veolia y almacén automático de 9 niveles. Posiciones internas, dimensiones por edificio, flota, volúmenes y KPIs son demostrativos.</div>
+        <div class="source-boundary"><b>Frontera de evidencia.</b> Son públicos: 80+ ganaderías, ubicación en Coreses, ≈12.000 m² de instalaciones, ≈60.000 m² de parcela, GAZACONTROL, utilities de Veolia y almacén automático de 9 niveles. La fachada, masas, aparcamiento, vallado y posición relativa se reconstruyen de forma inferida a partir de material público y <b>no son as-built</b>. El impacto meteo/DGT sobre la simulación es un factor heurístico visible, no un tiempo de tráfico medido.</div>
       </div>
     </aside>
   </div>
@@ -213,9 +214,9 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   </aside>
 </div></div></section>
 
-<section><div class="wrap"><div class="section-head"><div class="eyebrow">Operación sintética</div><div><h2>Qué se está representando exactamente.</h2><p>Todo lo visible abajo está diseñado para comunicar criterio operativo y dominio de sistemas, sin confundir al observador sobre la frontera entre hecho público y modelo sintético.</p></div></div><div class="split"><div class="mini-table"><table><thead><tr><th>Capa</th><th>Contenido</th><th>Estado</th></tr></thead><tbody><tr><td>Hechos públicos</td><td>80+ ganaderías, Coreses, catálogo, GAZACONTROL, Lean</td><td>Confirmado</td></tr><tr><td>Escena 3D</td><td>Disposición general granjas-planta-muelles-carreteras</td><td>Simulada</td></tr><tr><td>Clima / tráfico</td><td>Tiempo, densidad de tráfico y eventos del entorno</td><td>Simulado</td></tr><tr><td>Operación</td><td>Expediciones, pallets, slots, esperas, muelles</td><td>Simulada</td></tr><tr><td>Recomendación IA</td><td>What-if, explicación y aprobación humana</td><td>Conceptual</td></tr></tbody></table></div><div class="mini-table"><table><thead><tr><th>Flujo</th><th>Secuencia</th><th>Uso en demo</th></tr></thead><tbody><tr><td>Inbound</td><td>Granja → cisterna → recepción → calidad</td><td>Visibilidad de entradas</td></tr><tr><td>Proceso</td><td>Silos → planta → envasado</td><td>Dependencias operativas</td></tr><tr><td>Almacén</td><td>Producto terminado → almacén → staging</td><td>Preparación de expediciones</td></tr><tr><td>Outbound</td><td>Muelle → camión → ruta</td><td>Expediciones y OTIF</td></tr><tr><td>Entorno</td><td>Acceso viario + tráfico + meteorología</td><td>Contexto operacional</td></tr></tbody></table></div></div></div></section>
+<section><div class="wrap"><div class="section-head"><div class="eyebrow">Operación sintética</div><div><h2>Qué se está representando exactamente.</h2><p>Todo lo visible abajo está diseñado para comunicar criterio operativo y dominio de sistemas, sin confundir al observador sobre la frontera entre hecho público y modelo sintético.</p></div></div><div class="split"><div class="mini-table"><table><thead><tr><th>Capa</th><th>Contenido</th><th>Estado</th></tr></thead><tbody><tr><td>Hechos públicos</td><td>80+ ganaderías, Coreses, catálogo, GAZACONTROL, Lean</td><td>Confirmado</td></tr><tr><td>Escena 3D</td><td>Disposición general granjas-planta-muelles-carreteras</td><td>Simulada</td></tr><tr><td>Clima / DGT</td><td>Open-Meteo live + incidencias DGT por proximidad; impacto operacional heurístico</td><td>Live cuando disponible</td></tr><tr><td>Operación</td><td>Expediciones, pallets, slots, esperas, muelles</td><td>Simulada</td></tr><tr><td>Recomendación IA</td><td>What-if, explicación y aprobación humana</td><td>Conceptual</td></tr></tbody></table></div><div class="mini-table"><table><thead><tr><th>Flujo</th><th>Secuencia</th><th>Uso en demo</th></tr></thead><tbody><tr><td>Inbound</td><td>Granja → cisterna → recepción → calidad</td><td>Visibilidad de entradas</td></tr><tr><td>Proceso</td><td>Silos → planta → envasado</td><td>Dependencias operativas</td></tr><tr><td>Almacén</td><td>Producto terminado → almacén → staging</td><td>Preparación de expediciones</td></tr><tr><td>Outbound</td><td>Muelle → camión → ruta</td><td>Expediciones y OTIF</td></tr><tr><td>Entorno</td><td>Acceso viario + tráfico + meteorología</td><td>Contexto operacional</td></tr></tbody></table></div></div></div></section>
 
-<section id="fuentes"><div class="wrap"><div class="section-head"><div class="eyebrow">Fuentes</div><div><h2>Base pública utilizada para anclar la simulación.</h2><p>Esto refuerza la credibilidad de la demo: está visualmente ambiciosa, pero con trazabilidad explícita.</p></div></div><div class="sources-grid"><a href="https://www.lechegaza.com/" target="_blank">Leche Gaza · web oficial · historia, compañía, 80+ ganaderías.</a><a href="https://www.lechegaza.com/I%2BD%2Bi.html" target="_blank">Leche Gaza · I+D+i · GAZACONTROL, Lean Manufacturing y modernización.</a><a href="https://www.lechegaza.com/productos.html" target="_blank">Leche Gaza · productos · familias públicas del catálogo.</a><a href="https://www.lechegaza.com/tienda-online/content/7-condiciones-de-compra" target="_blank">Leche Gaza · tienda online · cobertura peninsular pública.</a><a href="https://www.veolia.es/casos-exito/leche-gaza" target="_blank">Veolia · caso de éxito · vapor, agua, EDARI y residuos.</a><a href="https://es.linkedin.com/posts/lechegaza_nuestro-gerente-sa%C3%BAl-alonso-ha-asistido-activity-7458492497636458496-3srs" target="_blank">LinkedIn público · Saúl Alonso identificado como gerente.</a></div></div></section>
+<section id="fuentes"><div class="wrap"><div class="section-head"><div class="eyebrow">Fuentes</div><div><h2>Base pública utilizada para anclar la simulación.</h2><p>Esto refuerza la credibilidad de la demo: está visualmente ambiciosa, pero con trazabilidad explícita.</p></div></div><div class="sources-grid"><a href="https://www.lechegaza.com/" target="_blank">Leche Gaza · web oficial · historia, compañía, 80+ ganaderías.</a><a href="https://www.lechegaza.com/I%2BD%2Bi.html" target="_blank">Leche Gaza · I+D+i · GAZACONTROL, Lean Manufacturing y modernización.</a><a href="https://www.lechegaza.com/productos.html" target="_blank">Leche Gaza · productos · familias públicas del catálogo.</a><a href="https://www.lechegaza.com/tienda-online/content/7-condiciones-de-compra" target="_blank">Leche Gaza · tienda online · cobertura peninsular pública.</a><a href="https://www.veolia.es/casos-exito/leche-gaza" target="_blank">Veolia · caso de éxito · vapor, agua, EDARI y residuos.</a><a href="https://www.elespanol.com/castilla-y-leon/region/zamora/20220527/fabrica-leche-gaza-coreses/675712431_3.html" target="_blank">Galería pública 2022 · referencia visual exterior/interior para reconstrucción inferida.</a><a href="https://www.linkedin.com/posts/esnova_almac%C3%A9n-autom%C3%A1tico-fabricado-por-esnova-racks-activity-6778236573809987584-akRa" target="_blank">Esnova · almacén automático Leche Gaza · 9 niveles + StorFast.</a><a href="https://es.linkedin.com/posts/lechegaza_nuestro-gerente-sa%C3%BAl-alonso-ha-asistido-activity-7458492497636458496-3srs" target="_blank">LinkedIn público · Saúl Alonso identificado como gerente.</a></div></div></section>
 
 <footer class="footer"><div class="wrap footer-grid"><span>Concepto independiente de Héctor Lobato · no es un sistema oficial de Leche Gaza</span><span>v3.0 · español · simulación 3D</span></div></footer>
 
@@ -269,7 +270,7 @@ if(canvas){
  scene.add(new THREE.HemisphereLight(0xb9d7ff,0x18210f,2.1));
  const sun=new THREE.DirectionalLight(0xffffff,2.8);sun.position.set(150,240,110);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
 
- const groups={farm:new THREE.Group(),plant:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group()};
+ const groups={farm:new THREE.Group(),plant:new THREE.Group(),warehouse:new THREE.Group(),utilities:new THREE.Group(),vehicles:new THREE.Group(),roads:new THREE.Group(),evidence:new THREE.Group()};
  Object.values(groups).forEach(g=>scene.add(g));
  const clickable=[];
  const mat=(color,rough=.72,metal=.08)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
@@ -290,15 +291,39 @@ if(canvas){
  // Buildings: conceptual geometry totals ~11,800 m² footprint.
  const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
  const process=addBox(groups.plant,'Proceso + envasado',110,18,65,-12,-18,0x315d86,{kind:'SIMULADO',info:'Volumen conceptual para proceso, CIP y envasado.'});
- const warehouse=addBox(groups.warehouse,'Almacén automático · 9 niveles',70,28,45,88,-25,0x455b74,{kind:'PÚBLICO + SIMULADO',info:'9 niveles es dato público; volumen y posición son conceptuales.'});
+ const warehouse=addBox(groups.warehouse,'Almacén automático · 9 niveles',70,28,45,88,-25,0x455b74,{kind:'PÚBLICO + RECONSTRUCCIÓN',info:'9 niveles es dato público; envolvente y posición son reconstrucción funcional, no as-built.'});warehouse.material.transparent=true;warehouse.material.opacity=.17;warehouse.material.depthWrite=false;
  const staging=addBox(groups.plant,'Staging + muelles',58,10,25,91,38,0x875e37,{kind:'SIMULADO',info:'Preparación y expedición. Número/posición de muelles no confirmado.'});
  const utilities=addBox(groups.utilities,'Utilities · vapor / agua / EDARI',30,11,20,-94,22,0x58753c,{kind:'PÚBLICO + SIMULADO',info:'Veolia confirma vapor, agua y EDARI; geometría/posición conceptual.'});
  addLabel(groups.plant,'PROCESO / ENVASADO',-12,27,-18);
  addLabel(groups.warehouse,'ASRS · 9 NIVELES',88,38,-25,'#9fc2ff');
  addLabel(groups.utilities,'VAPOR · AGUA · EDARI',-94,20,22,'#cceca8');
 
- // Nine visible ASRS levels.
- for(let i=0;i<9;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(68,.45,43),mat(i%2?0x54708f:0x405b76));line.position.set(88,2.8+i*2.7,-25);groups.warehouse.add(line)}
+ // ASRS public anchor: 9 levels. Rack geometry, bays and shuttle motion are simulated.
+ const asrsShuttles=[],asrsPallets=[];let asrsCycles=0;
+ for(let level=0;level<9;level++){
+   const y=2.2+level*2.75;
+   for(const rz of [-40,-10]){
+     const beam=new THREE.Mesh(new THREE.BoxGeometry(67,.32,1),mat(0x6f849b,.55,.35));beam.position.set(88,y,rz);groups.warehouse.add(beam);
+     for(let bay=0;bay<7;bay++){
+       const px=59+bay*9.6;
+       if((bay+level+(rz<0?1:0))%4!==0){const p=new THREE.Mesh(new THREE.BoxGeometry(7.1,1.55,6.4),mat((bay+level)%3===0?0xd7b44b:0xbfc9d5,.75,.05));p.position.set(px,y+1,-25+(rz<0?-10:10));groups.warehouse.add(p);asrsPallets.push(p)}
+     }
+   }
+ }
+ for(const level of [1,4,7]){const s=new THREE.Mesh(new THREE.BoxGeometry(7.8,1.1,7.2),mat(0xf2c94c,.5,.25));s.position.set(60,3.1+level*2.75,-25);s.castShadow=true;groups.warehouse.add(s);asrsShuttles.push({mesh:s,level,phase:level*.17,lastHalf:0})}
+ const lift=new THREE.Mesh(new THREE.BoxGeometry(5,5,8),mat(0x8db2ff,.45,.35));lift.position.set(55,4,-25);groups.warehouse.add(lift);
+ const liftMast=new THREE.Mesh(new THREE.BoxGeometry(2,28,10),mat(0x2f4256,.65,.4));liftMast.position.set(54,14,-25);groups.warehouse.add(liftMast);
+
+ // Public-evidence exterior reconstruction layer. Massing is deliberately labelled inferred, not surveyed.
+ const admin=addBox(groups.evidence,'Fachada administrativa · reconstrucción',50,11,12,-30,30,0xd8dee7,{kind:'RECONSTRUCCIÓN INFERIDA',info:'Volumen frontal inspirado en fotografías públicas; cotas y posición no verificadas.'});
+ const glassMat=new THREE.MeshStandardMaterial({color:0x6f9bb8,roughness:.2,metalness:.12,transparent:true,opacity:.72});
+ const glass=new THREE.Mesh(new THREE.BoxGeometry(43,6.4,.45),glassMat);glass.position.set(-30,5.8,36.2);groups.evidence.add(glass);
+ addLabel(groups.evidence,'GAZA · FACHADA REFERENCIAL',-30,15,36,'#dbe7f5');
+ for(let i=0;i<5;i++){const hv=new THREE.Mesh(new THREE.BoxGeometry(8,1.3,5),mat(0x9ca8b5,.55,.35));hv.position.set(-48+i*18,19.1,-18+(i%2)*12);groups.evidence.add(hv)}
+ for(let i=0;i<18;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(.35,.05,8),mat(0xdce4ec,.95,0));line.position.set(-102+i*6.2,.16,49);groups.evidence.add(line)}
+ for(let x=-145;x<=145;x+=10){for(const z of [-96,96]){const post=new THREE.Mesh(new THREE.BoxGeometry(.28,2.2,.28),mat(0x7b8793,.6,.4));post.position.set(x,1.1,z);groups.evidence.add(post)}}
+ for(let z=-86;z<=86;z+=10){for(const x of [-146,146]){const post=new THREE.Mesh(new THREE.BoxGeometry(.28,2.2,.28),mat(0x7b8793,.6,.4));post.position.set(x,1.1,z);groups.evidence.add(post)}}
+ const gate=addBox(groups.evidence,'Control de acceso · reconstrucción',10,4.5,7,-120,72,0xd6dde6,{kind:'RECONSTRUCCIÓN INFERIDA',info:'Elemento de lectura del campus; no se afirma su geometría o posición real.'});
 
  // Tanks / silos.
  for(let i=0;i<4;i++){const t=new THREE.Mesh(new THREE.CylinderGeometry(5.2,5.2,18,24),mat(0xaeb9c4,.3,.65));t.position.set(-70+i*14,9,-70);t.castShadow=true;groups.plant.add(t)}
@@ -313,6 +338,13 @@ if(canvas){
  for(let i=0;i<18;i++){const cow=addBox(groups.farm,'Vaca frisona · representación',3,2.3,1.4,-242+(i%6)*8,-88+Math.floor(i/6)*8,0xe8e8e2,{kind:'VISUAL',info:'Representación de bienestar animal; censo real no inferido.'});cow.rotation.y=(i%3)*.35}
  const connector=new THREE.Mesh(new THREE.PlaneGeometry(120,10),roadMat);connector.rotation.x=-Math.PI/2;connector.rotation.z=-.18;connector.position.set(-157,.08,-61);groups.roads.add(connector);
 
+ // Internal forklifts/AGVs use discrete lane-cell reservation to avoid occupying the same corridor cell.
+ const makeForklift=(name,color=0xf2c94c)=>{const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(5.5,3.5,4.4),mat(color,.62,.08));body.position.y=2.1;const mast=new THREE.Mesh(new THREE.BoxGeometry(.6,6,4),mat(0x2f3945,.5,.35));mast.position.set(3,3.2,0);const fork1=new THREE.Mesh(new THREE.BoxGeometry(4,.3,.35),mat(0x2f3945,.5,.35)),fork2=fork1.clone();fork1.position.set(4.7,.7,-1.3);fork2.position.set(4.7,.7,1.3);g.add(body,mast,fork1,fork2);g.name=name;g.userData={kind:'SIMULADO',info:'Agente móvil con reserva discreta de carril y evitación de ocupación.'};groups.vehicles.add(g);clickable.push(body);body.name=name;body.userData=g.userData;return g};
+ const laneCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(40,.2,40),new THREE.Vector3(42,.2,-52),new THREE.Vector3(120,.2,-52),new THREE.Vector3(120,.2,42),new THREE.Vector3(55,.2,42)],true,'catmullrom',.18);
+ const laneAgents=[0,.23,.49,.73].map((u,i)=>({mesh:makeForklift('FL-'+String(i+1).padStart(2,'0')),u,wait:0,speed:.028+i*.002,cell:-1}));
+ const laneTube=new THREE.Mesh(new THREE.TubeGeometry(laneCurve,120,.35,5,true),new THREE.MeshBasicMaterial({color:0x60d8cf,transparent:true,opacity:.25}));groups.roads.add(laneTube);
+ function moveLaneAgent(a,u){const p=laneCurve.getPointAt(u),t=laneCurve.getTangentAt(u);a.mesh.position.set(p.x,0,p.z);a.mesh.rotation.y=-Math.atan2(t.z,t.x)}
+
  // Trucks.
  const makeTruck=(name,color)=>{const g=new THREE.Group();const cab=new THREE.Mesh(new THREE.BoxGeometry(7,5,7),mat(color));cab.position.set(-6,3,0);const box=new THREE.Mesh(new THREE.BoxGeometry(15,6,7),mat(0xd9e0e7,.4,.45));box.position.set(5,3.5,0);g.add(cab,box);g.name=name;groups.vehicles.add(g);return g};
  const tanker=makeTruck('Cisterna granja → recepción',0x2d6cdf);tanker.position.set(-190,1,-58);
@@ -322,7 +354,19 @@ if(canvas){
  // Docks.
  for(let i=0;i<4;i++){const d=addBox(groups.plant,'Muelle demo '+(i+1),11,3,7,70+i*14,49,0x596574,{kind:'SIMULADO',info:'Muelle funcional demo; cantidad real pendiente de discovery.'});}
 
- let running=true,phase=0,incident=false;
+ let running=true,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envState={};
+ const ENV_KEY='gaza:environment:v1';
+ function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
+ function weatherCodeRain(code){return [51,53,55,61,63,65,80,81,82,95,96,99].includes(Number(code))}
+ const rainGeo=new THREE.BufferGeometry(),rainN=420,rainPos=new Float32Array(rainN*3);for(let i=0;i<rainN;i++){rainPos[i*3]=-145+Math.random()*290;rainPos[i*3+1]=10+Math.random()*85;rainPos[i*3+2]=-95+Math.random()*190}rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));const rainPts=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:0x8db2ff,size:.65,transparent:true,opacity:.55}));rainPts.visible=false;scene.add(rainPts);
+ function applyEnvironment(next=readEnv()){
+   envState=next||{};const w=envState.weather||{},d=envState.dgt||{};envWeatherRisk=w.live?Number(w.risk||0):0;envRoadRisk=d.live?Number(d.risk||0):0;
+   envSpeedFactor=Math.max(.58,1-envWeatherRisk*.11-envRoadRisk*.055);
+   const chip=document.getElementById('envCouplingChip'),parts=[];parts.push(w.live?'METEO LIVE '+(w.label||''):'METEO sin live');parts.push(d.live?'DGT LIVE '+(d.count40||0)+' ≤40 km':'DGT sin live');chip.textContent=parts.join(' · ')+' · factor '+envSpeedFactor.toFixed(2)+'*';chip.title='Factor heurístico de simulación; no equivale a congestión o ETA real.';
+   document.getElementById('twinEta').textContent=Math.round(17/envSpeedFactor)+' min*';document.getElementById('milkTemp').textContent=w.live?(3.8+(Number(w.temp||15)-15)*.006).toFixed(1)+' °C':'3.8 °C';
+   rainPts.visible=!!(w.live&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));scene.fog.color.set(rainPts.visible?0x111b26:0x07101a);scene.background.set(rainPts.visible?0x111b26:0x07101a);sun.intensity=rainPts.visible?1.65:2.8;
+ }
+ window.addEventListener('storage',e=>{if(e.key===ENV_KEY)applyEnvironment()});window.addEventListener('gaza-environment',e=>applyEnvironment(e.detail));
  const speed=document.getElementById('simSpeed');
  const sel=document.getElementById('twinSelection');
  const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
@@ -330,11 +374,19 @@ if(canvas){
  document.querySelectorAll('[data-layer]').forEach(x=>x.addEventListener('change',()=>{groups[x.dataset.layer].visible=x.checked}));
  document.getElementById('twinPlay').onclick=()=>{running=!running;document.getElementById('twinPlay').textContent=running?'Pausar':'Reanudar'};
  document.getElementById('twinReset').onclick=()=>{camera.position.set(255,205,285);controls.target.set(20,0,0)};
- document.getElementById('twinIncident').onclick=()=>{incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min':'17 min';sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado.'};
+ document.getElementById('twinIncident').onclick=()=>{incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min*':Math.round(17/envSpeedFactor)+' min*';sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado. El asterisco indica margen heurístico de entorno.'};
 
  function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.floor(w*renderer.getPixelRatio())||canvas.height!==Math.floor(h*renderer.getPixelRatio()))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
  const clock=new THREE.Clock();
- function animate(){requestAnimationFrame(animate);resize();const dt=clock.getDelta();if(running){const s=Number(speed.value);phase=(phase+dt*s*.055)%1;
+ function animate(){requestAnimationFrame(animate);resize();const dt=Math.min(clock.getDelta(),.05);if(running){const s=Number(speed.value);phase=(phase+dt*s*.055*envSpeedFactor)%1;
+   // Nine-level ASRS shuttles + lift. Motion is demonstrative; topology is not claimed as the real control sequence.
+   asrsShuttles.forEach((a,i)=>{a.phase=(a.phase+dt*s*(.07+i*.009))%1;const x=60+a.phase*56;a.mesh.position.x=x;const half=a.phase>.5?1:0;if(half!==a.lastHalf){asrsCycles++;a.lastHalf=half}});
+   lift.position.y=3.2+((Math.sin(phase*Math.PI*2)+1)/2)*22;document.getElementById('asrsCycles').textContent=String(asrsCycles);
+   // Lane reservation: each mobile agent reserves its current and look-ahead cell before advancing.
+   const cells=28,reserved=new Set();laneAgents.forEach(a=>reserved.add(Math.floor(a.u*cells)%cells));let moving=0;
+   laneAgents.forEach(a=>{const du=a.speed*dt*s*envSpeedFactor,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
+   document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;
+   if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3+1]-=dt*42*s;if(p[i*3+1]<1)p[i*3+1]=80+Math.random()*20}rainGeo.attributes.position.needsUpdate=true}
    // Farm tanker follows collection corridor then enters reception.
    const p=phase<.62?phase/.62:1; tanker.position.x=-190+p*108;tanker.position.z=-58+p*8;tanker.rotation.y=-Math.PI/2;
    if(phase>.62){const q=(phase-.62)/.38;tanker.position.x=-82;tanker.position.z=-50+q*96;tanker.rotation.y=0}
@@ -343,7 +395,10 @@ if(canvas){
    document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
  }
  controls.update();renderer.render(scene,camera)}
- animate();
+ laneAgents.forEach(a=>moveLaneAgent(a,a.u));applyEnvironment();
+ async function refreshWeather(){
+   try{const u='https://api.open-meteo.com/v1/forecast?latitude=41.525162564246195&longitude=-5.604126176771143&current=temperature_2m,weather_code,wind_speed_10m,precipitation&timezone=Europe%2FMadrid';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather '+r.status);const j=await r.json(),w=j.current||{};let risk=0;if(weatherCodeRain(w.weather_code)||Number(w.precipitation||0)>0)risk++;if(Number(w.wind_speed_10m||0)>=35)risk++;if(Number(w.wind_speed_10m||0)>=55||[65,82,95,96,99].includes(Number(w.weather_code)))risk++;const label={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',51:'Llovizna',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'}[w.weather_code]||('Código '+w.weather_code);const prev=readEnv(),next={...prev,weather:{live:true,temp:Number(w.temperature_2m),wind:Number(w.wind_speed_10m),precipitation:Number(w.precipitation||0),code:Number(w.weather_code),label,risk:Math.min(risk,3),observedAt:w.time||null,checkedAt:new Date().toISOString()},source:'GAZA Plant 3D',updatedAt:new Date().toISOString()};localStorage.setItem(ENV_KEY,JSON.stringify(next));applyEnvironment(next)}catch(_){applyEnvironment(readEnv())}}
+ refreshWeather();setInterval(refreshWeather,300000);animate();
 }
 </script>
 </body>
