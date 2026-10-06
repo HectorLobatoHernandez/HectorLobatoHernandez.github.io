@@ -33,7 +33,7 @@ for(const target of targets){
   const page=await context.newPage();
   page.on('console',m=>{if(m.type()==='error')errors.push({surface:name,type:'console',text:m.text()})});
   page.on('pageerror',e=>errors.push({surface:name,type:'pageerror',text:e.message}));
-  const response=await page.goto(base+url,{waitUntil:'networkidle',timeout:45000});
+  const response=await page.goto(base+url,{waitUntil:'domcontentloaded',timeout:45000});
   if(!response?.ok()) errors.push({surface:name,type:'http',text:String(response?.status())});
   await page.waitForTimeout(1600);
 
