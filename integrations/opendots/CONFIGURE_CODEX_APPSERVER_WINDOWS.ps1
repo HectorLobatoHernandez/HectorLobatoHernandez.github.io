@@ -143,16 +143,25 @@ Write-Host "Persisted Codex app-server settings in $serverEnv"
 
 $codexListener = Get-Listener $CodexPort
 if ($codexListener) {
-    Write-Host "Codex app-server already listening on :$CodexPort (PID $($codexListener.OwningProcess))."
-} else {
-    Write-Host "Starting Codex app-server on $wsUrl ..." -ForegroundColor Cyan
-    $codexCmd = (Get-Command codex.cmd -ErrorAction SilentlyContinue)
-    if ($codexCmd) {
-        Start-Process cmd.exe -ArgumentList @("/k", "`"`"$($codexCmd.Source)`" app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`"`"")
+    $codexProc = Get-CimInstance Win32_Process -Filter "ProcessId=$($codexListener.OwningProcess)" -ErrorAction SilentlyContinue
+    $codexCmdline = if ($codexProc) { [string]$codexProc.CommandLine } else { "" }
+
+    if ($codexCmdline -and $codexCmdline -match "codex" -and $codexCmdline -match "app-server") {
+        Write-Host "Recycling existing Codex app-server PID $($codexListener.OwningProcess) so it reloads fresh auth..." -ForegroundColor Yellow
+        & taskkill.exe /PID $codexListener.OwningProcess /T /F | Out-Null
+        Start-Sleep -Seconds 2
     } else {
-        $cmd = "codex app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`""
-        Start-Process powershell.exe -ArgumentList @("-NoExit","-ExecutionPolicy","Bypass","-Command",$cmd)
+        throw "Port $CodexPort is occupied by PID $($codexListener.OwningProcess), not identifiable as codex app-server. Refusing to stop it."
     }
+}
+
+Write-Host "Starting Codex app-server on $wsUrl ..." -ForegroundColor Cyan
+$codexCmd = (Get-Command codex.cmd -ErrorAction SilentlyContinue)
+if ($codexCmd) {
+    Start-Process cmd.exe -ArgumentList @("/k", "`"`"$($codexCmd.Source)`" app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`"`"")
+} else {
+    $cmd = "codex app-server --listen `"$wsUrl`" --ws-auth capability-token --ws-token-file `"$tokenFile`""
+    Start-Process powershell.exe -ArgumentList @("-NoExit","-ExecutionPolicy","Bypass","-Command",$cmd)
 }
 
 $codexReady = $false
@@ -170,9 +179,21 @@ $omniListener = Get-Listener $OmniPort
 if ($omniListener) {
     $proc = Get-CimInstance Win32_Process -Filter "ProcessId=$($omniListener.OwningProcess)" -ErrorAction SilentlyContinue
     $cmdline = if ($proc) { [string]$proc.CommandLine } else { "" }
-    if ($cmdline -and $cmdline -notmatch [regex]::Escape($OmniRoot)) {
-        throw "Port $OmniPort is owned by PID $($omniListener.OwningProcess), not identifiable as OmniRoute. Refusing to stop it."
+
+    $identifiedAsOmni = $false
+    if ($cmdline -and $cmdline -match [regex]::Escape($OmniRoot)) {
+        $identifiedAsOmni = $true
+    } else {
+        try {
+            $probe = Invoke-RestMethod "http://127.0.0.1:$OmniPort/api/monitoring/health" -TimeoutSec 5
+            if ($probe.status -eq "healthy") { $identifiedAsOmni = $true }
+        } catch {}
     }
+
+    if (-not $identifiedAsOmni) {
+        throw "Port $OmniPort is owned by PID $($omniListener.OwningProcess), but neither command line nor OmniRoute health identified it safely. Refusing to stop it."
+    }
+
     Write-Host "Restarting OmniRoute so it loads Codex app-server settings..." -ForegroundColor Cyan
     & taskkill.exe /PID $omniListener.OwningProcess /T /F | Out-Null
     Start-Sleep -Seconds 3
