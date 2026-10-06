@@ -87,8 +87,12 @@ for(const target of targets){
     checks.push({surface:name,check:'road-context-and-truck-heading',ok:roadsOk,metrics:roads});
     if(!roadsOk)errors.push({surface:name,type:'quality',text:'Plant road context / tangent truck heading unavailable'});
     const envField=await page.evaluate(()=>window.__GAZA_ENV_FIELD__||null);
-    const envFieldOk=!!envField&&envField.schemaVersion===1&&envField.spatialModel==='UNIFORM_VECTOR_FIELD_NOT_CFD'&&envField.proposedSensors===8&&envField.sourceClass==='PUBLIC_REFERENCE_LIVE'&&envField.metrics?.wind===8&&envField.metrics?.windDirection===280;
+    const envFieldOk=!!envField&&envField.schemaVersion===2&&envField.spatialModel==='UNIFORM_VECTOR_FIELD_NOT_CFD'&&envField.visualEncoding==='CONCENTRIC_COMPASS_RINGS'&&envField.motion==='ANIMATED_STREAMLINES'&&envField.proposedSensors===8&&envField.sourceClass==='PUBLIC_REFERENCE_LIVE'&&envField.metrics?.wind===8&&envField.metrics?.windDirection===280&&envField.metrics?.visibility===24000&&envField.metrics?.apparent===16.8;
     checks.push({surface:name,check:'environment-field-contract',ok:envFieldOk,metrics:envField});
+    const envUi=await page.evaluate(()=>({visibility:document.getElementById('ambientVisibility')?.textContent||'',risk:document.getElementById('ambientRisk')?.textContent||'',cloud:document.getElementById('ambientCloud')?.textContent||'',feels:document.getElementById('ambientFeels')?.textContent||''}));
+    const envUiOk=envUi.visibility==='24.0 km'&&envUi.risk==='NORMAL'&&envUi.cloud==='25 %'&&envUi.feels==='16.8 °C';
+    checks.push({surface:name,check:'environment-field-ui',ok:envUiOk,metrics:envUi});
+    if(!envUiOk)errors.push({surface:name,type:'quality',text:'Plant environmental UI metrics unavailable'});
     if(!envFieldOk)errors.push({surface:name,type:'quality',text:'Plant environmental field contract/QA fixture unavailable'});
   }
 
