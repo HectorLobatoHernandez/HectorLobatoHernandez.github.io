@@ -23,7 +23,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 <header class="top"><div class="brand">GAZA //<b> MISSION CONTROL</b></div><div class="metric"><span>SITE</span><b>CORESes / EL PINAR</b></div><div class="metric"><span>ANCHOR</span><b>41.52355 / -5.59993</b></div><div class="metric"><span>MODE</span><b class="live">READ-ONLY / DEMO</b></div><div class="spacer"></div><div class="metric"><span>TIME</span><b id="clock">--:--:--</b></div></header>
 <nav class="tabs"><button class="on" data-view="plant">1 · PLANT 3D</button><button data-view="tower">2 · CONTROL TOWER</button><button data-view="gis">3 · GIS 3D</button><button data-view="territory">4 · TERRITORY</button><button data-view="systems">5 · SYSTEMS</button><button class="matrix" id="matrixBtn">M · MATRIX</button></nav>
 <main class="stage">
-<section class="pane on" data-pane="plant"><iframe src="plant-3d.html?camera=exterior&debug=1" title="GAZA Plant 3D"></iframe></section>
+<section class="pane on" data-pane="plant"><iframe data-src="plant-3d.html?camera=exterior&debug=1" title="GAZA Plant 3D"></iframe></section>
 <section class="pane" data-pane="tower"><iframe data-src="./" title="GAZA Control Tower"></iframe></section>
 <section class="pane" data-pane="gis"><iframe data-src="gis-3d-overlay.html" title="GAZA GIS 3D"></iframe></section>
 <section class="pane" data-pane="territory"><iframe data-src="territory.html" title="GAZA Territory"></iframe></section>
@@ -42,14 +42,16 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 <footer class="footer"><b>KEYS 1–5 / M</b><span>VIEW SWITCH</span><span>·</span><span>GAZA STRATEGY TWIN</span><span>·</span><div class="ticker"><span>PUBLIC → GIS → DIGITAL TWIN → OPERATIONS → HUMAN DECISION &nbsp;&nbsp;&nbsp; PUBLIC → GIS → DIGITAL TWIN → OPERATIONS → HUMAN DECISION &nbsp;&nbsp;&nbsp;</span></div></footer>
 </div>
 <script>
-const panes=[...document.querySelectorAll('[data-pane]')],buttons=[...document.querySelectorAll('[data-view]')],matrix=document.getElementById('matrixView'),matrixBtn=document.getElementById('matrixBtn');
-function loadFrame(f){if(!f.src&&f.dataset.src)f.src=f.dataset.src}
+const panes=[...document.querySelectorAll('[data-pane]')],buttons=[...document.querySelectorAll('[data-view]')],matrix=document.getElementById('matrixView'),matrixBtn=document.getElementById('matrixBtn'),qa=new URLSearchParams(location.search).get('qa')==='1';
+function qaUrl(u){if(!qa)return u;const x=new URL(u,location.href);x.searchParams.set('qa','1');x.searchParams.set('freeze','1');x.searchParams.set('debug','1');return x.pathname+x.search}
+function loadFrame(f){if(!f.src&&f.dataset.src)f.src=qaUrl(f.dataset.src)}
 function show(name){matrix.classList.remove('on');matrixBtn.classList.remove('on');panes.forEach(p=>{const on=p.dataset.pane===name;p.classList.toggle('on',on);if(on)loadFrame(p.querySelector('iframe'))});buttons.forEach(b=>b.classList.toggle('on',b.dataset.view===name))}
 buttons.forEach(b=>b.onclick=()=>show(b.dataset.view));
 matrixBtn.onclick=()=>{const on=!matrix.classList.contains('on');panes.forEach(p=>p.classList.remove('on'));buttons.forEach(b=>b.classList.remove('on'));matrix.classList.toggle('on',on);matrixBtn.classList.toggle('on',on);if(on)[...matrix.querySelectorAll('iframe')].forEach(loadFrame);else show('plant')};
 addEventListener('keydown',e=>{if(['1','2','3','4','5'].includes(e.key))show(['plant','tower','gis','territory','systems'][Number(e.key)-1]);if(e.key.toLowerCase()==='m')matrixBtn.click()});
 setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-ES'),1000);
 async function weather(){try{const u='https://api.open-meteo.com/v1/forecast?latitude=41.52355&longitude=-5.59993&current=temperature_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,weather_code&timezone=Europe%2FMadrid';const r=await fetch(u,{cache:'no-store'});const j=await r.json(),w=j.current||{},wind=Number(w.wind_speed_10m||0),gust=Number(w.wind_gusts_10m||0),rain=Number(w.precipitation||0);document.getElementById('temp').textContent=Number(w.temperature_2m).toFixed(1)+' °C';document.getElementById('wind').textContent=Math.round(wind)+' km/h';document.getElementById('dir').textContent=Math.round(Number(w.wind_direction_10m||0))+' °';document.getElementById('gust').textContent=Math.round(gust)+' km/h';let risk='NORMAL',color='#8de0a3';if(rain>.2||wind>=35||gust>=50){risk='ATTENTION';color='#efc534'}if(wind>=55||gust>=75){risk='HIGH';color='#ff8b68'}const el=document.getElementById('risk');el.textContent=risk;el.style.color=color}catch(e){document.getElementById('risk').textContent='PUBLIC WEATHER UNAVAILABLE'}}
-weather();setInterval(weather,300000);
+if(qa){document.getElementById('temp').textContent='17.0 °C';document.getElementById('wind').textContent='8 km/h';document.getElementById('dir').textContent='280 °';document.getElementById('gust').textContent='14 km/h';document.getElementById('risk').textContent='NORMAL'}else{weather();setInterval(weather,300000)}
+show('plant');
 </script>
 </body></html>
