@@ -89,3 +89,11 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 - Eight `WX-PROP-01…08` perimeter sensor positions are visualised as proposed instrumentation only; they do not impersonate installed sensors.
 - The vector field is explicitly `UNIFORM_VECTOR_FIELD_NOT_CFD`: no building-wake physics, terrain CFD, plume model or safety control is claimed.
 - `data/environment-field-contract.json` defines the future path for calibrated on-site instrumentation and read-only gateway ingestion.
+
+
+## v13 GIS 3D alignment lab
+- `gis-3d-overlay.html` is a dedicated Three.js spatial-alignment surface for public OSM context.
+- `runtime/public-gis-overlay.js` requests roads, buildings and industrial land-use around the canonical plant anchor and converts WGS84 to local metric X-east / Z-north coordinates.
+- Major OSM roads are rendered separately from contextual building extrusions; GAZA-tagged OSM candidates are highlighted but remain `NOT AS-BUILT`.
+- A deterministic local QA fixture makes visual tests independent of Overpass availability.
+- This page is intentionally separate from the production Plant 3D until public GIS alignment is reviewed; after approval, the same runtime can replace contextual road/building geometry incrementally.
