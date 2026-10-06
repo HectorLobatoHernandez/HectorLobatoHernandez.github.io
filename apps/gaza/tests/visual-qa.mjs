@@ -62,7 +62,7 @@ for(const target of targets){
     }
 
     const assetRegistry=await page.evaluate(()=>{const r=window.__GAZA_ASSET_REGISTRY__;return r?{state:r.state,declared:r.declared,enabled:r.enabled,loaded:r.loaded,failed:r.failed,skipped:r.skipped,assets:r.assets}:null});
-    const assetsOk=!!assetRegistry&&assetRegistry.state!=='manifest-failed'&&assetRegistry.failed===0;
+    const assetsOk=!!assetRegistry&&assetRegistry.state==='ready'&&assetRegistry.failed===0;
     checks.push({surface:name,check:'glb-asset-registry',ok:assetsOk,metrics:assetRegistry});
     if(!assetsOk)errors.push({surface:name,type:'asset',text:'GLB asset registry invalid: '+JSON.stringify(assetRegistry)});
 
