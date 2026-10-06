@@ -31,15 +31,34 @@ if(Have "python"){
 
 Add-Check "OpenClaw" (Have "openclaw") ($(if(Have "openclaw"){(& openclaw --version 2>&1|Out-String).Trim()}else{"not found"}))
 Add-Check "Codex" (Have "codex") ($(if(Have "codex"){(& codex --version 2>&1|Out-String).Trim()}else{"not found"}))
-Add-Check "Blender gateway command" (Have "blender-mcp-server") ($(if(Have "blender-mcp-server"){"blender-mcp-server on PATH"}else{"not on PATH"}))
+$gateway = Get-Command "blender-mcp-server" -ErrorAction SilentlyContinue
+$gatewayPath = if($gateway){$gateway.Source}else{$null}
+if(!$gatewayPath -and (Have "python")){
+  $scripts=(& python -c "import sysconfig; print(sysconfig.get_path('scripts'))" 2>$null|Out-String).Trim()
+  if($scripts){
+    $candidate=Join-Path $scripts "blender-mcp-server.exe"
+    if(Test-Path $candidate){$gatewayPath=$candidate}
+  }
+}
+Add-Check "Blender gateway command" ([bool]$gatewayPath) ($(if($gatewayPath){$gatewayPath}else{"not found on PATH or Python Scripts"}))
 
 $blender = Get-Command blender -ErrorAction SilentlyContinue
-if($blender){
-  $v=(& blender --version 2>&1|Select-Object -First 1|Out-String).Trim()
+$blenderPath = if($blender){$blender.Source}else{$null}
+if(!$blenderPath){
+  $roots=@((Join-Path $env:ProgramFiles "Blender Foundation"),(Join-Path $env:LOCALAPPDATA "Programs\Blender Foundation"))
+  foreach($root in $roots){
+    if(Test-Path $root){
+      $candidate=Get-ChildItem -Path $root -Filter "blender.exe" -Recurse -ErrorAction SilentlyContinue|Select-Object -First 1
+      if($candidate){$blenderPath=$candidate.FullName;break}
+    }
+  }
+}
+if($blenderPath){
+  $v=(& $blenderPath --version 2>&1|Select-Object -First 1|Out-String).Trim()
   $m=[regex]::Match($v,'(\d+)\.(\d+)')
   $ok=$m.Success -and ([int]$m.Groups[1].Value -gt 4 -or ([int]$m.Groups[1].Value -eq 4 -and [int]$m.Groups[2].Value -ge 2))
-  Add-Check "Blender 4.2+" $ok $v
-}else{Add-Check "Blender 4.2+" $false "blender not on PATH; GUI installation may still exist"}
+  Add-Check "Blender 4.2+" $ok "$v | $blenderPath"
+}else{Add-Check "Blender 4.2+" $false "blender executable not found"}
 
 try{
   $tcp=Test-NetConnection 127.0.0.1 -Port 9876 -WarningAction SilentlyContinue
