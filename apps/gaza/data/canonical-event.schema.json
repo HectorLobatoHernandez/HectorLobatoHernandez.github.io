@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaza://schemas/canonical-event/v1",
+  "title": "GAZA Canonical Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "source",
+    "source_class",
+    "observed_at",
+    "entity_type",
+    "entity_id",
+    "event_type",
+    "quality",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_class": {
+      "enum": [
+        "REAL_AUTHORIZED",
+        "PUBLIC_REFERENCE",
+        "SIMULATED"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "entity_type": {
+      "enum": [
+        "farm",
+        "collection_run",
+        "milk_lot",
+        "quality_sample",
+        "production_order",
+        "process_batch",
+        "sku",
+        "pallet",
+        "asrs_task",
+        "dock",
+        "shipment",
+        "vehicle",
+        "asset",
+        "utility_meter",
+        "alarm"
+      ]
+    },
+    "entity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quality": {
+      "enum": [
+        "GOOD",
+        "STALE",
+        "UNCERTAIN",
+        "BAD"
+      ]
+    },
+    "correlation_ids": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "payload": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "adapter": {
+          "type": "string"
+        },
+        "source_timestamp": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ingested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "raw_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "adapter",
+        "ingested_at"
+      ],
+      "additionalProperties": true
+    }
+  }
+}
