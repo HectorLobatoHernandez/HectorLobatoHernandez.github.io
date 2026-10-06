@@ -106,10 +106,13 @@ Step "Mint Three.js Skills"
 Run "npx" @("--yes","skills","add","mintdotgg/mint-threejs-skills","-a","codex","-g","-y")
 
 Step "Three.js DevTools MCP -> OpenClaw"
+# OpenClaw mcp add probes before saving by default. On a cold npx launch that can
+# exceed the default 5 s timeout, so save first with --no-probe, configure longer
+# timeouts, then probe explicitly.
 # Avoid inline JSON here: Windows PowerShell 5.1 legacy native-argument passing
 # can strip the quotes before the Node/OpenClaw CLI receives the JSON.
 if (!(OpenClawHas "threejs-devtools")) {
-  Run "openclaw" @("mcp","add","threejs-devtools","--command","npx","--arg","-y","--arg","threejs-devtools-mcp") -AllowFail
+  Run "openclaw" @("mcp","add","threejs-devtools","--command","npx","--arg","-y","--arg","threejs-devtools-mcp","--no-probe")
 }
 if (OpenClawHas "threejs-devtools") {
   Run "openclaw" @("mcp","configure","threejs-devtools","--connect-timeout","30","--timeout","60")
@@ -136,7 +139,7 @@ if (!$blenderMcpCommand) {
 } else {
   Write-Host "[OK] blender-mcp-server available: $blenderMcpCommand"
   if (!(OpenClawHas "blender")) {
-    Run "openclaw" @("mcp","add","blender","--command",$blenderMcpCommand) -AllowFail
+    Run "openclaw" @("mcp","add","blender","--command",$blenderMcpCommand,"--no-probe")
   }
   if (OpenClawHas "blender") {
     Run "openclaw" @("mcp","configure","blender","--connect-timeout","30","--timeout","60")
@@ -177,7 +180,7 @@ if (Have "codex") {
   Write-Warning "Codex CLI not found; Mint MCP was not added to Codex."
 }
 if (!(OpenClawHas "mint")) {
-  Run "openclaw" @("mcp","add","mint","--url","https://mcp.mint.gg/mcp","--transport","streamable-http","--auth","oauth") -AllowFail
+  Run "openclaw" @("mcp","add","mint","--url","https://mcp.mint.gg/mcp","--transport","streamable-http","--auth","oauth","--no-probe") -AllowFail
 } else {
   Write-Host "[OK] Mint already configured in OpenClaw"
 }
