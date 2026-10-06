@@ -28,3 +28,10 @@
 
 ## Missing evidence required for a true as-built 3D twin
 To replace the functional 3D model with an as-built twin we need at least one authoritative geometry source: DWG/DXF/IFC/PDF floor plans, an authorised survey, or sufficiently complete georeferenced aerial/building data. Public sources currently confirm scale and systems but not the exact internal layout.
+
+
+## Live-public adapters
+- Strategy Twin queries Open-Meteo directly for the public Coreses coordinate; the UI shows **LIVE PUBLIC** only after a successful response.
+- Territory now attempts a read-only DGT NAP CKAN → DATEX2 v3.7 pull and filters georeferenced `situationRecord` entries within 120 km of Coreses. The DGT dataset is public and states a 1-minute update frequency.
+- Browser CORS/feed availability is not assumed: on failure the UI reports **NO DISP.** and does not substitute synthetic traffic as live data.
+- Manual ×1.00 / ×1.15 / ×1.30 congestion controls remain explicitly synthetic what-if factors.

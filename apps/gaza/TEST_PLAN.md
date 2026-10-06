@@ -53,3 +53,10 @@ The plant geometry and operational values are synthetic. Real integration requir
 - **Reset** restores tanker, pallet, forklift, truck, dock, KPI and incident state.
 - **Incidencia** remains visibly labelled synthetic and changes risk state without claiming live DGT telemetry.
 - Repeating Reset → Ejecutar demo produces the same sequence.
+
+
+## P0 — Public context adapters
+- Strategy Twin weather chip shows `LIVE PUBLIC` only after successful Open-Meteo response; failure shows `NO DISPONIBLE`.
+- Territory attempts DGT NAP DATEX2 v3.7 load; success shows `LIVE`, count and query time, with nearby georeferenced records mapped.
+- If DGT CKAN/XML/CORS fails, status is `NO DISP.` and no traffic incident is presented as live.
+- Congestion multiplier buttons remain labelled `What-if` and must not be described as DGT traffic.
