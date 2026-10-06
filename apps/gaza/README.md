@@ -81,3 +81,11 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 - The GIS view renders a 12.50 m / 5.30 m manoeuvrability envelope for preliminary swept-path sanity checking and exports the calculated candidate with provenance.
 - `plant-3d.html` delegates access authority to Campus GIS and keeps the real gate status UNKNOWN until authorised CAD/topography is available.
 - Domain and visual QA lock these boundaries so later visual work cannot silently turn contextual access geometry into an as-built claim.
+
+
+## v12 environmental field
+- Territory and Plant 3D now request temperature, humidity, pressure, cloud cover, precipitation, wind speed, wind direction and gust from Open-Meteo.
+- Plant 3D renders a live wind-vector field using the public weather grid and publishes `window.__GAZA_ENV_FIELD__`.
+- Eight `WX-PROP-01…08` perimeter sensor positions are visualised as proposed instrumentation only; they do not impersonate installed sensors.
+- The vector field is explicitly `UNIFORM_VECTOR_FIELD_NOT_CFD`: no building-wake physics, terrain CFD, plume model or safety control is claimed.
+- `data/environment-field-contract.json` defines the future path for calibrated on-site instrumentation and read-only gateway ingestion.
