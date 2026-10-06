@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "updatedAt": "2026-10-06",
   "plant": {
     "name": "Leche Gaza · Coreses",
@@ -9,7 +9,8 @@
   "publicConstraint": {
     "radiusKm": 50,
     "fact": "Leche Gaza states that milk reaches the factory after travelling less than 50 km.",
-    "source": "https://www.lechegaza.com/_blog/post-presentacion-fabrica.html"
+    "source": "https://www.lechegaza.com/_blog/post-presentacion-fabrica.html",
+    "note": "The public statement is a milk-proximity/transport claim. The 50 km circle is a planning envelope; road-route distance must be calculated separately."
   },
   "nodes": [
     {
@@ -123,6 +124,28 @@
         "villalpando-demo"
       ],
       "classification": "CALCULATED_CANDIDATE_NOT_REAL_SCHEDULE"
+    },
+    {
+      "id": "network-sweep-demo",
+      "name": "Barrido demo · todos los nodos anónimos",
+      "nodeIds": [
+        "fresno-demo",
+        "sat-rote",
+        "villalpando-demo",
+        "villalube-demo",
+        "algodre-demo",
+        "molacillos-demo",
+        "zamora-demo",
+        "morales-demo",
+        "fuentesauco-demo"
+      ],
+      "classification": "CALCULATED_SCENARIO_NOT_REAL_COLLECTION_RUN",
+      "optimization": "ORDER_IS_SCENARIO_ONLY; OSRM calculates road distance/time at runtime"
     }
-  ]
+  ],
+  "networkEvidence": {
+    "websiteClaim": "80+ own farms",
+    "interview2026Claim": "70 shareholder/member farms",
+    "policy": "Keep both public claims with source/date context; do not infer missing farm identities or reconcile the count without authoritative clarification."
+  }
 }
