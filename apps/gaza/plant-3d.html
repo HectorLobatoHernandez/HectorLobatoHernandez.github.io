@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GAZA · Plant 3D & Farm Flow</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+:root{--gaza-blue:#123c8f;--gaza-blue2:#1e63b8;--gaza-green:#6fb24a;--gaza-yellow:#efc534;--gaza-red:#dc4a3f;--ok:#78d95e;--road:#2a2f36;--roadline:#aeb6c4;--sky1:#0a1320;--sky2:#10233f;--ground:#0f1418}
+body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),transparent 32rem),radial-gradient(circle at 85% 10%,rgba(111,178,74,.13),transparent 28rem),#08090c}
+.gaza-hero{padding:56px 0 26px}.gaza-hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:stretch}.hero-kicker{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(120,217,94,.26);background:rgba(120,217,94,.07);font-size:11px;color:#bde8b2;font-weight:800;letter-spacing:.09em}.hero-kicker i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px rgba(120,217,94,.6)}
+.gaza-hero h1{font-size:clamp(42px,6vw,76px);line-height:.93;letter-spacing:-.055em;margin:12px 0 14px}.gaza-hero h1 span{color:#8d97a8}.gaza-copy{max-width:760px;color:#c8ced8;font-size:18px}.gaza-copy strong{color:#fff}.gaza-logo-card{border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#0e1320,#0c1016);padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}.gaza-logo-card:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(105,173,61,.14),transparent 68%);right:-60px;top:-70px}.gaza-brand{display:flex;align-items:center;gap:16px;position:relative;z-index:1}.logo-ball{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--gaza-blue2),var(--gaza-blue));display:grid;place-items:center;font-weight:900;font-size:22px;letter-spacing:.04em}.brand-lines b{display:block;font-size:28px;letter-spacing:-.04em}.brand-lines small{display:block;color:#c1c8d4;font-size:12px;text-transform:uppercase;letter-spacing:.14em}.brand-note{position:relative;z-index:1;color:#a8b1bf;font-size:13px}.brand-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:1}.brand-tags span{padding:6px 10px;border-radius:999px;background:#171b22;border:1px solid #2a303b;font-size:11px;color:#c6cfdb}
+.warning-box{margin-top:16px;padding:14px 15px;border-radius:14px;border:1px solid rgba(255,204,116,.22);background:rgba(255,204,116,.06);color:#d4c198;font-size:12px}
+.fact-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:22px}.fact{padding:14px;border:1px solid var(--line);border-radius:14px;background:#11141a}.fact .v{font-size:22px;font-weight:900;letter-spacing:-.03em}.fact .l{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:4px}.fact.confirmed{box-shadow:inset 0 2px 0 rgba(120,217,94,.78)}
+.kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin:14px 0 0}.kpi3{padding:14px;border-radius:13px;background:#101319;border:1px solid var(--line)}.kpi3 .v{font-size:22px;font-weight:900}.kpi3 .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.scene-layout{display:grid;grid-template-columns:1.65fr .85fr;gap:14px;align-items:start}.scene-shell{border:1px solid var(--line);border-radius:22px;background:#0d1016;overflow:hidden;box-shadow:var(--shadow)}
+.scene-top{display:flex;justify-content:space-between;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,#121823,#0d1118)}.scene-top h3{margin:0;font-size:16px}.scene-top p{margin:4px 0 0;color:#a9b1bd;font-size:12px}.mini-status{display:flex;gap:8px;flex-wrap:wrap}.mini-status span{font-size:11px;padding:6px 8px;border-radius:999px;background:#171c23;border:1px solid #2e3440;color:#c6ced8}
+.sky{position:relative;height:690px;background:linear-gradient(180deg,var(--sky2),var(--sky1) 38%,#0e1720 38%,#11171d 39%,#0d1015 39%);overflow:hidden}
+.sky.weather-cloudy{background:linear-gradient(180deg,#1b2431,#111a25 38%,#0e1720 38%,#11171d 39%,#0d1015 39%)}
+.sky.weather-rain{background:linear-gradient(180deg,#1e2430,#141a22 38%,#10171e 38%,#11171d 39%,#0d1015 39%)}
+.sky:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 24% 16%,rgba(255,221,95,.14),transparent 11rem),radial-gradient(circle at 77% 12%,rgba(117,167,255,.08),transparent 18rem)}
+.cloud{position:absolute;background:rgba(255,255,255,.08);border-radius:999px;filter:blur(1px)}.c1{width:150px;height:34px;left:8%;top:10%}.c2{width:110px;height:28px;right:11%;top:8%}.c3{width:170px;height:36px;left:42%;top:14%}
+.rain{display:none;position:absolute;inset:0;background-image:linear-gradient(rgba(180,210,255,.22),rgba(180,210,255,0));background-size:2px 18px;opacity:.25;animation:rain 0.55s linear infinite}.sky.weather-rain .rain{display:block}@keyframes rain{from{background-position:0 0}to{background-position:-8px 18px}}
+.hud-row{position:absolute;left:16px;right:16px;top:16px;display:flex;justify-content:space-between;gap:12px;z-index:3}.hud-box{padding:10px 12px;border-radius:14px;background:rgba(10,14,20,.72);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);font-size:12px;color:#dce4ef}.hud-box b{display:block;font-size:13px;margin-bottom:2px}.hud-weather{display:flex;align-items:center;gap:10px}.icon-sun,.icon-cloud,.icon-rain{width:18px;height:18px;border-radius:50%;display:inline-block;position:relative}.icon-sun{background:#ffd14c;box-shadow:0 0 18px rgba(255,209,76,.55)}.icon-cloud{background:#d3d9e4;border-radius:999px;width:22px;height:14px}.icon-rain{background:#8ec5ff;width:18px;height:18px;border-radius:4px;clip-path:polygon(50% 0, 85% 35%, 64% 100%, 36% 100%, 15% 35%)}
+.world{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) perspective(1400px) rotateX(62deg) rotateZ(-44deg);transform-style:preserve-3d;width:960px;height:760px}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px}
+.tile{position:absolute;border:1px solid rgba(255,255,255,.05);background:#182029;transform-style:preserve-3d}
+.road{background:var(--road);border-color:#38404b}.road:before{content:"";position:absolute;inset:50% 10px auto 10px;height:3px;background:repeating-linear-gradient(90deg,transparent 0 10px,var(--roadline) 10px 18px);transform:translateY(-50%)}.road.v:before{inset:10px auto 10px 50%;width:3px;height:auto;background:repeating-linear-gradient(180deg,transparent 0 10px,var(--roadline) 10px 18px);transform:translateX(-50%)}
+.field{background:linear-gradient(135deg,#2f6830,#4e8f39)}.field.alt{background:linear-gradient(135deg,#446d21,#769c30)}.water{background:linear-gradient(135deg,#1e5ea6,#173d6e)}.yard{background:linear-gradient(135deg,#38404b,#232932)}.parking{background:linear-gradient(135deg,#272d36,#1c2027)}
+.iso{position:absolute;transform-style:preserve-3d}.iso .top,.iso .left,.iso .right{position:absolute}.iso .top{background:var(--top,#d7dde7)}.iso .left{background:var(--left,#9ea7b5)}.iso .right{background:var(--right,#b8c1cd)}
+.iso.block .top{width:var(--w);height:var(--h);transform:translateZ(var(--z))}.iso.block .left{width:var(--h);height:var(--z);transform-origin:0 0;transform:rotateY(-90deg) translate3d(calc(var(--h) * -1),0,0)}.iso.block .right{width:var(--w);height:var(--z);transform-origin:0 0;transform:rotateX(90deg) translate3d(0,calc(var(--z) * -1),0)}
+.label3d{position:absolute;transform:translateZ(calc(var(--z) + 2px));font-size:12px;font-weight:900;letter-spacing:.08em;color:#0b1320;background:rgba(255,255,255,.84);padding:6px 8px;border-radius:10px}
+.barn .top{background:linear-gradient(135deg,#7fc85a,#65a846)}.barn .left{background:#4e8235}.barn .right{background:#659e46}
+.plant .top{background:linear-gradient(135deg,#e9eef7,#d8e0eb)}.plant .left{background:#b7c2cf}.plant .right{background:#c9d1dd}.warehouse .top{background:linear-gradient(135deg,#d6e6ff,#b8d3ff)}.warehouse .left{background:#87a7d9}.warehouse .right{background:#9ec0f0}.utility .top{background:linear-gradient(135deg,#ffe08d,#efc534)}.utility .left{background:#c39a28}.utility .right{background:#dfb83f}.office .top{background:linear-gradient(135deg,#c6f2ef,#84dbd1)}.office .left{background:#5ab0a5}.office .right{background:#74cbc0}
+.tank{position:absolute;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4f7fb,#cbd3df);box-shadow:inset 0 0 0 5px #a7b0bf;transform:translateZ(6px)}.silo{position:absolute;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f8fafc,#dbe2eb);box-shadow:inset 0 0 0 4px #bbc5d3;transform:translateZ(6px)}
+.tree{position:absolute;width:18px;height:18px;background:#4f9b3d;border-radius:50%;transform:translateZ(5px)}.tree:after{content:"";position:absolute;width:4px;height:10px;background:#765230;left:7px;top:15px}
+.car,.truck{position:absolute;transform-style:preserve-3d}.truck-body{position:absolute;width:36px;height:16px;background:#ffffff;border:2px solid #d7deea;border-radius:4px;transform:translateZ(8px)}.truck-box{position:absolute;left:20px;width:44px;height:16px;background:linear-gradient(135deg,#f3f6fb,#d8dfe9);border:2px solid #cbd3df;border-radius:4px;transform:translateZ(8px)}.truck-box:before{content:"GAZA";position:absolute;inset:0;display:grid;place-items:center;color:var(--gaza-blue);font-size:10px;font-weight:900;letter-spacing:.12em}.wheel{position:absolute;width:7px;height:7px;border-radius:50%;background:#222;box-shadow:0 0 0 2px #78808a}
+.truck.t1{left:55px;top:600px;animation:road1 18s linear infinite}.truck.t2{left:730px;top:130px;animation:road2 20s linear infinite 3s}.truck.t3{left:710px;top:430px;animation:entry 15s linear infinite 1s}.car{width:20px;height:10px;background:#8ec5ff;border-radius:4px;transform:translateZ(7px)}.car.c1{left:150px;top:635px;animation:road1 11s linear infinite 2s}.car.c2{left:760px;top:240px;animation:road2 12s linear infinite 1s}.car.c3{left:420px;top:620px;animation:road1 15s linear infinite 6s}.car.c4{left:752px;top:520px;animation:road2 16s linear infinite 4s}
+@keyframes road1{0%{transform:translate3d(0,0,0)}35%{transform:translate3d(610px,0,0)}60%{transform:translate3d(610px,-480px,0)}100%{transform:translate3d(0,-480px,0)}}
+@keyframes road2{0%{transform:translate3d(0,0,0)}35%{transform:translate3d(0,480px,0)}70%{transform:translate3d(-620px,480px,0)}100%{transform:translate3d(-620px,0,0)}}
+@keyframes entry{0%{transform:translate3d(0,0,0)}30%{transform:translate3d(-160px,0,0)}55%{transform:translate3d(-160px,-138px,0)}100%{transform:translate3d(-160px,-138px,0)}}
+.alert-panel{padding:16px;border:1px solid var(--line);border-radius:20px;background:#101318;position:sticky;top:84px}.alert-panel h3{margin:0 0 12px;font-size:16px}.status-badge{display:inline-flex;gap:7px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(120,217,94,.25);background:rgba(120,217,94,.08);font-size:11px;font-weight:800;color:#bde8b2}.status-badge i{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.alert-card{padding:12px;border:1px solid #2b313b;border-radius:13px;background:#14181f;margin-bottom:9px;cursor:pointer;transition:.18s}.alert-card:hover{border-color:#475060}.alert-card.active{border-color:rgba(220,74,63,.55);box-shadow:inset 3px 0 0 var(--gaza-red)}.alert-card .row1{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.alert-card b{font-size:12px}.alert-card small{display:block;margin-top:4px;color:#a8b0bc}.sev{font-size:9px;padding:4px 6px;border-radius:999px;border:1px solid #39404b;color:#c8cfda}.sev.alta{border-color:rgba(220,74,63,.4);color:#ffaaa4}.sev.media{border-color:rgba(255,204,116,.35);color:#ffd9a1}.sev.baja{border-color:rgba(120,217,94,.35);color:#bcebb3}
+.detail-box{margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(117,167,255,.18);background:rgba(117,167,255,.05)}.detail-box h4{margin:0 0 7px;font-size:13px}.detail-box p{margin:0;color:#b0b8c3;font-size:12px}.button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.stream{margin-top:14px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px;max-height:180px;overflow:auto}.stream div{font-size:10px;color:#a4adba;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,.05)}.stream em{color:#7cd8d0;font-style:normal;margin-right:5px}
+.legend{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.legend div{padding:11px;border:1px solid #2c333d;border-radius:12px;background:#12161c;font-size:11px;color:#bcc5d1}.legend b{display:block;color:#fff;margin-bottom:3px;font-size:11px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini-table{border:1px solid var(--line);border-radius:16px;overflow:hidden}.mini-table table{width:100%;border-collapse:collapse;font-size:12px}.mini-table th,.mini-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}.mini-table th{background:#11151c;color:#98a2b0;font-size:10px;letter-spacing:.08em;text-transform:uppercase}.mini-table tr:last-child td{border-bottom:0}
+.sources-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.sources-grid a{padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#111317;font-size:12px;color:#c8d0db}.sources-grid a:hover{border-color:#4a505e}
+@media(max-width:1100px){.gaza-hero-grid,.scene-layout,.split,.sources-grid{grid-template-columns:1fr}.fact-grid,.kpi-row{grid-template-columns:repeat(4,1fr)}.alert-panel{position:relative;top:auto}.world{transform:translate(-50%,-50%) scale(.88) perspective(1400px) rotateX(62deg) rotateZ(-44deg)}}
+@media(max-width:760px){.fact-grid,.kpi-row,.legend{grid-template-columns:repeat(2,1fr)}.sky{height:520px}.world{transform:translate(-50%,-50%) scale(.62) perspective(1400px) rotateX(62deg) rotateZ(-44deg)}.hud-row{display:none}}
+</style>
+</head>
+<body class="gaza3d">
+<nav class="nav"><div class="wrap navin"><a class="brand" href="index.html">HL <i>/</i> ENGINEERING</a><div class="navlinks"><a href="#simulacion">Simulación 3D</a><a href="#datos">Datos</a><a href="#fuentes">Fuentes</a><a class="nav-cta" href="resume.html">CV</a></div></div></nav>
+<header class="gaza-hero"><div class="wrap">
+  <div class="gaza-hero-grid">
+    <div>
+      <div class="hero-kicker"><i></i>VERSIÓN 3D · ESPAÑOL · DEMO OPERACIONAL</div>
+      <h1>GAZA Operations<br><span>Intelligence v3.0</span></h1>
+      <div class="gaza-copy">
+        <p>He convertido el concepto anterior en una <strong>simulación 3D mucho más visual y narrativa</strong>: granjas, carretera de entrada, tráfico perimetral, climatología, alertas, utilidades, muelles, staging, expediciones y camiones rotulados.</p>
+        <p>La experiencia está <strong>en español</strong> y pensada para que, al enseñarla, se entienda de un vistazo tu capacidad para plantear una capa de inteligencia operativa sobre un entorno industrial real.</p>
+      </div>
+      <div class="warning-box"><strong>Límite de honestidad técnica:</strong> la visualización y la lógica operacional están muy trabajadas, pero siguen siendo una <strong>simulación conceptual</strong>. Los datos internos reales de Leche Gaza (muelles, capacidades, rutas, turnos, WMS/ERP, layouts y KPIs reales) no son públicos, por lo que no los presento como hechos confirmados.</div>
+      <div class="actions"><a class="btn primary" href="#simulacion">Abrir simulación 3D</a><a class="btn" href="#fuentes">Ver trazabilidad</a></div>
+    </div>
+    <div class="gaza-logo-card">
+      <div class="gaza-brand"><div class="logo-ball">GZ</div><div class="brand-lines"><b>LECHE GAZA</b><small>Operaciones · logística · control tower</small></div></div>
+      <div class="brand-note">Concepto visual inspirado en una torre de control industrial: una sola vista para supervisar recogida, proceso, almacén, expediciones y transporte.</div>
+      <div class="brand-tags"><span>80+ ganaderías</span><span>Coreses · Zamora</span><span>Lean Manufacturing</span><span>GAZACONTROL</span><span>IA con humano en el circuito</span></div>
+    </div>
+  </div>
+  <div class="fact-grid" id="datos">
+    <div class="fact confirmed"><div class="v">80+</div><div class="l">ganaderías · dato público</div></div>
+    <div class="fact confirmed"><div class="v">50+</div><div class="l">años de historia</div></div>
+    <div class="fact confirmed"><div class="v">Coreses</div><div class="l">planta / sede operativa</div></div>
+    <div class="fact confirmed"><div class="v">GAZACONTROL</div><div class="l">automatización y logística</div></div>
+    <div class="fact confirmed"><div class="v">Lean</div><div class="l">mejora continua</div></div>
+    <div class="fact confirmed"><div class="v">Península</div><div class="l">envío online público</div></div>
+    <div class="fact"><div class="v">v3.0</div><div class="l">escena 3D simulada</div></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi3"><div class="v" id="kpiOtif">96,8%</div><div class="l">OTIF sintético</div></div>
+    <div class="kpi3"><div class="v" id="kpiMuelles">4/5</div><div class="l">muelles activos</div></div>
+    <div class="kpi3"><div class="v" id="kpiEspera">18 min</div><div class="l">espera media camión</div></div>
+    <div class="kpi3"><div class="v" id="kpiTrafico">Moderado</div><div class="l">tráfico entorno</div></div>
+    <div class="kpi3"><div class="v" id="kpiTiempo">Despejado</div><div class="l">meteo simulada</div></div>
+    <div class="kpi3"><div class="v" id="kpiAlertas">3</div><div class="l">alertas vivas</div></div>
+    <div class="kpi3"><div class="v" id="kpiBloqueos">2</div><div class="l">pallets bloqueados</div></div>
+  </div>
+</div></header>
+
+<section id="simulacion"><div class="wrap"><div class="section-head"><div class="eyebrow">Digital twin visual</div><div><h2>Simulación 3D de granja a expedición.</h2><p>La escena integra granjas, vial de entrada, tráfico exterior, planta, utilidades, almacén, staging, muelles y expediciones. La parte visual está pensada para resultar memorable al presentar tu candidatura.</p></div></div>
+<div class="scene-layout">
+  <div class="scene-shell">
+    <div class="scene-top"><div><h3>Vista operacional 3D · Leche Gaza</h3><p>Granja → recepción → proceso → almacén → staging → muelles → expediciones</p></div><div class="mini-status"><span id="statusTiempo">Tiempo: despejado</span><span id="statusTrafico">Tráfico: moderado</span><span id="statusEscena">Escena: normal</span></div></div>
+    <div class="sky" id="sky">
+      <div class="hud-row"><div class="hud-box"><b>Entorno</b><span id="hudEnv">02:03 · Despejado · 17 °C · Viento flojo</span></div><div class="hud-box hud-weather"><span id="hudIcon" class="icon-sun"></span><div><b id="hudTitulo">Tiempo estable</b><span id="hudTexto">Operación normal con tráfico moderado en accesos.</span></div></div></div>
+      <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="rain"></div>
+      <div class="world">
+        <div class="grid"></div>
+        <!-- base map -->
+        <div class="tile field" style="left:25px;top:25px;width:220px;height:180px"></div>
+        <div class="tile field alt" style="left:25px;top:215px;width:220px;height:150px"></div>
+        <div class="tile field" style="left:25px;top:375px;width:220px;height:160px"></div>
+        <div class="tile road" style="left:0;top:565px;width:960px;height:70px"></div>
+        <div class="tile road v" style="left:700px;top:0;width:70px;height:635px"></div>
+        <div class="tile road" style="left:450px;top:370px;width:250px;height:70px"></div>
+        <div class="tile yard" style="left:258px;top:70px;width:160px;height:120px"></div>
+        <div class="tile yard" style="left:430px;top:60px;width:235px;height:165px"></div>
+        <div class="tile yard" style="left:258px;top:205px;width:150px;height:110px"></div>
+        <div class="tile yard" style="left:435px;top:250px;width:225px;height:95px"></div>
+        <div class="tile parking" style="left:430px;top:450px;width:220px;height:90px"></div>
+        <div class="tile water" style="left:785px;top:40px;width:120px;height:120px"></div>
+
+        <!-- Farms -->
+        <div class="iso block barn" style="left:75px;top:80px;--w:90px;--h:70px;--z:34px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:8px;top:8px">GRANJA 01</div></div>
+        <div class="iso block barn" style="left:90px;top:250px;--w:80px;--h:60px;--z:30px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:7px;top:7px">GRANJA 02</div></div>
+        <div class="iso block barn" style="left:110px;top:420px;--w:82px;--h:62px;--z:30px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:7px;top:7px">GRANJA 03</div></div>
+
+        <!-- Trees -->
+        <div class="tree" style="left:210px;top:95px"></div><div class="tree" style="left:188px;top:132px"></div><div class="tree" style="left:178px;top:292px"></div><div class="tree" style="left:205px;top:455px"></div><div class="tree" style="left:160px;top:465px"></div>
+
+        <!-- Inbound / silos -->
+        <div class="iso block office" style="left:280px;top:95px;--w:120px;--h:85px;--z:28px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:8px">RECEPCIÓN Y CALIDAD</div></div>
+        <div class="silo" style="left:300px;top:205px"></div><div class="silo" style="left:338px;top:205px"></div><div class="silo" style="left:376px;top:205px"></div>
+
+        <!-- Plant -->
+        <div class="iso block plant" style="left:455px;top:80px;--w:195px;--h:120px;--z:38px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:12px;top:12px">PLANTA DE PROCESO</div></div>
+        <div class="tank" style="left:585px;top:225px"></div><div class="tank" style="left:628px;top:225px"></div>
+
+        <!-- Utilities -->
+        <div class="iso block utility" style="left:800px;top:65px;--w:90px;--h:80px;--z:32px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:6px;top:8px">UTILITIES</div></div>
+
+        <!-- Warehouse -->
+        <div class="iso block warehouse" style="left:455px;top:270px;--w:180px;--h:70px;--z:34px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:9px">ALMACÉN AUTOMÁTICO</div></div>
+        <div class="iso block office" style="left:275px;top:225px;--w:115px;--h:75px;--z:22px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:8px">CONTROL OT / IT</div></div>
+        <div class="iso block plant" style="left:450px;top:460px;--w:90px;--h:60px;--z:16px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:10px;top:8px">STAGING</div></div>
+        <div class="iso block utility" style="left:550px;top:460px;--w:90px;--h:60px;--z:16px"><div class="top"></div><div class="left"></div><div class="right"></div><div class="label3d" style="left:8px;top:8px">MUELLES</div></div>
+
+        <!-- Docks markers -->
+        <div class="tile yard" style="left:663px;top:460px;width:30px;height:16px"></div>
+        <div class="tile yard" style="left:663px;top:482px;width:30px;height:16px"></div>
+        <div class="tile yard" style="left:663px;top:504px;width:30px;height:16px"></div>
+        <div class="tile yard" style="left:663px;top:526px;width:30px;height:16px"></div>
+
+        <!-- vehicles -->
+        <div class="truck t1"><div class="truck-body"></div><div class="truck-box"></div><div class="wheel" style="left:8px;top:14px"></div><div class="wheel" style="left:28px;top:14px"></div><div class="wheel" style="left:49px;top:14px"></div><div class="wheel" style="left:61px;top:14px"></div></div>
+        <div class="truck t2"><div class="truck-body"></div><div class="truck-box"></div><div class="wheel" style="left:8px;top:14px"></div><div class="wheel" style="left:28px;top:14px"></div><div class="wheel" style="left:49px;top:14px"></div><div class="wheel" style="left:61px;top:14px"></div></div>
+        <div class="truck t3"><div class="truck-body"></div><div class="truck-box"></div><div class="wheel" style="left:8px;top:14px"></div><div class="wheel" style="left:28px;top:14px"></div><div class="wheel" style="left:49px;top:14px"></div><div class="wheel" style="left:61px;top:14px"></div></div>
+        <div class="car c1"></div><div class="car c2"></div><div class="car c3"></div><div class="car c4"></div>
+      </div>
+    </div>
+  </div>
+  <aside class="alert-panel">
+    <span class="status-badge"><i></i>SIMULACIÓN ACTIVA</span>
+    <h3>Alertas y escenarios</h3>
+    <div class="alert-card active" data-id="pallet"><div class="row1"><b>EXP-260184 · pallets bloqueados</b><span class="sev alta">ALTA</span></div><small>D03 reservado mientras 2 pallets siguen pendientes de liberación.</small></div>
+    <div class="alert-card" data-id="entrada"><div class="row1"><b>INB-260071 · retraso en entrada</b><span class="sev media">MEDIA</span></div><small>Una cisterna entra +24 min sobre su slot sintético de recepción.</small></div>
+    <div class="alert-card" data-id="meteo"><div class="row1"><b>MET-009 · frente de lluvia</b><span class="sev baja">BAJA</span></div><small>La lluvia incrementa ligeramente el tiempo de maniobra y la congestión.</small></div>
+    <div class="detail-box"><h4 id="detailTitle">EXP-260184 · recuperación propuesta</h4><p id="detailText">Mantener D03 para esta expedición, secuenciar la carga siguiente a D05 y completar la liberación de los 2 pallets bloqueados antes de ordenar salida.</p><div class="button-row"><button class="btn primary" id="simulate">Simular recuperación</button><button class="btn" id="approve" disabled>Aprobar</button><button class="btn" id="reset">Reset</button></div></div>
+    <div class="legend"><div><b>Granjas</b>origen leche / captación</div><div><b>Planta</b>proceso y envasado</div><div><b>Almacén</b>stock y staging</div><div><b>Muelles</b>carga y expedición</div></div>
+    <div class="stream" id="stream"><div><em>02:03:07</em> Sistema cargado · vista 3D operativa.</div><div><em>02:03:09</em> Tráfico exterior moderado en anillo logístico.</div><div><em>02:03:12</em> D03 reservado para EXP-260184.</div><div><em>02:03:15</em> 2 pallets pendientes de liberación.</div></div>
+  </aside>
+</div></div></section>
+
+<section><div class="wrap"><div class="section-head"><div class="eyebrow">Operación sintética</div><div><h2>Qué se está representando exactamente.</h2><p>Todo lo visible abajo está diseñado para comunicar criterio operativo y dominio de sistemas, sin confundir al observador sobre la frontera entre hecho público y modelo sintético.</p></div></div><div class="split"><div class="mini-table"><table><thead><tr><th>Capa</th><th>Contenido</th><th>Estado</th></tr></thead><tbody><tr><td>Hechos públicos</td><td>80+ ganaderías, Coreses, catálogo, GAZACONTROL, Lean</td><td>Confirmado</td></tr><tr><td>Escena 3D</td><td>Disposición general granjas-planta-muelles-carreteras</td><td>Simulada</td></tr><tr><td>Clima / tráfico</td><td>Tiempo, densidad de tráfico y eventos del entorno</td><td>Simulado</td></tr><tr><td>Operación</td><td>Expediciones, pallets, slots, esperas, muelles</td><td>Simulada</td></tr><tr><td>Recomendación IA</td><td>What-if, explicación y aprobación humana</td><td>Conceptual</td></tr></tbody></table></div><div class="mini-table"><table><thead><tr><th>Flujo</th><th>Secuencia</th><th>Uso en demo</th></tr></thead><tbody><tr><td>Inbound</td><td>Granja → cisterna → recepción → calidad</td><td>Visibilidad de entradas</td></tr><tr><td>Proceso</td><td>Silos → planta → envasado</td><td>Dependencias operativas</td></tr><tr><td>Almacén</td><td>Producto terminado → almacén → staging</td><td>Preparación de expediciones</td></tr><tr><td>Outbound</td><td>Muelle → camión → ruta</td><td>Expediciones y OTIF</td></tr><tr><td>Entorno</td><td>Acceso viario + tráfico + meteorología</td><td>Contexto operacional</td></tr></tbody></table></div></div></div></section>
+
+<section id="fuentes"><div class="wrap"><div class="section-head"><div class="eyebrow">Fuentes</div><div><h2>Base pública utilizada para anclar la simulación.</h2><p>Esto refuerza la credibilidad de la demo: está visualmente ambiciosa, pero con trazabilidad explícita.</p></div></div><div class="sources-grid"><a href="https://www.lechegaza.com/" target="_blank">Leche Gaza · web oficial · historia, compañía, 80+ ganaderías.</a><a href="https://www.lechegaza.com/I%2BD%2Bi.html" target="_blank">Leche Gaza · I+D+i · GAZACONTROL, Lean Manufacturing y modernización.</a><a href="https://www.lechegaza.com/productos.html" target="_blank">Leche Gaza · productos · familias públicas del catálogo.</a><a href="https://www.lechegaza.com/tienda-online/content/7-condiciones-de-compra" target="_blank">Leche Gaza · tienda online · cobertura peninsular pública.</a><a href="https://www.veolia.es/casos-exito/leche-gaza" target="_blank">Veolia · caso de éxito · vapor, agua, EDARI y residuos.</a><a href="https://es.linkedin.com/posts/lechegaza_nuestro-gerente-sa%C3%BAl-alonso-ha-asistido-activity-7458492497636458496-3srs" target="_blank">LinkedIn público · Saúl Alonso identificado como gerente.</a></div></div></section>
+
+<footer class="footer"><div class="wrap footer-grid"><span>Concepto independiente de Héctor Lobato · no es un sistema oficial de Leche Gaza</span><span>v3.0 · español · simulación 3D</span></div></footer>
+
+<script>
+const scenarios={
+  pallet:{title:'EXP-260184 · recuperación propuesta',text:'Mantener D03 para esta expedición, secuenciar la carga siguiente a D05 y completar la liberación de los 2 pallets bloqueados antes de ordenar salida.',kpis:{otif:'96,8%',espera:'18 min',alertas:'3',bloqueos:'2',trafico:'Moderado'},status:'Escena: pallets bloqueados'},
+  entrada:{title:'INB-260071 · retraso en entrada',text:'Reordenar la recepción para absorber una cisterna con retraso sin perjudicar la preparación outbound ya confirmada.',kpis:{otif:'96,5%',espera:'20 min',alertas:'4',bloqueos:'1',trafico:'Moderado'},status:'Escena: retraso inbound'},
+  meteo:{title:'MET-009 · lluvia ligera',text:'La recomendación es ampliar la ventana de maniobra, reducir conflicto de muelles y mantener informados a transportistas y supervisión.',kpis:{otif:'96,1%',espera:'23 min',alertas:'3',bloqueos:'0',trafico:'Denso'},status:'Escena: lluvia en accesos'}
+};
+const weatherStates=[
+  {cls:'',label:'Despejado',hud:'02:03 · Despejado · 17 °C · Viento flojo',title:'Tiempo estable',text:'Operación normal con tráfico moderado en accesos.',icon:'sun'},
+  {cls:'weather-cloudy',label:'Nublado',hud:'02:08 · Nublado · 16 °C · Viento moderado',title:'Nubosidad creciente',text:'Sin impacto relevante por ahora; vigilar accesos.',icon:'cloud'},
+  {cls:'weather-rain',label:'Lluvia',hud:'02:14 · Lluvia ligera · 15 °C · Superficie húmeda',title:'Lluvia ligera',text:'Aumenta ligeramente el tiempo de maniobra y la congestión.',icon:'rain'}
+];
+let current='pallet',weatherIndex=0,simulated=false;
+const $=id=>document.getElementById(id);
+function stamp(){return new Date().toLocaleTimeString('es-ES')}
+function log(msg){$('stream').insertAdjacentHTML('afterbegin',`<div><em>${stamp()}</em> ${msg}</div>`)}
+function iconHtml(type){if(type==='cloud')return '<span class="icon-cloud"></span>';if(type==='rain')return '<span class="icon-rain"></span>';return '<span class="icon-sun"></span>'}
+function applyWeather(){const w=weatherStates[weatherIndex];const sky=$('sky');sky.className='sky '+w.cls;$('kpiTiempo').textContent=w.label;$('statusTiempo').textContent='Tiempo: '+w.label.toLowerCase();$('hudEnv').textContent=w.hud;$('hudTitulo').textContent=w.title;$('hudTexto').textContent=w.text;$('hudIcon').outerHTML=iconHtml(w.icon).replace('class="','id="hudIcon" class="')}
+function applyScenario(id){const s=scenarios[id];current=id;simulated=false;$('detailTitle').textContent=s.title;$('detailText').textContent=s.text;$('kpiOtif').textContent=s.kpis.otif;$('kpiEspera').textContent=s.kpis.espera;$('kpiAlertas').textContent=s.kpis.alertas;$('kpiBloqueos').textContent=s.kpis.bloqueos;$('kpiTrafico').textContent=s.kpis.trafico;$('statusTrafico').textContent='Tráfico: '+s.kpis.trafico.toLowerCase();$('statusEscena').textContent=s.status;$('approve').disabled=true;document.querySelectorAll('.alert-card').forEach(el=>el.classList.toggle('active',el.dataset.id===id));if(id==='meteo'){weatherIndex=2;applyWeather()}log('Escenario seleccionado · '+id)}
+function simulate(){const recovery={pallet:{otif:'97,2%',espera:'9 min',alertas:'2',bloqueos:'0',msg:'Plan simulado: mover la siguiente carga a D05, conservar D03 para EXP-260184 y liberar los pallets pendientes antes de salida.'},entrada:{otif:'97,0%',espera:'12 min',alertas:'3',bloqueos:'1',msg:'Plan simulado: re-secuenciar la ventana de recepción y proteger el staging outbound comprometido.'},meteo:{otif:'96,8%',espera:'14 min',alertas:'2',bloqueos:'0',msg:'Plan simulado: ampliar márgenes de maniobra, priorizar seguridad y redistribuir el flujo de acceso.'}}[current];$('kpiOtif').textContent=recovery.otif;$('kpiEspera').textContent=recovery.espera;$('kpiAlertas').textContent=recovery.alertas;$('kpiBloqueos').textContent=recovery.bloqueos;$('detailText').textContent=recovery.msg;$('approve').disabled=false;simulated=true;log('Simulación what-if completada · recomendación lista para aprobación humana')}
+function approve(){if(!simulated)return;$('detailText').textContent='Plan aprobado por supervisor. Se registra la decisión y se mantiene la autoridad humana. No se ejecuta ningún cambio real contra sistemas externos.';$('approve').disabled=true;log('Aprobación humana registrada · auditoría actualizada')}
+function resetScene(){weatherIndex=0;applyWeather();applyScenario('pallet');$('stream').innerHTML='<div><em>02:03:07</em> Sistema cargado · vista 3D operativa.</div><div><em>02:03:09</em> Tráfico exterior moderado en anillo logístico.</div><div><em>02:03:12</em> D03 reservado para EXP-260184.</div><div><em>02:03:15</em> 2 pallets pendientes de liberación.</div>';log('Escena reiniciada')} 
+applyWeather();applyScenario('pallet');
+document.querySelectorAll('.alert-card').forEach(el=>el.addEventListener('click',()=>applyScenario(el.dataset.id)));
+$('simulate').addEventListener('click',simulate);$('approve').addEventListener('click',approve);$('reset').addEventListener('click',resetScene);
+setInterval(()=>{weatherIndex=(weatherIndex+1)%weatherStates.length;applyWeather();log('Actualización de entorno · '+weatherStates[weatherIndex].label.toLowerCase())},14000);
+</script>
+</body>
+</html>

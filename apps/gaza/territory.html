@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GAZA · Territory, Routing & Weather</title>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynl7ssT5dS0bITXWZ0uFzU7jo9rM=" crossorigin=""/>
+<style>
+:root{
+  --bg:#070a0f;--panel:#0f141b;--panel2:#141a23;--panel3:#19212c;--line:#26303d;
+  --text:#edf2f8;--muted:#97a4b5;--blue:#2d6cdf;--blue2:#8db2ff;--green:#77c85d;--yellow:#f2c94c;--red:#e45a50;--cyan:#60d8cf;
+  --max:1420px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 10% 0,rgba(45,108,223,.14),transparent 34rem),radial-gradient(circle at 94% 4%,rgba(119,200,93,.08),transparent 30rem),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+a{color:inherit;text-decoration:none}.wrap{max-width:var(--max);margin:auto;padding:0 26px}.nav{position:sticky;top:0;z-index:1000;background:rgba(7,10,15,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}.navin{height:66px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-size:12px;font-weight:900;letter-spacing:.15em}.brand i{font-style:normal;color:var(--blue2)}.navlinks{display:flex;gap:18px;align-items:center;font-size:12px;color:var(--muted)}.navlinks a:hover{color:#fff}.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#111720;font-size:10px;color:#bec8d6}.pill i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(119,200,93,.5)}
+.hero{padding:60px 0 28px}.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:stretch}.eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:900;color:var(--blue2)}h1{font-size:clamp(42px,6vw,78px);line-height:.93;letter-spacing:-.055em;margin:10px 0 16px}h1 span{color:#808b9a}.lead{max-width:850px;color:#c4ccd7;font-size:18px}.lead strong{color:#fff}.boundary{margin-top:17px;padding:13px 15px;border:1px solid rgba(242,201,76,.22);background:rgba(242,201,76,.055);border-radius:12px;color:#cbbb91;font-size:12px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:21px}.btn{appearance:none;border:1px solid var(--line);background:#111720;color:#e7edf6;border-radius:999px;padding:10px 14px;font-weight:800;font-size:12px;cursor:pointer}.btn:hover{border-color:#465366}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.green{background:var(--green);border-color:var(--green);color:#071007}.btn:disabled{opacity:.42;cursor:not-allowed}
+.brandcard{position:relative;min-height:290px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(160deg,#101722,#0b1016);padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}.brandcard:before{content:"";position:absolute;right:-80px;top:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(45,108,223,.22),transparent 67%)}.gaza-mark{position:relative;z-index:1}.gaza-word{font-size:52px;font-weight:1000;letter-spacing:-.06em;color:#fff;line-height:.9}.gaza-word small{display:block;font-size:13px;letter-spacing:.02em;font-weight:800;color:#cbd5e1;margin-top:10px}.brand-meta{display:flex;flex-wrap:wrap;gap:7px;position:relative;z-index:1}.brand-meta span{font-size:10px;padding:6px 8px;border-radius:999px;border:1px solid #293443;background:#111722;color:#c1cad7}.geo{position:relative;z-index:1;font-size:12px;color:#9da8b8}.geo b{color:#fff}
+.facts{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin-top:20px}.fact{padding:13px;border:1px solid var(--line);border-radius:14px;background:#10151c}.fact .v{font-size:20px;font-weight:950;letter-spacing:-.025em}.fact .l{margin-top:3px;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.08em}.fact.ok{box-shadow:inset 0 2px 0 rgba(119,200,93,.75)}
+section{padding:46px 0;border-top:1px solid rgba(255,255,255,.055)}.section-head{display:grid;grid-template-columns:170px 1fr;gap:22px;margin-bottom:22px}.section-head h2{font-size:clamp(28px,4vw,46px);line-height:1.02;letter-spacing:-.035em;margin:0}.section-head p{color:var(--muted);max-width:850px;margin:5px 0 0}
+.map-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,.55fr);gap:12px}.map-shell{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#0d1218}.map-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:13px 15px;border-bottom:1px solid var(--line);background:#10161e}.map-top h3{margin:0;font-size:15px}.map-top p{margin:2px 0 0;color:var(--muted);font-size:11px}.map-badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.map-badges span{font-size:9px;padding:5px 7px;border-radius:999px;border:1px solid #2d3948;background:#141b24;color:#bdc7d4}#map{height:610px;background:#0d1117}.side{display:grid;gap:12px}.card{border:1px solid var(--line);border-radius:18px;background:#0f141b;padding:16px}.card h3{margin:0 0 9px;font-size:15px}.card p{margin:0;color:#aab4c2;font-size:12px}.weather-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.metric{padding:11px;border:1px solid #27313d;border-radius:11px;background:#131a23}.metric .v{font-size:19px;font-weight:900}.metric .l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.google-frame{height:250px;width:100%;border:0;border-radius:13px;margin-top:10px;background:#0b0e13}.smallnote{margin-top:8px;color:#768397;font-size:10px}.status{display:inline-flex;align-items:center;gap:6px;font-size:10px;padding:5px 8px;border-radius:999px;border:1px solid rgba(119,200,93,.25);background:rgba(119,200,93,.07);color:#bfe3b7}.status i{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.route-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.routes{border:1px solid var(--line);border-radius:17px;overflow:hidden;background:#0f141b}.routes table{width:100%;border-collapse:collapse;font-size:11px}.routes th,.routes td{padding:10px 11px;border-bottom:1px solid rgba(255,255,255,.055);text-align:left}.routes th{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#8290a3;background:#121821}.routes tr:last-child td{border-bottom:0}.route-name{font-weight:800}.route-mode{font-size:9px;color:var(--muted)}.route-link{color:var(--blue2);font-weight:800}.traffic-controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.traffic-controls button.active{background:var(--blue);border-color:var(--blue)}
+.arch{display:grid;grid-template-columns:1fr .75fr;gap:12px}.arch-shell{border:1px solid var(--line);border-radius:18px;background:#0d1218;padding:18px}.tier{padding:13px;border:1px solid #2a3442;border-radius:13px;background:#121821;margin-bottom:10px}.tier h4{margin:0 0 10px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#8d9bad}.nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.node{min-height:82px;padding:10px;border:1px solid #2b3644;border-radius:10px;background:#171e28}.node b{font-size:11px}.node small{display:block;color:#8f9bad;margin-top:5px;font-size:9px}.node .tag{display:inline-block;margin-top:7px;font-size:8px;padding:3px 5px;border-radius:5px;background:#202a37;color:#bfc9d6}.flow{text-align:center;color:#617085;font-size:17px;margin:-2px 0 4px}.integration-list{display:grid;gap:8px}.int{padding:12px;border:1px solid var(--line);border-radius:13px;background:#111720}.int .top{display:flex;justify-content:space-between;gap:10px}.int b{font-size:12px}.int p{margin:4px 0 0;color:#9da8b7;font-size:10px}.conf{font-size:8px;padding:4px 6px;border-radius:999px;border:1px solid #334052;white-space:nowrap}.conf.confirmed{color:#bce9b1;border-color:rgba(119,200,93,.32)}.conf.verify{color:#ffe2a0;border-color:rgba(242,201,76,.30)}
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.phase{padding:15px;border:1px solid var(--line);border-radius:15px;background:#0f141b}.phase .n{font-size:10px;color:var(--blue2);font-weight:900;letter-spacing:.09em}.phase h3{font-size:14px;margin:7px 0 5px}.phase p{font-size:10.5px;color:#9da7b5;margin:0}.phase .time{margin-top:10px;font-size:10px;font-weight:850;color:#d7deea}
+.sources{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.sources a{padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#10151c;font-size:11px;color:#c5ced9}.sources a:hover{border-color:#465264}.src-tag{color:#9ed596;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-right:6px}.footer{padding:38px 0 52px;border-top:1px solid rgba(255,255,255,.06);color:#7f8a99;font-size:11px}.footergrid{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.leaflet-container{font-family:inherit;background:#0b1016}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#121821;color:#e9eef6}.leaflet-popup-content{font-size:11px}.leaflet-control-attribution{font-size:9px;background:rgba(255,255,255,.85)!important}.plant-marker{width:22px;height:22px;background:#2d6cdf;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 7px rgba(45,108,223,.22)}
+@media(max-width:1050px){.hero-grid,.map-layout,.route-grid,.arch{grid-template-columns:1fr}.facts{grid-template-columns:repeat(4,1fr)}.nodes{grid-template-columns:repeat(2,1fr)}.phases{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.wrap{padding:0 16px}.navlinks a:not(:last-child){display:none}.facts{grid-template-columns:repeat(2,1fr)}.section-head{grid-template-columns:1fr}.nodes,.phases,.sources{grid-template-columns:1fr}#map{height:500px}}
+</style>
+</head>
+<body><div style="position:fixed;z-index:9999;right:14px;top:14px;display:flex;gap:6px;font:700 11px Inter,system-ui"><a href="./" style="padding:8px 10px;border-radius:999px;background:#246bfd;color:#fff;text-decoration:none;box-shadow:0 4px 18px #0003">CONTROL TOWER</a><a href="territory.html" style="padding:8px 10px;border-radius:999px;background:#101722;color:#fff;text-decoration:none;border:1px solid #334052">TERRITORY</a><a href="plant-3d.html" style="padding:8px 10px;border-radius:999px;background:#101722;color:#fff;text-decoration:none;border:1px solid #334052">PLANT 3D</a></div>
+<nav class="nav"><div class="wrap navin"><a class="brand" href="#">HL <i>/</i> GAZA OPS LAB</a><div class="navlinks"><a href="#territorio">Territorio</a><a href="#rutas">Rutas</a><a href="#integracion">Integración</a><a href="#fases">Desarrollo</a><span class="pill"><i></i>DEMO READ-ONLY</span></div></div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Operational Digital Twin · public-data grounded · v4.0</div>
+      <h1>GAZA Operations<br><span>sobre territorio real.</span></h1>
+      <div class="lead"><strong>Propuesta técnica independiente</strong> para convertir información de expediciones, planta, rutas, utilidades y sistemas existentes en una capa operativa común. Esta versión abandona el mapa inventado y trabaja sobre la <strong>ubicación real de la planta en Coreses</strong>, red viaria real y cálculo dinámico de rutas.</div>
+      <div class="boundary"><strong>Frontera de datos:</strong> ubicación, red viaria, fuentes públicas, meteorología y distancias calculadas proceden de fuentes reales. Pedidos, expediciones, pallets, turnos, muelles, clientes y carga de tráfico interno son escenarios de demostración hasta disponer de acceso autorizado a ERP/WMS/MES/OT.</div>
+      <div class="actions"><a class="btn primary" href="#territorio">Abrir mapa operativo</a><a class="btn" href="#integracion">Arquitectura de integración</a><a class="btn" target="_blank" href="https://www.google.com/maps/search/?api=1&query=41.525162564246195,-5.604126176771143">Abrir planta en Google Maps</a></div>
+    </div>
+    <div class="brandcard">
+      <div class="gaza-mark"><div class="gaza-word">gaza<small>GANADEROS DE ZAMORA · OPERATIONS CONCEPT</small></div></div>
+      <div class="geo"><b>Planta pública:</b><br>P.I. El Pinar · Parcela 10<br>49530 Coreses · Zamora<br><br><b>Centro cartográfico:</b><br>41.5251626, -5.6041262</div>
+      <div class="brand-meta"><span>GAZACONTROL</span><span>Lean Manufacturing</span><span>Solmicro ERP · referencia pública</span><span>Veolia utilities</span><span>Read-only first</span></div>
+    </div>
+  </div>
+  <div class="facts">
+    <div class="fact ok"><div class="v">80+</div><div class="l">ganaderías · público</div></div>
+    <div class="fact ok"><div class="v">&lt;50 km</div><div class="l">leche de cercanía · público</div></div>
+    <div class="fact ok"><div class="v">Coreses</div><div class="l">planta actual · público</div></div>
+    <div class="fact ok"><div class="v">GAZACONTROL</div><div class="l">producción + logística</div></div>
+    <div class="fact ok"><div class="v">Lean</div><div class="l">mejora continua</div></div>
+    <div class="fact ok"><div class="v">Veolia</div><div class="l">agua · energía · residuos</div></div>
+    <div class="fact"><div class="v">v4.0</div><div class="l">demo GIS + routing</div></div>
+  </div>
+</div></header>
+
+<section id="territorio"><div class="wrap">
+  <div class="section-head"><div class="eyebrow">01 · territorio real</div><div><h2>Planta, accesos y red viaria sobre cartografía real.</h2><p>La capa operativa utiliza OpenStreetMap/Leaflet para el prototipo interactivo sin credenciales. La ubicación de planta se toma del mapa embebido por Leche Gaza en su propia web. A la derecha se mantiene una referencia visual directa de Google Maps.</p></div></div>
+  <div class="map-layout">
+    <div class="map-shell"><div class="map-top"><div><h3>Mapa operativo · Coreses / Zamora</h3><p>Planta real + radio de captación público &lt;50 km + rutas demo calculadas sobre red viaria.</p></div><div class="map-badges"><span>OSM tiles</span><span>OSRM routes</span><span>Open-Meteo</span><span>Google reference</span></div></div><div id="map"></div></div>
+    <div class="side">
+      <div class="card"><span class="status"><i></i>METEOROLOGÍA REAL</span><h3 style="margin-top:10px">Condiciones actuales en planta</h3><p>Consulta directa a Open-Meteo sobre la coordenada de la planta. Si la consulta externa no está disponible, la interfaz mantiene el último estado conocido como no verificado.</p><div class="weather-row"><div class="metric"><div class="v" id="temp">-- °C</div><div class="l">temperatura</div></div><div class="metric"><div class="v" id="wind">-- km/h</div><div class="l">viento</div></div><div class="metric"><div class="v" id="weather">--</div><div class="l">condición</div></div><div class="metric"><div class="v" id="weatherTime">--</div><div class="l">actualización</div></div></div></div>
+      <div class="card"><h3>Referencia Google Maps · planta real</h3><p>Mapa embebido de la ubicación pública utilizada por Leche Gaza.</p><iframe class="google-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4224.306709903095!2d-5.604126176771143!3d41.525162564246195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd38e7094cd30eed:0xad6c1b88156fc6ba!2sLeche+Gaza+Coreses+Zamora!5e0!3m2!1ses!2ses!4v1609268196738!5m2!1ses!2ses"></iframe><div class="smallnote">Dirección pública: P.I. El Pinar, Parcela 10, 49530 Coreses (Zamora).</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="rutas"><div class="wrap">
+  <div class="section-head"><div class="eyebrow">02 · routing</div><div><h2>Rutas calculadas, no dibujadas a mano.</h2><p>Los destinos son <strong>nodos demo</strong> para demostrar el motor de expediciones; no afirmamos que sean clientes o rutas reales de Gaza. La geometría y la distancia se calculan en vivo con OSRM. En producción, el adaptador se sustituiría por Google Routes y/o HERE Truck Routing si se requieren restricciones HGV.</p></div></div>
+  <div class="route-grid">
+    <div class="routes"><table><thead><tr><th>Ruta demo</th><th>Distancia</th><th>Tiempo base</th><th>ETA ajustada</th><th></th></tr></thead><tbody id="routeRows"><tr><td colspan="5">Calculando red viaria...</td></tr></tbody></table></div>
+    <div class="card"><h3>Escenario de tráfico / maniobra</h3><p>OSRM no aporta tráfico en tiempo real. Para no inventarlo, el prototipo aplica un factor explícitamente sintético sobre el tiempo base. La versión productiva usaría un proveedor traffic-aware.</p><div class="traffic-controls"><button class="btn active" data-factor="1">Normal ×1.00</button><button class="btn" data-factor="1.15">Moderado ×1.15</button><button class="btn" data-factor="1.3">Alto ×1.30</button></div><div class="weather-row"><div class="metric"><div class="v" id="routeCount">0</div><div class="l">rutas calculadas</div></div><div class="metric"><div class="v" id="routeKm">0 km</div><div class="l">km total demo</div></div><div class="metric"><div class="v">HGV</div><div class="l">adaptador futuro</div></div><div class="metric"><div class="v">Read-only</div><div class="l">fase inicial</div></div></div></div>
+  </div>
+</div></section>
+
+<section id="integracion"><div class="wrap">
+  <div class="section-head"><div class="eyebrow">03 · integración</div><div><h2>La propuesta no sustituye sistemas: los conecta.</h2><p>La primera implantación sería una capa de lectura y normalización de eventos. Ningún PLC, ERP, herramienta de calidad o sistema crítico recibiría comandos durante el piloto. Las interfaces de escritura se plantearían únicamente después de discovery, pruebas y autorización.</p></div></div>
+  <div class="arch">
+    <div class="arch-shell">
+      <div class="tier"><h4>Sistemas de autoridad · existentes o a verificar</h4><div class="nodes"><div class="node"><b>Solmicro ERP</b><small>Referencia pública de cliente. Módulos y versión actual: por verificar.</small><span class="tag">ERP</span></div><div class="node"><b>GAZACONTROL</b><small>Automatización y monitorización de producción y logística.</small><span class="tag">CONFIRMADO</span></div><div class="node"><b>PLC / MES / líneas</b><small>Proveedor, protocolos y arquitectura interna requieren discovery.</small><span class="tag">OT</span></div><div class="node"><b>Veolia utilities</b><small>Vapor, agua, potabilización, EDARI y residuos.</small><span class="tag">CONFIRMADO</span></div></div></div>
+      <div class="flow">↓</div>
+      <div class="tier"><h4>GAZA Operations Integration Layer · propuesta</h4><div class="nodes"><div class="node"><b>Connectors</b><small>REST · SQL views · OPC UA · MQTT · SFTP · CSV según disponibilidad.</small><span class="tag">READ-ONLY</span></div><div class="node"><b>Event model</b><small>Pedido · lote · stock · pallet · expedición · vehículo · incidencia.</small><span class="tag">NORMALIZED</span></div><div class="node"><b>GIS / Routing</b><small>Ubicación · rutas · ETA · restricciones · clima · tráfico.</small><span class="tag">GEO</span></div><div class="node"><b>Observability</b><small>Audit trail · logs · health · calidad de datos · alertas.</small><span class="tag">EVIDENCE</span></div></div></div>
+      <div class="flow">↓</div>
+      <div class="tier"><h4>Control Tower + IA supervisada</h4><div class="nodes"><div class="node"><b>Expediciones</b><small>Preparación, dock scheduling, ETA, esperas y bloqueos.</small></div><div class="node"><b>What-if</b><small>Simular replanificación antes de aplicar cambios.</small></div><div class="node"><b>Copilot</b><small>Explicar incidencias, impacto y opciones con evidencia.</small></div><div class="node"><b>Supervisor</b><small>Aprobar, rechazar u ordenar. Autoridad humana retenida.</small></div></div></div>
+    </div>
+    <div class="integration-list">
+      <div class="int"><div class="top"><b>GAZACONTROL</b><span class="conf confirmed">CONFIRMADO</span></div><p>La propia empresa publica su objetivo: monitorización de fabricación y logística orientada a productividad integral e Industria 4.0. Nuestra capa debería complementar, no duplicar, esta inversión.</p></div>
+      <div class="int"><div class="top"><b>Solmicro ERP</b><span class="conf verify">RELACIÓN PÚBLICA · VERIFICAR ACTUALIDAD</span></div><p>Solmicro lista Leche Gaza como cliente ERP. Antes de diseñar un conector habría que comprobar versión, módulos, base de datos, API, permisos y ownership del dato.</p></div>
+      <div class="int"><div class="top"><b>Veolia · Utilities</b><span class="conf confirmed">CONFIRMADO</span></div><p>Servicios de vapor, ciclo integral del agua, potabilización, EDARI y gestión de residuos. La integración podría limitarse inicialmente a KPIs y alarmas disponibles.</p></div>
+      <div class="int"><div class="top"><b>PLC / MES / Packaging</b><span class="conf verify">DISCOVERY NECESARIO</span></div><p>No se asume ningún fabricante ni protocolo como hecho. Inventario OT, segmentación de red y matriz de interfaces serían tareas de discovery.</p></div>
+      <div class="int"><div class="top"><b>Google / HERE / GIS</b><span class="conf verify">PROPUESTA</span></div><p>Google Maps/Routes para visualización, matrices y tráfico; HERE Truck Routing cuando peso, ejes, altura o restricciones HGV sean determinantes.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="fases"><div class="wrap">
+  <div class="section-head"><div class="eyebrow">04 · implantación</div><div><h2>Desarrollo incremental y reversible.</h2><p>Estimaciones de desarrollo para un piloto, no compromisos comerciales. El calendario real depende del acceso a sistemas, documentación, calidad de datos y disponibilidad de IT/OT.</p></div></div>
+  <div class="phases">
+    <div class="phase"><div class="n">FASE 01</div><h3>Discovery & data map</h3><p>Inventario de ERP, GAZACONTROL, OT, interfaces, datos maestros, seguridad y necesidades de expediciones.</p><div class="time">Estimación: 2–5 días</div></div>
+    <div class="phase"><div class="n">FASE 02</div><h3>Read-only integration</h3><p>Conectores sin escritura, modelo de eventos, control de calidad de datos, GIS y dashboard inicial.</p><div class="time">Estimación: 5–10 días</div></div>
+    <div class="phase"><div class="n">FASE 03</div><h3>Operational pilot</h3><p>Excepciones, ETA, staging, expediciones, alertas y what-if con operación real observada.</p><div class="time">Estimación: 1–3 semanas</div></div>
+    <div class="phase"><div class="n">FASE 04</div><h3>Controlled actions</h3><p>Solo tras validación: aprobaciones, integración bidireccional, automatismos y optimización progresiva.</p><div class="time">Según alcance y riesgo</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap"><div class="section-head"><div class="eyebrow">05 · evidencia pública</div><div><h2>Fuentes que sustentan el modelo.</h2><p>La demo separa expresamente datos públicos, datos calculados y supuestos sintéticos.</p></div></div><div class="sources"><a target="_blank" href="https://www.lechegaza.com/I%2BD%2Bi.html"><span class="src-tag">oficial</span>Leche Gaza · GAZACONTROL + Lean Manufacturing.</a><a target="_blank" href="https://www.lechegaza.com/contacto.html"><span class="src-tag">oficial</span>Leche Gaza · ubicación de la planta en Coreses.</a><a target="_blank" href="https://www.lechegaza.com/_blog/post-presentacion-fabrica.html"><span class="src-tag">oficial</span>Leche de cercanía &lt;50 km y datos públicos de sostenibilidad.</a><a target="_blank" href="https://www.solmicro.com/clientes-erp/clientes-erp-solmicro/102277-leche-gaza-zamora"><span class="src-tag">proveedor</span>Solmicro · referencia pública de Leche Gaza como cliente ERP.</a><a target="_blank" href="https://www.veolia.es/casos-exito/leche-gaza"><span class="src-tag">proveedor</span>Veolia · vapor, agua, EDARI y residuos en Coreses.</a><a target="_blank" href="https://www.boe.es/diario_boe/txt.php?id=BOE-B-2025-18363"><span class="src-tag">oficial</span>BOE · aprovechamiento industrial de aguas subterráneas.</a></div></div></section>
+
+<footer class="footer"><div class="wrap footergrid"><span>Concepto independiente · Héctor Lobato · no es un sistema oficial de Leche Gaza</span><span>GAZA Operations Digital Twin v4.0 · GIS + Routing + Integration Architecture</span></div></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const plant={name:'Leche Gaza · Coreses',lat:41.525162564246195,lon:-5.604126176771143};
+const destinations=[
+  {name:'Zamora · nodo demo',lat:41.5034,lon:-5.7447},
+  {name:'Toro · nodo demo',lat:41.5242,lon:-5.3951},
+  {name:'Valladolid · nodo demo',lat:41.6523,lon:-4.7245},
+  {name:'Salamanca · nodo demo',lat:40.9701,lon:-5.6635},
+  {name:'Madrid · nodo demo',lat:40.4168,lon:-3.7038}
+];
+let trafficFactor=1;let routeResults=[];let routeLayers=[];
+const map=L.map('map',{zoomControl:true}).setView([plant.lat,plant.lon],10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const icon=L.divIcon({className:'',html:'<div class="plant-marker"></div>',iconSize:[22,22],iconAnchor:[11,11]});
+L.marker([plant.lat,plant.lon],{icon}).addTo(map).bindPopup('<b>Leche Gaza · planta Coreses</b><br>P.I. El Pinar, Parcela 10<br>Ubicación pública oficial.');
+L.circle([plant.lat,plant.lon],{radius:50000,color:'#77c85d',weight:1.5,fillColor:'#77c85d',fillOpacity:.04,dashArray:'7,7'}).addTo(map).bindPopup('Radio visual de 50 km · referencia a la cercanía publicada por Gaza.');
+destinations.forEach(d=>L.circleMarker([d.lat,d.lon],{radius:5,color:'#8db2ff',fillColor:'#2d6cdf',fillOpacity:.85,weight:1.5}).addTo(map).bindPopup('<b>'+d.name+'</b><br>Destino de demostración; no implica cliente real.'));
+
+function fmtDuration(sec){const m=Math.round(sec/60);if(m<60)return m+' min';const h=Math.floor(m/60),r=m%60;return h+' h '+r+' min'}
+function gmapsRouteUrl(d){return 'https://www.google.com/maps/dir/?api=1&origin='+plant.lat+','+plant.lon+'&destination='+d.lat+','+d.lon+'&travelmode=driving'}
+async function calcRoutes(){
+  const rows=document.getElementById('routeRows');rows.innerHTML='';routeResults=[];routeLayers.forEach(x=>map.removeLayer(x));routeLayers=[];
+  for(const d of destinations){
+    try{
+      const url=`https://router.project-osrm.org/route/v1/driving/${plant.lon},${plant.lat};${d.lon},${d.lat}?overview=full&geometries=geojson&steps=false`;
+      const res=await fetch(url);const js=await res.json();if(!js.routes||!js.routes[0])throw new Error('sin ruta');const r=js.routes[0];
+      routeResults.push({d,distance:r.distance,duration:r.duration});
+      const layer=L.geoJSON(r.geometry,{style:{color:'#2d6cdf',weight:3,opacity:.62}}).addTo(map);routeLayers.push(layer);
+      const tr=document.createElement('tr');tr.innerHTML=`<td><div class="route-name">Coreses → ${d.name.replace(' · nodo demo','')}</div><div class="route-mode">red real · destino demo</div></td><td>${(r.distance/1000).toFixed(1)} km</td><td>${fmtDuration(r.duration)}</td><td class="eta" data-sec="${r.duration}">${fmtDuration(r.duration*trafficFactor)}</td><td><a class="route-link" target="_blank" href="${gmapsRouteUrl(d)}">Google ↗</a></td>`;rows.appendChild(tr);
+    }catch(e){const tr=document.createElement('tr');tr.innerHTML=`<td>${d.name}</td><td colspan="4">Ruta no disponible en este momento</td>`;rows.appendChild(tr)}
+  }
+  document.getElementById('routeCount').textContent=routeResults.length;document.getElementById('routeKm').textContent=(routeResults.reduce((a,b)=>a+b.distance,0)/1000).toFixed(0)+' km';
+}
+function updateTraffic(){document.querySelectorAll('.eta').forEach(el=>el.textContent=fmtDuration(Number(el.dataset.sec)*trafficFactor))}
+document.querySelectorAll('.traffic-controls button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.traffic-controls button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');trafficFactor=Number(btn.dataset.factor);updateTraffic()}));
+
+function weatherText(code){const map={0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',48:'Niebla escarchada',51:'Llovizna',53:'Llovizna',55:'Llovizna intensa',61:'Lluvia',63:'Lluvia moderada',65:'Lluvia intensa',71:'Nieve',80:'Chubascos',81:'Chubascos',82:'Chubascos fuertes',95:'Tormenta'};return map[code]||('Código '+code)}
+async function loadWeather(){try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${plant.lat}&longitude=${plant.lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe%2FMadrid`;const r=await fetch(u);const j=await r.json();const c=j.current;document.getElementById('temp').textContent=Math.round(c.temperature_2m)+' °C';document.getElementById('wind').textContent=Math.round(c.wind_speed_10m)+' km/h';document.getElementById('weather').textContent=weatherText(c.weather_code);document.getElementById('weatherTime').textContent=(c.time||'').split('T')[1]||'actual';}catch(e){document.getElementById('weather').textContent='No disponible';document.getElementById('weatherTime').textContent='sin verificar'}}
+calcRoutes();loadWeather();
+</script>
+</body>
+</html>
