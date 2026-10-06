@@ -86,6 +86,10 @@ for(const target of targets){
     const roadsOk=!!roads&&roads.schemaVersion>=4&&roads.truckHeading==='PATH_TANGENT'&&roads.truckArticulation==='TRACTOR_TRAILER_SPLIT_TANGENT'&&roads.wheelMotion==='DISTANCE_BASED'&&roads.refs?.includes('N-122')&&roads.gisSurface==='campus-gis.html'&&roads.gateStatus==='UNKNOWN_UNTIL_AUTHORISED_SURVEY'&&roads.hgvDesignEnvelope?.outerRadiusM===12.5&&roads.hgvDesignEnvelope?.innerRadiusM===5.3;
     checks.push({surface:name,check:'road-context-and-truck-heading',ok:roadsOk,metrics:roads});
     if(!roadsOk)errors.push({surface:name,type:'quality',text:'Plant road context / tangent truck heading unavailable'});
+    const envField=await page.evaluate(()=>window.__GAZA_ENV_FIELD__||null);
+    const envFieldOk=!!envField&&envField.schemaVersion===1&&envField.spatialModel==='UNIFORM_VECTOR_FIELD_NOT_CFD'&&envField.proposedSensors===8&&envField.sourceClass==='PUBLIC_REFERENCE_LIVE'&&envField.metrics?.wind===8&&envField.metrics?.windDirection===280;
+    checks.push({surface:name,check:'environment-field-contract',ok:envFieldOk,metrics:envField});
+    if(!envFieldOk)errors.push({surface:name,type:'quality',text:'Plant environmental field contract/QA fixture unavailable'});
   }
 
   if(url.includes('campus-gis.html')){
