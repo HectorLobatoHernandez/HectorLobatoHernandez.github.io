@@ -2,16 +2,20 @@
 
 ## React Bits
 
-This presentation lab uses component behavior adapted from:
+The immersive CV uses behaviors adapted from the open-source React Bits project:
 
 - React Bits — https://github.com/DavidHDev/react-bits
-- SpotlightCard
-- ScrollReveal
+- CursorGrid
+- DecryptedText
+- ElectricBorder
+- TiltedCard
+- PixelTransition
+- Dock / proximity magnification concepts
 
 License: MIT + Commons Clause License Condition v1.0.
 
 Copyright (c) 2026 David Haz.
 
-The React Bits license permits use, modification and distribution as part of an application, website or product, but does not permit selling, sublicensing or redistributing the components themselves as a standalone library or port.
+These components are used and modified as part of this portfolio/application. They are not redistributed or sold as a standalone component library.
 
-The local integration changes module loading, JSX-free rendering and styling necessary to run the examples inside this portfolio.
+Local changes include build-free ESM loading, JSX-free wrappers, reduced dependency surface, custom visual language and technical CV-specific composition.
