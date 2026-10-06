@@ -130,6 +130,13 @@ if (-not $?) { throw "INSTALL_GAZA_SKILLS.ps1 failed." }
 Step "Mint Three.js Skills"
 Run "npx" @("--yes","skills","add","mintdotgg/mint-threejs-skills","-a","codex","-g","-y")
 
+Step "Geospatial / GIS agent skills"
+# MIT/Apache-2.0 skill sources selected for the GAZA real-road / Blender / GIS workflow.
+Run "npx" @("--yes","skills","add","MartinPuli/geoblender","-a","codex","-g","-y") -AllowFail
+Run "npx" @("--yes","skills","add","cesartevisual/threejs-skills","--skill","threejs-spatial-data","-a","codex","-g","-y") -AllowFail
+Run "npx" @("--yes","skills","add","CesiumGS/cesiumjs-skills","-a","codex","-g","-y") -AllowFail
+Run "npx" @("--yes","skills","add","znlgis/opengis-skills","-a","codex","-g","-y") -AllowFail
+
 Step "Three.js DevTools MCP -> OpenClaw"
 # OpenClaw mcp add probes before saving by default. On a cold npx launch that can
 # exceed the default 5 s timeout, so save first with --no-probe, configure longer
