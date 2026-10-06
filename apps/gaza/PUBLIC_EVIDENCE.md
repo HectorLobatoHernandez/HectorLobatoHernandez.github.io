@@ -35,3 +35,13 @@ To replace the functional 3D model with an as-built twin we need at least one au
 - Territory now attempts a read-only DGT NAP CKAN → DATEX2 v3.7 pull and filters georeferenced `situationRecord` entries within 120 km of Coreses. The DGT dataset is public and states a 1-minute update frequency.
 - Browser CORS/feed availability is not assumed: on failure the UI reports **NO DISP.** and does not substitute synthetic traffic as live data.
 - Manual ×1.00 / ×1.15 / ×1.30 congestion controls remain explicitly synthetic what-if factors.
+
+
+## Reconstruction / environment coupling update — 2026-10-06
+- The Coreses exterior in `plant-3d.html` is explicitly a **public-evidence reconstruction**, not an as-built model.
+- Public visual reference includes the 2022 press photo gallery of the Coreses factory; it is used only to guide architectural massing/facade language, not to infer hidden dimensions.
+- The 9-level ASRS anchor is public; rack bay geometry, shuttle paths, lift sequence, occupancy and cycle counts in the twin remain simulated.
+- Internal forklifts/AGVs now use a discrete lane-cell reservation/look-ahead model to demonstrate collision avoidance. Vehicle count, routes and tasking remain synthetic.
+- `territory.html` publishes a same-origin environment state containing Open-Meteo observations and DGT incidents filtered by distance to Coreses.
+- DGT proximity is **not** treated as route congestion. The 3D/strategy twins convert fresh weather/DGT context into a clearly labelled heuristic simulation factor only.
+- Freshness guards: weather state expires after 15 minutes; DGT state after 5 minutes in the twins. Stale data is not displayed as live.
