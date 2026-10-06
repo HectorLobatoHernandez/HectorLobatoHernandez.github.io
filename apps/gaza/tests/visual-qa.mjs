@@ -21,6 +21,7 @@ const targets=[
   {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-docks',url:'/plant-3d.html?camera=docks&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-roads',url:'/plant-3d.html?camera=roads&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'campus-gis',url:'/campus-gis.html?qa=1',width:1600,height:900,dsf:1},
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
   {name:'systems',url:'/systems.html?qa=1',width:1600,height:900,dsf:1},
   {name:'territory',url:'/territory.html?qa=1',width:1600,height:900,dsf:1},
@@ -82,9 +83,16 @@ for(const target of targets){
 
   if(url.includes('plant-3d.html')){
     const roads=await page.evaluate(()=>window.__GAZA_ROAD_CONTEXT__||null);
-    const roadsOk=!!roads&&roads.truckHeading==='PATH_TANGENT'&&roads.refs?.includes('N-122');
+    const roadsOk=!!roads&&roads.truckHeading==='PATH_TANGENT'&&roads.truckArticulation==='TRACTOR_TRAILER_SPLIT_TANGENT'&&roads.refs?.includes('N-122')&&roads.gisSurface==='campus-gis.html';
     checks.push({surface:name,check:'road-context-and-truck-heading',ok:roadsOk,metrics:roads});
     if(!roadsOk)errors.push({surface:name,type:'quality',text:'Plant road context / tangent truck heading unavailable'});
+  }
+
+  if(url.includes('campus-gis.html')){
+    const gis=await page.evaluate(()=>({contract:window.__GAZA_GIS__||null,map:!!document.querySelector('.leaflet-container'),copy:document.body.textContent.includes('EPSG:25830')&&document.body.textContent.includes('Overpass')&&document.body.textContent.includes('OSRM')}));
+    const gisOk=gis.map&&gis.copy&&gis.contract?.geometry==='OSM_RUNTIME'&&gis.contract?.routing==='OSRM_CALCULATED';
+    checks.push({surface:name,check:'campus-gis-provenance',ok:gisOk,metrics:gis});
+    if(!gisOk)errors.push({surface:name,type:'quality',text:'Campus GIS provenance/runtime contract missing'});
   }
 
   if(url.includes('farm-network.html')){
@@ -95,8 +103,8 @@ for(const target of targets){
   }
 
   if(url.includes('systems.html')){
-    const systems=await page.evaluate(()=>({rows:document.querySelectorAll('#systemsRows tr').length,people:document.querySelectorAll('#people .person').length,copy:['GAZACONTROL','Solmicro','Tetra Pak','StorFast','380.390'].every(x=>document.body.textContent.includes(x))}));
-    const systemsOk=systems.rows>=6&&systems.people>=4&&systems.copy;
+    const systems=await page.evaluate(()=>({rows:document.querySelectorAll('#systemsRows tr').length,people:document.querySelectorAll('#people .person').length,checks:document.querySelectorAll('#discoveryChecklist .check').length,ids:document.querySelectorAll('#canonicalIds code').length,copy:['GAZACONTROL','INTERGAZA','Solmicro','Tetra Pak','StorFast','380.390'].every(x=>document.body.textContent.includes(x))}));
+    const systemsOk=systems.rows>=7&&systems.people>=4&&systems.checks>=8&&systems.ids>=12&&systems.copy;
     checks.push({surface:name,check:'systems-discovery-matrix',ok:systemsOk,metrics:systems});
     if(!systemsOk)errors.push({surface:name,type:'quality',text:'Systems discovery matrix incomplete'});
   }
