@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "runtime": "three.js",
+  "policy": {
+    "localAssetsOnlyInProduction": true,
+    "requireSourceUrl": true,
+    "requireLicense": true,
+    "requireProvenance": true,
+    "allowedProvenance": ["PUBLIC_REFERENCE", "INFERRED_RECONSTRUCTION", "SIMULATED"]
+  },
+  "assets": []
+}
