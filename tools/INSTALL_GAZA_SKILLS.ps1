@@ -9,6 +9,7 @@ $Sources = @(
   "skills\gaza-geospatial-digital-twin",
   "skills\vendor\anthropic\frontend-design",
   "skills\vendor\mengto\video-to-superprompt",
+  "skills\vendor\latent-spaces\brag-slim",
   "skills\vendor\davila\3d-web-experience",
   "skills\vendor\threejs\threejs-core",
   "skills\vendor\threejs\threejs-camera",
@@ -37,4 +38,5 @@ Install-SkillSet $CodexSkillsRoot
 if ($OpenClawSkillsRoot) { Install-SkillSet $OpenClawSkillsRoot }
 Write-Host ""
 Write-Host "Skills copied. No agent security settings were changed."
+Write-Host "brag-slim is available for launch/demo videos and writes local output under brag-output*."
 Write-Host "Playwright Interactive has extra local prerequisites; read its SKILL.md before enabling them."
