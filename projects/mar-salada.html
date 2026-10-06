@@ -2,17 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070b10">
   <title>Club Mar Salada — Héctor Lobato</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css?v=3">
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <header class="header">
   <div class="shell nav">
     <a class="mark" href="../index.html">HL</a>
-    <nav>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="primaryNav"><span></span><span></span><span class="sr-only">Menu</span></button>
+    <nav id="primaryNav" class="primary-nav">
+      <a href="../index.html#profile" data-es="Perfil" data-en="Profile">Perfil</a>
+      <a href="../index.html#capabilities" data-es="Sistemas" data-en="Systems">Sistemas</a>
       <a href="../index.html#projects" data-es="Proyectos" data-en="Projects">Proyectos</a>
-      <a href="../index.html#ventures" data-es="Studios" data-en="Studios">Studios</a>
       <a href="../index.html#contact" data-es="Contacto" data-en="Contact">Contacto</a>
     </nav>
     <div class="spacer"></div>
@@ -20,44 +25,74 @@
   </div>
 </header>
 <main>
-  <section class="shell hero-slim">
-    <a class="back-link" href="../index.html#projects" data-es="← Volver a proyectos" data-en="← Back to projects">← Volver a proyectos</a>
-    <div class="project-hero">
-      <div>
-        <p class="eyebrow">HOSPITALITY / INTEGRATED SYSTEMS</p>
-        <h1>Club Mar Salada</h1>
-        <p class="lead" data-es="Proyecto técnico integrado combinando audio profesional, arquitectura DSP, control de iluminación, integración KNX/DALI, interfaces de usuario, documentación técnica y commissioning." data-en="Integrated technical project combining professional audio, DSP architecture, lighting control, KNX/DALI integration, user interfaces, technical documentation and commissioning.">Proyecto técnico integrado combinando audio profesional, arquitectura DSP, control de iluminación, integración KNX/DALI, interfaces de usuario, documentación técnica y commissioning.</p>
-        <div class="project-meta">
-          <article class="mini-card"><h4 data-es="Ubicación" data-en="Location">Ubicación</h4><p>Palma de Mallorca</p></article>
-          <article class="mini-card"><h4 data-es="Rol" data-en="Role">Rol</h4><p data-es="Diseño técnico, integración de sistemas, coordinación, puesta en marcha y documentación." data-en="Technical design, systems integration, coordination, commissioning and documentation.">Diseño técnico, integración de sistemas, coordinación, puesta en marcha y documentación.</p></article>
-          <article class="mini-card"><h4 data-es="Entregables" data-en="Deliverables">Entregables</h4><p data-es="Planimetría, arquitectura de sistema, control de audio e iluminación, documentación técnica." data-en="Plans, system architecture, audio and lighting control, technical documentation.">Planimetría, arquitectura de sistema, control de audio e iluminación, documentación técnica.</p></article>
-          <article class="mini-card"><h4 data-es="Tipo" data-en="Type">Tipo</h4><p data-es="Proyecto integrado de hospitality" data-en="Integrated hospitality project">Proyecto integrado de hospitality</p></article>
-        </div>
-      </div>
-      <div class="notice">
-        <strong data-es="Página de proyecto ampliable" data-en="Expandable project page">Página de proyecto ampliable</strong>
-        <p data-es="Esta estructura ya está preparada para incorporar planos, renders, fotografías, diagramas, memorias técnicas y documentación de proceso." data-en="This structure is already prepared to incorporate plans, renders, photographs, diagrams, technical notes and process documentation.">Esta estructura ya está preparada para incorporar planos, renders, fotografías, diagramas, memorias técnicas y documentación de proceso.</p>
-      </div>
+<section class="shell hero-slim">
+<a class="back-link" href="../index.html#projects" data-es="← Volver a proyectos" data-en="← Back to projects">← Volver a proyectos</a>
+<p class="eyebrow">HOSPITALITY / INTEGRATED SYSTEMS</p>
+<div class="project-hero">
+  <div data-reveal>
+    <h1>Club Mar Salada</h1>
+    <p class="lead" data-es="Un único sistema operativo para audio profesional, iluminación, automatización y experiencia de usuario." data-en="One operating system for professional audio, lighting, automation and user experience.">Un único sistema operativo para audio profesional, iluminación, automatización y experiencia de usuario.</p>
+    <div class="project-meta">
+      <article class="mini-card"><h4 data-es="Ubicación" data-en="Location">Ubicación</h4><p>Club del Mar · Palma de Mallorca</p></article>
+      <article class="mini-card"><h4 data-es="Rol" data-en="Role">Rol</h4><p data-es="Diseño técnico · integración · coordinación · commissioning" data-en="Technical design · integration · coordination · commissioning">Diseño técnico · integración · coordinación · commissioning</p></article>
+      <article class="mini-card"><h4 data-es="Dominios" data-en="Domains">Dominios</h4><p>AV · DSP · KNX · DALI · Control · Networks</p></article>
+      <article class="mini-card"><h4 data-es="Estado" data-en="Status">Estado</h4><p data-es="Caso documentado · ampliando archivo visual" data-en="Documented case · visual archive expanding">Caso documentado · ampliando archivo visual</p></article>
     </div>
-  </section>
+  </div>
+  <div class="notice" data-reveal>
+    <strong data-es="Problema de sistema" data-en="System problem">Problema de sistema</strong>
+    <p data-es="Varias disciplinas —audio, iluminación, control, red y operación— tenían que comportarse como una única instalación, con escenas, zonas, limitación, interfaces y puesta en marcha coordinadas." data-en="Multiple disciplines —audio, lighting, control, networking and operations— had to behave as one installation, with coordinated scenes, zones, limiting, interfaces and commissioning.">Varias disciplinas —audio, iluminación, control, red y operación— tenían que comportarse como una única instalación, con escenas, zonas, limitación, interfaces y puesta en marcha coordinadas.</p>
+  </div>
+</div>
+</section>
 
-  <section class="section shell">
-    <div class="kicker" data-es="01 — ARQUITECTURA / STACK" data-en="01 — ARCHITECTURE / STACK">01 — ARQUITECTURA / STACK</div>
-    <div class="stack" style="margin-top:24px"><span>Ecler MIMO88</span><span>Lynx Pro Audio</span><span>TSI Loudspeakers</span><span>KNX</span><span>DALI</span><span>Gira X1</span><span>Commissioning</span><span>Documentation</span></div>
-  </section>
+<section class="section shell">
+  <p class="kicker" data-es="01 — ARQUITECTURA" data-en="01 — ARCHITECTURE">01 — ARQUITECTURA</p>
+  <h3 data-es="Dos planos de control, un solo sistema." data-en="Two control planes, one system.">Dos planos de control, un solo sistema.</h3>
+  <div class="system-map" data-reveal>
+    <div class="map-row">
+      <div class="map-node"><small>SOURCES</small><strong>DJ interior / exterior</strong></div>
+      <div class="map-node"><small>PROCESSING</small><strong>Ecler MIMO88</strong></div>
+      <div class="map-node"><small>AMPLIFICATION</small><strong>Lynx GTX DSP</strong></div>
+      <div class="map-node"><small>OUTPUT</small><strong>Interior / Exterior PA</strong></div>
+    </div>
+    <div class="map-row">
+      <div class="map-node"><small>BUS</small><strong>KNX</strong></div>
+      <div class="map-node"><small>VISUALISATION</small><strong>Gira X1</strong></div>
+      <div class="map-node"><small>LIGHTING</small><strong>DALI + dimming</strong></div>
+      <div class="map-node"><small>USER LAYER</small><strong>Scenes / presets / UI</strong></div>
+    </div>
+  </div>
+  <div class="project-callout" data-reveal>
+    <article><h4 data-es="Criterio de diseño" data-en="Design principle">Criterio de diseño</h4><p data-es="Separar procesamiento, control y potencia para que el diagnóstico, mantenimiento y operación cotidiana sean claros." data-en="Separate processing, control and power so diagnostics, maintenance and daily operation remain clear.">Separar procesamiento, control y potencia para que el diagnóstico, mantenimiento y operación cotidiana sean claros.</p></article>
+    <article><h4 data-es="Resultado operativo" data-en="Operational result">Resultado operativo</h4><p data-es="Zonas, presets y escenas accesibles desde interfaces dedicadas, con una arquitectura documentable y escalable." data-en="Zones, presets and scenes accessible from dedicated interfaces, with a documentable and scalable architecture.">Zonas, presets y escenas accesibles desde interfaces dedicadas, con una arquitectura documentable y escalable.</p></article>
+  </div>
+</section>
 
-  <section class="section shell">
-    <div class="kicker" data-es="02 — VIAJE VISUAL" data-en="02 — VISUAL JOURNEY">02 — VIAJE VISUAL</div>
-    <div class="journey-grid"><article class="journey-card"><h4 data-es="Contexto" data-en="Context">Contexto</h4><p data-es="Levantamiento y definición de zonas interior/exterior, prioridades de uso y limitaciones del espacio." data-en="Survey and zoning of interior/exterior areas, use priorities and site constraints.">Levantamiento y definición de zonas interior/exterior, prioridades de uso y limitaciones del espacio.</p></article><article class="journey-card"><h4 data-es="Diseño" data-en="Design">Diseño</h4><p data-es="Arquitectura técnica de audio, iluminación y control con selección de equipos y routing." data-en="Technical architecture for audio, lighting and control including equipment selection and routing.">Arquitectura técnica de audio, iluminación y control con selección de equipos y routing.</p></article><article class="journey-card"><h4 data-es="Integración" data-en="Integration">Integración</h4><p data-es="Programación de control, grupos, escenas y coordinación entre AV y automatización." data-en="Control programming, groups, scenes and coordination between AV and automation.">Programación de control, grupos, escenas y coordinación entre AV y automatización.</p></article><article class="journey-card"><h4 data-es="Obra" data-en="Site works">Obra</h4><p data-es="Coordinación con instaladores, cuadro, cableado y ejecución en local." data-en="Coordination with installers, rack, cabling and on-site execution.">Coordinación con instaladores, cuadro, cableado y ejecución en local.</p></article><article class="journey-card"><h4 data-es="Puesta en marcha" data-en="Commissioning">Puesta en marcha</h4><p data-es="Ajustes, pruebas por zonas, escenas, presets y verificación funcional." data-en="Tuning, zone testing, scenes, presets and functional verification.">Ajustes, pruebas por zonas, escenas, presets y verificación funcional.</p></article><article class="journey-card"><h4 data-es="Resultado" data-en="Outcome">Resultado</h4><p data-es="Sistema unificado y operable con base sólida para explotación y documentación." data-en="Unified, operable system with a solid base for operation and documentation.">Sistema unificado y operable con base sólida para explotación y documentación.</p></article></div>
-  </section>
+<section class="section shell">
+  <p class="kicker" data-es="02 — VIAJE DEL PROYECTO" data-en="02 — PROJECT JOURNEY">02 — VIAJE DEL PROYECTO</p>
+  <div class="journey-grid">
+    <article class="journey-card" data-reveal><h4 data-es="Levantamiento" data-en="Survey">Levantamiento</h4><p data-es="Zonas, operación, restricciones acústicas y posiciones técnicas." data-en="Zones, operations, acoustic constraints and technical positions.">Zonas, operación, restricciones acústicas y posiciones técnicas.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Diseño" data-en="Design">Diseño</h4><p data-es="Routing, equipos, grupos, escenas, rack, control e interfaces." data-en="Routing, equipment, groups, scenes, rack, control and interfaces.">Routing, equipos, grupos, escenas, rack, control e interfaces.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Coordinación" data-en="Coordination">Coordinación</h4><p data-es="Electricidad, cableado, herrería, iluminación, acústica y documentación." data-en="Electrical, cabling, metalwork, lighting, acoustics and documentation.">Electricidad, cableado, herrería, iluminación, acústica y documentación.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Integración" data-en="Integration">Integración</h4><p data-es="DSP, grupos de audio, KNX/DALI, escenas y paneles de usuario." data-en="DSP, audio groups, KNX/DALI, scenes and user panels.">DSP, grupos de audio, KNX/DALI, escenas y paneles de usuario.</p></article>
+    <article class="journey-card" data-reveal><h4>Commissioning</h4><p data-es="Pruebas por zona, regulación, presets, niveles y verificación funcional." data-en="Zone testing, dimming, presets, levels and functional verification.">Pruebas por zona, regulación, presets, niveles y verificación funcional.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Documentación" data-en="Documentation">Documentación</h4><p data-es="Planos, listados, esquemas, incidencias, cambios y material municipal." data-en="Plans, lists, schematics, issues, changes and municipal documentation.">Planos, listados, esquemas, incidencias, cambios y material municipal.</p></article>
+  </div>
+</section>
 
-  <section class="section shell">
-    <div class="kicker" data-es="03 — GALERÍA DE PROYECTO" data-en="03 — PROJECT GALLERY">03 — GALERÍA DE PROYECTO</div>
-    <p class="muted" style="margin-top:18px" data-es="Aquí se pueden ir incorporando planos CAD, capturas de programación, fotos del rack, imágenes del local, luminarias, altavoces y escenas finales." data-en="This section can progressively include CAD plans, programming screenshots, rack photos, venue images, luminaires, loudspeakers and final scenes.">Aquí se pueden ir incorporando planos CAD, capturas de programación, fotos del rack, imágenes del local, luminarias, altavoces y escenas finales.</p>
-    <div class="gallery-panel"><div class="placeholder"><strong data-es="Planos" data-en="Plans">Planos</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Diseño" data-en="Design">Diseño</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Fotos de obra" data-en="Site photos">Fotos de obra</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Integración" data-en="Integration">Integración</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Resultado final" data-en="Final result">Resultado final</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Documentación" data-en="Documentation">Documentación</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div></div>
-  </section>
-</main>
+<section class="section shell">
+  <p class="kicker" data-es="03 — ARCHIVO VISUAL" data-en="03 — VISUAL ARCHIVE">03 — ARCHIVO VISUAL</p>
+  <p class="muted" data-es="La siguiente iteración incorporará aquí material real del proyecto: planos CAD, rack, cabina, luminarias, altavoces, capturas de control y fotografías finales." data-en="The next iteration will add real project material here: CAD plans, rack, booth, luminaires, loudspeakers, control screenshots and final photographs.">La siguiente iteración incorporará aquí material real del proyecto: planos CAD, rack, cabina, luminarias, altavoces, capturas de control y fotografías finales.</p>
+  <div class="gallery-panel">
+    <div class="placeholder"><strong>CAD / Layout</strong><span data-es="Planimetría y zonas" data-en="Plans and zones">Planimetría y zonas</span></div>
+    <div class="placeholder"><strong>Rack / DSP</strong><span data-es="Arquitectura de señal" data-en="Signal architecture">Arquitectura de señal</span></div>
+    <div class="placeholder"><strong>KNX / DALI</strong><span data-es="Control e iluminación" data-en="Control and lighting">Control e iluminación</span></div>
+    <div class="placeholder"><strong>Installation</strong><span data-es="Obra y montaje" data-en="Site and installation">Obra y montaje</span></div>
+    <div class="placeholder"><strong>Commissioning</strong><span data-es="Pruebas y ajustes" data-en="Testing and tuning">Pruebas y ajustes</span></div>
+    <div class="placeholder"><strong>Final</strong><span data-es="Resultado operativo" data-en="Operational outcome">Resultado operativo</span></div>
+  </div>
+</section></main>
 <footer class="shell footer"><span>© 2026 Héctor Lobato</span><span>Club Mar Salada</span></footer>
-<script src="../script.js"></script>
-</body>
-</html>
+<script src="../script.js?v=3"></script>
+</body></html>

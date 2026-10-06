@@ -2,17 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070b10">
   <title>GAZA LOGISTICS IA — Héctor Lobato</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css?v=3">
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <header class="header">
   <div class="shell nav">
     <a class="mark" href="../index.html">HL</a>
-    <nav>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="primaryNav"><span></span><span></span><span class="sr-only">Menu</span></button>
+    <nav id="primaryNav" class="primary-nav">
+      <a href="../index.html#profile" data-es="Perfil" data-en="Profile">Perfil</a>
+      <a href="../index.html#capabilities" data-es="Sistemas" data-en="Systems">Sistemas</a>
       <a href="../index.html#projects" data-es="Proyectos" data-en="Projects">Proyectos</a>
-      <a href="../index.html#ventures" data-es="Studios" data-en="Studios">Studios</a>
       <a href="../index.html#contact" data-es="Contacto" data-en="Contact">Contacto</a>
     </nav>
     <div class="spacer"></div>
@@ -20,44 +25,69 @@
   </div>
 </header>
 <main>
-  <section class="shell hero-slim">
-    <a class="back-link" href="../index.html#projects" data-es="← Volver a proyectos" data-en="← Back to projects">← Volver a proyectos</a>
-    <div class="project-hero">
-      <div>
-        <p class="eyebrow">INDUSTRIAL OPS / AI</p>
-        <h1>GAZA LOGISTICS IA</h1>
-        <p class="lead" data-es="Caso de estudio y demostrador de producto para expediciones, almacén, flota, incidencias, KPIs y apoyo operativo mediante IA." data-en="Case study and product demonstrator for expeditions, warehouse, fleet, incidents, KPIs and AI-assisted operations.">Caso de estudio y demostrador de producto para expediciones, almacén, flota, incidencias, KPIs y apoyo operativo mediante IA.</p>
-        <div class="project-meta">
-          <article class="mini-card"><h4 data-es="Ubicación" data-en="Location">Ubicación</h4><p>Product build</p></article>
-          <article class="mini-card"><h4 data-es="Rol" data-en="Role">Rol</h4><p data-es="Arquitectura de producto, diseño funcional y portfolio técnico." data-en="Product architecture, functional design and technical portfolio.">Arquitectura de producto, diseño funcional y portfolio técnico.</p></article>
-          <article class="mini-card"><h4 data-es="Entregables" data-en="Deliverables">Entregables</h4><p data-es="Dashboard, módulos operativos, interfaz y visión de roadmap." data-en="Dashboard, operating modules, interface and roadmap vision.">Dashboard, módulos operativos, interfaz y visión de roadmap.</p></article>
-          <article class="mini-card"><h4 data-es="Tipo" data-en="Type">Tipo</h4><p data-es="Plataforma de logística y operaciones con IA" data-en="AI-powered logistics and operations platform">Plataforma de logística y operaciones con IA</p></article>
-        </div>
-      </div>
-      <div class="notice">
-        <strong data-es="Página de proyecto ampliable" data-en="Expandable project page">Página de proyecto ampliable</strong>
-        <p data-es="Esta estructura ya está preparada para incorporar planos, renders, fotografías, diagramas, memorias técnicas y documentación de proceso." data-en="This structure is already prepared to incorporate plans, renders, photographs, diagrams, technical notes and process documentation.">Esta estructura ya está preparada para incorporar planos, renders, fotografías, diagramas, memorias técnicas y documentación de proceso.</p>
-      </div>
+<section class="shell hero-slim">
+<a class="back-link" href="../index.html#projects" data-es="← Volver a proyectos" data-en="← Back to projects">← Volver a proyectos</a>
+<p class="eyebrow">INDUSTRIAL OPERATIONS / AI PRODUCT</p>
+<div class="project-hero">
+  <div data-reveal>
+    <h1>GAZA<br>LOGISTICS IA</h1>
+    <p class="lead" data-es="Un demostrador de producto que convierte expediciones, almacén, flota e incidencias en un único plano operativo con KPIs y asistencia inteligente." data-en="A product demonstrator turning expeditions, warehouse, fleet and incidents into one operational plane with KPIs and intelligent assistance.">Un demostrador de producto que convierte expediciones, almacén, flota e incidencias en un único plano operativo con KPIs y asistencia inteligente.</p>
+    <div class="project-meta">
+      <article class="mini-card"><h4 data-es="Tipo" data-en="Type">Tipo</h4><p>Operations product concept</p></article>
+      <article class="mini-card"><h4 data-es="Rol" data-en="Role">Rol</h4><p data-es="Arquitectura · UX funcional · modelo operativo" data-en="Architecture · functional UX · operating model">Arquitectura · UX funcional · modelo operativo</p></article>
+      <article class="mini-card"><h4 data-es="Áreas" data-en="Areas">Áreas</h4><p>Expeditions · Warehouse · Fleet · Incidents</p></article>
+      <article class="mini-card"><h4 data-es="Objetivo" data-en="Goal">Objetivo</h4><p data-es="Visibilidad + decisión + mejora continua" data-en="Visibility + decisions + continuous improvement">Visibilidad + decisión + mejora continua</p></article>
     </div>
-  </section>
+  </div>
+  <div class="notice" data-reveal>
+    <strong data-es="Hipótesis de producto" data-en="Product hypothesis">Hipótesis de producto</strong>
+    <p data-es="El responsable de operaciones no necesita más datos dispersos: necesita una vista común del estado, excepciones priorizadas y contexto suficiente para actuar." data-en="Operations managers do not need more fragmented data; they need a common state view, prioritized exceptions and enough context to act.">El responsable de operaciones no necesita más datos dispersos: necesita una vista común del estado, excepciones priorizadas y contexto suficiente para actuar.</p>
+  </div>
+</div>
+</section>
 
-  <section class="section shell">
-    <div class="kicker" data-es="01 — ARQUITECTURA / STACK" data-en="01 — ARCHITECTURE / STACK">01 — ARQUITECTURA / STACK</div>
-    <div class="stack" style="margin-top:24px"><span>React</span><span>TypeScript</span><span>Dashboards</span><span>Operations</span><span>Warehouse</span><span>Fleet</span><span>Incidents</span><span>AI Assistant</span></div>
-  </section>
+<section class="section shell">
+  <p class="kicker" data-es="01 — ARQUITECTURA DE PRODUCTO" data-en="01 — PRODUCT ARCHITECTURE">01 — ARQUITECTURA DE PRODUCTO</p>
+  <h3 data-es="Del dato operativo a una acción." data-en="From operational data to action.">Del dato operativo a una acción.</h3>
+  <div class="system-map" data-reveal>
+    <div class="map-row">
+      <div class="map-node"><small>INPUT</small><strong>Orders / ERP / CSV / Manual</strong></div>
+      <div class="map-node"><small>OPERATIONS</small><strong>Expeditions / Warehouse</strong></div>
+      <div class="map-node"><small>STATE</small><strong>Fleet / Incidents / SLA</strong></div>
+      <div class="map-node"><small>OUTPUT</small><strong>Dashboard / Alerts / KPIs</strong></div>
+    </div>
+    <div class="map-row">
+      <div class="map-node"><small>DATA MODEL</small><strong>Statuses / stock / routes</strong></div>
+      <div class="map-node"><small>RULES</small><strong>Priorities / exceptions</strong></div>
+      <div class="map-node"><small>AI LAYER</small><strong>Context + recommendations</strong></div>
+      <div class="map-node"><small>DECISION</small><strong>Human action / audit trail</strong></div>
+    </div>
+  </div>
+</section>
 
-  <section class="section shell">
-    <div class="kicker" data-es="02 — VIAJE VISUAL" data-en="02 — VISUAL JOURNEY">02 — VIAJE VISUAL</div>
-    <div class="journey-grid"><article class="journey-card"><h4 data-es="Problema" data-en="Problem">Problema</h4><p data-es="Visibilidad fragmentada de expediciones, almacén y operaciones." data-en="Fragmented visibility across expeditions, warehouse and operations.">Visibilidad fragmentada de expediciones, almacén y operaciones.</p></article><article class="journey-card"><h4 data-es="Producto" data-en="Product">Producto</h4><p data-es="Definición de módulos: dashboard, expediciones, almacén, flota e incidencias." data-en="Definition of modules: dashboard, expeditions, warehouse, fleet and incidents.">Definición de módulos: dashboard, expediciones, almacén, flota e incidencias.</p></article><article class="journey-card"><h4 data-es="UX/UI" data-en="UX/UI">UX/UI</h4><p data-es="Construcción de interfaz clara orientada a operación." data-en="Building a clear interface aimed at operations.">Construcción de interfaz clara orientada a operación.</p></article><article class="journey-card"><h4 data-es="Datos" data-en="Data">Datos</h4><p data-es="Modelo de datos para estados, stock, rutas, incidencias y KPIs." data-en="Data model for states, stock, routes, incidents and KPIs.">Modelo de datos para estados, stock, rutas, incidencias y KPIs.</p></article><article class="journey-card"><h4 data-es="IA" data-en="AI">IA</h4><p data-es="Capa de apoyo a decisiones y alertas operativas." data-en="Decision-support and operational alert layer.">Capa de apoyo a decisiones y alertas operativas.</p></article><article class="journey-card"><h4 data-es="Roadmap" data-en="Roadmap">Roadmap</h4><p data-es="Evolución hacia app completa con backend y automatización." data-en="Evolution toward a complete app with backend and automation.">Evolución hacia app completa con backend y automatización.</p></article></div>
-  </section>
+<section class="section shell">
+  <p class="kicker" data-es="02 — PRODUCT JOURNEY" data-en="02 — PRODUCT JOURNEY">02 — PRODUCT JOURNEY</p>
+  <div class="journey-grid">
+    <article class="journey-card" data-reveal><h4>Dashboard</h4><p data-es="Estado global, carga del día, retrasos y excepciones." data-en="Global state, daily load, delays and exceptions.">Estado global, carga del día, retrasos y excepciones.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Expediciones" data-en="Expeditions">Expediciones</h4><p data-es="Pedidos, preparación, muelle, carga, salida y entrega." data-en="Orders, preparation, dock, loading, departure and delivery.">Pedidos, preparación, muelle, carga, salida y entrega.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Almacén" data-en="Warehouse">Almacén</h4><p data-es="Stock, ubicaciones, incidencias y necesidades de reposición." data-en="Stock, locations, incidents and replenishment needs.">Stock, ubicaciones, incidencias y necesidades de reposición.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Flota" data-en="Fleet">Flota</h4><p data-es="Disponibilidad, mantenimiento, rutas y capacidad." data-en="Availability, maintenance, routes and capacity.">Disponibilidad, mantenimiento, rutas y capacidad.</p></article>
+    <article class="journey-card" data-reveal><h4 data-es="Incidencias" data-en="Incidents">Incidencias</h4><p data-es="Cola priorizada con responsable, estado, tiempo y causa." data-en="Prioritized queue with owner, state, time and cause.">Cola priorizada con responsable, estado, tiempo y causa.</p></article>
+    <article class="journey-card" data-reveal><h4>AI Assistant</h4><p data-es="Explicación de anomalías, resumen de turno y soporte a decisión." data-en="Anomaly explanation, shift summary and decision support.">Explicación de anomalías, resumen de turno y soporte a decisión.</p></article>
+  </div>
+</section>
 
-  <section class="section shell">
-    <div class="kicker" data-es="03 — GALERÍA DE PROYECTO" data-en="03 — PROJECT GALLERY">03 — GALERÍA DE PROYECTO</div>
-    <p class="muted" style="margin-top:18px" data-es="Esta galería puede incorporar capturas de dashboard, flujos UX, diagramas de arquitectura y prototipos de módulos." data-en="This gallery can incorporate dashboard screenshots, UX flows, architecture diagrams and module prototypes.">Esta galería puede incorporar capturas de dashboard, flujos UX, diagramas de arquitectura y prototipos de módulos.</p>
-    <div class="gallery-panel"><div class="placeholder"><strong data-es="Planos" data-en="Plans">Planos</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Diseño" data-en="Design">Diseño</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Fotos de obra" data-en="Site photos">Fotos de obra</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Integración" data-en="Integration">Integración</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Resultado final" data-en="Final result">Resultado final</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div><div class="placeholder"><strong data-es="Documentación" data-en="Documentation">Documentación</strong><span data-es="Pendiente de incorporar material visual del proyecto" data-en="Project visual material to be added">Pendiente de incorporar material visual del proyecto</span></div></div>
-  </section>
-</main>
+<section class="section shell">
+  <p class="kicker" data-es="03 — PROTOTIPOS" data-en="03 — PROTOTYPES">03 — PROTOTIPOS</p>
+  <div class="gallery-panel">
+    <div class="placeholder"><strong>Control Room</strong><span data-es="Dashboard operativo" data-en="Operational dashboard">Dashboard operativo</span></div>
+    <div class="placeholder"><strong>Expeditions</strong><span data-es="Secuencia de estado" data-en="State sequence">Secuencia de estado</span></div>
+    <div class="placeholder"><strong>Warehouse</strong><span data-es="Stock y excepciones" data-en="Stock and exceptions">Stock y excepciones</span></div>
+    <div class="placeholder"><strong>Fleet</strong><span data-es="Disponibilidad y mantenimiento" data-en="Availability and maintenance">Disponibilidad y mantenimiento</span></div>
+    <div class="placeholder"><strong>Incidents</strong><span data-es="Priorización y ownership" data-en="Prioritisation and ownership">Priorización y ownership</span></div>
+    <div class="placeholder"><strong>AI Layer</strong><span data-es="Resumen y recomendaciones" data-en="Summary and recommendations">Resumen y recomendaciones</span></div>
+  </div>
+</section></main>
 <footer class="shell footer"><span>© 2026 Héctor Lobato</span><span>GAZA LOGISTICS IA</span></footer>
-<script src="../script.js"></script>
-</body>
-</html>
+<script src="../script.js?v=3"></script>
+</body></html>
