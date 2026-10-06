@@ -14,6 +14,7 @@ Synthetic Logistics Control Tower · Digital Twin · AI Decision Support demonst
 - Event audit trail and JSON export.
 - Interactive asset selection and inspector.
 - Responsive desktop/tablet/mobile layout.
+- Fullscreen presentation mode, keyboard controls and `?demo=1` auto-play URL.
 
 ## Canonical demo
 `Order → Gate → Exception → Optimise → Human approval → Replan/load → Dispatch`
@@ -24,3 +25,10 @@ The default scenario reproduces a synthetic 18-pallet expedition where two palle
 This is a concept demonstrator. All operational data and geometry are synthetic. It does not contain internal Leche GAZA information and does not control PLCs or ASRS equipment. A real deployment must begin with validated data contracts and read-only integration.
 
 See `TEST_PLAN.md` for acceptance tests.
+
+## Presentation controls
+- `D`: run guided demo.
+- `Space`: pause/resume simulation.
+- `1 / 2 / 3`: Operations / Flow / Risk layers.
+- `R`: reset.
+- `?demo=1`: automatically starts the guided sequence after load.

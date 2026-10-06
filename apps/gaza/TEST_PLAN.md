@@ -23,6 +23,9 @@ Synthetic demonstrator only. No internal Leche GAZA data and no PLC/ASRS control
 - Orders search and state filter work.
 - Synthetic order injection adds an order.
 - Event Log exports JSON.
+- Fullscreen Presentation button enters/exits browser fullscreen.
+- `D`, `Space`, `1/2/3`, `R` keyboard controls work.
+- `?demo=1` starts the guided sequence automatically.
 
 ## P1 — Responsive
 - Desktop ≥ 1100 px: twin + right operations rail.
