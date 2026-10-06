@@ -36,6 +36,12 @@ jobs:
           package-manager-cache: false
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Validate source and asset manifest
+        run: |
+          node --check ./tests/visual-qa.mjs
+          node --check ./tests/manifest-qa.mjs
+          python -m py_compile ../../tools/blender/GAZA_BUILD_WORKER_GLBS.py
+          npm run qa:manifest
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Start local twin
