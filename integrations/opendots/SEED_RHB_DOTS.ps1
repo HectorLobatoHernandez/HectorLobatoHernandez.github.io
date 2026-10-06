@@ -123,6 +123,30 @@ foreach ($spec in $dotSpecs) {
     }
 }
 
+
+# Apply conservative per-Dot computer permissions when the OpenBot supervisor is configured.
+$workspace = Invoke-OD "GET" "/workspace"
+$computerProfiles = @{
+    "RHB CORE" = @{ enabled = $true; browser = $true; files = $true; shell = $false }
+    "GAZA OPS" = @{ enabled = $true; browser = $true; files = $true; shell = $false }
+    "CAD ENGINEER" = @{ enabled = $true; browser = $false; files = $true; shell = $false }
+    "SYSTEMS OPS" = @{ enabled = $true; browser = $true; files = $true; shell = $true }
+    "RESEARCH" = @{ enabled = $true; browser = $true; files = $false; shell = $false }
+}
+
+foreach ($dot in $workspace.dots) {
+    if (-not $computerProfiles.ContainsKey($dot.name)) { continue }
+    try {
+        $status = Invoke-OD "GET" ("/dots/" + $dot.id + "/computer")
+        if ($status.configured) {
+            Invoke-OD "PATCH" ("/dots/" + $dot.id + "/computer/permissions") $computerProfiles[$dot.name] | Out-Null
+            Write-Host "Computer permissions configured: $($dot.name)"
+        }
+    } catch {
+        Write-Warning "Could not configure computer permissions for $($dot.name): $($_.Exception.Message)"
+    }
+}
+
 $state = Invoke-OD "GET" "/state"
 $memorySeeds = @(
     "RHB STUDIO canonical local services: OmniRoute 127.0.0.1:20128; OpenClaw 127.0.0.1:18789; NEXO CORE 127.0.0.1:20800. NEXO CORE is currently the read-only integration layer.",
