@@ -78,3 +78,13 @@ farm_id, collection_run_id, milk_lot_id, quality_sample_id, production_order_id,
 8. Integration adapters read-only.
 9. Credentials absent from repo/browser.
 10. Authorized data can be removed without breaking public demo.
+
+
+## Implemented 2026-10-06 — campus access reality pass
+- Canonical plant anchor remains 41.52355, -5.59993 (user-confirmed approximate; not surveyed).
+- Campus GIS derives a nearest-public-road access candidate directly from OSM geometry.
+- Real gate coordinates remain explicitly unknown.
+- Preliminary HGV manoeuvre overlay uses regulatory reference circles: outer 12.50 m, inner 5.30 m.
+- Spanish design classes recorded for 12.00 m rigid, 16.50 m articulated and 18.75 m road-train envelopes.
+- Plant 3D now treats Campus GIS as access authority and is prohibited by QA from presenting contextual access geometry as as-built.
+- Next geometry gate: authorised gate/kerb/building/dock coordinates or DWG/DXF/IFC, then vehicle-specific swept-path analysis.
