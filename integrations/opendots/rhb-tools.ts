@@ -1,6 +1,6 @@
 import { defineTool } from '@copilotkit/runtime/v2';
 import { z } from 'zod';
-import net from 'node:net';
+import { createConnection } from 'node:net';
 
 type Probe = {
   name: string;
@@ -14,7 +14,7 @@ type Probe = {
 function tcpProbe(name: string, host: string, port: number, timeoutMs = 1500): Promise<Probe> {
   return new Promise((resolve) => {
     const started = Date.now();
-    const socket = net.createConnection({ host, port });
+    const socket = createConnection({ host, port });
     let settled = false;
 
     const finish = (reachable: boolean, detail?: string) => {
