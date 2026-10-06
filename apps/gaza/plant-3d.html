@@ -312,6 +312,10 @@ if(canvas){
  makeRoadSign(['N-122','ZAMORA  ←   →  TORO'],-70,110,0,22,8,'#b5232f');
  makeRoadSign(['A-11 / E-82','SALIDA 447 · CORESES'],-150,135,Math.PI,22,8,'#1557a5');
  makeRoadSign(['POL. EL PINAR','LECHE GAZA'], -105,87,Math.PI/2,18,7,'#2c6b3f');
+ function makeSpeed20(x,z,rotation=0){const cv=document.createElement('canvas');cv.width=cv.height=512;const ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(256,256,220,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d62828';ctx.lineWidth=48;ctx.stroke();ctx.fillStyle='#111';ctx.font='900 230px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('20',256,275);const tx=new THREE.CanvasTexture(cv);tx.colorSpace=THREE.SRGBColorSpace;const g=new THREE.Group(),disc=new THREE.Mesh(new THREE.CircleGeometry(3.2,32),new THREE.MeshBasicMaterial({map:tx,toneMapped:false,side:THREE.DoubleSide})),post=new THREE.Mesh(new THREE.CylinderGeometry(.16,.2,7,8),mat(0x737d86,.45,.65));disc.position.y=7.2;post.position.y=3.5;g.add(disc,post);g.position.set(x,0,z);g.rotation.y=rotation;disc.name='Límite 20 km/h · referencia fotográfica';disc.userData={kind:'REFERENCIA PÚBLICA · POSICIÓN CONTEXTUAL',info:'Una señal de 20 km/h es visible en fotografía pública del acceso/fachada de Gaza. Su posición exacta en esta reconstrucción no está georreferenciada.'};clickable.push(disc);groups.roads.add(g)}
+ makeSpeed20(-109,76,Math.PI/2);
+ // Direction arrows improve visual heading checks and make truck alignment unambiguous.
+ for(const [x,z,rot] of [[-165,118,-Math.PI/2],[-55,126,Math.PI/2],[85,118,-Math.PI/2],[170,126,Math.PI/2]]){const arrow=new THREE.Mesh(new THREE.PlaneGeometry(7,3.4),laneWhite);arrow.rotation.x=-Math.PI/2;arrow.rotation.z=rot;arrow.position.set(x,.155,z);groups.roads.add(arrow)}
  addLabel(groups.roads,'N-122 · ZAMORA ↔ CORESES ↔ TORO',15,5,122,'#f4d7d7',54);
  addLabel(groups.roads,'ACCESO CAMPUS · CONTEXTO',-118,5,96,'#dbe7f5',42);
  window.__GAZA_ROAD_CONTEXT__={schemaVersion:1,refs:['N-122','A-11 / E-82','ZA-P-1303','ZA-711','ZA-710'],plant:[41.525162564246195,-5.604126176771143],localGeometry:'CONTEXTUAL_NOT_SURVEYED',truckForwardAxis:'-X',truckHeading:'PATH_TANGENT'};
@@ -539,7 +543,8 @@ if(canvas){
    const d1=new THREE.Mesh(new THREE.PlaneGeometry(decalW,decalH),decalMat);d1.position.set(5.7,tanker?4.45:4.05,tanker?3.38:3.62);const d2=d1.clone();d2.position.z=tanker?-3.38:-3.62;d2.rotation.y=Math.PI;g.add(d1,d2);
    g.name=name;g.userData={kind:'SIMULADO',info:(tanker?'Cisterna':'Tráiler')+' detallado de demostración. Orientación sigue la tangente del vial; marca visual de referencia, no matrícula/flota real.'};cab.name=name;cab.userData=g.userData;clickable.push(cab);groups.vehicles.add(g);return g
  };
- function orientTruck(g,dx,dz){const len=Math.hypot(dx,dz)||1;g.rotation.y=Math.atan2(dz/len,-dx/len)}
+ const truckLocalForward=new THREE.Vector3(-1,0,0),truckHeadingQuat=new THREE.Quaternion();
+ function orientTruck(g,dx,dz){const target=new THREE.Vector3(dx,0,dz);if(target.lengthSq()<1e-8)return;target.normalize();truckHeadingQuat.setFromUnitVectors(truckLocalForward,target);g.quaternion.copy(truckHeadingQuat)}
  const tanker=makeTruck('Cisterna red granjas → recepción',0x2d6cdf,true),out1=makeTruck('Expedición OUT-01 · Toro / N-122',0x6fb24a),out2=makeTruck('Expedición OUT-02 · Zamora / N-122',0xefc534);
  // Campus access choreography uses the contextual N-122 + access road. It is not a surveyed gate/turning plan.
  const tankerCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-205,1,122),new THREE.Vector3(-150,1,122),new THREE.Vector3(-121,1,119),new THREE.Vector3(-118,1,92),new THREE.Vector3(-118,1,25),new THREE.Vector3(-112,1,-38),new THREE.Vector3(-100,1,-50)],false,'catmullrom',.08);
