@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06",
+  "plant": {
+    "name": "Leche Gaza · Coreses",
+    "lat": 41.525162564246195,
+    "lon": -5.604126176771143
+  },
+  "publicConstraint": {
+    "radiusKm": 50,
+    "fact": "Leche Gaza states that milk reaches the factory after travelling less than 50 km.",
+    "source": "https://www.lechegaza.com/_blog/post-presentacion-fabrica.html"
+  },
+  "nodes": [
+    {
+      "id": "sat-rote",
+      "name": "SAT ROTE · Toro",
+      "lat": 41.5243,
+      "lon": -5.3954,
+      "kind": "CONFIRMED_SUPPLIER_PUBLIC",
+      "precision": "MUNICIPALITY_REFERENCE_NOT_FARM_PIN",
+      "detail": "Public reporting confirms SAT ROTE in the municipality of Toro supplies its milk through Gaza. Exact farm pin is intentionally not asserted."
+    },
+    {
+      "id": "fresno-demo",
+      "name": "Fresno de la Ribera · nodo de captación",
+      "lat": 41.529,
+      "lon": -5.567,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    },
+    {
+      "id": "algodre-demo",
+      "name": "Algodre · nodo de captación",
+      "lat": 41.566,
+      "lon": -5.604,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    },
+    {
+      "id": "molacillos-demo",
+      "name": "Molacillos · nodo de captación",
+      "lat": 41.583,
+      "lon": -5.66,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    },
+    {
+      "id": "villalube-demo",
+      "name": "Villalube · nodo de captación",
+      "lat": 41.61,
+      "lon": -5.545,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    },
+    {
+      "id": "zamora-demo",
+      "name": "Zamora entorno · nodo de captación",
+      "lat": 41.5035,
+      "lon": -5.7446,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "CITY_REFERENCE_APPROX"
+    },
+    {
+      "id": "morales-demo",
+      "name": "Morales del Vino · nodo de captación",
+      "lat": 41.447,
+      "lon": -5.73,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    },
+    {
+      "id": "fuentesauco-demo",
+      "name": "Fuentesaúco · nodo de captación",
+      "lat": 41.23,
+      "lon": -5.5,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    },
+    {
+      "id": "villalpando-demo",
+      "name": "Villalpando · nodo de captación",
+      "lat": 41.865,
+      "lon": -5.412,
+      "kind": "SYNTHETIC_ANONYMIZED",
+      "precision": "MUNICIPALITY_CENTROID_APPROX"
+    }
+  ],
+  "candidateLoops": [
+    {
+      "id": "east-n122",
+      "name": "Corredor Este · N-122 / Toro",
+      "nodeIds": [
+        "fresno-demo",
+        "sat-rote"
+      ],
+      "classification": "CALCULATED_CANDIDATE_NOT_REAL_SCHEDULE"
+    },
+    {
+      "id": "north",
+      "name": "Corredor Norte · Tierra del Pan",
+      "nodeIds": [
+        "algodre-demo",
+        "villalube-demo",
+        "molacillos-demo"
+      ],
+      "classification": "CALCULATED_CANDIDATE_NOT_REAL_SCHEDULE"
+    },
+    {
+      "id": "west-south",
+      "name": "Corredor Oeste-Sur · Zamora / Tierra del Vino",
+      "nodeIds": [
+        "zamora-demo",
+        "morales-demo",
+        "fuentesauco-demo"
+      ],
+      "classification": "CALCULATED_CANDIDATE_NOT_REAL_SCHEDULE"
+    },
+    {
+      "id": "northeast",
+      "name": "Corredor Nordeste · Villalpando",
+      "nodeIds": [
+        "villalpando-demo"
+      ],
+      "classification": "CALCULATED_CANDIDATE_NOT_REAL_SCHEDULE"
+    }
+  ]
+}
