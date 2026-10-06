@@ -529,9 +529,11 @@ if(canvas){
    }
    const chassis=new THREE.Mesh(new THREE.BoxGeometry(12.2,.65,2.0),steel);chassis.position.set(-.8,1.65,0);tractor.add(chassis);
    const fifth=new THREE.Mesh(new THREE.CylinderGeometry(1.45,1.45,.35,14),steel);fifth.position.set(2.6,2.15,0);tractor.add(fifth);
+   const wheels=[];
    const addWheel=(parent,x,z)=>{
-     const wheel=new THREE.Mesh(new THREE.CylinderGeometry(1.28,1.28,.78,16),rubber);wheel.rotation.x=Math.PI/2;wheel.position.set(x,1.28,z);parent.add(wheel);
-     const hub=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.82,12),chrome);hub.rotation.x=Math.PI/2;hub.position.copy(wheel.position);parent.add(hub);
+     const pivot=new THREE.Group();pivot.position.set(x,1.28,z);parent.add(pivot);
+     const wheel=new THREE.Mesh(new THREE.CylinderGeometry(1.28,1.28,.78,16),rubber);wheel.rotation.x=Math.PI/2;pivot.add(wheel);
+     const hub=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.82,12),chrome);hub.rotation.x=Math.PI/2;pivot.add(hub);wheels.push(pivot);
    };
    for(const x of [-5.8,.3])for(const z of [-3.65,3.65])addWheel(tractor,x,z);
    semi.position.set(2.6,0,0);
@@ -554,7 +556,7 @@ if(canvas){
    const d1=new THREE.Mesh(new THREE.PlaneGeometry(decalW,decalH),decalMat);d1.position.set(8.2,tanker?4.45:4.05,tanker?3.38:3.62);
    const d2=d1.clone();d2.position.z=tanker?-3.38:-3.62;d2.rotation.y=Math.PI;semi.add(d1,d2);
    root.add(tractor,semi);root.name=name;
-   root.userData={kind:'SIMULADO',info:(tanker?'Cisterna articulada':'Tractora + semirremolque')+' de demostración. La tractora y el semirremolque siguen tangentes separadas del vial; no representa matrícula, flota ni cinemática medida.',trailer:semi,tractor,forwardAxis:'-X',articulated:true};
+   root.userData={kind:'SIMULADO',info:(tanker?'Cisterna articulada':'Tractora + semirremolque')+' de demostración. La tractora y el semirremolque siguen tangentes separadas del vial; no representa matrícula, flota ni cinemática medida.',trailer:semi,tractor,wheels,forwardAxis:'-X',articulated:true,lastU:null,wheelRadius:1.28};
    cab.name=name;cab.userData=root.userData;clickable.push(cab);groups.vehicles.add(root);return root
  };
  const truckLocalForward=new THREE.Vector3(-1,0,0),truckHeadingQuat=new THREE.Quaternion(),truckTrailerWorldQuat=new THREE.Quaternion(),truckInvQuat=new THREE.Quaternion();
@@ -568,6 +570,7 @@ if(canvas){
  function placeTruckOnCurve(g,curve,u){
    const q=Math.max(0,Math.min(1,u)),p=curve.getPointAt(q),t=curve.getTangentAt(Math.min(.999,q));
    g.position.copy(p);orientTruck(g,t.x,t.z);
+   const prev=g.userData.lastU;if(prev!=null){let du=q-prev;if(du<-.5)du+=1;if(du>.5)du-=1;const distance=du*curve.getLength(),spin=-distance/(g.userData.wheelRadius||1.28);for(const w of g.userData.wheels||[])w.rotation.z+=spin}g.userData.lastU=q;
    const trailer=g.userData.trailer;if(trailer){
      const backNorm=Math.min(.085,14/Math.max(curve.getLength(),1)),qb=Math.max(0,q-backNorm),tb=curve.getTangentAt(qb);
      headingQuat(tb.x,tb.z,truckTrailerWorldQuat);truckInvQuat.copy(g.quaternion).invert();trailer.quaternion.copy(truckInvQuat.multiply(truckTrailerWorldQuat));
