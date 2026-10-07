@@ -12,7 +12,7 @@ The complete visual layer of `cv/dossier.html` uses interaction patterns adapted
 
 Upstream repository: `DavidHDev/react-bits`
 Reviewed upstream snapshot: `63a008de65732d73010bd219d25d15c47739bb31`
-License: MIT.
+License at the reviewed snapshot: **MIT + Commons Clause License Condition v1.0**. The portfolio uses/adapts interaction patterns inside an application and does not redistribute the components as a standalone library.
 
 Implementation notes:
 
