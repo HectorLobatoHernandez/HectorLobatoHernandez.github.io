@@ -93,10 +93,10 @@
     },[cards.length]);
     return E('section',{className:'ms-shell ms-section',id:'gallery'},
       E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / CURATED GALLERY'),E('h2',{className:'ms-title'},'Boards, plans and details.'),E('p',{className:'ms-subtitle'},'Galería React inspirada en Bounce Cards. Cada pieza conserva su clasificación de evidencia y solo usa activos publicSafe.')),
-      E('div',{className:'ms-bounce-wrap',ref},...cards.map((item,i)=>E('figure',{className:'ms-bounce-card',key:item.id,style:{'--i':i,'--n':cards.length},tabIndex:0},
+      E('div',{className:'ms-bounce-wrap',ref},...cards.map((item,i)=>{const c=(cards.length-1)/2;return E('figure',{className:'ms-bounce-card',key:item.id,style:{'--offset':((i-c)*78)+'px','--rot':((i-c)*4.5)+'deg'},tabIndex:0},
         E('img',{src:item.src,alt:item.title,loading:'lazy'}),
         E('figcaption',null,E('b',null,item.title),E('span',null,item.classification))
-      )))
+      )}))
     );
   }
 
