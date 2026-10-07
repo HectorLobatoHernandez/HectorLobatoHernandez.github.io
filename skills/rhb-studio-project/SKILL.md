@@ -1,10 +1,10 @@
-# RHB STUDIO — Project Skill
+# RHB STUDIO — Project Skill v1.1
 
 ## Mission
 
 Project-specific operating skill for **RHB STUDIO**, the local-first engineering / fabrication / AI operations platform.
 
-Use before changing `projects/rhb-studio.html`, RHB architecture diagrams, project-state documents, CAD-agent material or public showcase content.
+Use before changing `projects/rhb-studio.html`, `assets/js/rhb-studio-case.js`, `assets/css/rhb-studio-case.css`, `rhb-studio/metadata/*`, RHB architecture diagrams, project-state documents, CAD-agent material or public showcase content.
 
 ## Identity
 
@@ -13,6 +13,19 @@ Use before changing `projects/rhb-studio.html`, RHB architecture diagrams, proje
 - Base: Zamora
 - Type: engineering platform / project operations / fabrication / CAD / AI agents
 - Public site is a showcase; the full runtime remains local.
+
+## Public React implementation
+
+Current public case stack:
+- React 18 UMD
+- GSAP + ScrollTrigger
+- project manifest + model manifest
+- React Bits-inspired Model Viewer / Bounce Cards / Logo Loop patterns
+- responsive mobile fallback
+- `prefers-reduced-motion` compatible behaviour
+- dedicated Playwright QA in `rhb-studio/tests/rhb-studio-qa.mjs`
+
+Public runtime contract is exposed as `window.__RHB_STUDIO_CASE__` for QA only.
 
 ## Current architecture
 
@@ -66,11 +79,23 @@ Clearly separate:
 
 Do not present a conceptual UI or generated render as a deployed production module.
 
+## Model promotion rule
+
+Raw CAD/SKP remains private. Public interactive geometry must be promoted through:
+
+`authoritative source → units/origin check → verified geometry → optimization → GLB/glTF → visual QA → APPROVED`
+
+`PENDING_GLB` must render a schematic/poster fallback rather than invented 3D.
+
+## Current public references
+
+- Sliding gate / Encomienda: schematic public reference; geometry pending verified CAD.
+- Glass table base: documented brief (1400 × 800 mm glass, 750 mm target height); final fabrication geometry still requires validated drawing.
+
 ## Next development pass
 
-1. inventory current local modules and launchers;
-2. establish the current RHB architecture as source of truth;
-3. separate public-safe vs local-only information;
-4. redesign `projects/rhb-studio.html` as its own React case;
-5. add model/gallery manifests;
-6. add project QA workflow.
+1. inventory the latest local RHB modules/launchers against the public architecture;
+2. ingest verified CAD/SKP for gate/table/reference fabricated parts;
+3. export first approved GLB;
+4. connect real fabrication outputs, BOM and documentation examples;
+5. evolve the public case without exposing local secrets or private client data.

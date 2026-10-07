@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+<rect width="1600" height="900" fill="#101412"/><g stroke="#7c8780" fill="none" stroke-width="4">
+<rect x="360" y="170" width="880" height="420" rx="10"/><path d="M520 610L690 760H910L1080 610"/><path d="M690 760L800 610L910 760"/><line x1="360" y1="120" x2="1240" y2="120"/><line x1="360" y1="100" x2="360" y2="140"/><line x1="1240" y1="100" x2="1240" y2="140"/><line x1="1290" y1="170" x2="1290" y2="590"/></g>
+<g font-family="Arial,Helvetica,sans-serif"><text x="120" y="80" fill="#f1efe8" font-size="28" font-weight="700">REFERENCE PROJECT · GLASS TABLE BASE</text>
+<text x="120" y="112" fill="#9ca79f" font-size="14">Documented brief · final tube cut/fold geometry requires fabrication drawing</text>
+<text x="760" y="105" fill="#c99b67" font-size="15">1400 mm</text><text x="1310" y="390" fill="#c99b67" font-size="15" transform="rotate(90 1310 390)">800 mm</text>
+<text x="975" y="805" fill="#c99b67" font-size="15">H = 750 mm</text><text x="385" y="200" fill="#9ca79f" font-size="12">GLASS TOP · EXISTING CLIENT MATERIAL</text>
+<text x="680" y="665" fill="#9ca79f" font-size="12">STRUCTURAL TUBE BASE · BENT / WELDED</text></g>
+</svg>
