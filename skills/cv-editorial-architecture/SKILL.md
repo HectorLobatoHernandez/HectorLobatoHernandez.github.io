@@ -15,7 +15,7 @@ Reuse the existing portfolio and case studies for factual content. Do not invent
 
 ## Canonical dossier composition
 
-The professional default is now `cv/dossier.html`: **Atelier** supplies identity and editorial tone, **Swiss Grid** supplies information architecture, **Technical Monograph** supplies evidence/technical metadata, and Scroll World remains an optional narrative layer. Do not turn the four studies into four competing canonical CVs.
+The professional default is now `cv/dossier.html`: **Atelier** supplies identity and editorial tone, **Swiss Grid** supplies information architecture, **Technical Monograph** supplies evidence/technical metadata, and Scroll World remains an optional narrative layer. Compose the interactive layer with `../reactbits-portfolio-components/SKILL.md`. Do not turn the four studies into four competing canonical CVs.
 
 The dossier must preserve the seven documented project routes, distinguish executed / active-development / demonstrator / confidential states, reuse only documented visuals, remain printable, and expose a small QA contract in `window.__CV_DOSSIER__`.
 
@@ -24,6 +24,15 @@ The dossier must preserve the seven documented project routes, distinguish execu
 - **Architecture / Atelier**: Instrument Serif + DM Sans + IBM Plex Mono; paper and graphite; a portrait treated as an editorial plate; asymmetrical composition, generous whitespace, quiet rules and material colour.
 - **International Typographic Style**: Archivo + Manrope + IBM Plex Mono; strict visible grid, left-aligned hierarchy, large compact headlines, numbered projects, one restrained pigment accent and obvious information density.
 - **Technical Monograph**: Instrument Serif + IBM Plex Mono on deep desaturated green; precision typography, technical schematics, version metadata, evidence tags and architecture/source-system notes, without pretending UI is real telemetry.
+
+## Approved React Bits layer
+
+The canonical dossier may use the curated React Bits skill for:
+- Tech Text on **Héctor Lobato**;
+- Particles as the ambient full-dossier background;
+- Logo Loop below the skills/capability section.
+
+Keep these effects secondary to content. Preserve print and reduced-motion fallbacks.
 
 ## Scroll storytelling integration
 
