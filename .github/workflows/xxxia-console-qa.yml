@@ -1,0 +1,39 @@
+name: XXXIA Production Console QA
+on:
+  pull_request:
+    paths:
+      - 'xxxia-studio/**'
+      - 'projects/xxxia-studio.html'
+      - '.github/workflows/xxxia-console-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'xxxia-studio/**'
+      - 'projects/xxxia-studio.html'
+jobs:
+  console-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start preview
+        run: |
+          python3 -m http.server 4191 --directory . > /tmp/xxxia-http.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4191/xxxia-studio/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/xxxia-http.log
+          exit 1
+      - name: Run console QA
+        run: node xxxia-studio/tests/console-qa.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xxxia-console-qa
+          path: .qa/xxxia/
+          if-no-files-found: ignore
+          retention-days: 14
