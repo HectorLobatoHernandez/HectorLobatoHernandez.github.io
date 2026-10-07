@@ -41,12 +41,17 @@ Use for image-to-video, motion transfer, cinematic sequences and future provider
 Before paid generations, estimate or obtain explicit cost approval. For a user-requested free-only job, use only a confirmed free entitlement and record creditsSpent=0.
 Store provider job id, model, resolution, references, status and result URL when available.
 
-## Sound Club reference implementation
+## Reference implementation
+
+Current reference archive:
+
 `xxxia-studio/projects/sound-club-palma/`
 
-The public identity is **Sound Club, Palma**. Do not expose the private/client-facing historical project name.
+The archive slug is legacy/internal. The canonical public identity is **MAR SALADA — CLUB DEL MAR PALMA**.
 
-## Visual rules for Sound Club
+XXXIA is project-agnostic: do not hard-code one project identity into the engine. Project-specific naming, evidence and privacy rules belong in that project's skill/metadata.
+
+## Visual rules for MAR SALADA
 - architecture first
 - classical / elegant
 - warm timber
@@ -68,7 +73,7 @@ Each project should contain:
 - `05_metadata/generation-jobs.json`
 
 ## QA checklist
-1. Public identity is correct.
+1. Canonical project identity is correct and legacy archive slugs are not mistaken for the public title.
 2. Generated content is labelled.
 3. No confidential name appears.
 4. No invented dimensions/specifications.
@@ -76,3 +81,16 @@ Each project should contain:
 6. File naming and version are stable.
 7. Generation job provenance is stored.
 8. Public project page links to the correct case.
+
+
+## Public studio composition
+
+The visual-production engine is distinct from the public XXXIA STUDIO portfolio surface.
+
+For public studio/page work compose with:
+
+`../xxxia-studio-portfolio/SKILL.md`
+
+For MAR SALADA page work compose additionally with:
+
+`../mar-salada-react-scroll/SKILL.md`
