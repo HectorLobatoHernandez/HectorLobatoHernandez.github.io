@@ -247,6 +247,7 @@
           E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
           E('div',{className:'ms-doc-grid'},
             E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated public technical summary →')),
+            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'CAD ingest audit'),E('span',null,'Hashes, duplicates and master-promotion gate →')),
             E('a',{className:'ms-doc',href:'../skills/mar-salada-project/PROJECT_STATE.md'},E('i',null,'STATE'),E('b',null,'Project State'),E('span',null,'Current technical / evidence status →')),
             E('a',{className:'ms-doc',href:'../skills/mar-salada-react-scroll/SKILL.md'},E('i',null,'SKILL'),E('b',null,'React Scroll Skill'),E('span',null,'Page operating contract →')),
             E('a',{className:'ms-doc',href:'sound-club-visuals.html'},E('i',null,'REACT'),E('b',null,'React Visuals'),E('span',null,'Media registry + provenance explorer →')),
