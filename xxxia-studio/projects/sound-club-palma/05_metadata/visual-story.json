@@ -1,17 +1,17 @@
 {
-  "schemaVersion": 1,
-  "project": "sound-club-palma",
-  "title": "Architecture → Systems → Verified Model",
+  "schemaVersion": 2,
+  "project": "mar-salada-cdm",
+  "title": "MAR SALADA — Architecture → Systems → As-Built",
   "scenes": [
     {
       "mediaId": "SC-BOARD-01",
       "kicker": "01 / Architecture",
       "title": "From venue to integrated system",
-      "body": "The project opens as architecture: glass, dark metal, timber and a warm hospitality envelope.",
+      "body": "Architecture, hospitality and technical infrastructure are presented as one coordinated environment.",
       "tags": [
         "architecture",
-        "night",
-        "hospitality"
+        "hospitality",
+        "systems"
       ]
     },
     {
@@ -21,8 +21,8 @@
       "body": "Envelope, ceiling, lighting, audio and operational layers separate to explain how the venue works.",
       "tags": [
         "exploded view",
-        "systems",
-        "integration"
+        "integration",
+        "XXXIA"
       ]
     },
     {
@@ -43,24 +43,35 @@
       "body": "Furniture, professional audio, service access and lighting are treated as one bespoke built component.",
       "tags": [
         "DJ booth",
-        "timber",
+        "fabrication",
         "audio"
       ]
     },
     {
+      "mediaId": "SC-DETAIL-04",
+      "kicker": "05 / Documented dimensions",
+      "title": "Dimensions stay separate from generated geometry",
+      "body": "The booth diagram exposes the documented base dimensions while keeping CAD/SKP verification as the final geometric authority.",
+      "tags": [
+        "Ø2570",
+        "Ø1200",
+        "CAD/SKP"
+      ]
+    },
+    {
       "mediaId": "SC-BOARD-05",
-      "kicker": "05 / 2300K atmosphere",
-      "title": "Light becomes spatial material",
-      "body": "Warm architectural light builds the hospitality layer while blue-violet ambience remains a restrained secondary accent.",
+      "kicker": "06 / Portfolio lighting",
+      "title": "2300 K as visual language",
+      "body": "The portfolio layer uses warm 2300 K imagery as a communication target; technical/as-built lighting values remain documented separately.",
       "tags": [
         "2300K",
-        "scenes",
-        "lighting"
+        "lighting",
+        "visualization"
       ]
     },
     {
       "mediaId": "SC-PLAN-02",
-      "kicker": "06 / Audio",
+      "kicker": "07 / Audio",
       "title": "Signal distribution by zone",
       "body": "MIMO88 routing, amplification and interior/exterior loudspeaker groups are reduced to a clean technical distribution layer.",
       "tags": [
@@ -71,7 +82,7 @@
     },
     {
       "mediaId": "SC-PLAN-03",
-      "kicker": "07 / Control",
+      "kicker": "08 / Control",
       "title": "KNX and DALI as one operating layer",
       "body": "Gira X1, DALI, dimming and scene logic are shown as a coordinated control topology.",
       "tags": [
@@ -81,10 +92,21 @@
       ]
     },
     {
+      "mediaId": "SC-DETAIL-07",
+      "kicker": "09 / As-built structure",
+      "title": "Mechanical decoupling becomes visible",
+      "body": "The installed suspended structure is explained as ceiling anchor, spring isolator, M8 rod, clamp and Ø48.3 mm structural pipe.",
+      "tags": [
+        "anti-vibration",
+        "Ø48.3",
+        "as-built"
+      ]
+    },
+    {
       "mediaId": "SC-SYS-01",
-      "kicker": "08 / Integration",
+      "kicker": "10 / Integration",
       "title": "One system, several disciplines",
-      "body": "Audio, lighting and control converge in the final architecture while source recordings remain private working material.",
+      "body": "Audio, lighting, control, fabrication and documentation converge in the final architecture while original source media remains private.",
       "tags": [
         "AV",
         "control",
