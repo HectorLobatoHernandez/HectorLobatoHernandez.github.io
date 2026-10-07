@@ -12,23 +12,27 @@
   "generatedKeyframes": [
     {
       "piece": "SC01",
-      "path": "04_outputs/boards/SC01_building_overview_v001.webp",
-      "classification": "GENERATED_CONCEPT"
+      "classification": "GENERATED_CONCEPT",
+      "plannedArchivePath": "04_outputs/boards/SC01_building_overview_v001.webp",
+      "archiveStatus": "PLANNED"
     },
     {
       "piece": "SC02",
-      "path": "04_outputs/boards/SC02_building_exploded_v001.webp",
-      "classification": "GENERATED_CONCEPT"
+      "classification": "GENERATED_CONCEPT",
+      "plannedArchivePath": "04_outputs/boards/SC02_building_exploded_v001.webp",
+      "archiveStatus": "PLANNED"
     },
     {
       "piece": "SC04",
-      "path": "04_outputs/boards/SC04_dj_booth_exploded_v001.webp",
-      "classification": "GENERATED_CONCEPT"
+      "classification": "GENERATED_CONCEPT",
+      "plannedArchivePath": "04_outputs/boards/SC04_dj_booth_exploded_v001.webp",
+      "archiveStatus": "PLANNED"
     },
     {
       "piece": "SC05",
-      "path": "04_outputs/boards/SC05_lighting_2300k_v001.webp",
-      "classification": "GENERATED_CONCEPT"
+      "classification": "GENERATED_CONCEPT",
+      "plannedArchivePath": "04_outputs/boards/SC05_lighting_2300k_v001.webp",
+      "archiveStatus": "PLANNED"
     }
   ]
 }
