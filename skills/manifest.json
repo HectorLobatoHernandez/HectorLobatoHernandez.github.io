@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-06.2",
+  "version": "2026-10-07.1",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -68,6 +68,22 @@
       "source": "openai/skills",
       "path": "skills/.curated/playwright-interactive",
       "license": "Apache-2.0"
+    },
+    {
+      "name": "cv-editorial-architecture",
+      "source": "local RHB/Hector portfolio",
+      "path": "skills/cv-editorial-architecture/SKILL.md",
+      "license": "project-internal",
+      "focus": "architecture/editorial typography, responsive technical CV, no React"
+    },
+    {
+      "name": "scroll-world",
+      "source": "oso95/scroll-world",
+      "path": "skills/scroll-world/SKILL.md",
+      "upstream_sha": "71cc36d3bb150248ae36a2c552f9cbf88802a79c",
+      "license": "MIT",
+      "requires_paid_video_provider_for_cinematic": true,
+      "free_svg_storyboard_available": true
     }
   ]
 }
