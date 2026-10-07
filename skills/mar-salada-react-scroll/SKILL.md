@@ -1,4 +1,4 @@
-# MAR SALADA React Scroll Case — Project Page Skill v2.1
+# MAR SALADA React Scroll Case — Project Page Skill v2.2
 
 ## Mission
 
@@ -90,7 +90,7 @@ Required chapters:
 7. Scroll World visual story
 8. Interactive models / GLB promotion
 9. Curated Bounce Cards gallery
-10. Dossier / provenance / XXXIA
+10. Dossier / public evidence
 
 ## Visual language
 
@@ -119,6 +119,16 @@ Gallery contract:
 - Bounce Cards consume only `publicSafe: true` project media;
 - reduced-motion collapses to a static grid;
 - generated assets retain their classification labels.
+
+## Public / internal navigation boundary
+
+The public case must not expose implementation-only buttons or navigation to:
+- React Visuals;
+- XXXIA Production Console;
+- project skills;
+- internal project state files.
+
+Those surfaces remain available inside the repository for development/QA, but the client/recruiter-facing case should present the project itself, the interactive model layer, gallery, story and public technical evidence.
 
 ## Evidence contract
 

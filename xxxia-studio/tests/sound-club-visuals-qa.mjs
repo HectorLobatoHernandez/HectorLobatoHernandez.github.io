@@ -81,6 +81,8 @@ const publicState=await casePage.evaluate(()=>({
   bounceCards:document.querySelectorAll('.ms-bounce-card').length,
   logoMarks:document.querySelectorAll('.ms-logo-mark').length,
   reactLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='sound-club-visuals.html'),
+  xxxiaPublicLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('../xxxia-studio/')),
+  skillPublicLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('/skills/')||a.getAttribute('href')?.includes('../skills/')),
   suspension:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-suspension-detail.svg')),
   djPlan:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-dj-booth-plan.svg')),
   privateMediaText:document.body.textContent.includes('PRIVATE_REFERENCE_ONLY'),
@@ -115,7 +117,8 @@ if(publicState.storySteps!==10||!publicState.storyRoot)failures.push('MAR SALADA
 if(publicState.motionStatus!=='PENDING_VERIFIED_GEOMETRY')failures.push('SC08 should remain pending verified geometry');
 if(publicState.motionId!=='SC08_PORTFOLIO_SCROLL_MASTER')failures.push('SC08 motion manifest not wired');
 if(publicState.videoCount!==0)failures.push('pending SC08 must not expose a public video element');
-if(!publicState.reactLink||!publicState.suspension||!publicState.djPlan||!publicState.cadAuditLink)failures.push('MAR SALADA links/technical diagrams/CAD audit missing');
+if(publicState.reactLink||publicState.xxxiaPublicLink||publicState.skillPublicLink)failures.push('internal React/XXXIA/skill tooling leaked into public MAR SALADA case');
+if(!publicState.suspension||!publicState.djPlan||!publicState.cadAuditLink)failures.push('MAR SALADA technical diagrams/CAD audit missing');
 if(!publicState.modelSection||publicState.modelOptions!==4||publicState.modelReady!==0)failures.push('MAR SALADA model viewer fallback contract mismatch');
 if(publicState.bounceCards!==5||publicState.logoMarks<6)failures.push('MAR SALADA React Bits gallery/logo layer missing');
 if(publicState.overflow||caseMobile.overflow)failures.push('MAR SALADA case horizontal overflow');

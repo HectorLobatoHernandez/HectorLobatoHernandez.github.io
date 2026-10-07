@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.5",
+  "version": "2026-10-07.6",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -120,6 +120,34 @@
       "license": "MIT + Commons Clause v1.0 upstream / project-internal integration",
       "focus": "Model Viewer, Bounce Cards, Tech Text, Particles and Logo Loop for technical portfolio surfaces",
       "upstream_sha": "63a008de65732d73010bd219d25d15c47739bb31"
+    },
+    {
+      "name": "rhb-studio-project",
+      "source": "local Hector portfolio",
+      "path": "skills/rhb-studio-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "RHB STUDIO architecture, local/public boundary, CAD/fabrication/agent workflow"
+    },
+    {
+      "name": "xxxia-studio-project",
+      "source": "local Hector portfolio",
+      "path": "skills/xxxia-studio-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "XXXIA visual-production system, provenance, production/public boundary and motion workflow"
+    },
+    {
+      "name": "akasha-project",
+      "source": "local Hector portfolio",
+      "path": "skills/akasha-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "Las Dalias / Akasha evidence recovery and project-specific visual narrative"
+    },
+    {
+      "name": "casa-noah-project",
+      "source": "local Hector portfolio",
+      "path": "skills/casa-noah-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "Casa NOAH high-end residential evidence, privacy and project-specific visual narrative"
     }
   ]
 }

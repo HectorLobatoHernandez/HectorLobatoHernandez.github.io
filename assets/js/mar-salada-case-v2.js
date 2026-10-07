@@ -199,7 +199,7 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__MAR_SALADA_CASE__={version:'2.2',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
+    window.__MAR_SALADA_CASE__={version:'2.3',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
@@ -305,19 +305,16 @@
         E('section',{className:'ms-shell ms-section',id:'docs'},
           E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'09 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
           E('div',{className:'ms-doc-grid'},
-            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated public technical summary →')),
-            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'CAD ingest audit'),E('span',null,'Hashes, duplicates and master-promotion gate →')),
-            E('a',{className:'ms-doc',href:'../skills/mar-salada-project/PROJECT_STATE.md'},E('i',null,'STATE'),E('b',null,'Project State'),E('span',null,'Current technical / evidence status →')),
-            E('a',{className:'ms-doc',href:'../skills/mar-salada-react-scroll/SKILL.md'},E('i',null,'SKILL'),E('b',null,'React Scroll Skill'),E('span',null,'Page operating contract →')),
-            E('a',{className:'ms-doc',href:'sound-club-visuals.html'},E('i',null,'REACT'),E('b',null,'React Visuals'),E('span',null,'Media registry + provenance explorer →')),
-            E('a',{className:'ms-doc',href:'../xxxia-studio/projects/sound-club-palma/'},E('i',null,'XXXIA'),E('b',null,'Visual Production'),E('span',null,'Boards, storyboards and motion briefs →'))
+            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
+            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
+            E('a',{className:'ms-doc',href:'../index.html#projects'},E('i',null,'PORTFOLIO'),E('b',null,'Selected projects'),E('span',null,'Return to the public portfolio →'))
           ),
           E('div',{className:'ms-motion'},
             E(Card,{label:'XXXIA / SC08',title:'Portfolio Scroll Master',body:'Motion brief preparado para una secuencia continua sobre geometría CAD/SKP verificada. No se publican los vídeos fuente originales.'}),
             E(Card,{label:'NEXT',title:'Verified geometry promotion',body:'DWG + SKP → alignment / units / origin QA → verified master → web model / exploded / frame-locked sequence.'})
           )
         ),
-        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.2 · MODELS + BOUNCE GALLERY'))
+        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.3 · PUBLIC CASE'))
       )
     );
   }
