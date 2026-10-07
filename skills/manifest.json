@@ -117,8 +117,9 @@
       "name": "reactbits-portfolio-components",
       "source": "DavidHDev/react-bits + local integration policy",
       "path": "skills/reactbits-portfolio-components/SKILL.md",
-      "license": "MIT upstream / project-internal integration",
-      "focus": "Model Viewer, Bounce Cards, Tech Text, Particles and Logo Loop for technical portfolio surfaces"
+      "license": "MIT + Commons Clause v1.0 upstream / project-internal integration",
+      "focus": "Model Viewer, Bounce Cards, Tech Text, Particles and Logo Loop for technical portfolio surfaces",
+      "upstream_sha": "63a008de65732d73010bd219d25d15c47739bb31"
     }
   ]
 }
