@@ -8,7 +8,7 @@
     schemaVersion:2,
     engine:'REACT_18_UMD',
     upstream:'DavidHDev/react-bits@63a008de65732d73010bd219d25d15c47739bb31',
-    components:['Waves','Particles','TechText','DitherVeil','StaggeredMenu','LatticeLoader'],
+    components:['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'],
     scope:'FULL_DOSSIER',
     portraitMode:'DITHER_VEIL_SINGLE',
     portraitImages:1,
@@ -153,7 +153,7 @@
   }
 
   function TechText(){
-    return h('h1',{className:'rb-name','aria-label':'Héctor Lobato'},
+    return h('h1',{className:'rb-name','aria-label':'Héctor Lobato','data-reactbits-tech-text':'true'},
       h('span',{className:'rb-tech-word'},
         h(TechLine,{text:'Héctor'}),
         h(TechLine,{text:'Lobato.'})
@@ -185,6 +185,24 @@
       el.classList.add('rb-doc-tech');
     });
     contract.techHeadings=targets.length;
+  }
+
+  const LOGO_ITEMS=[
+    ['KNX','automation'],['DALI','lighting'],['CRESTRON','control'],['ECLER','audio'],['LYNX PRO AUDIO','audio'],
+    ['AUTOCAD','engineering'],['SKETCHUP','3D'],['PYTHON','software'],['GITHUB','delivery'],['REACT','frontend'],
+    ['THREE.JS','3D web'],['OPENCLAW','agents'],['OMNIROUTE','routing']
+  ];
+
+  function LogoLoop(){
+    const items=[...LOGO_ITEMS,...LOGO_ITEMS];
+    return h('div',{className:'rb-logo-loop-wrap','data-reactbits-logo-loop':'true'},
+      h('div',{className:'rb-logo-loop-head'},h('span',null,'Technology / systems stack'),h('small',null,'React Bits · Logo Loop pattern')),
+      h('div',{className:'rb-logo-loop-mask'},
+        h('div',{className:'rb-logo-loop-track'},...items.map(([label,kind],i)=>
+          h('div',{className:'rb-logo-item',key:label+'-'+i},h('b',null,label),h('span',null,kind))
+        ))
+      )
+    );
   }
 
   function MenuDots(){
@@ -415,4 +433,7 @@
 
   const root=window.ReactDOM.createRoot(rootNode);
   root.render(h(HeroApp));
+
+  const logoRoot=document.getElementById('cv-logo-loop-root');
+  if(logoRoot)window.ReactDOM.createRoot(logoRoot).render(h(LogoLoop));
 })();
