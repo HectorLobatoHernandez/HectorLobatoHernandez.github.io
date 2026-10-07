@@ -23,7 +23,7 @@ const state=await page.evaluate(()=>({
   filters:document.querySelectorAll('.rv-filter').length,
   viewer:!!document.querySelector('.rv-viewer'),
   warning:document.body.textContent.includes('NOT AS-BUILT'),
-  skillLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('skills/sound-club-project/SKILL.md')),
+  skillLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('skills/mar-salada-project/SKILL.md')),
   mediaLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('project-media.json')),
   overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2
 }));
