@@ -1,0 +1,62 @@
+name: Master Project Map QA
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'assets/visuals/**'
+      - 'cv/CONTENT_INVENTORY.md'
+      - 'start/mapa.html'
+      - 'start/index.html'
+      - 'start/cv.html'
+      - 'start/gaza.html'
+      - 'start/rhb.html'
+      - 'start/tests/master-map-qa.mjs'
+      - 'README.md'
+      - 'apps/index.html'
+      - '.github/workflows/master-map-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  master-map-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Source syntax
+        run: |
+          node --check start/tests/master-map-qa.mjs
+          python3 - <<'PY'
+          from xml.etree import ElementTree
+          for p in ['mar-salada-system.svg','gaza-operations-system.svg','rhb-studio-system.svg']:
+              ElementTree.parse('assets/visuals/'+p)
+          print('Three existing visual diagrams contain valid SVG/XML')
+          PY
+      - name: Browser installation
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start GitHub Pages preview
+        run: |
+          python3 -m http.server 4187 --directory . > /tmp/mapa-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4187/start/mapa.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/mapa-http.log
+          exit 1
+      - name: Manual and visual QA
+        run: node start/tests/master-map-qa.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: master-map-qa
+          path: .qa/master-map/
+          if-no-files-found: ignore
+          retention-days: 14
