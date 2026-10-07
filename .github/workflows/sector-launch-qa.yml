@@ -1,0 +1,45 @@
+name: Sector Launch Portal QA
+
+on:
+  pull_request:
+    paths:
+      - 'start/**'
+      - 'README.md'
+      - 'index.html'
+      - 'apps/index.html'
+      - 'apps/gaza/mission-control.html'
+      - 'apps/gaza/tests/mission-control-qa.mjs'
+      - '.github/workflows/sector-launch-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portal-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Syntax checks
+        run: |
+          node --check start/tests/portal-qa.mjs
+          node --check apps/gaza/tests/mission-control-qa.mjs
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start site
+        run: |
+          python3 -m http.server 4175 --directory . >/tmp/portal-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4175/start/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/portal-http.log
+          exit 1
+      - name: Run portal QA
+        run: node start/tests/portal-qa.mjs
