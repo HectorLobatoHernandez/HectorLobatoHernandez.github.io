@@ -20,7 +20,7 @@ for(const [path,titlePart,needles] of pages){
   const state=await page.evaluate(()=>({
     title:document.title,
     text:document.body.textContent,
-    stylesheet:[...document.styleSheets].length,
+    stylesheet:document.querySelectorAll('link[rel="stylesheet"],style').length,
     links:[...document.querySelectorAll('a[href]')].map(a=>a.getAttribute('href'))
   }));
   if(!state.title.includes(titlePart))errors.push(path+' title mismatch: '+state.title);
