@@ -6,6 +6,7 @@ The complete visual layer of `cv/dossier.html` uses interaction patterns adapted
 - Particles — https://reactbits.dev/backgrounds/particles
 - Lattice Loader — https://reactbits.dev/micro/lattice-loader
 - Tech Text — https://reactbits.dev/text-animations/tech-text
+- Logo Loop — https://reactbits.dev/animations/logo-loop
 - Dither Veil — https://reactbits.dev/animations/dither-veil
 - Staggered Menu — https://reactbits.dev/components/staggered-menu
 
@@ -16,8 +17,9 @@ License: MIT.
 Implementation notes:
 
 - GitHub Pages remains static HTML with a dependency-light React 18 island.
-- Waves + Particles are mounted as a fixed full-page visual layer, not only inside the first fold.
+- Particles are the dominant fixed full-page ambient layer; Waves remain deliberately subdued.
 - Tech Text treatment is used for the main name and extended to large dossier headings.
+- Logo Loop is used as a restrained technology/system rail below the skills section; typographic fallbacks are used where an approved logo asset is not available.
 - Staggered Menu remains fixed and available while navigating the full dossier.
 - The portrait is a single authorised photograph with an interactive Dither Veil canvas. There is no portrait carousel and no generated portrait imagery.
 - Lattice Loader is used as the entry/loading state.
