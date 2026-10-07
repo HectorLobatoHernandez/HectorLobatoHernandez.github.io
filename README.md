@@ -13,6 +13,10 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 | **RHB STUDIO** | Plataforma local-first de ingeniería, CAD y agentes | [Abrir portada RHB](https://hectorlobatohernandez.github.io/start/rhb.html) |
 | **Labs** | App Test Center y superficies técnicas | [Abrir Labs](https://hectorlobatohernandez.github.io/start/labs.html) |
 
+## Mapa maestro y manuales
+
+[**Mapa visual completo de todos los productos**](https://hectorlobatohernandez.github.io/start/mapa.html) · [Manual CV](docs/MANUAL_CV.md) · [Manual GAZA](docs/MANUAL_GAZA.md) · [Manual RHB STUDIO](docs/MANUAL_RHB_STUDIO.md) · [Mapa de implementación](docs/MAPA_MAESTRO.md)
+
 ## Arranque rápido
 
 **Quiero ver algo impresionante en 2 minutos:**  
