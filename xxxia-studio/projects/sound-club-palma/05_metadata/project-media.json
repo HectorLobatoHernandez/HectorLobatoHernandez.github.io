@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "project": "sound-club-palma",
+  "publicTitle": "Sound Club, Palma",
+  "updatedAt": "2026-10-07",
+  "items": [
+    {
+      "id": "SC-PLAN-01",
+      "title": "Zoning / Lighting Plan",
+      "kind": "PLAN",
+      "classification": "GENERATED_DIAGRAM",
+      "archiveStatus": "ARCHIVED",
+      "publicSafe": true,
+      "src": "/assets/visuals/sound-club-zone-plan.svg",
+      "format": "image/svg+xml",
+      "note": "Documented zone logic and luminaire counts. Diagrammatic geometry; NOT AS-BUILT."
+    },
+    {
+      "id": "SC-PLAN-02",
+      "title": "Audio Distribution Plan",
+      "kind": "PLAN",
+      "classification": "GENERATED_DIAGRAM",
+      "archiveStatus": "ARCHIVED",
+      "publicSafe": true,
+      "src": "/assets/visuals/sound-club-audio-plan.svg",
+      "format": "image/svg+xml",
+      "note": "Documented routing, amplifier/loudspeaker counts and interior/exterior structure. NOT AS-BUILT."
+    },
+    {
+      "id": "SC-PLAN-03",
+      "title": "KNX / DALI Control Plan",
+      "kind": "PLAN",
+      "classification": "GENERATED_DIAGRAM",
+      "archiveStatus": "ARCHIVED",
+      "publicSafe": true,
+      "src": "/assets/visuals/sound-club-control-plan.svg",
+      "format": "image/svg+xml",
+      "note": "Documented control topology. Cable routes and physical placement are not asserted."
+    },
+    {
+      "id": "SC-SYS-01",
+      "title": "AV / Control Architecture",
+      "kind": "SYSTEM",
+      "classification": "GENERATED_DIAGRAM",
+      "archiveStatus": "ARCHIVED",
+      "publicSafe": true,
+      "src": "/assets/visuals/sound-club-system.svg",
+      "format": "image/svg+xml",
+      "note": "Signal and control architecture summary."
+    },
+    {
+      "id": "SC-VID-01",
+      "title": "Documented Project Footage",
+      "kind": "VIDEO",
+      "classification": "DOCUMENTED_REFERENCE",
+      "archiveStatus": "REMOTE_ONLY",
+      "publicSafe": true,
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/0b5631c4-2cec-44af-b6fe-2f1d48cf5409.mp4",
+      "provider": "Higgsfield media store",
+      "providerMediaId": "0b5631c4-2cec-44af-b6fe-2f1d48cf5409",
+      "originalName": "WhatsApp Video 2026-10-07 at 15.44.54.mp4",
+      "format": "video/mp4",
+      "durationSec": 93.316667,
+      "width": 848,
+      "height": 480,
+      "note": "Real project footage supplied by the project owner. Used as documented reference, not generated motion."
+    },
+    {
+      "id": "SC-MOTION-01",
+      "title": "SC01 Prototype Motion",
+      "kind": "MOTION",
+      "classification": "GENERATED_MOTION",
+      "archiveStatus": "PLANNED",
+      "publicSafe": true,
+      "provider": "Higgsfield",
+      "providerJobId": "7bdd52e8-1372-488f-97a3-244d9e9ada05",
+      "model": "hf_mult_motion_control",
+      "status": "WAITING",
+      "note": "Free-only prototype job. Do not show as completed until a result URL is returned."
+    }
+  ]
+}
