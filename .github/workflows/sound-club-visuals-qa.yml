@@ -9,6 +9,8 @@ on:
       - 'assets/visuals/mar-salada-*.svg'
       - 'assets/css/mar-salada-case.css'
       - 'assets/js/mar-salada-case.js'
+      - 'assets/css/mar-salada-case-v2.css'
+      - 'assets/js/mar-salada-case-v2.js'
       - 'assets/css/sound-club-react-visuals.css'
       - 'assets/js/sound-club-react-visuals.js'
       - 'skills/mar-salada-project/**'
@@ -28,6 +30,8 @@ on:
       - 'assets/visuals/mar-salada-*.svg'
       - 'assets/css/mar-salada-case.css'
       - 'assets/js/mar-salada-case.js'
+      - 'assets/css/mar-salada-case-v2.css'
+      - 'assets/js/mar-salada-case-v2.js'
       - 'assets/css/sound-club-react-visuals.css'
       - 'assets/js/sound-club-react-visuals.js'
       - 'skills/mar-salada-project/**'
@@ -64,6 +68,13 @@ jobs:
           assert len(s['scenes']) == 10
           ids={x['id'] for x in m['items']}
           assert all(x['mediaId'] in ids for x in s['scenes'])
+          mo=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json'))
+          assert mo['projectId']=='MAR_SALADA_CDM'
+          assert mo['motionId']=='SC08_PORTFOLIO_SCROLL_MASTER'
+          assert mo['master']['status'] in {'PENDING_VERIFIED_GEOMETRY','APPROVED'}
+          assert len(mo['master']['segments'])==10
+          assert {x['storyMediaId'] for x in mo['master']['segments']}=={x['mediaId'] for x in s['scenes']}
+          if mo['master']['status']!='APPROVED': assert not mo['master'].get('src')
           for p in [
             'sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg',
             'sound-club-system.svg','mar-salada-suspension-detail.svg','mar-salada-dj-booth-plan.svg'
