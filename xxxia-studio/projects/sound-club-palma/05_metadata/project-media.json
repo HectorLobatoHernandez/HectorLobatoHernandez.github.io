@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "project": "sound-club-palma",
-  "publicTitle": "Sound Club, Palma",
+  "project": "mar-salada-cdm",
+  "publicTitle": "MAR SALADA — CLUB DEL MAR PALMA",
   "updatedAt": "2026-10-07",
   "items": [
     {
@@ -99,7 +99,32 @@
       "providerMediaId": "49148b16-917b-4e57-9286-3e85315320ce",
       "format": "image/png",
       "note": "Generated lighting/atmosphere communication board centred on warm 2300K architectural lighting."
+    },
+    {
+      "id": "SC-DETAIL-04",
+      "title": "DJ Booth / Documented Dimensions",
+      "kind": "DETAIL",
+      "classification": "GENERATED_DIAGRAM",
+      "archiveStatus": "ARCHIVED",
+      "publicSafe": true,
+      "src": "/assets/visuals/mar-salada-dj-booth-plan.svg",
+      "format": "image/svg+xml",
+      "note": "Diagrammatic geometry using documented base dimensions: Ø2570 exterior, Ø1200 interior, access 990 mm, lateral step 490 mm, nominal height 1000 mm. Verify against CAD/SKP master before fabrication/as-built claim."
+    },
+    {
+      "id": "SC-DETAIL-07",
+      "title": "Suspended Structure / Anti-vibration Detail",
+      "kind": "DETAIL",
+      "classification": "GENERATED_DIAGRAM",
+      "archiveStatus": "ARCHIVED",
+      "publicSafe": true,
+      "src": "/assets/visuals/mar-salada-suspension-detail.svg",
+      "format": "image/svg+xml",
+      "note": "Diagram based on installation report and site-reference evidence: structural pipe Ø48.3 mm, spring isolator, threaded rod M8 and clamp. Ø63 mm remains a preliminary-document conflict pending CAD validation."
     }
   ],
-  "privateSourcePolicy": "User-supplied photos/videos are private working references and must not be published or promoted without explicit approval."
+  "privateSourcePolicy": "Original user-supplied photos/videos are PRIVATE_REFERENCE_ONLY and must not be published, committed, linked or promoted. Public storytelling uses approved generated outputs and diagrams only.",
+  "projectId": "MAR_SALADA_CDM",
+  "legacyArchiveSlug": "sound-club-palma",
+  "canonicalPage": "/projects/mar-salada.html"
 }
