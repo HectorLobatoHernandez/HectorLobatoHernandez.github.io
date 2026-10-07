@@ -54,6 +54,11 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       ditherCanvases:document.querySelectorAll('.rb-dither-canvas').length,
       ditherCanvasSize:(()=>{const c=document.querySelector('.rb-dither-canvas');return c?{w:c.width,h:c.height}:null})(),
       globalEffects:!!document.querySelector('.rb-global-effects'),
+      particlesCanvas:!!document.querySelector('.rb-particles'),
+      techText:!!document.querySelector('[data-reactbits-tech-text="true"]'),
+      logoLoop:!!document.querySelector('[data-reactbits-logo-loop="true"]'),
+      marSaladaCanonical:document.body.textContent.includes('MAR SALADA')&&document.body.textContent.includes('Club del Mar Palma'),
+      legacyProjectButtons:[...document.querySelectorAll('#mar-salada .project-links a')].some(a=>/React Visuals|XXXIA Console/.test(a.textContent)),
       techHeadings:document.querySelectorAll('main [data-rb-tech="1"]').length,
       menuTrigger:!!document.querySelector('.rb-menu-trigger'),
       latticeCells:document.querySelectorAll('.rb-cell').length,
@@ -69,11 +74,12 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      if(state.dossier?.schemaVersion!==2||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossier?.schemaVersion!==3||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
       if(state.dossierProjects!==3||state.dossierArchive!==8||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
-      const expectedBits=['Waves','Particles','TechText','DitherVeil','StaggeredMenu','LatticeLoader'];
+      const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
       if(state.hero?.schemaVersion!==2||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
-      if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||state.techHeadings<6||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier full-page React Bits UI missing');
+      if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier full-page React Bits UI missing');
+      if(!state.marSaladaCanonical||state.legacyProjectButtons)failures.push('Dossier Mar Salada canonical identity/public buttons mismatch');
       await page.click('.rb-menu-trigger');await page.waitForTimeout(350);
       const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));
       if(!menu.open||menu.links!==7)failures.push('Staggered menu did not open correctly');
