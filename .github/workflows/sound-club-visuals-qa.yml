@@ -9,7 +9,7 @@ on:
       - 'assets/js/sound-club-react-visuals.js'
       - 'assets/css/sound-club-story.css'
       - 'assets/js/sound-club-story.js'
-      - 'skills/sound-club-project/**'
+      - 'skills/mar-salada-project/**'
       - 'skills/react-visuals/**'
       - 'skills/manifest.json'
       - 'xxxia-studio/projects/sound-club-palma/**'
@@ -24,7 +24,7 @@ on:
       - 'assets/js/sound-club-react-visuals.js'
       - 'assets/css/sound-club-story.css'
       - 'assets/js/sound-club-story.js'
-      - 'skills/sound-club-project/**'
+      - 'skills/mar-salada-project/**'
       - 'skills/react-visuals/**'
       - 'xxxia-studio/projects/sound-club-palma/**'
 jobs:
@@ -55,7 +55,7 @@ jobs:
               ElementTree.parse('assets/visuals/'+p)
           skills=json.load(open('skills/manifest.json'))
           names={x['name'] for x in skills['skills']}
-          assert 'sound-club-project' in names
+          assert 'mar-salada-project' in names
           assert 'react-visuals' in names
           print('Registry / SVG / skills source checks pass')
           PY
