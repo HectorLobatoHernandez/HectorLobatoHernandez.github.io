@@ -1,13 +1,13 @@
 # Manual de usuario · CV editorial
 
-**Acceso:** [Dossier recomendado](https://hectorlobatohernandez.github.io/cv/dossier.html) · [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
+**Acceso:** [Dossier recomendado](https://hectorlobatohernandez.github.io/cv/dossier.html) · [CV ATS](https://hectorlobatohernandez.github.io/cv/ats.html) · [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
 
 ## 1. Para una persona que visita por primera vez
 
 1. Abrir el **Dossier 2026** para la lectura profesional completa. Usar **Atelier**, **Swiss**, **Monograph** y **Scroll World** para comparar direcciones visuales.
 2. Revisar el perfil y las competencias; los botones de proyecto conducen a fichas documentadas.
 3. Abrir los casos Mar Salada / GAZA / RHB STUDIO y, para otros casos, volver a [proyectos de la portada](https://hectorlobatohernandez.github.io/#projects).
-4. Usar el correo visible para contactar. El dossier incorpora CSS de impresión, pero no se etiqueta como ATS; el CV ATS/PDF se valida por separado.
+4. Para candidatura y exportación PDF, abrir `cv/ats.html` y usar imprimir/guardar PDF. Para copiar a portales ATS, usar `cv/ats.txt`.
 
 ## 2. Lectura por scroll
 
@@ -31,3 +31,7 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 ## 6. Dossier canónico
 
 `cv/dossier.html` es la síntesis profesional recomendada. Conserva siete proyectos, destaca Mar Salada / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.
+
+## 7. CV ATS
+
+`cv/ats.html` es una versión de una columna, semántica y preparada para imprimir/guardar en PDF. `cv/ats.txt` contiene el mismo núcleo en texto plano. La versión actual es **project-based** porque la cronología laboral completa por empresa/cargo no está todavía verificada; no inventar esas fechas para rellenar el CV.
