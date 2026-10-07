@@ -2,23 +2,6 @@
   "schemaVersion": 1,
   "project": "sound-club-palma",
   "studio": "XXXIA STUDIO",
-  "jobs": [
-    {
-      "id": "SC01-PROTOTYPE-001",
-      "provider": "Higgsfield",
-      "model": "hf_mult_motion_control",
-      "providerJobId": "7bdd52e8-1372-488f-97a3-244d9e9ada05",
-      "costPolicy": "FREE_ONLY",
-      "creditsSpent": 0,
-      "resolution": "720p",
-      "inputs": {
-        "imageReference": "user-supplied exterior architecture photo",
-        "motionReference": "user-supplied site video"
-      },
-      "purpose": "Validate camera/motion transfer for architectural project storytelling.",
-      "status": "WAITING",
-      "classification": "GENERATED_CONCEPT",
-      "createdAt": "2026-10-07T16:19:00+02:00"
-    }
-  ]
+  "jobs": [],
+  "sourceMediaPolicy": "User-supplied video is PRIVATE_REFERENCE_ONLY and must not be uploaded, published, or used as a provider motion reference without explicit approval."
 }

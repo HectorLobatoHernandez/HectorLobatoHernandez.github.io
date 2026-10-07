@@ -93,11 +93,11 @@
       "focus": "project references to generated stills/motion with provenance, provider adapters and GitHub archive"
     },
     {
-      "name": "sound-club-project",
+      "name": "mar-salada-project",
       "source": "local Hector portfolio",
-      "path": "skills/sound-club-project/SKILL.md",
+      "path": "skills/mar-salada-project/SKILL.md",
       "license": "project-internal",
-      "focus": "Sound Club project facts, evidence boundary, media and XXXIA workflow"
+      "focus": "Mar Salada project facts, public alias boundary, media policy and XXXIA workflow"
     },
     {
       "name": "react-visuals",

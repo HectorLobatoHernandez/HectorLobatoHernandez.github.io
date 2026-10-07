@@ -1,14 +1,15 @@
-# Sound Club, Palma — Project Skill
+# Mar Salada — Project Skill
 
 ## Mission
 
-Be the project-specific operating skill for the public **Sound Club, Palma** case study and its XXXIA STUDIO visual-production pipeline.
+Be the project-specific operating skill for **Mar Salada**, with **Sound Club, Palma** used only as the public portfolio alias, and for its XXXIA STUDIO visual-production pipeline.
 
 Use this skill whenever an agent edits, generates, documents, visualises or publishes material for this project.
 
-## Public identity
+## Project identity
 
-- Public title: **Sound Club, Palma**
+- Internal / project name: **Mar Salada**
+- Public portfolio alias: **Sound Club, Palma**
 - Public location: **Puerto Deportivo de Palma**
 - Project type: hospitality / professional audio / lighting / control / custom fabrication
 - Never expose any former/private client-facing project name in public files, UI, generated captions or filenames.
@@ -84,7 +85,7 @@ A generated diagram must remain **GENERATED_DIAGRAM / NOT AS-BUILT** until repla
 - Public case: `projects/sound-club-palma.html`
 - React visual lab: `projects/sound-club-visuals.html`
 - System diagram: `assets/visuals/sound-club-system.svg`
-- Project skill: `skills/sound-club-project/`
+- Project skill: `skills/mar-salada-project/`
 - XXXIA project: `xxxia-studio/projects/sound-club-palma/`
 - Media registry: `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - Visual story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
@@ -107,7 +108,7 @@ verified references
 
 ## Current React Visuals deliverables
 
-The public visual system currently exposes **12 classified assets**:
+The public visual system currently exposes **8 classified assets**:
 
 1. 4 × GENERATED_CONCEPT boards:
    - SC01 architecture overview.
@@ -119,14 +120,10 @@ The public visual system currently exposes **12 classified assets**:
    - audio distribution.
    - KNX / DALI control.
 3. 1 × GENERATED_DIAGRAM AV / control system architecture.
-4. 3 × DOCUMENTED_REFERENCE project videos:
-   - general project footage.
-   - control / programming walkthrough.
-   - final interior atmosphere.
-5. 1 × GENERATED_MOTION slot for SC01, currently WAITING.
 
-The public case also contains a metadata-driven **7-scene React scroll story**:
-architecture → exploded building → plan logic → DJ booth → 2300K lighting → programming → final environment.
+The public case contains a metadata-driven **8-scene React scroll story** built only from generated boards and technical diagrams.
+
+User-supplied photos and videos are **PRIVATE_REFERENCE_ONLY**. They must not be published, linked from the portfolio, uploaded to a generation provider, or used as motion references unless the user explicitly approves it.
 
 ## Rules for agents
 
@@ -134,7 +131,7 @@ architecture → exploded building → plan logic → DJ booth → 2300K lightin
 2. Preserve public identity.
 3. Do not infer physical dimensions from photographs.
 4. Prefer SVG for diagrams so changes remain diffable in GitHub.
-5. Keep MP4 and heavy generated renders outside Git when appropriate; track stable URLs and provenance in project-media.json.
+5. Keep user-supplied source photos/videos private. Do not publish or upload them to generation providers without explicit approval. Generated outputs may be tracked in project-media.json.
 6. Any new provider output must receive a stable logical asset id.
 7. Update React Visuals and the public case whenever a new verified media item is promoted.
 8. Run Sound Club visual QA before merging.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "sound-club-palma",
-  "title": "Built Space → Technical Logic → Final Environment",
+  "title": "Architecture → Systems → Verified Model",
   "scenes": [
     {
       "mediaId": "SC-BOARD-01",
@@ -27,7 +27,7 @@
     },
     {
       "mediaId": "SC-PLAN-01",
-      "kicker": "03 / Plan logic",
+      "kicker": "03 / Zoning",
       "title": "Zones before objects",
       "body": "Lighting and hospitality zones become a legible plan: pendants, dance spots, DJ strip and scene control.",
       "tags": [
@@ -59,25 +59,36 @@
       ]
     },
     {
-      "mediaId": "SC-VID-02",
-      "kicker": "06 / Programming",
-      "title": "Control moves from hardware to interface",
-      "body": "Real project footage connects wall control, touch interfaces and operational scene logic.",
+      "mediaId": "SC-PLAN-02",
+      "kicker": "06 / Audio",
+      "title": "Signal distribution by zone",
+      "body": "MIMO88 routing, amplification and interior/exterior loudspeaker groups are reduced to a clean technical distribution layer.",
       "tags": [
-        "control",
-        "programming",
-        "documented video"
+        "MIMO88",
+        "Lynx GTX",
+        "routing"
       ]
     },
     {
-      "mediaId": "SC-VID-03",
-      "kicker": "07 / Final environment",
-      "title": "Systems disappear into the experience",
-      "body": "The real finished interior closes the sequence: architecture, sound, light and operation working together.",
+      "mediaId": "SC-PLAN-03",
+      "kicker": "07 / Control",
+      "title": "KNX and DALI as one operating layer",
+      "body": "Gira X1, DALI, dimming and scene logic are shown as a coordinated control topology.",
       "tags": [
-        "final space",
-        "documented video",
-        "operation"
+        "KNX",
+        "DALI",
+        "Gira X1"
+      ]
+    },
+    {
+      "mediaId": "SC-SYS-01",
+      "kicker": "08 / Integration",
+      "title": "One system, several disciplines",
+      "body": "Audio, lighting and control converge in the final architecture while source recordings remain private working material.",
+      "tags": [
+        "AV",
+        "control",
+        "systems engineering"
       ]
     }
   ]
