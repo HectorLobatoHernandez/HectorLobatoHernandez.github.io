@@ -35,7 +35,7 @@ flowchart TD
 6. Método: levantamiento → proyecto → ejecución → commissioning → documentación.
 7. Contacto y un CV imprimible ATS (pendiente; no confundir una web narrativa con un CV ATS).
 
-**Presentación actual:** `/cv/` ofrece Atelier, Swiss, Monograph y storyboard Scroll World; `/apps/presentation-lab/` conserva el experimento anterior. **No existe aún un dossier definitivo con todos los contenidos integrados y validado para ATS.**
+**Presentación actual:** `/cv/dossier.html` es el dossier web integrado recomendado; `/cv/` conserva Atelier, Swiss, Monograph y storyboard Scroll World como estudios; `/apps/presentation-lab/` conserva el experimento anterior. **El dossier web no se presenta como CV ATS/PDF; ese entregable sigue separado.**
 
 ## 2. GAZA / Digital Twin
 
@@ -93,7 +93,7 @@ flowchart LR
 
 **P0 — confianza y accesibilidad:** conservar el inventario factual del CV; mapear desde la portada sectorial a manuales; QA de enlaces; etiquetas PUBLIC/DEMO/LOCAL.
 
-**P1 — CV editorial final:** consolidar la totalidad de trayectoria y proyectos; scroll narrativo con material de cada ficha; exportable ATS/PDF aparte, sujeto a revisión factual.
+**P1 — CV editorial final:** dossier web integrado publicado; siguiente fase: completar archivo visual real por proyecto y generar/exportar CV ATS/PDF aparte, sujeto a revisión factual.
 
 **P1 — GAZA integración:** validar geometría as-built, accesos, sistemas e interfaces oficiales; no pasar datos sintéticos a reales. Mejorar manual contextual y visuales actuales.
 
