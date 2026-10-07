@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f2efe6">
+<meta name="theme-color" content="#0f1512">
 <meta name="description" content="Dossier profesional de Héctor Lobato: integración de sistemas, automatización, IT/OT, AV, ingeniería y software aplicado.">
 <title>Héctor Lobato — Dossier / Systems Integration</title>
 <link rel="stylesheet" href="variants.css">
+<link rel="stylesheet" href="hero-react.css">
 <style>
 :root{--paper:#f2efe6;--ink:#17201b;--soft:#647168;--line:#cfd3c8;--accent:#7f4f36;--deep:#20382d;--cream:#faf8f1}
 *{box-sizing:border-box}
@@ -39,24 +40,17 @@ body.dossier{margin:0;background:var(--paper);color:var(--ink);font-family:"DM S
 </head>
 <body class="dossier">
 <div class="progress" id="progress" aria-hidden="true"></div>
-<header class="dos-nav"><div class="dos-shell inner"><a class="dos-mark" href="../">HL / DOSSIER 2026</a><nav><a href="#perfil">Perfil</a><a href="#skills">Skills</a><a href="#mar-salada">Mar Salada</a><a href="#gaza">GAZA</a><a href="#rhb">RHB</a><a href="#evidence">Evidence</a><a href="#archivo">Archivo</a><a href="index.html">Variantes ↗</a></nav></div></header>
+<div id="hero-react-root">
+  <section class="rb-fallback">
+    <div class="rb-fallback-inner">
+      <div class="rb-kicker">Systems Integration / Automation / IT/OT / AV / AI</div>
+      <h1>Héctor<br>Lobato.</h1>
+      <p>Ingeniería entre el espacio físico, los sistemas de control y el software.</p>
+      <p><a class="rb-btn primary" href="#perfil">Entrar al dossier →</a></p>
+    </div>
+  </section>
+</div>
 <main>
-<section class="hero dos-shell">
-<div class="reveal">
-<div class="kicker">Systems Integration · Automation · IT/OT · AV · AI</div>
-<h1>Héctor<br><em>Lobato.</em></h1>
-<p class="deck">Ingeniería entre el espacio físico, los sistemas de control y el software.</p>
-<p class="lead">Perfil multidisciplinar orientado a diseñar, integrar, poner en marcha y documentar sistemas técnicos completos. Trabajo desde la arquitectura funcional y el levantamiento hasta el commissioning, el diagnóstico y las herramientas digitales que hacen la operación más comprensible.</p>
-<div class="hero-actions"><a class="dos-btn primary" href="present.html">Presentar en 5 min</a><a class="dos-btn" href="#proyectos">Ver dossier</a><a class="dos-btn" href="ats.html">CV ATS / PDF</a><a class="dos-btn" href="../">Portfolio técnico</a><a class="dos-btn" href="world.html">Scroll World</a><a class="dos-btn" href="mailto:lobatohernandezhector@gmail.com">Contacto</a></div>
-<div class="hero-index">
-<div><strong>2018 → 2026</strong><span>trayectoria técnica pública</span></div>
-<div><strong>Field + Digital</strong><span>obra, sistemas y software</span></div>
-<div><strong>Architecture → Commissioning</strong><span>ciclo completo</span></div>
-<div><strong>Zamora</strong><span>base profesional</span></div>
-</div>
-</div>
-<figure class="hero-plate reveal"><img src="../assets/hector-profile.png" alt="Retrato profesional de Héctor Lobato"><figcaption class="plate-caption"><span>Portrait / 2026</span><span>Systems · Engineering</span></figcaption></figure>
-</section>
 
 <section class="section dos-shell" id="perfil">
 <div class="section-head reveal"><div><span class="kicker">01 / Perfil</span></div><div><h2>Integrar antes que aislar.</h2><p>La especialidad no es una única tecnología. Es entender las interfaces entre disciplinas, convertir restricciones en arquitectura y llevar esa arquitectura hasta una entrega operable y documentada.</p></div></div>
@@ -156,6 +150,9 @@ body.dossier{margin:0;background:var(--paper);color:var(--ink);font-family:"DM S
 </section>
 </main>
 <footer class="footer dos-shell"><span>© 2026 Héctor Lobato · Systems Integration & Automation</span><span>Atelier × Swiss Grid × Technical Monograph × Scroll narrative</span></footer>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="hero-react.js"></script>
 <script>
 const p=document.getElementById('progress');
 const update=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;p.style.width=(m>0?Math.min(100,scrollY/m*100):0)+'%'};
