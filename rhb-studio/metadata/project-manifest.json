@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "projectId": "RHB_STUDIO",
+  "title": "RHB STUDIO",
+  "updatedAt": "2026-10-08",
+  "classification": "PUBLIC_SHOWCASE",
+  "runtimeBoundary": {
+    "fullRuntime": "LOCAL_ONLY",
+    "publicSurface": "SHOWCASE_ONLY",
+    "secretsPublished": false,
+    "portsPublished": false,
+    "privatePathsPublished": false
+  },
+  "modules": [
+    {
+      "id": "photo-cad",
+      "title": "Photo → CAD",
+      "status": "ACTIVE_DEVELOPMENT",
+      "summary": "Visual survey to editable geometry with manual verification gate."
+    },
+    {
+      "id": "project-core",
+      "title": "Project Core",
+      "status": "ACTIVE_DEVELOPMENT",
+      "summary": "State, decisions, versions, documents and deliverables per project."
+    },
+    {
+      "id": "routing",
+      "title": "Agent Routing",
+      "status": "ACTIVE_DEVELOPMENT",
+      "summary": "OmniRoute + OpenClaw + specialist agents by discipline."
+    },
+    {
+      "id": "fabrication",
+      "title": "Fabrication",
+      "status": "ACTIVE_DEVELOPMENT",
+      "summary": "CAD, BOM, budget, workshop preparation, assembly and QA."
+    },
+    {
+      "id": "documentation",
+      "title": "Documentation",
+      "status": "ACTIVE_DEVELOPMENT",
+      "summary": "Reports, specifications, budgets, client documents and handover."
+    },
+    {
+      "id": "ops",
+      "title": "Health / Ops",
+      "status": "ACTIVE_DEVELOPMENT",
+      "summary": "Service health, logs, state and local operational checks."
+    }
+  ],
+  "stack": [
+    "OMNIROUTE",
+    "OPENCLAW",
+    "NEXO",
+    "AUTOCAD",
+    "SKETCHUP",
+    "PYTHON",
+    "REACT",
+    "GITHUB"
+  ],
+  "referenceProjects": [
+    {
+      "id": "RHB-ACC-001",
+      "title": "Sliding Gate / Encomienda",
+      "classification": "REFERENCE_PROJECT",
+      "status": "DOCUMENTATION_IN_PROGRESS"
+    },
+    {
+      "id": "RHB-TBL-001",
+      "title": "Glass Table Base",
+      "classification": "REFERENCE_PROJECT",
+      "status": "DOCUMENTED_BRIEF"
+    }
+  ]
+}
