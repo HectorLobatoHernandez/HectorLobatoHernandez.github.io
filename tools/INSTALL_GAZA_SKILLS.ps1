@@ -7,6 +7,8 @@ $RepoRoot = Split-Path -Parent $PSScriptRoot
 $Sources = @(
   "skills\gaza-strategy-digital-twin",
   "skills\gaza-geospatial-digital-twin",
+  "skills\cv-editorial-architecture",
+  "skills\scroll-world",
   "skills\vendor\anthropic\frontend-design",
   "skills\vendor\mengto\video-to-superprompt",
   "skills\vendor\latent-spaces\brag-slim",
