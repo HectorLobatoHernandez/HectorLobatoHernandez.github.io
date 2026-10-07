@@ -36,9 +36,10 @@ const localAssets=[
   '/assets/visuals/sound-club-system.svg',
   '/assets/visuals/mar-salada-suspension-detail.svg',
   '/assets/visuals/mar-salada-dj-booth-plan.svg',
-  '/assets/css/mar-salada-case.css',
-  '/assets/js/mar-salada-case.js',
-  '/xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json'
+  '/assets/css/mar-salada-case-v2.css',
+  '/assets/js/mar-salada-case-v2.js',
+  '/xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json',
+  '/xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json'
 ];
 for(const asset of localAssets){
   const r=await page.request.get(base+asset);
@@ -70,6 +71,8 @@ const publicState=await casePage.evaluate(()=>({
   storySteps:document.querySelectorAll('.ms-story-step').length,
   storyRoot:!!document.querySelector('.ms-story-shell'),
   videoCount:document.querySelectorAll('video').length,
+  motionStatus:window.__MAR_SALADA_CASE__?.motionStatus,
+  motionId:window.__MAR_SALADA_CASE__?.motionId,
   reactLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='sound-club-visuals.html'),
   suspension:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-suspension-detail.svg')),
   djPlan:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-dj-booth-plan.svg')),
@@ -102,7 +105,9 @@ if(state.overflow||mobile.overflow)failures.push('React Visuals horizontal overf
 if(mobile.boards!==4||mobile.plans!==3||mobile.details!==2||mobile.videos!==0)failures.push('mobile media counts mismatch');
 if(publicState.contract?.projectId!=='MAR_SALADA_CDM'||publicState.contract?.storyScenes!==10)failures.push('MAR SALADA case contract mismatch');
 if(publicState.storySteps!==10||!publicState.storyRoot)failures.push('MAR SALADA story structure mismatch');
-if(publicState.videoCount!==0)failures.push('public case must not expose source video');
+if(publicState.motionStatus!=='PENDING_VERIFIED_GEOMETRY')failures.push('SC08 should remain pending verified geometry');
+if(publicState.motionId!=='SC08_PORTFOLIO_SCROLL_MASTER')failures.push('SC08 motion manifest not wired');
+if(publicState.videoCount!==0)failures.push('pending SC08 must not expose a public video element');
 if(!publicState.reactLink||!publicState.suspension||!publicState.djPlan)failures.push('MAR SALADA links/technical diagrams missing');
 if(publicState.overflow||caseMobile.overflow)failures.push('MAR SALADA case horizontal overflow');
 if(!legacy.ok()||!legacyText.includes('mar-salada.html'))failures.push('legacy route redirect missing');
