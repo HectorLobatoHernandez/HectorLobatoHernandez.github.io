@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "project": "sound-club-palma",
   "sourceGroups": [
     "architecture-night",
@@ -14,25 +14,37 @@
       "piece": "SC01",
       "classification": "GENERATED_CONCEPT",
       "plannedArchivePath": "04_outputs/boards/SC01_building_overview_v001.webp",
-      "archiveStatus": "PLANNED"
+      "archiveStatus": "REMOTE_ONLY",
+      "provider": "Higgsfield media store",
+      "providerMediaId": "dec6d6ae-398e-44f7-bea1-b31c4d564f46",
+      "remoteUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/dec6d6ae-398e-44f7-bea1-b31c4d564f46.png"
     },
     {
       "piece": "SC02",
       "classification": "GENERATED_CONCEPT",
       "plannedArchivePath": "04_outputs/boards/SC02_building_exploded_v001.webp",
-      "archiveStatus": "PLANNED"
+      "archiveStatus": "REMOTE_ONLY",
+      "provider": "Higgsfield media store",
+      "providerMediaId": "5acdfe56-7bfe-4158-bc0f-1adbea7e9abd",
+      "remoteUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/5acdfe56-7bfe-4158-bc0f-1adbea7e9abd.png"
     },
     {
       "piece": "SC04",
       "classification": "GENERATED_CONCEPT",
       "plannedArchivePath": "04_outputs/boards/SC04_dj_booth_exploded_v001.webp",
-      "archiveStatus": "PLANNED"
+      "archiveStatus": "REMOTE_ONLY",
+      "provider": "Higgsfield media store",
+      "providerMediaId": "afa329dd-fd44-4576-ab14-5067dcd93a36",
+      "remoteUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/afa329dd-fd44-4576-ab14-5067dcd93a36.png"
     },
     {
       "piece": "SC05",
       "classification": "GENERATED_CONCEPT",
       "plannedArchivePath": "04_outputs/boards/SC05_lighting_2300k_v001.webp",
-      "archiveStatus": "PLANNED"
+      "archiveStatus": "REMOTE_ONLY",
+      "provider": "Higgsfield media store",
+      "providerMediaId": "49148b16-917b-4e57-9286-3e85315320ce",
+      "remoteUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/49148b16-917b-4e57-9286-3e85315320ce.png"
     }
   ]
 }

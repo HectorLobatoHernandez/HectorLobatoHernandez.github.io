@@ -10,8 +10,11 @@ The public portfolio identity is **Sound Club, Palma**. Public location is **Pue
 - XXXIA production pipeline: published.
 - XXXIA Production Console: published.
 - Lot 01 pieces SC01–SC07: defined.
-- Generated keyframes: tracked as generated concepts.
-- Project MP4 references: available.
+- Generated boards SC01 / SC02 / SC04 / SC05: promoted as GENERATED_CONCEPT / REMOTE_ONLY with stable media URLs.
+- Canonical media registry: schema v2 · 12 public assets.
+- React Visuals: 4 boards · 3 schematic plans · 1 system diagram · 3 documented videos · 1 generated-motion slot.
+- Scroll visual story: 7 metadata-driven scenes from architecture to final environment.
+- Project MP4 references: 3 documented videos promoted.
 - CAD / verified as-built floor plan: **not present in the current project archive**.
 - Interim plan views therefore use generated schematic SVGs labelled **NOT AS-BUILT**.
 
@@ -27,4 +30,5 @@ When a verified CAD/PDF plan is later supplied:
 
 ## QA
 
-- React Visuals QA workflow is installed on `main` and validates this project before merge.
+- React Visuals QA validates desktop/mobile, 12 media assets, 7-scene scroll story, local SVG/JS/CSS, project skill and documented MP4 controls.
+- SC01 free motion prototype remains WAITING at provider level; it must not be presented as complete.

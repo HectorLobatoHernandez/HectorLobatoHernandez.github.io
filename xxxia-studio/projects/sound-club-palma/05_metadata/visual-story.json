@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "project": "sound-club-palma",
+  "title": "Built Space → Technical Logic → Final Environment",
+  "scenes": [
+    {
+      "mediaId": "SC-BOARD-01",
+      "kicker": "01 / Architecture",
+      "title": "From venue to integrated system",
+      "body": "The project opens as architecture: glass, dark metal, timber and a warm hospitality envelope.",
+      "tags": [
+        "architecture",
+        "night",
+        "hospitality"
+      ]
+    },
+    {
+      "mediaId": "SC-BOARD-02",
+      "kicker": "02 / Deconstruction",
+      "title": "Building exploded into layers",
+      "body": "Envelope, ceiling, lighting, audio and operational layers separate to explain how the venue works.",
+      "tags": [
+        "exploded view",
+        "systems",
+        "integration"
+      ]
+    },
+    {
+      "mediaId": "SC-PLAN-01",
+      "kicker": "03 / Plan logic",
+      "title": "Zones before objects",
+      "body": "Lighting and hospitality zones become a legible plan: pendants, dance spots, DJ strip and scene control.",
+      "tags": [
+        "DALI",
+        "KNX",
+        "zoning"
+      ]
+    },
+    {
+      "mediaId": "SC-BOARD-04",
+      "kicker": "04 / Custom fabrication",
+      "title": "DJ booth as a technical object",
+      "body": "Furniture, professional audio, service access and lighting are treated as one bespoke built component.",
+      "tags": [
+        "DJ booth",
+        "timber",
+        "audio"
+      ]
+    },
+    {
+      "mediaId": "SC-BOARD-05",
+      "kicker": "05 / 2300K atmosphere",
+      "title": "Light becomes spatial material",
+      "body": "Warm architectural light builds the hospitality layer while blue-violet ambience remains a restrained secondary accent.",
+      "tags": [
+        "2300K",
+        "scenes",
+        "lighting"
+      ]
+    },
+    {
+      "mediaId": "SC-VID-02",
+      "kicker": "06 / Programming",
+      "title": "Control moves from hardware to interface",
+      "body": "Real project footage connects wall control, touch interfaces and operational scene logic.",
+      "tags": [
+        "control",
+        "programming",
+        "documented video"
+      ]
+    },
+    {
+      "mediaId": "SC-VID-03",
+      "kicker": "07 / Final environment",
+      "title": "Systems disappear into the experience",
+      "body": "The real finished interior closes the sequence: architecture, sound, light and operation working together.",
+      "tags": [
+        "final space",
+        "documented video",
+        "operation"
+      ]
+    }
+  ]
+}

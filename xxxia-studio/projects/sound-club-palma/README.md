@@ -33,3 +33,27 @@ Current promoted diagrams:
 - AV / control architecture
 
 Current promoted documented video is stored as REMOTE_ONLY and referenced by stable media URL.
+
+
+## Visual Story v3
+
+The public case now uses a metadata-driven React scroll narrative.
+
+Canonical files:
+- `05_metadata/project-media.json` — schema v2 / 12 classified assets.
+- `05_metadata/visual-story.json` — 7-scene narrative order and copy.
+- `assets/js/sound-club-story.js` — runtime.
+- `assets/css/sound-club-story.css` — sticky architectural presentation layer.
+
+Promoted generated boards:
+- SC01 building overview.
+- SC02 building exploded.
+- SC04 DJ booth exploded.
+- SC05 lighting 2300K.
+
+Promoted documented videos:
+- general project footage.
+- control / programming.
+- finished interior atmosphere.
+
+The SC01 generated-motion prototype remains WAITING and is not exposed as a completed output.

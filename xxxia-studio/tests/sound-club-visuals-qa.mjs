@@ -16,7 +16,7 @@ page.on('requestfailed',r=>requestFailures.push(r.url()+' :: '+(r.failure()?.err
 const response=await page.goto(base+'/projects/sound-club-visuals.html',{waitUntil:'domcontentloaded',timeout:45000});
 if(!response?.ok())throw new Error('React Visuals HTTP '+response?.status());
 
-await page.waitForFunction(()=>window.__SOUND_CLUB_VISUALS__?.total===6,{timeout:30000});
+await page.waitForFunction(()=>window.__SOUND_CLUB_VISUALS__?.total===12,{timeout:30000});
 const state=await page.evaluate(()=>({
   contract:window.__SOUND_CLUB_VISUALS__,
   assets:document.querySelectorAll('.rv-asset').length,
@@ -34,7 +34,10 @@ const localAssets=[
   '/assets/visuals/sound-club-control-plan.svg',
   '/assets/visuals/sound-club-system.svg',
   '/assets/css/sound-club-react-visuals.css',
-  '/assets/js/sound-club-react-visuals.js'
+  '/assets/js/sound-club-react-visuals.js',
+  '/assets/css/sound-club-story.css',
+  '/assets/js/sound-club-story.js',
+  '/xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json'
 ];
 for(const asset of localAssets){
   const r=await page.request.get(base+asset);
@@ -47,6 +50,7 @@ await page.reload({waitUntil:'domcontentloaded',timeout:45000});
 await page.waitForFunction(()=>window.__SOUND_CLUB_VISUALS__?.plans===3,{timeout:30000});
 const mobile=await page.evaluate(()=>({
   overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2,
+  boards:window.__SOUND_CLUB_VISUALS__?.boards,
   plans:window.__SOUND_CLUB_VISUALS__?.plans,
   videos:window.__SOUND_CLUB_VISUALS__?.videos
 }));
@@ -57,31 +61,38 @@ const caseErrors=[];
 casePage.on('pageerror',e=>caseErrors.push(String(e)));
 const caseRes=await casePage.goto(base+'/projects/sound-club-palma.html',{waitUntil:'domcontentloaded',timeout:45000});
 if(!caseRes?.ok())caseErrors.push('public case HTTP '+caseRes?.status());
+await casePage.waitForFunction(()=>window.__SOUND_CLUB_STORY__?.steps===7,{timeout:30000});
 const publicState=await casePage.evaluate(()=>({
   planImages:[...document.querySelectorAll('img')].filter(x=>x.src.includes('sound-club-')&&x.src.includes('-plan.svg')).length,
-  videoCount:document.querySelectorAll('video').length,
-  controls:document.querySelector('video')?.controls===true,
-  autoplay:document.querySelector('video')?.autoplay===true,
-  preload:document.querySelector('video')?.preload,
-  videoSrc:document.querySelector('video')?.getAttribute('src')||'',
-  reactLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='sound-club-visuals.html')
+  videoCount:document.querySelectorAll('#react-visuals video').length,
+  controls:document.querySelector('#react-visuals video')?.controls===true,
+  autoplay:document.querySelector('#react-visuals video')?.autoplay===true,
+  preload:document.querySelector('#react-visuals video')?.preload,
+  videoSrc:document.querySelector('#react-visuals video')?.getAttribute('src')||'',
+  reactLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='sound-club-visuals.html'),
+  story:window.__SOUND_CLUB_STORY__||null,
+  storySteps:document.querySelectorAll('.sc-story-step').length,
+  storyRoot:!!document.getElementById('soundClubStoryRoot')
 }));
 await casePage.screenshot({path:out+'/public-case.png',fullPage:true});
 await browser.close();
 
 const failures=[];
-if(state.contract?.schemaVersion!==1)failures.push('visual contract schema mismatch');
-if(state.contract?.total!==6)failures.push('expected 6 media registry items');
+if(state.contract?.schemaVersion!==2)failures.push('visual contract schema mismatch');
+if(state.contract?.total!==12)failures.push('expected 12 media registry items');
+if(state.contract?.boards!==4)failures.push('expected 4 generated boards');
 if(state.contract?.plans!==3)failures.push('expected 3 project plans');
-if(state.contract?.videos!==1)failures.push('expected 1 documented video');
-if(state.assets!==6)failures.push('expected 6 React asset cards');
-if(state.filters!==5)failures.push('expected 5 filters');
+if(state.contract?.videos!==3)failures.push('expected 3 documented videos');
+if(state.assets!==12)failures.push('expected 12 React asset cards');
+if(state.filters!==6)failures.push('expected 6 filters');
 if(!state.viewer)failures.push('viewer missing');
 if(!state.warning)failures.push('NOT AS-BUILT warning missing');
 if(!state.skillLink)failures.push('project skill link missing');
 if(!state.mediaLink)failures.push('media registry link missing');
 if(state.overflow||mobile.overflow)failures.push('horizontal overflow');
+if(mobile.boards!==4||mobile.plans!==3||mobile.videos!==3)failures.push('mobile media counts mismatch');
 if(publicState.planImages!==3)failures.push('public case must embed 3 plan SVGs');
+if(publicState.story?.schemaVersion!==1||publicState.story?.steps!==7||publicState.storySteps!==7||!publicState.storyRoot)failures.push('public visual story contract mismatch');
 if(publicState.videoCount<1)failures.push('public case MP4 missing');
 if(!publicState.controls)failures.push('public MP4 controls missing');
 if(publicState.autoplay)failures.push('public MP4 must not autoplay');
