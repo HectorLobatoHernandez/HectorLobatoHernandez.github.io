@@ -9,6 +9,7 @@ const browser=await chromium.launch({headless:true});
 const cases=[
   {id:'chooser',path:'/cv/',title:'Currículum',theme:'gallery',links:4},
   {id:'dossier',path:'/cv/dossier.html',title:'Dossier',theme:'dossier',project:'Club Mar Salada'},
+  {id:'present',path:'/cv/present.html',title:'Presentation Route',theme:null,project:'Club Mar Salada'},
   {id:'ats',path:'/cv/ats.html',title:'CV ATS',theme:null,project:'Club Mar Salada'},
   {id:'atelier',path:'/cv/atelier.html',title:'Atelier',theme:'atelier',project:'GAZA Operations Intelligence'},
   {id:'swiss',path:'/cv/swiss.html',title:'Swiss',theme:'swiss',project:'Mar Salada.'},
@@ -39,6 +40,9 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       ats:window.__CV_ATS__||null,
       atsSections:document.querySelectorAll('main.cv section').length,
       atsH2:[...document.querySelectorAll('main.cv h2')].map(x=>x.textContent.trim()),
+      present:window.__CV_PRESENT__||null,
+      presentSteps:document.querySelectorAll('.step').length,
+      evidenceCards:document.querySelectorAll('#evidence .archive a').length,
       imageLoaded:(()=>{const i=document.querySelector('.atelier-photo img');return i?i.complete&&i.naturalWidth>0:null})(),
       asset404:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src)
     }));
@@ -51,8 +55,11 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      if(state.dossier?.schemaVersion!==1||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
-      if(state.dossierProjects!==3||state.dossierArchive!==4)failures.push('Dossier project inventory mismatch');
+      if(state.dossier?.schemaVersion!==2||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossierProjects!==3||state.dossierArchive!==8||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
+    }
+    if(test.id==='present'){
+      if(state.present?.schemaVersion!==1||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
     }
     if(test.id==='ats'){
       if(state.ats?.schemaVersion!==1||state.ats.format!=='PROJECT_BASED_ATS'||state.ats.print!==true||state.ats.employmentChronology!==false||state.ats.selectedProjects!==7||state.ats.featuredProjects!==3)failures.push('ATS contract mismatch');
@@ -74,7 +81,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
 const other=await browser.newPage();
 await other.goto(base+'/start/cv.html',{waitUntil:'domcontentloaded'});
 const start=await other.evaluate(()=>({
-  routes:['../cv/atelier.html','../cv/swiss.html','../cv/monograph.html','../cv/world.html','../cv/dossier.html','../cv/ats.html'].every(u=>!!document.querySelector('a[href="'+u+'"]')),
+  routes:['../cv/atelier.html','../cv/swiss.html','../cv/monograph.html','../cv/world.html','../cv/dossier.html','../cv/ats.html','../cv/present.html'].every(u=>!!document.querySelector('a[href="'+u+'"]')),
   legacy:!!document.querySelector('a[href="../apps/presentation-lab/"]')
 }));
 if(!start.routes||!start.legacy)failures.push('sector CV entry links incomplete');
@@ -90,4 +97,4 @@ await reduce.close();
 await browser.close();
 await fs.writeFile('.qa/cv-editorial/result.json',JSON.stringify({results,start,reduced,failures},null,2));
 if(failures.length){console.error(JSON.stringify({failures,results},null,2));process.exitCode=2}
-else console.log('CV EDITORIAL QA PASS / dossier + ATS + 4 variants / desktop + mobile / scroll-world storyboard / reduced motion / sector entry');
+else console.log('CV EDITORIAL QA PASS / presentation route + dossier + ATS + 4 variants / desktop + mobile / scroll-world storyboard / reduced motion / sector entry');
