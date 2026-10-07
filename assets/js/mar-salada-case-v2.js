@@ -3,6 +3,7 @@
   const {useEffect,useMemo,useRef,useState}=React;
   const MEDIA_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json';
   const STORY_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json';
+  const MOTION_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json';
   const SECTIONS=['overview','audio','lighting','structure','dj','story','docs'];
   const STACK=['React 18','ReactDOM','GSAP','ScrollTrigger','Scroll World'];
 
@@ -73,7 +74,29 @@
     );
   }
 
-  function Story({story,mediaMap}){
+  function MotionStage({motion,media}){
+    const videoRef=useRef(null);
+    const approved=Boolean(motion?.master?.status==='APPROVED'&&motion?.master?.src);
+    useEffect(()=>{
+      if(!approved||!videoRef.current||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      const video=videoRef.current;let raf=0;
+      const update=()=>{
+        raf=0;const wrap=document.getElementById('story');if(!wrap||!video.duration)return;
+        const rect=wrap.getBoundingClientRect();
+        const total=Math.max(1,wrap.offsetHeight-innerHeight);
+        const passed=Math.min(total,Math.max(0,-rect.top));
+        const p=passed/total;const t=p*video.duration;
+        if(Number.isFinite(t)&&Math.abs(video.currentTime-t)>.04)video.currentTime=t;
+      };
+      const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
+      video.addEventListener('loadedmetadata',update);addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);update();
+      return()=>{video.removeEventListener('loadedmetadata',update);removeEventListener('scroll',onScroll);removeEventListener('resize',onScroll);if(raf)cancelAnimationFrame(raf)};
+    },[approved,motion?.master?.src]);
+    if(approved)return E('video',{ref:videoRef,src:motion.master.src,poster:media?.src||'',muted:true,playsInline:true,preload:'metadata','aria-label':'MAR SALADA SC08 scroll motion master'});
+    return media?.src?E('img',{key:media.id,src:media.src,alt:media.title,decoding:'async'}):null;
+  }
+
+  function Story({story,mediaMap,motion}){
     const [active,setActive]=useState(0);
     const stageRef=useRef(null);
     useEffect(()=>{
@@ -92,10 +115,10 @@
           ))
         ),
         E('div',{className:'ms-story-stage',ref:stageRef},
-          E('div',{className:'ms-story-frame '+(media?.kind==='PLAN'||media?.kind==='DETAIL'?'plan':''), 'data-ms-depth':''},
-            media?.src?E('img',{key:media.id,src:media.src,alt:media.title,decoding:'async'}):null
+          E('div',{className:'ms-story-frame '+(media?.kind==='PLAN'||media?.kind==='DETAIL'?'plan':''), 'data-ms-depth':'','data-motion-status':motion?.master?.status||'NONE'},
+            E(MotionStage,{motion,media})
           ),
-          E('div',{className:'ms-story-meta'},E('b',null,media?.id+' · '+(media?.title||'')),
+          E('div',{className:'ms-story-meta'},E('b',null,(motion?.master?.status==='APPROVED'?'SC08 · MOTION MASTER':'STILL FALLBACK · ')+(media?.id||'')+' · '+(media?.title||'')),
             E('div',{className:'ms-story-bars'},...scenes.map((_,i)=>E('i',{key:i,className:i===active?'active':''})))
           )
         )
@@ -104,12 +127,13 @@
   }
 
   function App(){
-    const [media,setMedia]=useState(null),[story,setStory]=useState(null),[error,setError]=useState('');
+    const [media,setMedia]=useState(null),[story,setStory]=useState(null),[motion,setMotion]=useState(null),[error,setError]=useState('');
     const progress=useScrollProgress();const active=useActiveSection(Boolean(media&&story));
     useEffect(()=>{Promise.all([
       fetch(MEDIA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('media '+r.status);return r.json()}),
-      fetch(STORY_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('story '+r.status);return r.json()})
-    ]).then(([m,s])=>{setMedia(m);setStory(s)}).catch(e=>setError(String(e)))},[]);
+      fetch(STORY_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('story '+r.status);return r.json()}),
+      fetch(MOTION_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+    ]).then(([m,s,mo])=>{setMedia(m);setStory(s);setMotion(mo)}).catch(e=>setError(String(e)))},[]);
     useMotion(Boolean(media&&story));
 
     const mediaMap=useMemo(()=>new Map((media?.items||[]).filter(x=>x.publicSafe).map(x=>[x.id,x])),[media]);
@@ -119,7 +143,7 @@
     const hero=mediaMap.get('SC-BOARD-01'), audioPlan=mediaMap.get('SC-PLAN-02'), light=mediaMap.get('SC-BOARD-05'),
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
-    window.__MAR_SALADA_CASE__={version:'2.0',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK};
+    window.__MAR_SALADA_CASE__={version:'2.1',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
@@ -217,7 +241,7 @@
           )
         ),
 
-        E(Story,{story,mediaMap}),
+        E(Story,{story,mediaMap,motion}),
 
         E('section',{className:'ms-shell ms-section',id:'docs'},
           E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
@@ -233,7 +257,7 @@
             E(Card,{label:'NEXT',title:'Verified geometry promotion',body:'DWG + SKP → alignment / units / origin QA → verified master → web model / exploded / frame-locked sequence.'})
           )
         ),
-        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.0'))
+        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.1 · SC08 MOTION READY'))
       )
     );
   }
