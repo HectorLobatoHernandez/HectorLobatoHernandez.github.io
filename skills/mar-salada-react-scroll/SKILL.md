@@ -4,6 +4,8 @@
 
 Build and maintain the public **MAR SALADA — CLUB DEL MAR PALMA** case study as a React-first, architecture/editorial, long-scroll technical narrative.
 
+Compose this skill with `../reactbits-portfolio-components/SKILL.md` for Model Viewer, Bounce Cards and project technology/vendor rails.
+
 Use this skill before changing:
 
 - `projects/mar-salada.html`
@@ -12,6 +14,7 @@ Use this skill before changing:
 - `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json`
+- `xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json`
 
 ## Canonical identity
 
@@ -85,7 +88,9 @@ Required chapters:
 5. Suspended structure / as-built
 6. DJ booth / technical furniture
 7. Scroll World visual story
-8. Dossier / provenance / XXXIA
+8. Interactive models / GLB promotion
+9. Curated Bounce Cards gallery
+10. Dossier / provenance / XXXIA
 
 ## Visual language
 
@@ -98,6 +103,22 @@ Required chapters:
 - controlled amber lighting
 - restrained cyan / teal contrast
 - dense information, but generous rhythm and hierarchy
+
+## Model Viewer and gallery
+
+The project page must be ready to display verified geometry without publishing raw CAD.
+
+Model runtime contract:
+- source CAD/SKP stays private;
+- browser assets are optimized GLB/glTF;
+- `model-manifest.json` controls model status and public source;
+- `PENDING_GLB` renders a poster/fallback, never a fake 3D object;
+- viewer is React-controlled.
+
+Gallery contract:
+- Bounce Cards consume only `publicSafe: true` project media;
+- reduced-motion collapses to a static grid;
+- generated assets retain their classification labels.
 
 ## Evidence contract
 
