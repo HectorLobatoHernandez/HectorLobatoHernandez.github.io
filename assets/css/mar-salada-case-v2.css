@@ -62,7 +62,7 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
 .ms-model-option span{display:block;margin-top:10px;color:#718078;font:600 8px var(--mono);letter-spacing:.07em}
 
 .ms-bounce-wrap{position:relative;min-height:650px;margin-top:38px;display:grid;place-items:center;perspective:1200px}
-.ms-bounce-card{--offset:calc((var(--i) - (var(--n) - 1)/2) * 78px);--rot:calc((var(--i) - (var(--n) - 1)/2) * 4.5deg);
+.ms-bounce-card{--offset:0px;--rot:0deg;
   position:absolute;width:min(470px,38vw);aspect-ratio:4/3;margin:0;border:1px solid var(--line);background:#0a120f;overflow:hidden;
   transform:translateX(var(--offset)) rotate(var(--rot));transform-origin:50% 115%;box-shadow:0 28px 80px rgba(0,0,0,.28);
   transition:transform .32s cubic-bezier(.22,1,.36,1),border-color .25s,filter .25s;cursor:pointer}
