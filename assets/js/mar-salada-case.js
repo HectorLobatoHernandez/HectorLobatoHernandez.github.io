@@ -17,7 +17,7 @@
     return p;
   }
 
-  function useActiveSection(){
+  function useActiveSection(ready){
     const [active,setActive]=useState('overview');
     useEffect(()=>{
       const nodes=SECTIONS.map(id=>document.getElementById(id)).filter(Boolean);
@@ -26,7 +26,7 @@
         if(visible[0])setActive(visible[0].target.id);
       },{rootMargin:'-22% 0px -58% 0px',threshold:[0,.08,.2,.4]});
       nodes.forEach(n=>io.observe(n));return()=>io.disconnect();
-    },[]);
+    },[ready]);
     return active;
   }
 
@@ -70,7 +70,7 @@
 
   function App(){
     const [media,setMedia]=useState(null),[story,setStory]=useState(null),[error,setError]=useState('');
-    const progress=useScrollProgress();const active=useActiveSection();
+    const progress=useScrollProgress();const active=useActiveSection(Boolean(media&&story));
     useEffect(()=>{Promise.all([
       fetch(MEDIA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('media '+r.status);return r.json()}),
       fetch(STORY_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('story '+r.status);return r.json()})
