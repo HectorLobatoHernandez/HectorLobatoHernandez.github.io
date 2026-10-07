@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900"><defs>
+<pattern id="grid" width="65" height="65" patternUnits="userSpaceOnUse"><path d="M65 0H0V65" fill="none" stroke="#c4cec2" stroke-opacity=".37" stroke-width="1"/></pattern>
+<pattern id="diag" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><path d="M0 0V9" stroke="#889987" stroke-opacity=".2"/></pattern>
+<linearGradient id="paper" x2="0.95" y2="1"><stop stop-color="#f1efe5"/><stop offset="1" stop-color="#dce1d5"/></linearGradient>
+<linearGradient id="glass" x2="0" y2="1"><stop stop-color="#e6e9df"/><stop offset="1" stop-color="#adb9ae"/></linearGradient>
+</defs><rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<g stroke="#7c8c7c" opacity=".26" stroke-width="1"><path d="M620 850L1410 150M660 900L1500 155M700 900L1570 210M550 810L1590 700M670 845L1570 430"/></g>
+<g font-family="monospace" font-size="13" fill="#718579" letter-spacing="4"><text x="695" y="75">HL / DESIGN SYSTEMS</text><text x="1370" y="75">A—04</text><text x="1350" y="850">STUDY / 2026</text></g>
+<g stroke="#728c79" stroke-opacity=".55" fill="none"><circle cx="1170" cy="485" r="330" stroke-dasharray="4 9"/><path d="M1170 145v680M840 485h660"/></g><g transform="translate(0 10)">
+<path d="M680 540L1050 300L1515 505L1125 758Z" fill="#d4dcd0" stroke="#5e7664" stroke-width="4"/>
+<path d="M705 550L1090 316M770 610L1152 365M838 670L1210 418M915 712L1280 470" stroke="#9bab9b" stroke-width="20" opacity=".5"/>
+<path d="M710 630L1070 414L1410 574" stroke="#b48361" stroke-width="20" fill="none" stroke-dasharray="35 18"/>
+<path d="M785 485L1062 336L1230 431L952 589Z" fill="#eaeae2" stroke="#46604f" stroke-width="3"/>
+<path d="M785 485V554L952 648V589Z" fill="#bac9b9" stroke="#46604f" stroke-width="3"/>
+<path d="M952 589L1230 431V499L952 648Z" fill="#dbe1d6" stroke="#46604f" stroke-width="3"/>
+<path d="M1135 521L1288 435L1457 526L1304 616Z" fill="#dee5d9" stroke="#496c54" stroke-width="3"/>
+<path d="M1135 521V608L1304 706V616Z" fill="#b2c2b2" stroke="#496c54" stroke-width="3"/>
+<path d="M1304 616L1457 526V612L1304 706Z" fill="#ccd8c9" stroke="#496c54" stroke-width="3"/>
+<g stroke="#8ea88f" stroke-width="2"><path d="M1030 446v104M1060 428v105M1090 412v107M1325 610v87M1350 596v88"/></g>
+<path d="M735 716C860 760 1000 788 1095 753S1345 640 1506 724" fill="none" stroke="#a77a5f" stroke-width="26" stroke-linecap="round"/>
+<path d="M735 716C860 760 1000 788 1095 753S1345 640 1506 724" fill="none" stroke="#f2e9d7" stroke-width="2" stroke-dasharray="18 18"/>
+<g font-family="monospace" font-size="16" fill="#55705c" letter-spacing="3"><text x="965" y="200">04 / OPERATIONS</text><text x="1250" y="765">CONCEPT / NOT AS-BUILT</text></g></g>
+<g stroke="#aa7459" stroke-width="3" stroke-linecap="square" opacity=".9"><path d="M1450 130h33m-16-16v33"/><path d="M725 745h33m-16-16v33"/></g></svg>
