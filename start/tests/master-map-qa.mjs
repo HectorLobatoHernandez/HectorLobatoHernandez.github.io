@@ -19,8 +19,11 @@ for(const viewport of [{width:1440,height:960,name:'desktop'},{width:390,height:
  page.on('pageerror',e=>errors.push(viewport.name+': '+e.message));
  const res=await page.goto(base+'/start/mapa.html',{waitUntil:'domcontentloaded',timeout:30000});
  if(!res?.ok())errors.push('Master map HTTP '+res?.status());
- await page.locator('.visual img').first().scrollIntoViewIfNeeded();
- await page.waitForTimeout(350);
+ for(const img of await page.locator('.visual img').all()){
+  await img.scrollIntoViewIfNeeded();
+  await img.evaluate(async node=>{if(!node.complete) await new Promise(resolve=>{node.addEventListener('load',resolve,{once:true});node.addEventListener('error',resolve,{once:true});setTimeout(resolve,1500)})});
+ }
+ await page.waitForTimeout(150);
  const state=await page.evaluate(()=>({
   title:document.title,
   headings:[...document.querySelectorAll('section[id]')].map(x=>x.id),
