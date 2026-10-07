@@ -1,0 +1,12 @@
+MAR SALADA — CLUB DEL MAR PALMA / SC08 PORTFOLIO SCROLL MASTER
+
+Create a restrained high-end architectural camera journey based on VERIFIED project geometry. The sequence must feel like an architecture and systems case study, not a music-video montage.
+
+Journey:
+venue shell -> interior room -> exploded systems -> audio zones -> circular DJ booth exploded -> rise to suspended ceiling structure -> spring isolator / threaded rod M8 / clamp / structural pipe Ø48.3 mm -> warm 2300 K portfolio lighting -> KNX/DALI + audio control convergence -> complete venue.
+
+Materials: warm timber, dark metal, mineral/concrete surfaces, glass, muted brass technical linework. Lighting: very warm 2300 K portfolio atmosphere with restrained cyan/teal exterior contrast.
+
+Camera: continuous architectural glide, slow and legible, preserve scale, no jump cuts, no aggressive orbit, no fake people, no invented branding. If generated as multiple clips, seams must be frame-identical.
+
+Evidence: this is GENERATED_MOTION unless driven from verified CAD/SKP; technical labels must remain factual. Never embed original private source photos/videos in the output.
