@@ -1,65 +1,82 @@
-# Mar Salada — Project Skill
+# MAR SALADA — Project Skill
 
 ## Mission
 
-Be the project-specific operating skill for **Mar Salada**, with **Sound Club, Palma** used only as the public portfolio alias, and for its XXXIA STUDIO visual-production pipeline.
+Project-specific operating skill for **MAR SALADA — CLUB DEL MAR PALMA** and its technical / visual archive.
 
 Use this skill whenever an agent edits, generates, documents, visualises or publishes material for this project.
 
-## Project identity
+## Identity
 
-- Internal / project name: **Mar Salada**
-- Public portfolio alias: **Sound Club, Palma**
-- Public location: **Puerto Deportivo de Palma**
-- Project type: hospitality / professional audio / lighting / control / custom fabrication
-- Never expose any former/private client-facing project name in public files, UI, generated captions or filenames.
+- Project ID: `MAR_SALADA_CDM`
+- Canonical public title: **MAR SALADA — CLUB DEL MAR PALMA**
+- Location label: **Club del Mar Palma / Palma de Mallorca**
+- Canonical case page: `projects/mar-salada.html`
+- Legacy page: `projects/sound-club-palma.html` redirects to the canonical case.
+- Legacy XXXIA archive slug: `xxxia-studio/projects/sound-club-palma/` (keep until controlled migration).
 
-## Project facts
+## Source-of-truth pipeline
+
+```
+CAD/SKP master
+  -> verified geometry
+  -> drawings
+  -> web model
+  -> exploded components
+  -> 2300 K portfolio visualization
+  -> XXXIA sequences
+  -> QA
+  -> GitHub public release
+```
+
+Original source photos/videos are private references. Do not commit, link or publish them.
+
+## Confirmed / documented project facts
+
+### Geometry / venue
+- Interior area approx.: 326.23 m².
+- Exterior area approx.: 137.08 m².
+- Main ceiling height: 3.545 m.
+- Upper window-profile height: 3.421 m.
 
 ### Audio
-
 - Matrix / DSP: Ecler MIMO88.
 - Interior DJ inputs: IN1 / IN2.
 - Exterior DJ inputs: IN3 / IN4.
 - User control: Pulse 9 wall panel; Pulse 4 used for tests.
-- Interior amplification:
-  - 2 × Lynx GTX 14K DSP for 8 × 18-inch subwoofers.
-  - 2 × Lynx GTX 5K DSP for 8 × 12-inch tops.
-- Interior subs distributed in four tower groups.
-- Exterior mobile DJ furniture:
-  - 2 × 8-inch tops.
-  - 2 × 15-inch subs.
-  - GTX 14K DSP integrated.
+- Interior: 8 × TSI Hexagon Top 12" + 8 × TSI Megatron Sub 18".
+- Interior amplification: 2 × Lynx GTX 5K DSP + 2 × Lynx GTX 14K DSP.
+- Exterior amplification: 1 × Lynx GTX 14K DSP.
 - DJ mixer: Pioneer V10.
 - Operating presets include Restaurant and Club.
-- Interior / Exterior grouping is part of the documented operating logic.
+- Interior / Exterior grouping is part of the operating logic.
 
 ### Lighting / control
+- Gira X1.
+- KNX + DALI + conventional dimming.
+- 15 decorative pendant luminaires with DALI drivers.
+- Dance floor: 10 front-DJ spots + 10 VIP/rear-DJ spots.
+- DJ strip: 24 V, DALI DT8, 5 × 5 A, 300 W PSU.
+- Future DMX integration is an expansion path.
 
-- KNX supervision / visualisation: Gira X1.
-- Lighting integration: KNX + DALI + conventional dimming.
-- 15 decorative pendant luminaires with DALI drivers:
-  - Large bar: 3.
-  - Small bar: 1.
-  - Right tables: 4.
-  - Left tables: 5.
-  - Remaining pendants belong to the documented project inventory; only assign geometry when a verified plan is available.
-- Dance-floor spots:
-  - Front of DJ: 10 spots on 2 × 5 lines.
-  - VIP / rear-DJ area: 10 spots on 2 × 5 lines.
-- DJ strip: 24 V, DALI DT8 dimmer, 5 × 5 A, 300 W power supply.
-- Scene control exists at wall keypad / touch visualisation / tablet level.
+### Suspended structure
+- Installation report / as-built priority: structural steel pipe Ø48.3 mm, 2.5–3 mm wall, black finish.
+- Clamp family compatible with 48–51 mm pipe.
+- Threaded rod M8 suspension.
+- Spring / anti-vibration isolation between ceiling and suspended structure.
+- Preliminary memory value Ø63 mm is conflicting legacy data and must not override the installed/as-built value unless CAD/field measurement proves otherwise.
 
-### Documentation / commissioning
-
-- Project includes routing, zones, scenes, presets, rack architecture, lighting groups and commissioning.
-- Municipal / acoustic documentation is separate from generated visual storytelling.
-- Never turn a generated plan or render into a claim of measured/as-built geometry.
+### DJ booth documented base
+- Outer diameter 2570 mm.
+- Inner void diameter 1200 mm.
+- Access 990 mm.
+- Lateral step development 490 mm.
+- Nominal height 1000 mm.
+- These dimensions remain subject to CAD/SKP master verification before fabrication/as-built geometric assertion.
 
 ## Evidence classes
 
-Use these exact classes in metadata:
-
+Use:
 - DOCUMENTED_REFERENCE
 - GENERATED_DIAGRAM
 - GENERATED_CONCEPT
@@ -67,71 +84,36 @@ Use these exact classes in metadata:
 - VERIFIED_DRAWING
 - VERIFIED_FINAL_PHOTO
 
-A generated diagram must remain **GENERATED_DIAGRAM / NOT AS-BUILT** until replaced by a verified CAD/PDF drawing.
+Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAWING` only after evidence review.
 
-## Visual language
+## Public media boundary
 
-- Classical / architectural / editorial rather than futuristic gaming UI.
-- Warm timber.
-- Dark metal and glass.
-- Hospitality lighting centred on 2300 K.
-- Restrained blue-violet secondary ambience.
-- Fine ivory / muted-brass technical linework.
-- Calm exploded axonometrics and real-space-to-plan transitions.
-- No invented logos, dimensions, hidden construction details or software versions.
+- User-supplied photos and videos: `PRIVATE_REFERENCE_ONLY`.
+- Recover/autosave CAD: never promote automatically to MASTER.
+- Public page may use approved generated boards, diagrams and future generated motion.
+- Never expose original private video.
+- 2300 K is a portfolio visualization target; preserve separately documented technical lighting values.
 
 ## Canonical GitHub paths
 
-- Public case: `projects/sound-club-palma.html`
-- React visual lab: `projects/sound-club-visuals.html`
-- System diagram: `assets/visuals/sound-club-system.svg`
-- Project skill: `skills/mar-salada-project/`
-- XXXIA project: `xxxia-studio/projects/sound-club-palma/`
+- Case: `projects/mar-salada.html`
+- Legacy case redirect: `projects/sound-club-palma.html`
+- React visual explorer: `projects/sound-club-visuals.html`
+- React case runtime: `assets/js/mar-salada-case.js`
+- React case styling: `assets/css/mar-salada-case.css`
+- Page-specific skill: `skills/mar-salada-react-scroll/SKILL.md`
 - Media registry: `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
-- Visual story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
-- Scroll-story runtime: `assets/js/sound-club-story.js`
-
-## Visual-production workflow
-
-```
-verified references
-  -> project skill
-  -> plan / diagram layer
-  -> storyboard
-  -> provider adapter
-  -> generated output
-  -> QA
-  -> media registry
-  -> React Visuals
-  -> public case study
-```
-
-## Current React Visuals deliverables
-
-The public visual system currently exposes **8 classified assets**:
-
-1. 4 × GENERATED_CONCEPT boards:
-   - SC01 architecture overview.
-   - SC02 building exploded.
-   - SC04 DJ booth exploded.
-   - SC05 lighting / 2300K atmosphere.
-2. 3 × GENERATED_DIAGRAM schematic plans:
-   - zoning / lighting.
-   - audio distribution.
-   - KNX / DALI control.
-3. 1 × GENERATED_DIAGRAM AV / control system architecture.
-
-The public case contains a metadata-driven **8-scene React scroll story** built only from generated boards and technical diagrams.
-
-User-supplied photos and videos are **PRIVATE_REFERENCE_ONLY**. They must not be published, linked from the portfolio, uploaded to a generation provider, or used as motion references unless the user explicitly approves it.
+- Story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
+- XXXIA archive: `xxxia-studio/projects/sound-club-palma/`
 
 ## Rules for agents
 
-1. Read this skill before modifying Sound Club files.
-2. Preserve public identity.
-3. Do not infer physical dimensions from photographs.
-4. Prefer SVG for diagrams so changes remain diffable in GitHub.
-5. Keep user-supplied source photos/videos private. Do not publish or upload them to generation providers without explicit approval. Generated outputs may be tracked in project-media.json.
-6. Any new provider output must receive a stable logical asset id.
-7. Update React Visuals and the public case whenever a new verified media item is promoted.
-8. Run Sound Club visual QA before merging.
+1. Read this skill plus `skills/mar-salada-react-scroll/SKILL.md` before changing the public case.
+2. Understand existing code/data before modifying it.
+3. Keep React as the page component/runtime layer.
+4. Preserve evidence/provenance labels.
+5. Do not publish original user media.
+6. Prefer SVG for technical diagrams.
+7. Resolve technical contradictions explicitly instead of silently choosing whichever value looks convenient.
+8. Do not start paid XXXIA/Scroll World motion rendering without explicit user approval.
+9. Run the Mar Salada QA checklist after every media/story promotion.
