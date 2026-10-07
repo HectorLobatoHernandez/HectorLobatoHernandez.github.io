@@ -1,0 +1,42 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#e9e7dc"><meta name="description" content="Storyboard navegable por scroll de Héctor Lobato: arquitectura, integración de sistemas, programación y operaciones. Motor original scroll-world MIT."><title>Héctor Lobato — Scroll World / Architectural Journey</title>
+<link rel="stylesheet" href="variants.css">
+<style>
+html,body{margin:0;background:#e9e7dc;overflow-x:hidden}.visually-hidden{position:absolute!important;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.sw-root,:root{--sw-bg:#e9e7dc;--sw-ink:#29362f;--sw-ink-soft:#53675a;--sw-accent:#956b54;--sw-font-display:'Instrument Serif',Georgia,serif;--sw-font-body:'DM Sans',Arial,sans-serif}
+.sw-root .sw-brand__mark{width:24px;height:24px;border:1px solid #445c49;box-shadow:none;border-radius:0;background:transparent}
+.sw-root .sw-brand__mark:after{content:"HL";display:block;font:700 9px/22px 'IBM Plex Mono',monospace;text-align:center;color:#445c49}
+.sw-root .sw-brand__name{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.04em}
+.sw-root .sw-topbar{border-bottom:1px solid #65806b55;background:linear-gradient(#e9e7dccf,#e9e7dc55);padding:16px 6vw}
+.sw-root .sw-nav{background:transparent;border:0;border-radius:0;backdrop-filter:none;gap:8px}
+.sw-root .sw-nav__item{border-radius:0;font:500 10px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.03em}
+.sw-root .sw-nav__item.is-active{background:#405b47}
+.sw-root .sw-topcta{background:#405b47;border-radius:0;font:500 10px 'IBM Plex Mono',monospace;padding:12px 16px}
+.sw-root .sw-copy__num,.sw-root .sw-copy__eyebrow{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#a16f53}
+.sw-root .sw-copy__title{font:normal clamp(56px,6.7vw,112px)/.86 'Instrument Serif',Georgia,serif;letter-spacing:-.057em;margin-top:18px;max-width:650px}
+.sw-root .sw-copy__body{font:400 clamp(15px,1.4vw,18px)/1.65 'DM Sans',sans-serif;max-width:35ch}
+.sw-root .sw-copy__tags li{border-radius:0;background:#e0e4d8;color:#3b6048;border:1px solid #aebbae;font:500 10px 'IBM Plex Mono',monospace;padding:6px 10px}
+.sw-root .sw-btn{border-radius:0;font:500 11px 'IBM Plex Mono',monospace;text-transform:uppercase}
+.sw-root .sw-btn--primary{background:#3e5a46}
+.sw-root .sw-copylayer:before{width:57vw;background:linear-gradient(90deg,#e9e7dc 0%,#e9e7dcee 35%,#e9e7dc80 70%,transparent)}
+.sw-root .sw-route__dot i{border-radius:0;transform:rotate(45deg)}
+.sw-root .sw-hint{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.14em}
+.world-status{position:fixed;right:20px;bottom:20px;z-index:51;max-width:230px;padding:12px 16px;background:#e9e7dce6;border:1px solid #b5c0b1;color:#3b5746;font:500 9px/1.7 'IBM Plex Mono',monospace;text-transform:uppercase;pointer-events:none}
+.world-status b{display:block;margin-bottom:5px;color:#a06347}
+@media(max-width:860px){.world-status{display:none}.sw-root .sw-copylayer:before{width:100%;height:65%;top:auto;bottom:0;background:linear-gradient(0deg,#e9e7dc 15%,#e9e7dcdb 48%,transparent)}.sw-root .sw-copy__title{font-size:clamp(46px,12vw,70px)}}
+@media(prefers-reduced-motion:reduce){.sw-root .sw-scene__still{transform:none!important}}
+</style></head><body>
+<h1 class="visually-hidden">Héctor Lobato · Architecture, Systems, Computing and Operations</h1><div id="world"></div><div class="world-status"><b>Scroll World / Design Study 04</b>Storyboard SVG · 0 créditos<br>Sin vídeo generado · MIT engine</div>
+<noscript><main style="padding:60px;font-family:Georgia,serif;background:#e9e7dc;color:#29362f"><h1>Héctor Lobato</h1><p>Arquitectura, automatización, software y operaciones.</p><a href="index.html">Volver a las variantes de CV</a></main></noscript>
+<script src="../skills/scroll-world/references/scrub-engine.js"></script>
+<script>
+const worldSections=[
+ {id:'architecture',label:'Arquitectura',still:'world-assets/01-architecture.svg',accent:'#90654b',scroll:1.5,eyebrow:'01 / Space',title:'El espacio es el comienzo.',body:'Arquitectura, materiales, geometría y contexto. Diseño técnico que parte de la realidad construida.',tags:['Arquitectura','Fabricación','Diseño']},
+ {id:'systems',label:'Sistemas',still:'world-assets/02-systems.svg',accent:'#8c6952',scroll:1.5,eyebrow:'02 / Integration',title:'Después, las conexiones.',body:'Audio profesional, KNX, DALI, iluminación, redes y control. Cada instalación es parte de un sistema mayor.',tags:['KNX / DALI','DSP / AV','Commissioning']},
+ {id:'software',label:'Programación',still:'world-assets/03-code.svg',accent:'#9a795a',scroll:1.5,eyebrow:'03 / Computing',title:'La lógica hace visible lo complejo.',body:'Programación, automatización, GIS y herramientas de IA para documentar, coordinar y operar proyectos.',tags:['Software','GIS','AI Agents']},
+ {id:'operations',label:'Operaciones',still:'world-assets/04-operations.svg',accent:'#9a7056',scroll:1.8,eyebrow:'04 / Operations',title:'Del plano al sistema vivo.',body:'GAZA Operations Intelligence, RHB STUDIO y proyectos reales de integración. Los datos simulados y la geometría conceptual se identifican como tales.',tags:['Digital Twin','Operations','Engineering'],cta:{primary:{label:'Ver proyectos',href:'../#projects'},secondary:{label:'Comparar CV',href:'index.html'}}}
+];
+if(typeof window.mountScrollWorld!=='function'){document.body.insertAdjacentHTML('afterbegin','<p style="padding:24px">No se pudo cargar el motor Scroll World. <a href="index.html">Volver a variantes</a></p>');}
+else{window.mountScrollWorld(document.getElementById('world'),{brand:{name:'HL / Arquitectura y sistemas',href:'index.html'},cta:{label:'Comparar variantes ↗',href:'index.html'},hint:'Desplázate para recorrer',nav:true,atmosphere:false,diveScroll:1.5,connScroll:.85,sections:worldSections,connectors:[]})}
+window.__CV_SCROLL_WORLD__={schemaVersion:1,engine:'oso95/scroll-world',license:'MIT',mode:'STORYBOARD_SVG_NO_GENERATED_VIDEO',scenes:worldSections.length,creditsSpent:0,videoClips:0};
+</script>
+</body></html>

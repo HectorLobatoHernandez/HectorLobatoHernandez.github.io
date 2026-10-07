@@ -7,6 +7,8 @@ $RepoRoot = Split-Path -Parent $PSScriptRoot
 $Sources = @(
   "skills\gaza-strategy-digital-twin",
   "skills\gaza-geospatial-digital-twin",
+  "skills\cv-editorial-architecture",
+  "skills\scroll-world",
   "skills\vendor\anthropic\frontend-design",
   "skills\vendor\mengto\video-to-superprompt",
   "skills\vendor\latent-spaces\brag-slim",
@@ -38,5 +40,6 @@ Install-SkillSet $CodexSkillsRoot
 if ($OpenClawSkillsRoot) { Install-SkillSet $OpenClawSkillsRoot }
 Write-Host ""
 Write-Host "Skills copied. No agent security settings were changed."
+Write-Host "CV editorial architecture and scroll-world are available (media generation costs require approval)."
 Write-Host "brag-slim is available for launch/demo videos and writes local output under brag-output*."
 Write-Host "Playwright Interactive has extra local prerequisites; read its SKILL.md before enabling them."

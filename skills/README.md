@@ -23,3 +23,12 @@ After installation, `/brag-slim` can be used from the GAZA app, the portfolio/CV
 
 ## Updating
 Review upstream changes before replacing vendored copies. Preserve LICENSE/NOTICE files and update `skills/manifest.json`.
+
+
+## CV / Editorial design stack (2026-10-07)
+
+For the public curriculum, prefer `skills/cv-editorial-architecture/SKILL.md` over the previous React Bits/glitch aesthetic. The browser versions live at `/cv/` and use HTML/CSS/vanilla JavaScript.
+
+`oso95/scroll-world` is vendored intact under `skills/scroll-world/` at upstream commit `71cc36d3bb150248ae36a2c552f9cbf88802a79c`, preserving MIT LICENSE. It is an **agent skill** plus a portable vanilla-JS scroll-scrub engine; **not** a React component pack. The current `/cv/world.html` uses SVG storyboard images without commercial video clips. Generating the real frame-locked film requires Monid/Higgsfield or an alternative qualified backend, associated spending and separate user approval.
+
+React Bits remains in `apps/presentation-lab/` as an experiment, not the default CV design.

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900"><defs>
+<pattern id="grid" width="65" height="65" patternUnits="userSpaceOnUse"><path d="M65 0H0V65" fill="none" stroke="#c4cec2" stroke-opacity=".37" stroke-width="1"/></pattern>
+<pattern id="diag" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><path d="M0 0V9" stroke="#889987" stroke-opacity=".2"/></pattern>
+<linearGradient id="paper" x2="0.95" y2="1"><stop stop-color="#f1efe5"/><stop offset="1" stop-color="#dce1d5"/></linearGradient>
+<linearGradient id="glass" x2="0" y2="1"><stop stop-color="#e6e9df"/><stop offset="1" stop-color="#adb9ae"/></linearGradient>
+</defs><rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<g stroke="#7c8c7c" opacity=".26" stroke-width="1"><path d="M620 850L1410 150M660 900L1500 155M700 900L1570 210M550 810L1590 700M670 845L1570 430"/></g>
+<g font-family="monospace" font-size="13" fill="#718579" letter-spacing="4"><text x="695" y="75">HL / DESIGN SYSTEMS</text><text x="1370" y="75">A—04</text><text x="1350" y="850">STUDY / 2026</text></g>
+<g stroke="#728c79" stroke-opacity=".55" fill="none"><circle cx="1170" cy="485" r="330" stroke-dasharray="4 9"/><path d="M1170 145v680M840 485h660"/></g><g transform="translate(10 0)">
+<ellipse cx="1135" cy="755" rx="352" ry="55" fill="#9eaa9a" opacity=".22"/>
+<path d="M740 495L1135 260L1515 448L1118 690Z" fill="#cbd3c5" stroke="#55705f" stroke-width="4"/>
+<path d="M740 495V614L1118 815V690Z" fill="#b5c5b4" stroke="#55705f" stroke-width="4"/>
+<path d="M1118 690L1515 448V585L1118 815Z" fill="#dce2d6" stroke="#55705f" stroke-width="4"/>
+<path d="M770 490L1130 289L1478 452L1120 653Z" fill="url(#diag)" stroke="#819888" stroke-width="2"/>
+<path d="M930 410L1220 557M1112 322L1270 406M850 477L997 553" stroke="#718b79" stroke-width="5"/>
+<g fill="#edece3" stroke="#486e57" stroke-width="4"><circle cx="980" cy="407" r="47"/><circle cx="1240" cy="438" r="47"/><circle cx="1120" cy="560" r="47"/></g>
+<g stroke="#a66d56" stroke-width="8"><path d="M980 407V225"/><path d="M1240 438V203"/><path d="M1120 560V331"/></g>
+<g fill="#f4e9d9" stroke="#946b56" stroke-width="3"><path d="M923 227h114l-30 60h-55Z"/><path d="M1183 204h114l-30 62h-55Z"/><path d="M1063 331h114l-30 62h-55Z"/></g>
+<g stroke="#b27b5c" stroke-width="4" fill="none"><path d="M786 590L906 646L1022 582"/><path d="M796 605l80 41l30 45"/><path d="M1149 705l198-118l115 34"/></g>
+<g fill="#546f5b" font-family="monospace" font-size="16" letter-spacing="3"><text x="1364" y="680">DALI</text><text x="787" y="705">KNX / DSP</text><text x="965" y="124">02 / SYSTEMS</text></g></g>
+<g stroke="#a56b52" stroke-width="3" stroke-linecap="square" opacity=".9"><path d="M1450 130h33m-16-16v33"/><path d="M725 745h33m-16-16v33"/></g></svg>

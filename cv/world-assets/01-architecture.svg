@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900"><defs>
+<pattern id="grid" width="65" height="65" patternUnits="userSpaceOnUse"><path d="M65 0H0V65" fill="none" stroke="#c4cec2" stroke-opacity=".37" stroke-width="1"/></pattern>
+<pattern id="diag" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><path d="M0 0V9" stroke="#889987" stroke-opacity=".2"/></pattern>
+<linearGradient id="paper" x2="0.95" y2="1"><stop stop-color="#f1efe5"/><stop offset="1" stop-color="#dce1d5"/></linearGradient>
+<linearGradient id="glass" x2="0" y2="1"><stop stop-color="#e6e9df"/><stop offset="1" stop-color="#adb9ae"/></linearGradient>
+</defs><rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<g stroke="#7c8c7c" opacity=".26" stroke-width="1"><path d="M620 850L1410 150M660 900L1500 155M700 900L1570 210M550 810L1590 700M670 845L1570 430"/></g>
+<g font-family="monospace" font-size="13" fill="#718579" letter-spacing="4"><text x="695" y="75">HL / DESIGN SYSTEMS</text><text x="1370" y="75">A—04</text><text x="1350" y="850">STUDY / 2026</text></g>
+<g stroke="#728c79" stroke-opacity=".55" fill="none"><circle cx="1170" cy="485" r="330" stroke-dasharray="4 9"/><path d="M1170 145v680M840 485h660"/></g><g transform="translate(105 24)">
+<ellipse cx="1110" cy="735" rx="360" ry="72" fill="#9aa898" opacity=".22"/>
+<path d="M670 590L1080 358L1464 545L1057 789Z" fill="#c4cbbd" stroke="#546c5c" stroke-width="3"/>
+<path d="M700 335L1072 137L1430 305L1057 505Z" fill="#eeeee6" stroke="#425849" stroke-width="4"/>
+<path d="M700 335L1057 505V769L700 586Z" fill="#b6c4b4" stroke="#425849" stroke-width="4"/>
+<path d="M1057 505L1430 305V559L1057 769Z" fill="#d9dfd2" stroke="#425849" stroke-width="4"/>
+<path d="M750 385L1000 518V693L750 563Z" fill="#e1e6dc" stroke="#637e6a" stroke-width="2"/>
+<path d="M790 415L790 581M850 446V612M910 480V642M970 509V671" stroke="#6a8070" stroke-width="3"/>
+<path d="M1110 529L1370 390V550L1110 692Z" fill="url(#glass)" stroke="#6d8872" stroke-width="3"/>
+<path d="M1165 501V658M1220 473V630M1275 444V602M1330 416V575" stroke="#75927d" stroke-width="3"/>
+<path d="M690 607L650 630L1040 830L1090 806" fill="none" stroke="#a57f67" stroke-width="8"/>
+<path d="M700 325L1072 127L1430 296" fill="none" stroke="#b68062" stroke-width="7"/>
+<path d="M1072 127V492M700 335V580M1430 305V552" stroke="#476451" stroke-width="2" stroke-dasharray="8 10"/>
+<g stroke="#9d705b" stroke-width="2" fill="none"><path d="M652 296l420-224l400 187"/><path d="M655 276v32M1072 70v30M1480 250v29"/></g>
+<g font-family="monospace" font-size="16" letter-spacing="3" fill="#526955"><text x="950" y="120">01 / SPACE</text><text x="1160" y="747">DESIGN STUDY</text></g></g>
+<g stroke="#a37556" stroke-width="3" stroke-linecap="square" opacity=".9"><path d="M1450 130h33m-16-16v33"/><path d="M725 745h33m-16-16v33"/></g></svg>

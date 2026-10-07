@@ -4,8 +4,8 @@ const base=process.env.PORTAL_URL||'http://127.0.0.1:4175';
 const browser=await chromium.launch({headless:true});
 const errors=[];
 const pages=[
-  ['/start/','START HERE',['CV WOW','GAZA','RHB STUDIO','Labs']],
-  ['/start/cv.html','CV WOW',['ARRANCAR CV WOW','Systems Command']],
+  ['/start/','START HERE',['CV','GAZA','RHB STUDIO','Labs']],
+  ['/start/cv.html','Currículum',['Atelier','Swiss','Monograph','Scroll World']],
   ['/start/gaza.html','GAZA',['ARRANCAR MISSION CONTROL','ABRIR MATRIX']],
   ['/start/rhb.html','RHB STUDIO',['LOCAL RUNTIME','Showcase público']],
   ['/start/labs.html','Labs',['App Test Center','GIS 3D']]
@@ -20,7 +20,7 @@ for(const [path,titlePart,needles] of pages){
   const state=await page.evaluate(()=>({
     title:document.title,
     text:document.body.textContent,
-    stylesheet:[...document.styleSheets].length,
+    stylesheet:document.querySelectorAll('link[rel="stylesheet"],style').length,
     links:[...document.querySelectorAll('a[href]')].map(a=>a.getAttribute('href'))
   }));
   if(!state.title.includes(titlePart))errors.push(path+' title mismatch: '+state.title);
