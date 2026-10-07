@@ -22,6 +22,9 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 **Quiero revisar la candidatura profesional completa:**  
 [CV · Dossier integrado 2026](https://hectorlobatohernandez.github.io/cv/dossier.html)
 
+**Quiero enviar un CV compatible con ATS:**  
+[CV · ATS / versión imprimible](https://hectorlobatohernandez.github.io/cv/ats.html)
+
 **Quiero comparar direcciones de diseño:**  
 [CV · 4 estudios editoriales](https://hectorlobatohernandez.github.io/cv/)
 
@@ -37,7 +40,7 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 ## Estado
 
 - GitHub Pages: público.
-- CV editorial: dossier integrado + 4 estudios públicos, sin React; ATS/PDF separado pendiente.
+- CV editorial: dossier integrado + CV ATS project-based + 4 estudios públicos, sin React; cronología laboral completa pendiente de reconstrucción verificada.
 - GAZA Mission Control: público / demo read-only.
 - RHB STUDIO: runtime completo local; showcase público separado.
 - Las superficies técnicas mantienen QA automatizado antes de promoción a `main`.
