@@ -39,18 +39,19 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&
 const statusClass=s=>/COMPLETED|READY|ARCHIVED/.test(s)?'completed':/WAIT|PLANNED/.test(s)?'waiting':/FAIL|REJECT/.test(s)?'failed':'reference';
 async function load(){
   try{
-    const [manifest,assets,jobs]=await Promise.all([
+    const [manifest,assets,jobs,media]=await Promise.all([
       fetch(BASE+'manifest.json',{cache:'no-store'}).then(r=>r.json()),
       fetch(BASE+'asset-index.json',{cache:'no-store'}).then(r=>r.json()),
-      fetch(BASE+'generation-jobs.json',{cache:'no-store'}).then(r=>r.json())
+      fetch(BASE+'generation-jobs.json',{cache:'no-store'}).then(r=>r.json()),
+      fetch(BASE+'project-media.json',{cache:'no-store'}).then(r=>r.json())
     ]);
-    const pieces=manifest.pieces||[], gjobs=jobs.jobs||[], boards=assets.generatedKeyframes||[];
-    const archived=boards.filter(x=>x.archiveStatus==='ARCHIVED').length;
+    const pieces=manifest.pieces||[], gjobs=jobs.jobs||[], boards=assets.generatedKeyframes||[], mediaItems=media.items||[];
+    const available=boards.filter(x=>['ARCHIVED','REMOTE_ONLY'].includes(x.archiveStatus)).length;
     document.getElementById('metrics').innerHTML=
       '<div class="metric"><b>'+pieces.length+'</b><small>pieces</small></div>'+
       '<div class="metric"><b>'+gjobs.length+'</b><small>provider jobs</small></div>'+
-      '<div class="metric"><b>'+boards.length+'</b><small>generated boards</small></div>'+
-      '<div class="metric"><b>'+archived+'/'+boards.length+'</b><small>archived binaries</small></div>';
+      '<div class="metric"><b>'+mediaItems.length+'</b><small>public media assets</small></div>'+
+      '<div class="metric"><b>'+available+'/'+boards.length+'</b><small>boards available</small></div>';
     document.getElementById('jobs').className='jobs';
     document.getElementById('jobs').innerHTML=pieces.map(p=>{
       const job=gjobs.find(j=>String(j.id||'').startsWith(p.id))||null;
@@ -63,7 +64,7 @@ async function load(){
         '<div class="links"><a class="btn" href="projects/sound-club-palma/02_storyboards/'+esc(p.id)+'_'+esc(p.slug.toUpperCase().replaceAll('-','_'))+'.md">Storyboard</a></div></article>';
     }).join('');
     document.getElementById('updated').textContent='LOT '+esc(manifest.lot)+' · schema '+esc(manifest.schemaVersion);
-    window.__XXXIA_CONSOLE__={schemaVersion:1,pieces:pieces.length,jobs:gjobs.length,boards:boards.length,archived};
+    window.__XXXIA_CONSOLE__={schemaVersion:2,pieces:pieces.length,jobs:gjobs.length,boards:boards.length,available,media:mediaItems.length};
   }catch(e){
     const el=document.getElementById('jobs');el.className='loading error';el.textContent='Manifest load failed: '+e.message;
     window.__XXXIA_CONSOLE__={schemaVersion:1,error:String(e)};
