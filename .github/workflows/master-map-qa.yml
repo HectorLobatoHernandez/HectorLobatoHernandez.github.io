@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'docs/**'
+      - 'assets/visuals/**'
       - 'cv/CONTENT_INVENTORY.md'
       - 'start/mapa.html'
       - 'start/index.html'
@@ -28,7 +29,14 @@ jobs:
         with:
           node-version: '24'
       - name: Source syntax
-        run: node --check start/tests/master-map-qa.mjs
+        run: |
+          node --check start/tests/master-map-qa.mjs
+          python3 - <<'PY'
+          from xml.etree import ElementTree
+          for p in ['mar-salada-system.svg','gaza-operations-system.svg','rhb-studio-system.svg']:
+              ElementTree.parse('assets/visuals/'+p)
+          print('Three existing visual diagrams contain valid SVG/XML')
+          PY
       - name: Browser installation
         run: |
           npm install --no-save playwright@1.55.0
