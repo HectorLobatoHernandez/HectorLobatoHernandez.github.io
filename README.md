@@ -19,8 +19,11 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 
 ## Arranque rápido
 
-**Quiero ver algo impresionante en 2 minutos:**  
-[CV · 4 diseños editoriales](https://hectorlobatohernandez.github.io/cv/)
+**Quiero revisar la candidatura profesional completa:**  
+[CV · Dossier integrado 2026](https://hectorlobatohernandez.github.io/cv/dossier.html)
+
+**Quiero comparar direcciones de diseño:**  
+[CV · 4 estudios editoriales](https://hectorlobatohernandez.github.io/cv/)
 
 **Quiero ver el proyecto industrial:**  
 [GAZA · Mission Control guiado](https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?guide=1)
@@ -34,7 +37,7 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 ## Estado
 
 - GitHub Pages: público.
-- CV editorial: 4 versiones públicas, sin React.
+- CV editorial: dossier integrado + 4 estudios públicos, sin React; ATS/PDF separado pendiente.
 - GAZA Mission Control: público / demo read-only.
 - RHB STUDIO: runtime completo local; showcase público separado.
 - Las superficies técnicas mantienen QA automatizado antes de promoción a `main`.
