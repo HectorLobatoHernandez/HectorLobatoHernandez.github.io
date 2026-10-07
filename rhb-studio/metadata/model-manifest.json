@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "projectId": "RHB_STUDIO",
+  "browserFormat": "glb/gltf",
+  "rawSourcePolicy": "PRIVATE_SOURCE_ONLY",
+  "models": [
+    {
+      "id": "RHB-MODEL-GATE",
+      "title": "Sliding Gate",
+      "role": "FABRICATION_PROJECT",
+      "status": "PENDING_GLB",
+      "src": null,
+      "poster": "../assets/visuals/rhb-gate-case.svg",
+      "sourceIntent": "verified CAD / fabrication geometry",
+      "default": true
+    },
+    {
+      "id": "RHB-MODEL-TABLE",
+      "title": "Glass Table Base",
+      "role": "FABRICATION_PROJECT",
+      "status": "PENDING_GLB",
+      "src": null,
+      "poster": "../assets/visuals/rhb-table-case.svg",
+      "sourceIntent": "verified fabrication drawing / model"
+    },
+    {
+      "id": "RHB-MODEL-WORKFLOW",
+      "title": "Project Workflow",
+      "role": "SYSTEM_MODEL",
+      "status": "PENDING_GLB",
+      "src": null,
+      "poster": "../assets/visuals/rhb-studio-workflow.svg",
+      "sourceIntent": "optional spatial process model"
+    }
+  ],
+  "promotionGate": [
+    "authoritative source selected",
+    "units/origin checked",
+    "geometry verified",
+    "model simplified",
+    "GLB exported",
+    "visual QA passed"
+  ]
+}
