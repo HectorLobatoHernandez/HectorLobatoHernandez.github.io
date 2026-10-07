@@ -4,8 +4,9 @@
   const MEDIA_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json';
   const STORY_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json';
   const MOTION_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json';
-  const SECTIONS=['overview','audio','lighting','structure','dj','story','docs'];
-  const STACK=['React 18','ReactDOM','GSAP','ScrollTrigger','Scroll World'];
+  const MODEL_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json';
+  const SECTIONS=['overview','audio','lighting','structure','dj','models','gallery','story','docs'];
+  const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits'];
 
   function useScrollProgress(){
     const [p,setP]=useState(0);
@@ -74,6 +75,59 @@
     );
   }
 
+  function LogoLoop({items}){
+    const row=[...items,...items];
+    return E('div',{className:'ms-logo-loop','aria-label':'Tecnologías y fabricantes del proyecto'},
+      E('div',{className:'ms-logo-track'},...row.map((x,i)=>E('span',{className:'ms-logo-mark',key:x+'-'+i},x)))
+    );
+  }
+
+  function BounceGallery({items}){
+    const ref=useRef(null);
+    const cards=(items||[]).filter(Boolean).slice(0,5);
+    useEffect(()=>{
+      if(!ref.current||!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      const els=[...ref.current.querySelectorAll('.ms-bounce-card')];
+      const tween=gsap.fromTo(els,{y:72,opacity:0,scale:.88},{y:0,opacity:1,scale:1,duration:1.1,stagger:.09,ease:'elastic.out(1,.68)',scrollTrigger:{trigger:ref.current,start:'top 78%',once:true}});
+      return()=>tween.kill();
+    },[cards.length]);
+    return E('section',{className:'ms-shell ms-section',id:'gallery'},
+      E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / CURATED GALLERY'),E('h2',{className:'ms-title'},'Boards, plans and details.'),E('p',{className:'ms-subtitle'},'Galería React inspirada en Bounce Cards. Cada pieza conserva su clasificación de evidencia y solo usa activos publicSafe.')),
+      E('div',{className:'ms-bounce-wrap',ref},...cards.map((item,i)=>E('figure',{className:'ms-bounce-card',key:item.id,style:{'--i':i,'--n':cards.length},tabIndex:0},
+        E('img',{src:item.src,alt:item.title,loading:'lazy'}),
+        E('figcaption',null,E('b',null,item.title),E('span',null,item.classification))
+      )))
+    );
+  }
+
+  function ModelViewerSection({manifest,mediaMap}){
+    const models=manifest?.models||[];
+    const [active,setActive]=useState(models.find(x=>x.default)?.id||models[0]?.id||null);
+    useEffect(()=>{if(!active&&models[0])setActive(models[0].id)},[models.length,active]);
+    const model=models.find(x=>x.id===active)||models[0];
+    const poster=model?mediaMap.get(model.posterMediaId):null;
+    const ready=Boolean(model?.status==='APPROVED'&&model?.src);
+    useEffect(()=>{
+      if(!ready||customElements.get('model-viewer'))return;
+      import('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').catch(()=>{});
+    },[ready]);
+    return E('section',{className:'ms-shell ms-section',id:'models'},
+      E('div',{className:'ms-model-head','data-ms-reveal':''},
+        E('div',null,E('p',{className:'ms-kicker'},'06 / INTERACTIVE MODELS'),E('h2',{className:'ms-title'},'SketchUp → verified GLB → web.')),
+        E('p',{className:'ms-subtitle'},'El navegador no sirve los .SKP/.DWG originales. El visor se activa cuando la geometría verificada se exporta a GLB/glTF; hasta entonces muestra el poster técnico correspondiente.')
+      ),
+      E('div',{className:'ms-model-layout'},
+        E('div',{className:'ms-model-stage','data-model-status':model?.status||'NONE'},
+          ready?E('model-viewer',{src:model.src,poster:poster?.src||'',alt:model.title,'camera-controls':'','auto-rotate':'','shadow-intensity':'1','environment-image':'neutral'}):
+            E(React.Fragment,null,poster?.src?E('img',{src:poster.src,alt:poster.title}):null,E('div',{className:'ms-model-pending'},E('strong',null,'MODEL PENDING VERIFIED GLB'),E('span',null,model?.title||'Geometry pending'),E('small',null,model?.sourceIntent||'')))
+        ),
+        E('div',{className:'ms-model-list'},...models.map(x=>E('button',{type:'button',key:x.id,className:'ms-model-option '+(x.id===model?.id?'active':''),onClick:()=>setActive(x.id)},
+          E('small',null,x.role),E('b',null,x.title),E('span',null,x.status)
+        )))
+      )
+    );
+  }
+
   function MotionStage({motion,media}){
     const videoRef=useRef(null);
     const approved=Boolean(motion?.master?.status==='APPROVED'&&motion?.master?.src);
@@ -108,7 +162,7 @@
     return E('section',{className:'ms-section ms-story-wrap',id:'story'},
       E('div',{className:'ms-shell ms-story-shell'},
         E('div',{className:'ms-story-copy'},
-          E('div',{className:'ms-story-intro','data-ms-reveal':''},E('p',{className:'ms-kicker'},'06 / SCROLL WORLD STORY'),E('h2',{className:'ms-title'},'Architecture → systems → as-built.'),E('p',{className:'ms-subtitle'},'Narrativa modular preparada para evolucionar a vídeo frame-locked de XXXIA sin cambiar la arquitectura React de la página.')),
+          E('div',{className:'ms-story-intro','data-ms-reveal':''},E('p',{className:'ms-kicker'},'08 / SCROLL WORLD STORY'),E('h2',{className:'ms-title'},'Architecture → systems → as-built.'),E('p',{className:'ms-subtitle'},'Narrativa modular preparada para evolucionar a vídeo frame-locked de XXXIA sin cambiar la arquitectura React de la página.')),
           ...scenes.map((s,i)=>E('article',{key:s.mediaId+'-'+i,className:'ms-story-step '+(i===active?'active':''),'data-ms-story-step':i},
             E('span',{className:'ms-kicker'},s.kicker),E('h3',null,s.title),E('p',null,s.body),
             E('div',{className:'ms-story-tags'},...(s.tags||[]).map(t=>E('span',{key:t},t)))
@@ -127,13 +181,14 @@
   }
 
   function App(){
-    const [media,setMedia]=useState(null),[story,setStory]=useState(null),[motion,setMotion]=useState(null),[error,setError]=useState('');
+    const [media,setMedia]=useState(null),[story,setStory]=useState(null),[motion,setMotion]=useState(null),[models,setModels]=useState(null),[error,setError]=useState('');
     const progress=useScrollProgress();const active=useActiveSection(Boolean(media&&story));
     useEffect(()=>{Promise.all([
       fetch(MEDIA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('media '+r.status);return r.json()}),
       fetch(STORY_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('story '+r.status);return r.json()}),
-      fetch(MOTION_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
-    ]).then(([m,s,mo])=>{setMedia(m);setStory(s);setMotion(mo)}).catch(e=>setError(String(e)))},[]);
+      fetch(MOTION_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch(MODEL_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+    ]).then(([m,s,mo,md])=>{setMedia(m);setStory(s);setMotion(mo);setModels(md)}).catch(e=>setError(String(e)))},[]);
     useMotion(Boolean(media&&story));
 
     const mediaMap=useMemo(()=>new Map((media?.items||[]).filter(x=>x.publicSafe).map(x=>[x.id,x])),[media]);
@@ -143,14 +198,15 @@
     const hero=mediaMap.get('SC-BOARD-01'), audioPlan=mediaMap.get('SC-PLAN-02'), light=mediaMap.get('SC-BOARD-05'),
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
-    window.__MAR_SALADA_CASE__={version:'2.1',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null};
+    const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
+    window.__MAR_SALADA_CASE__={version:'2.2',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
       E('header',{className:'ms-topbar'},E('div',{className:'ms-topbar-in'},
         E('a',{className:'ms-brand',href:'../index.html#projects'},'HL',E('small',null,'Systems / Architecture portfolio')),
         E('div',{className:'ms-stack'},...STACK.map(x=>E('span',{key:x},x))),
-        E('nav',{className:'ms-toplinks'},E('a',{href:'#docs'},'Docs'),E('a',{href:'sound-club-visuals.html'},'Visuals'),E('a',{href:'../xxxia-studio/'},'XXXIA'))
+        E('nav',{className:'ms-toplinks'},E('a',{href:'#models'},'Models'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
       )),
       E(ChapterRail,{active}),
       E('main',{className:'ms-page'},
@@ -194,7 +250,8 @@
             E(Card,{label:'AMPLIFICATION',title:'2 × Lynx GTX 14K DSP',body:'Subgraves interiores con procesamiento dedicado.'}),
             E(Card,{label:'EXTERIOR',title:'1 × Lynx GTX 14K DSP',body:'Sistema exterior independiente con tops y subs compactos.'})
           ),
-          E(Figure,{item:system,contain:true,caption:'GENERATED SYSTEM VIEW · AV / control architecture',className:'ms-wide-figure'})
+          E(Figure,{item:system,contain:true,caption:'GENERATED SYSTEM VIEW · AV / control architecture',className:'ms-wide-figure'}),
+          E(LogoLoop,{items:['ECLER','LYNX PRO AUDIO','TSI','GIRA','KNX','DALI']})
         ),
 
         E('section',{className:'ms-shell ms-section',id:'lighting'},
@@ -241,10 +298,12 @@
           )
         ),
 
+        E(ModelViewerSection,{manifest:models,mediaMap}),
+        E(BounceGallery,{items:bounceItems}),
         E(Story,{story,mediaMap,motion}),
 
         E('section',{className:'ms-shell ms-section',id:'docs'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'09 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
           E('div',{className:'ms-doc-grid'},
             E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated public technical summary →')),
             E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'CAD ingest audit'),E('span',null,'Hashes, duplicates and master-promotion gate →')),
@@ -258,7 +317,7 @@
             E(Card,{label:'NEXT',title:'Verified geometry promotion',body:'DWG + SKP → alignment / units / origin QA → verified master → web model / exploded / frame-locked sequence.'})
           )
         ),
-        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.1 · SC08 MOTION READY'))
+        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.2 · MODELS + BOUNCE GALLERY'))
       )
     );
   }
