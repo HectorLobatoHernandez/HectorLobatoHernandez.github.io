@@ -19,3 +19,6 @@ For the strategy twin, the reference-video interaction grammar takes precedence 
 
 ## Other repo areas
 Do not apply GAZA branding or simulation assumptions to unrelated projects.
+
+## CV / editorial architecture
+When changing `cv/**`, first read `skills/cv-editorial-architecture/SKILL.md`; when editing `cv/world.html` or its scroll behavior, read `skills/scroll-world/SKILL.md` and use the vendored MIT engine. Keep the previous React Bits CV available but do not reintroduce its neon/glitch aesthetic as the default. Never start paid image/video rendering without user approval.
