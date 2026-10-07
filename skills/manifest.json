@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.1",
+  "version": "2026-10-07.2",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -84,6 +84,13 @@
       "license": "MIT",
       "requires_paid_video_provider_for_cinematic": true,
       "free_svg_storyboard_available": true
+    },
+    {
+      "name": "xxxia-visual-production",
+      "source": "local Hector portfolio",
+      "path": "skills/xxxia-visual-production/SKILL.md",
+      "license": "project-internal",
+      "focus": "project references to generated stills/motion with provenance, provider adapters and GitHub archive"
     }
   ]
 }

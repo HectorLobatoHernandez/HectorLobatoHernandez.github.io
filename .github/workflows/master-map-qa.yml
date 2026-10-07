@@ -33,7 +33,7 @@ jobs:
           node --check start/tests/master-map-qa.mjs
           python3 - <<'PY'
           from xml.etree import ElementTree
-          for p in ['mar-salada-system.svg','gaza-operations-system.svg','rhb-studio-system.svg']:
+          for p in ['sound-club-system.svg','gaza-operations-system.svg','rhb-studio-system.svg']:
               ElementTree.parse('assets/visuals/'+p)
           print('Three existing visual diagrams contain valid SVG/XML')
           PY

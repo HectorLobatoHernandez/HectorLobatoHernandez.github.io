@@ -30,7 +30,7 @@ flowchart TD
 1. Portada editorial (Atelier + jerarquía Swiss).
 2. Perfil profesional y trayectoria. Revisar fechas, roles, empleadores y formación antes de publicar afirmaciones nuevas.
 3. Competencias: integración AV/DSP, KNX/DALI, redes/IT-OT, CAD y fabricación, desarrollo web/GIS, automatización y agentes.
-4. Archivo de proyectos: **Mar Salada, GAZA, RHB STUDIO, Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO**, con ficha fuente.
+4. Archivo de proyectos: **Sound Club, Palma, GAZA, RHB STUDIO, Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO**, con ficha fuente.
 5. Storytelling por scroll: imágenes existentes de **cada proyecto**, planos y diagramas reales etiquetados. No sustituir fotografías pendientes por imágenes fotorrealistas ficticias.
 6. Método: levantamiento → proyecto → ejecución → commissioning → documentación.
 7. Contacto y un CV imprimible ATS (pendiente; no confundir una web narrativa con un CV ATS).

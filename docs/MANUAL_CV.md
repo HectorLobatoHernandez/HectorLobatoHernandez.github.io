@@ -6,7 +6,7 @@
 
 1. Para una reunión o pantalla compartida, abrir **Presentation Route**. Para lectura detenida, abrir el **Dossier 2026**. Usar **Atelier**, **Swiss**, **Monograph** y **Scroll World** para comparar direcciones visuales.
 2. Revisar el perfil y las competencias; los botones de proyecto conducen a fichas documentadas.
-3. Abrir los casos Mar Salada / GAZA / RHB STUDIO y, para otros casos, volver a [proyectos de la portada](https://hectorlobatohernandez.github.io/#projects).
+3. Abrir los casos Sound Club, Palma / GAZA / RHB STUDIO y, para otros casos, volver a [proyectos de la portada](https://hectorlobatohernandez.github.io/#projects).
 4. Para candidatura y exportación PDF, abrir `cv/ats.html` y usar imprimir/guardar PDF. Para copiar a portales ATS, usar `cv/ats.txt`.
 
 ## 2. Lectura por scroll
@@ -30,7 +30,7 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 ## 6. Dossier canónico
 
-`cv/dossier.html` es la síntesis profesional recomendada. Conserva siete proyectos, destaca Mar Salada / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.
+`cv/dossier.html` es la síntesis profesional recomendada. Conserva siete proyectos, destaca Sound Club, Palma / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.
 
 ## 7. CV ATS
 
@@ -38,4 +38,4 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 ## 8. Presentation Route
 
-`cv/present.html` es el punto de entrada para una presentación breve. Orden recomendado: Dossier → Mar Salada → GAZA Mission Control/Systems → RHB STUDIO → ATS/GitHub. Expone `window.__CV_PRESENT__` y no añade hechos nuevos: sólo organiza evidencias existentes.
+`cv/present.html` es el punto de entrada para una presentación breve. Orden recomendado: Dossier → Sound Club, Palma → GAZA Mission Control/Systems → RHB STUDIO → ATS/GitHub. Expone `window.__CV_PRESENT__` y no añade hechos nuevos: sólo organiza evidencias existentes.

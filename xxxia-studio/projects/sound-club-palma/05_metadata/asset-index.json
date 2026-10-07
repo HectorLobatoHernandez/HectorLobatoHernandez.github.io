@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "project": "sound-club-palma",
+  "sourceGroups": [
+    "architecture-night",
+    "interior-atmosphere",
+    "lighting-control",
+    "audio-integration",
+    "dj-booth-concept",
+    "site-video"
+  ],
+  "generatedKeyframes": [
+    {
+      "piece": "SC01",
+      "path": "04_outputs/boards/SC01_building_overview_v001.webp",
+      "classification": "GENERATED_CONCEPT"
+    },
+    {
+      "piece": "SC02",
+      "path": "04_outputs/boards/SC02_building_exploded_v001.webp",
+      "classification": "GENERATED_CONCEPT"
+    },
+    {
+      "piece": "SC04",
+      "path": "04_outputs/boards/SC04_dj_booth_exploded_v001.webp",
+      "classification": "GENERATED_CONCEPT"
+    },
+    {
+      "piece": "SC05",
+      "path": "04_outputs/boards/SC05_lighting_2300k_v001.webp",
+      "classification": "GENERATED_CONCEPT"
+    }
+  ]
+}

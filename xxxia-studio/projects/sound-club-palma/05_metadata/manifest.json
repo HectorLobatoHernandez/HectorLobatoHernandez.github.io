@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "project": "sound-club-palma",
+  "publicTitle": "Sound Club, Palma",
+  "location": "Puerto Deportivo de Palma",
+  "studio": "XXXIA STUDIO",
+  "lot": "LOT_01",
+  "visualLanguage": "architectural-premium-warm-2300k",
+  "provider": "adapter-not-bound",
+  "archivePolicy": "brief+prompt+storyboard+output+provenance",
+  "pieces": [
+    {
+      "id": "SC01",
+      "slug": "building-overview",
+      "durationSec": 20,
+      "status": "KEYFRAME_GENERATED"
+    },
+    {
+      "id": "SC02",
+      "slug": "building-exploded",
+      "durationSec": 28,
+      "status": "KEYFRAME_GENERATED"
+    },
+    {
+      "id": "SC03",
+      "slug": "building-to-plan",
+      "durationSec": 22,
+      "status": "BRIEF_READY"
+    },
+    {
+      "id": "SC04",
+      "slug": "dj-booth-exploded",
+      "durationSec": 26,
+      "status": "KEYFRAME_GENERATED"
+    },
+    {
+      "id": "SC05",
+      "slug": "lighting-2300k-system",
+      "durationSec": 24,
+      "status": "KEYFRAME_GENERATED"
+    },
+    {
+      "id": "SC06",
+      "slug": "programming-control",
+      "durationSec": 20,
+      "status": "BRIEF_READY"
+    },
+    {
+      "id": "SC07",
+      "slug": "decoupling-detail",
+      "durationSec": 18,
+      "status": "WAITING_REFERENCE"
+    }
+  ]
+}
