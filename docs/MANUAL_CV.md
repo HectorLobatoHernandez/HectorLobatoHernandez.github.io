@@ -1,13 +1,13 @@
 # Manual de usuario · CV editorial
 
-**Acceso:** [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
+**Acceso:** [Dossier recomendado](https://hectorlobatohernandez.github.io/cv/dossier.html) · [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
 
 ## 1. Para una persona que visita por primera vez
 
-1. Abrir la portada y escoger **Atelier**, **Swiss**, **Monograph** o **Scroll World**.
+1. Abrir el **Dossier 2026** para la lectura profesional completa. Usar **Atelier**, **Swiss**, **Monograph** y **Scroll World** para comparar direcciones visuales.
 2. Revisar el perfil y las competencias; los botones de proyecto conducen a fichas documentadas.
 3. Abrir los casos Mar Salada / GAZA / RHB STUDIO y, para otros casos, volver a [proyectos de la portada](https://hectorlobatohernandez.github.io/#projects).
-4. Usar el correo visible para contactar. La versión interactiva no sustituye todavía un CV ATS/PDF.
+4. Usar el correo visible para contactar. El dossier incorpora CSS de impresión, pero no se etiqueta como ATS; el CV ATS/PDF se valida por separado.
 
 ## 2. Lectura por scroll
 
@@ -27,3 +27,7 @@ Consultar `index.html` y `projects/*.html` antes de modificar fechas, títulos, 
 ## 5. Incidencias
 
 Si el movimiento molesta, activar la opción del sistema **reducir animaciones**. Si falla una ilustración o estilo remoto, abrir la ficha de proyecto clásica. Un enlace roto se reporta en GitHub como issue con URL y captura.
+
+## 6. Dossier canónico
+
+`cv/dossier.html` es la síntesis profesional recomendada. Conserva siete proyectos, destaca Mar Salada / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.

@@ -1,6 +1,6 @@
 # Inventario de contenido del CV · fuente protegida
 
-**Fecha de inventario:** 2026-10-07. Este documento es la hoja de control para una futura portada editorial final con scroll tipo producto (Apple-like). Las variantes actuales de `/cv/` son experimentos **de forma**, no reemplazan la documentación profesional.
+**Fecha de inventario:** 2026-10-07. Este documento es la hoja de control del dossier editorial y del futuro CV ATS/PDF. `cv/dossier.html` es ya la síntesis web canónica; las variantes de `/cv/` siguen siendo experimentos **de forma** y las fichas de proyecto continúan siendo la fuente profesional.
 
 ## Datos de presentación existentes
 
@@ -56,3 +56,11 @@ Cada ficha final debe conservar:
 - La experiencia no oculta texto detrás de un canvas o secuencia audiovisual.
 - Las tipografías tienen fallback; recursos gráficos con alt y licencia.
 - La versión web y un futuro CV ATS imprimible se validan por separado.
+
+## Estado de implementación
+
+- `cv/dossier.html`: implementado como síntesis web canónica.
+- Featured con visual documentado: Mar Salada, GAZA, RHB STUDIO.
+- Archivo enlazado: Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO.
+- Scroll World: laboratorio narrativo separado.
+- ATS/PDF: pendiente como entregable específico y validación factual final.
