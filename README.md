@@ -8,7 +8,7 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 
 | Sector | Qué ver | Arranque directo |
 | --- | --- | --- |
-| **CV / Arquitectura** | 4 propuestas editoriales · tipografía · programación · Scroll World | [Abrir portada CV](https://hectorlobatohernandez.github.io/start/cv.html) |
+| **CV / Arquitectura** | Presentation Route · dossier · ATS · 4 estudios editoriales | [Presentar en 5 min](https://hectorlobatohernandez.github.io/cv/present.html) |
 | **GAZA** | Mission Control · Plant 3D · GIS · Territory · Weather · IT/OT | [Abrir portada GAZA](https://hectorlobatohernandez.github.io/start/gaza.html) |
 | **RHB STUDIO** | Plataforma local-first de ingeniería, CAD y agentes | [Abrir portada RHB](https://hectorlobatohernandez.github.io/start/rhb.html) |
 | **Labs** | App Test Center y superficies técnicas | [Abrir Labs](https://hectorlobatohernandez.github.io/start/labs.html) |
@@ -18,6 +18,9 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 [**Mapa visual completo de todos los productos**](https://hectorlobatohernandez.github.io/start/mapa.html) · [Manual CV](docs/MANUAL_CV.md) · [Manual GAZA](docs/MANUAL_GAZA.md) · [Manual RHB STUDIO](docs/MANUAL_RHB_STUDIO.md) · [Mapa de implementación](docs/MAPA_MAESTRO.md)
 
 ## Arranque rápido
+
+**Quiero presentarlo ahora en 5 minutos:**  
+[CV · Presentation Route](https://hectorlobatohernandez.github.io/cv/present.html)
 
 **Quiero revisar la candidatura profesional completa:**  
 [CV · Dossier integrado 2026](https://hectorlobatohernandez.github.io/cv/dossier.html)
@@ -40,7 +43,7 @@ Este repositorio publica el portfolio técnico y los demostradores mediante GitH
 ## Estado
 
 - GitHub Pages: público.
-- CV editorial: dossier integrado + CV ATS project-based + 4 estudios públicos, sin React; cronología laboral completa pendiente de reconstrucción verificada.
+- CV: Presentation Route + dossier integrado + CV ATS project-based + 4 estudios públicos; QA automatizado. Cronología laboral completa pendiente de reconstrucción verificada.
 - GAZA Mission Control: público / demo read-only.
 - RHB STUDIO: runtime completo local; showcase público separado.
 - Las superficies técnicas mantienen QA automatizado antes de promoción a `main`.

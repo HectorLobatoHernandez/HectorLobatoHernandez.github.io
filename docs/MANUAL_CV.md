@@ -1,10 +1,10 @@
 # Manual de usuario · CV editorial
 
-**Acceso:** [Dossier recomendado](https://hectorlobatohernandez.github.io/cv/dossier.html) · [CV ATS](https://hectorlobatohernandez.github.io/cv/ats.html) · [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
+**Acceso:** [Presentar en 5 min](https://hectorlobatohernandez.github.io/cv/present.html) · [Dossier recomendado](https://hectorlobatohernandez.github.io/cv/dossier.html) · [CV ATS](https://hectorlobatohernandez.github.io/cv/ats.html) · [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
 
 ## 1. Para una persona que visita por primera vez
 
-1. Abrir el **Dossier 2026** para la lectura profesional completa. Usar **Atelier**, **Swiss**, **Monograph** y **Scroll World** para comparar direcciones visuales.
+1. Para una reunión o pantalla compartida, abrir **Presentation Route**. Para lectura detenida, abrir el **Dossier 2026**. Usar **Atelier**, **Swiss**, **Monograph** y **Scroll World** para comparar direcciones visuales.
 2. Revisar el perfil y las competencias; los botones de proyecto conducen a fichas documentadas.
 3. Abrir los casos Mar Salada / GAZA / RHB STUDIO y, para otros casos, volver a [proyectos de la portada](https://hectorlobatohernandez.github.io/#projects).
 4. Para candidatura y exportación PDF, abrir `cv/ats.html` y usar imprimir/guardar PDF. Para copiar a portales ATS, usar `cv/ats.txt`.
@@ -35,3 +35,7 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 ## 7. CV ATS
 
 `cv/ats.html` es una versión de una columna, semántica y preparada para imprimir/guardar en PDF. `cv/ats.txt` contiene el mismo núcleo en texto plano. La versión actual es **project-based** porque la cronología laboral completa por empresa/cargo no está todavía verificada; no inventar esas fechas para rellenar el CV.
+
+## 8. Presentation Route
+
+`cv/present.html` es el punto de entrada para una presentación breve. Orden recomendado: Dossier → Mar Salada → GAZA Mission Control/Systems → RHB STUDIO → ATS/GitHub. Expone `window.__CV_PRESENT__` y no añade hechos nuevos: sólo organiza evidencias existentes.
