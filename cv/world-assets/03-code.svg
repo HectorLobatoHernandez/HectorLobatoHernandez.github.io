@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900"><defs>
+<pattern id="grid" width="65" height="65" patternUnits="userSpaceOnUse"><path d="M65 0H0V65" fill="none" stroke="#c4cec2" stroke-opacity=".37" stroke-width="1"/></pattern>
+<pattern id="diag" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><path d="M0 0V9" stroke="#889987" stroke-opacity=".2"/></pattern>
+<linearGradient id="paper" x2="0.95" y2="1"><stop stop-color="#f1efe5"/><stop offset="1" stop-color="#dce1d5"/></linearGradient>
+<linearGradient id="glass" x2="0" y2="1"><stop stop-color="#e6e9df"/><stop offset="1" stop-color="#adb9ae"/></linearGradient>
+</defs><rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<g stroke="#7c8c7c" opacity=".26" stroke-width="1"><path d="M620 850L1410 150M660 900L1500 155M700 900L1570 210M550 810L1590 700M670 845L1570 430"/></g>
+<g font-family="monospace" font-size="13" fill="#718579" letter-spacing="4"><text x="695" y="75">HL / DESIGN SYSTEMS</text><text x="1370" y="75">A—04</text><text x="1350" y="850">STUDY / 2026</text></g>
+<g stroke="#728c79" stroke-opacity=".55" fill="none"><circle cx="1170" cy="485" r="330" stroke-dasharray="4 9"/><path d="M1170 145v680M840 485h660"/></g><g transform="translate(0 0)">
+<ellipse cx="1140" cy="765" rx="380" ry="54" fill="#a5b2a4" opacity=".2"/>
+<path d="M757 509L1142 293L1510 491L1132 714Z" fill="#c6d1c5" stroke="#536e5c" stroke-width="3"/>
+<path d="M757 509V665L1132 859V714Z" fill="#b8c6b6" stroke="#536e5c" stroke-width="3"/>
+<path d="M1132 714L1510 491V635L1132 859Z" fill="#dce4d9" stroke="#536e5c" stroke-width="3"/>
+<path d="M822 516L1152 331L1436 484L1114 677Z" fill="#eaece3" stroke="#68816d" stroke-width="2"/>
+<g fill="#c3d1c7" stroke="#6c8974" stroke-width="3"><rect x="836" y="464" width="180" height="122" rx="2" transform="skewY(27)"/><rect x="1194" y="-90" width="175" height="158" transform="skewY(-29) translate(0 780)"/></g>
+<path d="M890 480L1045 563L1141 509L1265 581L1391 509" fill="none" stroke="#af7860" stroke-width="8"/>
+<g fill="#466e53"><circle cx="890" cy="480" r="11"/><circle cx="1045" cy="563" r="11"/><circle cx="1141" cy="509" r="11"/><circle cx="1265" cy="581" r="11"/><circle cx="1391" cy="509" r="11"/></g>
+<g stroke="#7e987f" stroke-width="1.5" fill="none"><path d="M900 541h50M902 553h95M902 565h73M902 577h110"/><path d="M1090 384h245M1090 404h182M1090 424h222"/></g>
+<g font-family="monospace" font-size="18" fill="#526f5c" letter-spacing="3"><text x="1080" y="200">03 / CODE + LOGIC</text><text x="1175" y="791">INTEGRATION</text></g></g>
+<g stroke="#b27a5c" stroke-width="3" stroke-linecap="square" opacity=".9"><path d="M1450 130h33m-16-16v33"/><path d="M725 745h33m-16-16v33"/></g></svg>
