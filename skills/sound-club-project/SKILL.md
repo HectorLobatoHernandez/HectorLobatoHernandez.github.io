@@ -87,6 +87,8 @@ A generated diagram must remain **GENERATED_DIAGRAM / NOT AS-BUILT** until repla
 - Project skill: `skills/sound-club-project/`
 - XXXIA project: `xxxia-studio/projects/sound-club-palma/`
 - Media registry: `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
+- Visual story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
+- Scroll-story runtime: `assets/js/sound-club-story.js`
 
 ## Visual-production workflow
 
@@ -105,15 +107,26 @@ verified references
 
 ## Current React Visuals deliverables
 
-The visual lab must expose:
+The public visual system currently exposes **12 classified assets**:
 
-1. Project overview.
-2. Zoning / lighting diagram.
-3. Audio distribution diagram.
-4. KNX / DALI control diagram.
-5. AV / control system architecture.
-6. Documented project video.
-7. XXXIA exploded / motion production status.
+1. 4 × GENERATED_CONCEPT boards:
+   - SC01 architecture overview.
+   - SC02 building exploded.
+   - SC04 DJ booth exploded.
+   - SC05 lighting / 2300K atmosphere.
+2. 3 × GENERATED_DIAGRAM schematic plans:
+   - zoning / lighting.
+   - audio distribution.
+   - KNX / DALI control.
+3. 1 × GENERATED_DIAGRAM AV / control system architecture.
+4. 3 × DOCUMENTED_REFERENCE project videos:
+   - general project footage.
+   - control / programming walkthrough.
+   - final interior atmosphere.
+5. 1 × GENERATED_MOTION slot for SC01, currently WAITING.
+
+The public case also contains a metadata-driven **7-scene React scroll story**:
+architecture → exploded building → plan logic → DJ booth → 2300K lighting → programming → final environment.
 
 ## Rules for agents
 
