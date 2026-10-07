@@ -1,32 +1,41 @@
-name: Sound Club React Visuals QA
+name: MAR SALADA React Case QA
 on:
   pull_request:
     paths:
+      - 'projects/mar-salada.html'
       - 'projects/sound-club-palma.html'
       - 'projects/sound-club-visuals.html'
       - 'assets/visuals/sound-club-*.svg'
+      - 'assets/visuals/mar-salada-*.svg'
+      - 'assets/css/mar-salada-case.css'
+      - 'assets/js/mar-salada-case.js'
       - 'assets/css/sound-club-react-visuals.css'
       - 'assets/js/sound-club-react-visuals.js'
-      - 'assets/css/sound-club-story.css'
-      - 'assets/js/sound-club-story.js'
       - 'skills/mar-salada-project/**'
+      - 'skills/mar-salada-react-scroll/**'
       - 'skills/react-visuals/**'
       - 'skills/manifest.json'
       - 'xxxia-studio/projects/sound-club-palma/**'
+      - 'xxxia-studio/tests/sound-club-visuals-qa.mjs'
       - '.github/workflows/sound-club-visuals-qa.yml'
   push:
     branches: [main]
     paths:
+      - 'projects/mar-salada.html'
       - 'projects/sound-club-palma.html'
       - 'projects/sound-club-visuals.html'
       - 'assets/visuals/sound-club-*.svg'
+      - 'assets/visuals/mar-salada-*.svg'
+      - 'assets/css/mar-salada-case.css'
+      - 'assets/js/mar-salada-case.js'
       - 'assets/css/sound-club-react-visuals.css'
       - 'assets/js/sound-club-react-visuals.js'
-      - 'assets/css/sound-club-story.css'
-      - 'assets/js/sound-club-story.js'
       - 'skills/mar-salada-project/**'
+      - 'skills/mar-salada-react-scroll/**'
       - 'skills/react-visuals/**'
+      - 'skills/manifest.json'
       - 'xxxia-studio/projects/sound-club-palma/**'
+      - 'xxxia-studio/tests/sound-club-visuals-qa.mjs'
 jobs:
   visual-qa:
     runs-on: ubuntu-latest
@@ -35,29 +44,35 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Validate registry and SVG XML
+      - name: Validate registry, story, SVG and skills
         run: |
           python3 - <<'PY'
           import json
           from xml.etree import ElementTree
           m=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json'))
-          assert len(m['items']) == 8
+          assert m['projectId']=='MAR_SALADA_CDM'
+          assert m['publicTitle']=='MAR SALADA — CLUB DEL MAR PALMA'
+          assert len(m['items']) == 10
           assert sum(1 for x in m['items'] if x['kind']=='BOARD') == 4
           assert sum(1 for x in m['items'] if x['kind']=='PLAN') == 3
+          assert sum(1 for x in m['items'] if x['kind']=='DETAIL') == 2
           assert sum(1 for x in m['items'] if x['kind']=='VIDEO') == 0
+          assert all(x.get('publicSafe') for x in m['items'])
           assert len({x['id'] for x in m['items']}) == len(m['items'])
           s=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json'))
-          assert len(s['scenes']) == 8
+          assert s['schemaVersion'] == 2
+          assert len(s['scenes']) == 10
           ids={x['id'] for x in m['items']}
           assert all(x['mediaId'] in ids for x in s['scenes'])
-          assert not any(x['kind']=='VIDEO' for x in m['items'])
-          for p in ['sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg','sound-club-system.svg']:
+          for p in [
+            'sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg',
+            'sound-club-system.svg','mar-salada-suspension-detail.svg','mar-salada-dj-booth-plan.svg'
+          ]:
               ElementTree.parse('assets/visuals/'+p)
           skills=json.load(open('skills/manifest.json'))
           names={x['name'] for x in skills['skills']}
-          assert 'mar-salada-project' in names
-          assert 'react-visuals' in names
-          print('Registry / SVG / skills source checks pass')
+          assert {'mar-salada-project','mar-salada-react-scroll','react-visuals','scroll-world'} <= names
+          print('MAR SALADA registry / story / SVG / skills checks pass')
           PY
       - name: Install Playwright
         run: |
@@ -65,16 +80,16 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Start preview
         run: |
-          python3 -m http.server 4194 --directory . > /tmp/sound-club-http.log 2>&1 &
-          for i in {1..20}; do curl -fsS http://127.0.0.1:4194/projects/sound-club-visuals.html >/dev/null && exit 0; sleep 1; done
-          cat /tmp/sound-club-http.log
+          python3 -m http.server 4194 --directory . > /tmp/mar-salada-http.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4194/projects/mar-salada.html >/dev/null && exit 0; sleep 1; done
+          cat /tmp/mar-salada-http.log
           exit 1
-      - name: Run React Visuals QA
+      - name: Run MAR SALADA React QA
         run: node xxxia-studio/tests/sound-club-visuals-qa.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: sound-club-react-visuals
+          name: mar-salada-react-case
           path: .qa/sound-club-visuals/
           if-no-files-found: ignore
           retention-days: 14
