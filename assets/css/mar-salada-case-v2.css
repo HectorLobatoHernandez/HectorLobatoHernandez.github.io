@@ -32,3 +32,61 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
 .ms-story-frame.plan video{object-fit:contain}
 .ms-story-frame[data-motion-status="APPROVED"]:after{content:"SC08 MOTION";position:absolute;right:12px;top:12px;padding:6px 8px;border:1px solid rgba(214,164,103,.34);background:rgba(7,16,14,.72);color:var(--gold2);font:700 7px var(--mono);letter-spacing:.12em;backdrop-filter:blur(8px)}
 @media(prefers-reduced-motion:reduce){.ms-story-frame video{display:none}}
+
+
+/* React Bits portfolio layer: Logo Loop / Model Viewer / Bounce Cards */
+.ms-logo-loop{position:relative;overflow:hidden;margin-top:24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ms-logo-track{display:flex;width:max-content;gap:10px;padding:12px 0;animation:ms-logo-loop 28s linear infinite}
+.ms-logo-mark{display:inline-flex;align-items:center;justify-content:center;min-width:150px;padding:8px 16px;border-right:1px solid var(--line);color:#9da9a1;font:700 9px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+@keyframes ms-logo-loop{to{transform:translateX(-50%)}}
+
+.ms-model-head{display:grid;grid-template-columns:1fr .9fr;gap:64px;align-items:end}
+.ms-model-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:18px;margin-top:34px}
+.ms-model-stage{position:relative;min-height:610px;border:1px solid var(--line);background:
+  radial-gradient(circle at 50% 35%,rgba(214,164,103,.06),transparent 28%),
+  linear-gradient(180deg,#0a120f,#070d0b);overflow:hidden}
+.ms-model-stage>img,.ms-model-stage model-viewer{width:100%;height:100%;min-height:610px;display:block;object-fit:cover}
+.ms-model-stage>img{filter:saturate(.74) brightness(.56)}
+.ms-model-pending{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;background:radial-gradient(circle at 50% 48%,transparent 0 20%,rgba(7,16,14,.74) 72%)}
+.ms-model-pending:before{content:"";width:160px;height:160px;border:1px solid rgba(214,164,103,.32);transform:rotate(45deg);position:absolute;opacity:.45}
+.ms-model-pending strong,.ms-model-pending span,.ms-model-pending small{position:relative;z-index:2}
+.ms-model-pending strong{font:700 9px var(--mono);letter-spacing:.15em;color:var(--gold)}
+.ms-model-pending span{font:400 clamp(30px,4vw,58px)/1 var(--display);margin:16px 0 9px;max-width:13ch}
+.ms-model-pending small{color:#78867e;max-width:44ch}
+.ms-model-list{display:grid;align-content:start;border-top:1px solid var(--line)}
+.ms-model-option{appearance:none;text-align:left;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.01);color:var(--ink);padding:20px;cursor:pointer;transition:.22s}
+.ms-model-option:hover,.ms-model-option.active{background:rgba(214,164,103,.06)}
+.ms-model-option.active{border-left-color:var(--gold)}
+.ms-model-option small{display:block;color:var(--gold);font:700 8px var(--mono);letter-spacing:.1em;margin-bottom:8px}
+.ms-model-option b{display:block;font:500 19px/1.05 var(--display)}
+.ms-model-option span{display:block;margin-top:10px;color:#718078;font:600 8px var(--mono);letter-spacing:.07em}
+
+.ms-bounce-wrap{position:relative;min-height:650px;margin-top:38px;display:grid;place-items:center;perspective:1200px}
+.ms-bounce-card{--offset:calc((var(--i) - (var(--n) - 1)/2) * 78px);--rot:calc((var(--i) - (var(--n) - 1)/2) * 4.5deg);
+  position:absolute;width:min(470px,38vw);aspect-ratio:4/3;margin:0;border:1px solid var(--line);background:#0a120f;overflow:hidden;
+  transform:translateX(var(--offset)) rotate(var(--rot));transform-origin:50% 115%;box-shadow:0 28px 80px rgba(0,0,0,.28);
+  transition:transform .32s cubic-bezier(.22,1,.36,1),border-color .25s,filter .25s;cursor:pointer}
+.ms-bounce-card:hover,.ms-bounce-card:focus{z-index:20;transform:translateX(var(--offset)) translateY(-24px) rotate(0deg) scale(1.04);border-color:rgba(214,164,103,.52);outline:none}
+.ms-bounce-card img{width:100%;height:100%;object-fit:cover;display:block}
+.ms-bounce-card figcaption{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:12px;padding:15px;background:linear-gradient(0deg,rgba(4,8,7,.94),rgba(4,8,7,.12));font:600 8px var(--mono);letter-spacing:.05em}
+.ms-bounce-card figcaption span{color:#8c9891;text-align:right}
+
+@media(max-width:1050px){
+  .ms-model-head,.ms-model-layout{grid-template-columns:1fr}
+  .ms-model-stage,.ms-model-stage>img,.ms-model-stage model-viewer{min-height:520px}
+  .ms-model-list{grid-template-columns:1fr 1fr}
+  .ms-bounce-wrap{min-height:560px}
+  .ms-bounce-card{width:min(500px,58vw)}
+}
+@media(max-width:680px){
+  .ms-model-list{grid-template-columns:1fr}
+  .ms-model-stage,.ms-model-stage>img,.ms-model-stage model-viewer{min-height:420px}
+  .ms-bounce-wrap{display:grid;grid-template-columns:1fr;gap:12px;min-height:auto;place-items:stretch}
+  .ms-bounce-card{position:relative;width:100%;transform:none!important;aspect-ratio:4/3}
+  .ms-bounce-card:hover,.ms-bounce-card:focus{transform:translateY(-4px)!important}
+  .ms-logo-mark{min-width:128px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ms-logo-track{animation:none}
+  .ms-bounce-card{transition:none}
+}
