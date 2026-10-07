@@ -14,7 +14,7 @@
 
 | Prioridad de narrativa | Proyecto | Página fuente | Imagen/diagrama existente | Evidencia / estado |
 | --- | --- | --- | --- | --- |
-| Principal | Club Mar Salada | `projects/mar-salada.html` | `assets/visuals/mar-salada-system.svg` | Arquitectura de integración de AV, DSP, KNX/DALI; fotografía real final pendiente |
+| Principal | Sound Club, Palma | `projects/sound-club-palma.html` | `assets/visuals/sound-club-system.svg` | Arquitectura de integración de AV, DSP, KNX/DALI; fotografía real final pendiente |
 | Principal | GAZA Operations Intelligence | `projects/gaza-logistics-ia.html` | `assets/visuals/gaza-operations-system.svg` y UI del producto | Demo pública con simulación y datos públicos etiquetados, **no instalación validada en planta** |
 | Principal | RHB STUDIO | `projects/rhb-studio.html` | `assets/visuals/rhb-studio-system.svg` | Proyecto/stack local-first en desarrollo; **runtime no publicado** |
 | Secundario | Casa NOAH | `projects/casa-noah.html` | Solo contenido editorial disponible; verificar fotos | Caso de integración espacial y tecnológica |
@@ -40,7 +40,7 @@ Cada ficha final debe conservar:
 | Secuencia | Material gráfico admisible | Narrativa |
 | --- | --- | --- |
 | 00 Identidad | Foto de perfil actualmente publicada | Introducción y especialidades |
-| 01 Obra / espacio | Diagrama Mar Salada; fotos reales autorizadas cuando lleguen | Del espacio a la instalación y commissioning |
+| 01 Obra / espacio | Diagrama Sound Club, Palma; fotos reales autorizadas cuando lleguen | Del espacio a la instalación y commissioning |
 | 02 Software industrial | Capturas reales de la **demo** GAZA; GIS 3D rotulado no as-built | De observabilidad y simulación a decisiones |
 | 03 Ingeniería + CAD | Diagrama RHB; planos del proyecto piloto una vez validados | Del levantamiento al despiece y fabricación |
 | 04 Archivo | Tarjetas vinculadas a Casa NOAH, Las Dalias, residencia privada y XXXIA | Profundidad de proyectos, sin inventar visuales |
@@ -60,7 +60,7 @@ Cada ficha final debe conservar:
 ## Estado de implementación
 
 - `cv/dossier.html`: implementado como síntesis web canónica.
-- Featured con visual documentado: Mar Salada, GAZA, RHB STUDIO.
+- Featured con visual documentado: Sound Club, Palma, GAZA, RHB STUDIO.
 - Archivo enlazado: Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO.
 - Scroll World: laboratorio narrativo separado.
 - ATS/PDF: pendiente como entregable específico y validación factual final.
