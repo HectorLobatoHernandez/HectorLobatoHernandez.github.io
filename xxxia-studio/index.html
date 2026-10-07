@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c0f0d">
+<meta name="description" content="XXXIA STUDIO — visual production console">
+<title>XXXIA STUDIO — Production Console</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#121815;--panel2:#171f1a;--ink:#f1eee6;--soft:#98a39b;--line:#2c3730;--amber:#c79a65;--sage:#adc39c;--red:#d97b6f;--blue:#7fa4be}
+*{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(circle at 75% 12%,#1a241d 0,transparent 26%),var(--bg);font:14px/1.55 Arial,sans-serif}
+a{color:inherit}.shell{width:min(1480px,93vw);margin:auto}.top{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:#0b0f0de8;backdrop-filter:blur(14px)}.top .inner{height:68px;display:flex;align-items:center;gap:20px}.brand{font:700 11px monospace;letter-spacing:.13em;text-decoration:none}.top nav{margin-left:auto;display:flex;gap:16px}.top nav a{font:600 9px monospace;text-decoration:none;text-transform:uppercase;color:var(--soft)}
+.hero{padding:78px 0 50px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1.15fr .85fr;gap:7vw}.eyebrow{font:600 9px monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--amber)}h1{font:500 clamp(60px,8vw,132px)/.82 Arial,sans-serif;letter-spacing:-.07em;margin:14px 0 24px}.hero p{max-width:70ch;color:var(--soft);font-size:16px}.hero aside{border-left:1px solid var(--line);padding-left:26px}.hero aside strong{display:block;font-size:30px;margin:8px 0 5px}.hero aside span{color:var(--soft)}
+.statusbar{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);margin-top:36px}.metric{padding:16px;border-right:1px solid var(--line)}.metric:last-child{border-right:0}.metric b{display:block;font:600 16px monospace}.metric small{display:block;margin-top:3px;color:var(--soft);font:500 9px monospace;text-transform:uppercase}
+.section{padding:72px 0;border-bottom:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:28px}.section-head h2{font-size:36px;letter-spacing:-.04em;margin:6px 0 0}.section-head p{margin:0;color:var(--soft);max-width:60ch}
+.pipeline{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}.pipeline div{background:var(--panel);padding:18px;min-height:112px}.pipeline b{display:block;font:600 11px monospace;color:var(--amber)}.pipeline span{display:block;margin-top:18px;font-size:11px;color:var(--soft)}
+.jobs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.job{border:1px solid var(--line);background:linear-gradient(145deg,var(--panel2),#0e1411);padding:22px;min-height:250px}.job-top{display:flex;justify-content:space-between;gap:18px}.job-id{font:700 10px monospace;color:var(--amber)}.badge{display:inline-flex;padding:6px 9px;border:1px solid var(--line);font:700 8px monospace;letter-spacing:.06em;text-transform:uppercase}.badge.ready,.badge.completed{color:var(--sage);border-color:#496047}.badge.waiting,.badge.planned{color:var(--amber);border-color:#65513b}.badge.reference{color:var(--blue);border-color:#3c5361}.badge.failed{color:var(--red);border-color:#68423e}.job h3{font-size:26px;letter-spacing:-.035em;margin:16px 0 9px}.job p{color:var(--soft);margin:0 0 18px}.job dl{display:grid;grid-template-columns:110px 1fr;gap:8px 14px;border-top:1px solid var(--line);padding-top:15px;margin:0}.job dt{font:600 8px monospace;color:#6f7a73;text-transform:uppercase}.job dd{margin:0;font-size:11px}.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;padding:9px 11px;border:1px solid var(--line);text-decoration:none;font:600 8px monospace;text-transform:uppercase}.btn:hover{background:#ffffff0c}
+.archive{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.archive article{border:1px solid var(--line);padding:18px;background:var(--panel)}.archive h3{font-size:17px;margin:5px 0 9px}.archive p{font-size:11px;color:var(--soft);margin:0}.foot{padding:28px 0 42px;display:flex;justify-content:space-between;gap:20px;color:#69746d;font:500 9px monospace;text-transform:uppercase}
+.loading{padding:35px;border:1px solid var(--line);color:var(--soft);font:500 11px monospace}.error{color:var(--red)}
+@media(max-width:1050px){.pipeline{grid-template-columns:repeat(4,1fr)}.jobs{grid-template-columns:1fr}.archive{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero aside{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.statusbar{grid-template-columns:1fr 1fr}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.pipeline{grid-template-columns:1fr 1fr}.archive{grid-template-columns:1fr}.top nav a:nth-child(n+3){display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="shell inner"><a class="brand" href="../projects/xxxia-studio.html">XXXIA STUDIO / PRODUCTION</a><nav><a href="../projects/sound-club-palma.html">Sound Club</a><a href="../projects/xxxia-studio.html">Studio</a><a href="../cv/dossier.html">Dossier</a></nav></div></header>
+<main>
+<section class="hero shell">
+<div><div class="eyebrow">Visual production engine · GitHub-backed</div><h1>XXXIA<br>Console.</h1><p>Briefs, storyboards, prompts, provider jobs, QA y archivo de outputs en un único punto. El motor visual queda separado del proveedor: el proyecto conserva su lenguaje, procedencia y versiones aunque cambie el modelo de generación.</p><div class="statusbar" id="metrics"><div class="metric"><b>—</b><small>pieces</small></div><div class="metric"><b>—</b><small>provider jobs</small></div><div class="metric"><b>—</b><small>generated boards</small></div><div class="metric"><b>—</b><small>archive state</small></div></div></div>
+<aside><div class="eyebrow">Active production case</div><strong>Sound Club, Palma</strong><span>Puerto Deportivo de Palma · architecture / sound / lighting / control</span><div class="links"><a class="btn" href="../projects/sound-club-palma.html">Public case ↗</a><a class="btn" href="projects/sound-club-palma/README.md">Production README</a></div></aside>
+</section>
+<section class="section shell"><div class="section-head"><div><div class="eyebrow">01 / Pipeline</div><h2>References → archive.</h2></div><p>El proveedor genera; XXXIA conserva el contrato de producción y la trazabilidad.</p></div><div class="pipeline"><div><b>01</b><span>References</span></div><div><b>02</b><span>Master brief</span></div><div><b>03</b><span>Storyboard</span></div><div><b>04</b><span>Generate</span></div><div><b>05</b><span>Visual QA</span></div><div><b>06</b><span>Archive</span></div><div><b>07</b><span>Project embed</span></div></div></section>
+<section class="section shell"><div class="section-head"><div><div class="eyebrow">02 / Lot 01</div><h2>Production pieces.</h2></div><p>SC01–SC07. Las piezas generativas se mantienen separadas de planos y fotografías verificadas.</p></div><div id="jobs" class="loading">Loading manifest…</div></section>
+<section class="section shell"><div class="section-head"><div><div class="eyebrow">03 / Archive</div><h2>Provenance first.</h2></div><p>Una ruta planeada no se considera archivada hasta que el binario existe y el índice declara <code>ARCHIVED</code>.</p></div><div class="archive"><article><div class="eyebrow">Briefs</div><h3>Visual language</h3><p>Materiales, 2300K, tono, límites factuales y gramática de movimiento.</p></article><article><div class="eyebrow">Metadata</div><h3>Provider jobs</h3><p>Modelo, job ID, referencias, política de coste, resultado y estado del archivo.</p></article><article><div class="eyebrow">Classification</div><h3>Evidence boundary</h3><p>DOCUMENTED_REFERENCE, GENERATED_CONCEPT, GENERATED_MOTION y evidencia verificada no se mezclan.</p></article></div></section>
+</main>
+<footer class="foot shell"><span>XXXIA STUDIO · 2026</span><span id="updated">manifest pending</span></footer>
+<script>
+const BASE='projects/sound-club-palma/05_metadata/';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const statusClass=s=>/COMPLETED|READY|ARCHIVED/.test(s)?'completed':/WAIT|PLANNED/.test(s)?'waiting':/FAIL|REJECT/.test(s)?'failed':'reference';
+async function load(){
+  try{
+    const [manifest,assets,jobs]=await Promise.all([
+      fetch(BASE+'manifest.json',{cache:'no-store'}).then(r=>r.json()),
+      fetch(BASE+'asset-index.json',{cache:'no-store'}).then(r=>r.json()),
+      fetch(BASE+'generation-jobs.json',{cache:'no-store'}).then(r=>r.json())
+    ]);
+    const pieces=manifest.pieces||[], gjobs=jobs.jobs||[], boards=assets.generatedKeyframes||[];
+    const archived=boards.filter(x=>x.archiveStatus==='ARCHIVED').length;
+    document.getElementById('metrics').innerHTML=
+      '<div class="metric"><b>'+pieces.length+'</b><small>pieces</small></div>'+
+      '<div class="metric"><b>'+gjobs.length+'</b><small>provider jobs</small></div>'+
+      '<div class="metric"><b>'+boards.length+'</b><small>generated boards</small></div>'+
+      '<div class="metric"><b>'+archived+'/'+boards.length+'</b><small>archived binaries</small></div>';
+    document.getElementById('jobs').className='jobs';
+    document.getElementById('jobs').innerHTML=pieces.map(p=>{
+      const job=gjobs.find(j=>String(j.id||'').startsWith(p.id))||null;
+      const status=job?.status||p.status||'PLANNED';
+      const board=boards.find(b=>b.piece===p.id);
+      return '<article class="job"><div class="job-top"><span class="job-id">'+esc(p.id)+'</span><span class="badge '+statusClass(status)+'">'+esc(status)+'</span></div>'+
+        '<h3>'+esc(p.slug.replaceAll('-',' '))+'</h3>'+
+        '<p>'+(board?'Generated concept board tracked. ':'')+(job?'Provider job registered. ':'Production brief/storyboard ready.')+'</p>'+
+        '<dl><dt>Duration</dt><dd>'+esc(p.durationSec)+' s target</dd><dt>Provider</dt><dd>'+esc(job?.provider||'adapter not bound')+'</dd><dt>Model</dt><dd>'+esc(job?.model||'—')+'</dd><dt>Archive</dt><dd>'+esc(board?.archiveStatus||'—')+'</dd></dl>'+
+        '<div class="links"><a class="btn" href="projects/sound-club-palma/02_storyboards/'+esc(p.id)+'_'+esc(p.slug.toUpperCase().replaceAll('-','_'))+'.md">Storyboard</a></div></article>';
+    }).join('');
+    document.getElementById('updated').textContent='LOT '+esc(manifest.lot)+' · schema '+esc(manifest.schemaVersion);
+    window.__XXXIA_CONSOLE__={schemaVersion:1,pieces:pieces.length,jobs:gjobs.length,boards:boards.length,archived};
+  }catch(e){
+    const el=document.getElementById('jobs');el.className='loading error';el.textContent='Manifest load failed: '+e.message;
+    window.__XXXIA_CONSOLE__={schemaVersion:1,error:String(e)};
+  }
+}
+load();
+</script>
+</body></html>
