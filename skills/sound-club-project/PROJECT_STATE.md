@@ -24,3 +24,7 @@ When a verified CAD/PDF plan is later supplied:
 3. change classification to VERIFIED_DRAWING;
 4. retain the prior generated diagram in archive/history;
 5. update React Visuals and QA expectations.
+
+## QA
+
+- React Visuals QA workflow is installed on `main` and validates this project before merge.
