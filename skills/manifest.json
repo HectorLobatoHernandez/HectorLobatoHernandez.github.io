@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.2",
+  "version": "2026-10-07.3",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -91,6 +91,20 @@
       "path": "skills/xxxia-visual-production/SKILL.md",
       "license": "project-internal",
       "focus": "project references to generated stills/motion with provenance, provider adapters and GitHub archive"
+    },
+    {
+      "name": "sound-club-project",
+      "source": "local Hector portfolio",
+      "path": "skills/sound-club-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "Sound Club project facts, evidence boundary, media and XXXIA workflow"
+    },
+    {
+      "name": "react-visuals",
+      "source": "local Hector portfolio",
+      "path": "skills/react-visuals/SKILL.md",
+      "license": "project-internal",
+      "focus": "registry-driven React project explorer for plans, systems, video and provenance"
     }
   ]
 }
