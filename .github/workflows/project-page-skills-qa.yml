@@ -1,0 +1,73 @@
+name: Project Page Skills QA
+on:
+  pull_request:
+    paths:
+      - 'projects/rhb-studio.html'
+      - 'projects/xxxia-studio.html'
+      - 'projects/las-dalias-akasha.html'
+      - 'projects/casa-noah.html'
+      - 'skills/rhb-studio-portfolio/**'
+      - 'skills/xxxia-studio-portfolio/**'
+      - 'skills/akasha-project/**'
+      - 'skills/casa-noah-project/**'
+      - 'skills/xxxia-visual-production/**'
+      - 'skills/manifest.json'
+      - '.github/workflows/project-page-skills-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'projects/rhb-studio.html'
+      - 'projects/xxxia-studio.html'
+      - 'projects/las-dalias-akasha.html'
+      - 'projects/casa-noah.html'
+      - 'skills/rhb-studio-portfolio/**'
+      - 'skills/xxxia-studio-portfolio/**'
+      - 'skills/akasha-project/**'
+      - 'skills/casa-noah-project/**'
+      - 'skills/xxxia-visual-production/**'
+      - 'skills/manifest.json'
+
+permissions:
+  contents: read
+
+jobs:
+  page-skill-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate project/page skill contracts
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          m=json.load(open('skills/manifest.json',encoding='utf-8'))
+          names={x['name'] for x in m['skills']}
+          required={'rhb-studio-portfolio','xxxia-studio-portfolio','akasha-project','casa-noah-project','xxxia-visual-production','reactbits-portfolio-components'}
+          assert required <= names
+
+          pages={
+            'projects/rhb-studio.html':('data-page-skill="rhb-studio-portfolio"','__RHB_STUDIO_PAGE__'),
+            'projects/las-dalias-akasha.html':('data-page-skill="akasha-project"','__AKASHA_PAGE__'),
+            'projects/casa-noah.html':('data-page-skill="casa-noah-project"','__CASA_NOAH_PAGE__'),
+          }
+          for p,(marker,contract) in pages.items():
+              text=pathlib.Path(p).read_text(encoding='utf-8')
+              assert marker in text, (p,marker)
+              assert contract in text, (p,contract)
+
+          xxxia=pathlib.Path('projects/xxxia-studio.html').read_text(encoding='utf-8')
+          assert '__XXXIA_STUDIO_PAGE__' in xxxia
+          assert 'MAR SALADA — CLUB DEL MAR PALMA' in xxxia
+          assert 'SC08 · Scroll Master' in xxxia
+          assert 'Sound Club, Palma' not in xxxia
+
+          prod=pathlib.Path('skills/xxxia-visual-production/SKILL.md').read_text(encoding='utf-8')
+          assert 'project-agnostic' in prod
+          assert 'MAR SALADA — CLUB DEL MAR PALMA' in prod
+
+          assert 'PENDING_USER_MEDIA' in pathlib.Path('projects/las-dalias-akasha.html').read_text(encoding='utf-8')
+          assert 'PENDING_USER_MEDIA' in pathlib.Path('projects/casa-noah.html').read_text(encoding='utf-8')
+          print('Project page/skill contracts pass')
+          PY
