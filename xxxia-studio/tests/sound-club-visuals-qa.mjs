@@ -73,6 +73,7 @@ const publicState=await casePage.evaluate(()=>({
   videoCount:document.querySelectorAll('video').length,
   motionStatus:window.__MAR_SALADA_CASE__?.motionStatus,
   motionId:window.__MAR_SALADA_CASE__?.motionId,
+  cadAuditLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('CAD_INGEST_AUDIT.md')),
   reactLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='sound-club-visuals.html'),
   suspension:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-suspension-detail.svg')),
   djPlan:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-dj-booth-plan.svg')),
@@ -108,7 +109,7 @@ if(publicState.storySteps!==10||!publicState.storyRoot)failures.push('MAR SALADA
 if(publicState.motionStatus!=='PENDING_VERIFIED_GEOMETRY')failures.push('SC08 should remain pending verified geometry');
 if(publicState.motionId!=='SC08_PORTFOLIO_SCROLL_MASTER')failures.push('SC08 motion manifest not wired');
 if(publicState.videoCount!==0)failures.push('pending SC08 must not expose a public video element');
-if(!publicState.reactLink||!publicState.suspension||!publicState.djPlan)failures.push('MAR SALADA links/technical diagrams missing');
+if(!publicState.reactLink||!publicState.suspension||!publicState.djPlan||!publicState.cadAuditLink)failures.push('MAR SALADA links/technical diagrams/CAD audit missing');
 if(publicState.overflow||caseMobile.overflow)failures.push('MAR SALADA case horizontal overflow');
 if(!legacy.ok()||!legacyText.includes('mar-salada.html'))failures.push('legacy route redirect missing');
 if(errors.length)failures.push('visual browser/request errors: '+errors.join(' | '));
