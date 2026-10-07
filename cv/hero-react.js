@@ -1,32 +1,38 @@
-/* React hero island for cv/dossier.html.
- * Interaction patterns adapted from React Bits (DavidHDev/react-bits, MIT):
- * Waves, Particles, TechText, DitherVeil, CircularCarousel, StaggeredMenu and LatticeLoader.
- * Upstream snapshot reviewed: 63a008de65732d73010bd219d25d15c47739bb31.
+/* React Bits visual system for cv/dossier.html.
+ * Patterns adapted from DavidHDev/react-bits (MIT):
+ * Waves, Particles, TechText, DitherVeil, StaggeredMenu and LatticeLoader.
+ * Reviewed upstream snapshot: 63a008de65732d73010bd219d25d15c47739bb31.
  */
 (function(){
   const contract={
-    schemaVersion:1,
+    schemaVersion:2,
     engine:'REACT_18_UMD',
     upstream:'DavidHDev/react-bits@63a008de65732d73010bd219d25d15c47739bb31',
-    components:['Waves','Particles','TechText','DitherVeil','CircularCarousel','StaggeredMenu','LatticeLoader'],
-    heroOnly:true,
-    photoVariants:5,
+    components:['Waves','Particles','TechText','DitherVeil','StaggeredMenu','LatticeLoader'],
+    scope:'FULL_DOSSIER',
+    portraitMode:'DITHER_VEIL_SINGLE',
+    portraitImages:1,
     generatedPortraits:0,
+    globalEffects:true,
+    techHeadings:0,
     mounted:false
   };
   window.__CV_HERO__=contract;
+
   const rootNode=document.getElementById('hero-react-root');
-  if(!rootNode||!window.React||!window.ReactDOM){return}
+  if(!rootNode||!window.React||!window.ReactDOM)return;
+
   const R=window.React;
   const h=R.createElement;
-  const {useEffect,useMemo,useRef,useState}=R;
+  const {useEffect,useRef,useState}=R;
   const PHOTO='../assets/hector-profile.png';
 
   function useReducedMotion(){
     const [reduced,setReduced]=useState(false);
     useEffect(()=>{
       const q=window.matchMedia('(prefers-reduced-motion: reduce)');
-      const sync=()=>setReduced(q.matches);sync();
+      const sync=()=>setReduced(q.matches);
+      sync();
       q.addEventListener?.('change',sync);
       return()=>q.removeEventListener?.('change',sync);
     },[]);
@@ -40,7 +46,7 @@
     canvas.height=Math.max(1,Math.round(rect.height*dpr));
     const ctx=canvas.getContext('2d');
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    return {ctx,w:rect.width,h:rect.height};
+    return {ctx,w:rect.width,h:rect.height,dpr};
   }
 
   function Waves(){
@@ -52,27 +58,28 @@
       const pointer={x:-9999,y:-9999};
       const resize=()=>{state=sizeCanvas(canvas)};
       const move=e=>{pointer.x=e.clientX;pointer.y=e.clientY};
-      window.addEventListener('resize',resize);window.addEventListener('pointermove',move,{passive:true});
+      window.addEventListener('resize',resize);
+      window.addEventListener('pointermove',move,{passive:true});
       const draw=()=>{
         const {ctx,w,h}=state;
         ctx.clearRect(0,0,w,h);
-        const base=h*.60;
-        const lines=Math.max(13,Math.round(h/48));
+        const base=h*.54;
+        const lines=Math.max(14,Math.round(h/46));
         for(let j=0;j<lines;j++){
-          const y0=base+j*18;
+          const y0=base+j*17;
           ctx.beginPath();
-          ctx.lineWidth=.72;
-          ctx.strokeStyle='rgba(183,200,158,'+(0.19-j*.006)+')';
-          for(let x=-40;x<=w+40;x+=7){
-            const wave=Math.sin(x*.011+t*.007+j*.42)*14+Math.sin(x*.0032-t*.004+j)*22;
+          ctx.lineWidth=.68;
+          ctx.strokeStyle='rgba(184,201,159,'+(0.18-j*.005)+')';
+          for(let x=-50;x<=w+50;x+=7){
+            const wave=Math.sin(x*.0105+t*.006+j*.43)*13+Math.sin(x*.0031-t*.003+j*.9)*20;
             const dx=x-pointer.x,dy=y0-pointer.y,dist=Math.hypot(dx,dy);
-            const push=dist<240?(1-dist/240)*Math.sin(dist*.035)*34:0;
+            const push=dist<220?(1-dist/220)*Math.sin(dist*.035)*28:0;
             const y=y0+wave+push;
-            if(x===-40)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+            if(x===-50)ctx.moveTo(x,y);else ctx.lineTo(x,y);
           }
           ctx.stroke();
         }
-        if(!reduced){t+=1;raf=requestAnimationFrame(draw)}
+        if(!reduced){t++;raf=requestAnimationFrame(draw)}
       };
       draw();
       return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move)};
@@ -87,54 +94,97 @@
       const canvas=ref.current;if(!canvas)return;
       let state=sizeCanvas(canvas),raf=0,t=0;
       const pointer={x:-9999,y:-9999};
-      const count=window.innerWidth<700?34:82;
-      let particles=Array.from({length:count},(_,i)=>({
+      const count=window.innerWidth<700?30:74;
+      const particles=Array.from({length:count},(_,i)=>({
         x:Math.random()*state.w,y:Math.random()*state.h,
-        r:.7+Math.random()*1.25,s:.08+Math.random()*.22,
-        phase:Math.random()*Math.PI*2
+        r:.65+Math.random()*1.2,s:.07+Math.random()*.18,
+        phase:Math.random()*Math.PI*2,warm:i%8===0
       }));
       const resize=()=>{state=sizeCanvas(canvas)};
-      const move=e=>{const rect=canvas.getBoundingClientRect();pointer.x=e.clientX-rect.left;pointer.y=e.clientY-rect.top};
-      window.addEventListener('resize',resize);canvas.addEventListener('pointermove',move,{passive:true});
+      const move=e=>{pointer.x=e.clientX;pointer.y=e.clientY};
+      window.addEventListener('resize',resize);
+      window.addEventListener('pointermove',move,{passive:true});
       const draw=()=>{
         const {ctx,w,h}=state;ctx.clearRect(0,0,w,h);
-        particles.forEach((p,i)=>{
-          if(!reduced){p.y-=p.s;p.x+=Math.sin(t*.003+p.phase)*.08}
+        particles.forEach(p=>{
+          if(!reduced){p.y-=p.s;p.x+=Math.sin(t*.003+p.phase)*.07}
           if(p.y<-8){p.y=h+8;p.x=Math.random()*w}
           const d=Math.hypot(p.x-pointer.x,p.y-pointer.y);
-          const a=d<180?.74:.28;
-          ctx.beginPath();ctx.fillStyle=i%7===0?'rgba(197,154,103,'+a+')':'rgba(229,232,219,'+a+')';
+          const a=d<170?.7:.27;
+          ctx.beginPath();
+          ctx.fillStyle=p.warm?'rgba(197,154,103,'+a+')':'rgba(232,235,225,'+a+')';
           ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
-          if(d<125){
-            ctx.beginPath();ctx.strokeStyle='rgba(183,200,158,'+((1-d/125)*.17)+')';ctx.lineWidth=.55;
+          if(d<115){
+            ctx.beginPath();ctx.strokeStyle='rgba(184,201,159,'+((1-d/115)*.14)+')';ctx.lineWidth=.5;
             ctx.moveTo(p.x,p.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke();
           }
         });
         if(!reduced){t++;raf=requestAnimationFrame(draw)}
       };
       draw();
-      return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);canvas.removeEventListener('pointermove',move)};
+      return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move)};
     },[reduced]);
     return h('canvas',{ref,className:'rb-canvas rb-particles','aria-hidden':'true'});
   }
 
+  function GlobalEffects(){
+    return h(R.Fragment,null,
+      h(Waves),
+      h(Particles),
+      h('div',{className:'rb-page-vignette'}),
+      h('div',{className:'rb-page-grain'})
+    );
+  }
+
   function TechLine({text}){
     return h('span',{className:'rb-tech-line'},...[...text].map((char,i)=>{
-      const props={
-        key:i,className:'rb-tech-char','data-char':char===' '?'\u00a0':char,
+      const value=char===' '?'\u00a0':char;
+      return h('span',{
+        key:i,className:'rb-tech-char','data-char':value,
         onPointerMove:e=>{
           const r=e.currentTarget.getBoundingClientRect();
           const x=(e.clientX-(r.left+r.width/2))/Math.max(r.width,1);
           const y=(e.clientY-(r.top+r.height/2))/Math.max(r.height,1);
-          e.currentTarget.style.transform='translate3d('+(x*5)+'px,'+(y*4)+'px,0) rotate('+x*1.3+'deg)';
+          e.currentTarget.style.transform='translate3d('+(x*5)+'px,'+(y*4)+'px,0) rotate('+x*1.2+'deg)';
         },
         onPointerLeave:e=>{e.currentTarget.style.transform=''}
-      };
-      return h('span',props,char===' '?'\u00a0':char);
+      },value);
     }));
   }
+
   function TechText(){
-    return h('h1',{className:'rb-name','aria-label':'Héctor Lobato'},h('span',{className:'rb-tech-word'},h(TechLine,{text:'Héctor'}),h(TechLine,{text:'Lobato.'})));
+    return h('h1',{className:'rb-name','aria-label':'Héctor Lobato'},
+      h('span',{className:'rb-tech-word'},
+        h(TechLine,{text:'Héctor'}),
+        h(TechLine,{text:'Lobato.'})
+      )
+    );
+  }
+
+  function enhanceDocumentHeadings(){
+    const targets=[...document.querySelectorAll('main .section-head h2,main .project-copy h2,main .final h2')];
+    targets.forEach(el=>{
+      if(el.dataset.rbTech==='1')return;
+      const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+      const nodes=[];let node;
+      while((node=walker.nextNode()))nodes.push(node);
+      nodes.forEach(textNode=>{
+        if(!textNode.nodeValue)return;
+        const frag=document.createDocumentFragment();
+        [...textNode.nodeValue].forEach(char=>{
+          if(char===' '){frag.appendChild(document.createTextNode(' '));return}
+          const span=document.createElement('span');
+          span.className='rb-doc-char';
+          span.dataset.char=char;
+          span.textContent=char;
+          frag.appendChild(span);
+        });
+        textNode.replaceWith(frag);
+      });
+      el.dataset.rbTech='1';
+      el.classList.add('rb-doc-tech');
+    });
+    contract.techHeadings=targets.length;
   }
 
   function MenuDots(){
@@ -145,9 +195,11 @@
     ['01','Perfil','#perfil'],['02','Skills','#skills'],['03','Mar Salada','#mar-salada'],
     ['04','GAZA','#gaza'],['05','RHB STUDIO','#rhb'],['06','Evidence','#evidence'],['07','Archivo','#archivo']
   ];
+
   function StaggeredMenu({open,setOpen}){
     useEffect(()=>{
-      const esc=e=>{if(e.key==='Escape')setOpen(false)};window.addEventListener('keydown',esc);
+      const esc=e=>{if(e.key==='Escape')setOpen(false)};
+      window.addEventListener('keydown',esc);
       document.body.style.overflow=open?'hidden':'';
       return()=>{window.removeEventListener('keydown',esc);document.body.style.overflow=''};
     },[open,setOpen]);
@@ -155,44 +207,135 @@
       h('button',{className:'rb-stagger-backdrop',onClick:()=>setOpen(false),'aria-label':'Cerrar menú'}),
       h('aside',{className:'rb-stagger-panel','aria-label':'Navegación del dossier'},
         h('div',{className:'rb-stagger-head'},h('span',null,'Dossier / índice'),h('button',{className:'rb-menu-close',onClick:()=>setOpen(false),'aria-label':'Cerrar'},'×')),
-        h('nav',{className:'rb-stagger-links'},...MENU.map(([n,label,url])=>h('a',{key:n,className:'rb-stagger-link',href:url,onClick:()=>setOpen(false)},h('span',null,label),h('small',null,n)))),
+        h('nav',{className:'rb-stagger-links'},...MENU.map(([n,label,url])=>
+          h('a',{key:n,className:'rb-stagger-link',href:url,onClick:()=>setOpen(false)},h('span',null,label),h('small',null,n))
+        )),
         h('div',{className:'rb-stagger-foot'},'Héctor Lobato · Systems Integration · Automation · IT/OT · AV · AI')
       )
     );
   }
 
-  const CONCEPTS=[
-    {id:'systems',label:'Sistemas y control',desc:'Arquitectura, interfaces y commissioning',left:'18%',top:'18%',labelStyle:{marginLeft:'-156px',marginTop:'42px'}},
-    {id:'industrial',label:'Operación industrial',desc:'Campo, procesos y diagnóstico',left:'12%',top:'70%',labelStyle:{marginLeft:'-168px',marginTop:'38px'}},
-    {id:'architecture',label:'Arquitectura técnica',desc:'Espacio, planos y coordinación',left:'82%',top:'15%',labelStyle:{marginLeft:'72px',marginTop:'24px'}},
-    {id:'av',label:'AV y automatización',desc:'DSP, KNX, DALI y experiencia',left:'91%',top:'51%',labelStyle:{marginLeft:'72px',marginTop:'18px'}},
-    {id:'strategy',label:'Producto + IA',desc:'Software, agentes y sistemas',left:'79%',top:'84%',labelStyle:{marginLeft:'72px',marginTop:'28px'}}
-  ];
-  function PortraitCarousel(){
-    const [active,setActive]=useState(0);
-    const portraitRef=useRef(null);
-    const activeConcept=CONCEPTS[active];
-    const onMove=e=>{
-      const node=portraitRef.current;if(!node)return;
-      const r=node.getBoundingClientRect();
-      node.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
-      node.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
-    };
+  function DitherVeil(){
+    const canvasRef=useRef(null);
+    const frameRef=useRef(null);
+    const reduced=useReducedMotion();
+
+    useEffect(()=>{
+      const canvas=canvasRef.current;
+      const frame=frameRef.current;
+      if(!canvas||!frame)return;
+
+      const source=new Image();
+      const work=document.createElement('canvas');
+      const base=document.createElement('canvas');
+      const pointer={x:0,y:0,inside:false,radius:0,target:0};
+      let raf=0,ready=false,lastW=0,lastH=0;
+
+      function drawCover(ctx,img,w,h){
+        const ir=img.naturalWidth/img.naturalHeight;
+        const tr=w/h;
+        let sw=img.naturalWidth,sh=img.naturalHeight,sx=0,sy=0;
+        if(ir>tr){sw=sh*tr;sx=(img.naturalWidth-sw)/2}
+        else{sh=sw/tr;sy=(img.naturalHeight-sh)*.24}
+        sy=Math.max(0,Math.min(img.naturalHeight-sh,sy));
+        ctx.drawImage(img,sx,sy,sw,sh,0,0,w,h);
+      }
+
+      function buildDither(){
+        if(!ready)return;
+        const rect=frame.getBoundingClientRect();
+        const w=Math.max(1,Math.round(rect.width)),hh=Math.max(1,Math.round(rect.height));
+        if(w===lastW&&hh===lastH&&base.width)return;
+        lastW=w;lastH=hh;
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+        canvas.width=Math.round(w*dpr);canvas.height=Math.round(hh*dpr);
+        canvas.style.width=w+'px';canvas.style.height=hh+'px';
+        const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+
+        work.width=w;work.height=hh;
+        const wctx=work.getContext('2d',{willReadFrequently:true});
+        wctx.clearRect(0,0,w,hh);drawCover(wctx,source,w,hh);
+        const pixels=wctx.getImageData(0,0,w,hh).data;
+
+        base.width=w;base.height=hh;
+        const bctx=base.getContext('2d');
+        bctx.fillStyle='#111814';bctx.fillRect(0,0,w,hh);
+        const matrix=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+        const step=4;
+        for(let y=0;y<hh;y+=step){
+          for(let x=0;x<w;x+=step){
+            const px=Math.min(w-1,x+1),py=Math.min(hh-1,y+1);
+            const idx=(py*w+px)*4;
+            const lum=(pixels[idx]*.299+pixels[idx+1]*.587+pixels[idx+2]*.114)/255;
+            const threshold=(matrix[(y/step)%4|0][(x/step)%4|0]+.5)/16;
+            bctx.fillStyle=lum>threshold?'rgba(232,235,225,.94)':'rgba(17,24,20,.96)';
+            bctx.fillRect(x,y,step,step);
+          }
+        }
+      }
+
+      function render(){
+        buildDither();
+        if(!base.width){raf=requestAnimationFrame(render);return}
+        const ctx=canvas.getContext('2d');
+        const rect=frame.getBoundingClientRect();
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.clearRect(0,0,rect.width,rect.height);
+        ctx.globalCompositeOperation='source-over';
+        ctx.drawImage(base,0,0,rect.width,rect.height);
+
+        pointer.radius+=(pointer.target-pointer.radius)*(reduced?.32:.17);
+        if(pointer.radius>.5){
+          ctx.save();
+          ctx.globalCompositeOperation='destination-out';
+          const g=ctx.createRadialGradient(pointer.x,pointer.y,pointer.radius*.30,pointer.x,pointer.y,pointer.radius);
+          g.addColorStop(0,'rgba(0,0,0,1)');
+          g.addColorStop(.62,'rgba(0,0,0,.96)');
+          g.addColorStop(1,'rgba(0,0,0,0)');
+          ctx.fillStyle=g;
+          ctx.fillRect(0,0,rect.width,rect.height);
+          ctx.restore();
+        }
+        raf=requestAnimationFrame(render);
+      }
+
+      const locate=e=>{
+        const r=canvas.getBoundingClientRect();
+        pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;
+        pointer.inside=true;pointer.target=Math.min(150,Math.max(95,r.width*.22));
+      };
+      const leave=()=>{pointer.inside=false;pointer.target=0};
+      const resize=()=>{lastW=0;lastH=0;buildDither()};
+
+      canvas.addEventListener('pointermove',locate,{passive:true});
+      canvas.addEventListener('pointerenter',locate,{passive:true});
+      canvas.addEventListener('pointerleave',leave);
+      window.addEventListener('resize',resize);
+
+      source.onload=()=>{ready=true;buildDither();render()};
+      source.onerror=()=>{ready=false};
+      source.src=PHOTO;
+
+      return()=>{
+        cancelAnimationFrame(raf);
+        canvas.removeEventListener('pointermove',locate);
+        canvas.removeEventListener('pointerenter',locate);
+        canvas.removeEventListener('pointerleave',leave);
+        window.removeEventListener('resize',resize);
+      };
+    },[reduced]);
+
     return h('div',{className:'rb-portrait-zone'},
-      h('div',{className:'rb-orbit'},
-        h('div',{className:'rb-main-portrait',ref:portraitRef,onPointerMove:onMove,onPointerLeave:e=>{e.currentTarget.style.setProperty('--mx','50%');e.currentTarget.style.setProperty('--my','50%')}},
-          h('img',{src:PHOTO,alt:'Retrato profesional de Héctor Lobato'}),
-          h('div',{className:'rb-dither','aria-hidden':'true'}),
-          h('div',{className:'rb-main-badge'},'Portrait / current source')
-        ),
-        ...CONCEPTS.map((c,i)=>h(R.Fragment,{key:c.id},
-          h('button',{type:'button',className:'rb-orbit-card'+(i===active?' is-active':''),'data-tone':c.id,style:{left:c.left,top:c.top},onClick:()=>setActive(i),'aria-label':'Vista conceptual: '+c.label},
-            h('img',{src:PHOTO,alt:''})
-          ),
-          h('div',{className:'rb-orbit-label',style:Object.assign({left:c.left,top:c.top},c.labelStyle)},c.label)
-        )),
-        h('div',{className:'rb-active-concept'},h('strong',null,activeConcept.label),activeConcept.desc,h('br'),h('span',null,'Vista conceptual · misma fotografía base'))
-      )
+      h('div',{className:'rb-dither-axis','aria-hidden':'true'}),
+      h('div',{className:'rb-dither-frame',ref:frameRef,'data-dither-veil':'true'},
+        h('img',{className:'rb-dither-photo',src:PHOTO,alt:'Retrato profesional de Héctor Lobato'}),
+        h('canvas',{className:'rb-dither-canvas',ref:canvasRef,'aria-label':'Retrato interactivo con efecto dither'}),
+        h('div',{className:'rb-dither-overlay','aria-hidden':'true'}),
+        h('div',{className:'rb-dither-hint'},'mueve el cursor / revelar'),
+        h('div',{className:'rb-dither-meta'},h('span',null,'Portrait / 2026'),h('span',null,'Dither Veil / interactive'))
+      ),
+      h('div',{className:'rb-portrait-code'},h('strong',null,'01 / HUMAN LAYER'),'field + digital',h('br'),'systems / engineering')
     );
   }
 
@@ -215,19 +358,21 @@
   function HeroApp(){
     const [menu,setMenu]=useState(false);
     const [loaded,setLoaded]=useState(false);
+
     useEffect(()=>{
+      enhanceDocumentHeadings();
       contract.mounted=true;
       const img=new Image();img.src=PHOTO;
       let resolved=false;
       const finish=()=>{if(resolved)return;resolved=true;setTimeout(()=>setLoaded(true),420)};
       img.onload=finish;img.onerror=finish;
-      const timer=setTimeout(finish,1250);
+      const timer=setTimeout(finish,1400);
       return()=>clearTimeout(timer);
     },[]);
+
     return h(R.Fragment,null,
       h(LatticeLoader,{done:loaded}),
       h('section',{className:'rb-hero-shell','data-reactbits-hero':'true'},
-        h(Waves),h(Particles),h('div',{className:'rb-veil-global'}),h('div',{className:'rb-grain'}),
         h('header',{className:'rb-nav'},
           h('div',{className:'rb-nav-inner'},
             h('a',{className:'rb-brand',href:'../'},h('span',{className:'rb-brand-mark'},'HL.'),h('span',{className:'rb-brand-name'},'Héctor Lobato')),
@@ -255,12 +400,18 @@
               h('div',{className:'rb-index-item'},h('strong',null,'Zamora'),h('span',null,'base profesional'))
             )
           ),
-          h(PortraitCarousel)
+          h(DitherVeil)
         ),
         h('div',{className:'rb-scroll-cue'},'scroll / explorar dossier ↓')
       )
     );
   }
+
+  const fxNode=document.createElement('div');
+  fxNode.className='rb-global-effects';
+  fxNode.setAttribute('aria-hidden','true');
+  document.body.prepend(fxNode);
+  window.ReactDOM.createRoot(fxNode).render(h(GlobalEffects));
 
   const root=window.ReactDOM.createRoot(rootNode);
   root.render(h(HeroApp));
