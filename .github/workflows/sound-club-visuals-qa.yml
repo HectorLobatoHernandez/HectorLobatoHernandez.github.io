@@ -1,0 +1,64 @@
+name: Sound Club React Visuals QA
+on:
+  pull_request:
+    paths:
+      - 'projects/sound-club-palma.html'
+      - 'projects/sound-club-visuals.html'
+      - 'assets/visuals/sound-club-*.svg'
+      - 'skills/sound-club-project/**'
+      - 'skills/react-visuals/**'
+      - 'skills/manifest.json'
+      - 'xxxia-studio/projects/sound-club-palma/**'
+      - '.github/workflows/sound-club-visuals-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'projects/sound-club-palma.html'
+      - 'projects/sound-club-visuals.html'
+      - 'assets/visuals/sound-club-*.svg'
+      - 'skills/sound-club-project/**'
+      - 'skills/react-visuals/**'
+      - 'xxxia-studio/projects/sound-club-palma/**'
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Validate registry and SVG XML
+        run: |
+          python3 - <<'PY'
+          import json
+          from xml.etree import ElementTree
+          m=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json'))
+          assert len(m['items']) == 6
+          assert sum(1 for x in m['items'] if x['kind']=='PLAN') == 3
+          for p in ['sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg','sound-club-system.svg']:
+              ElementTree.parse('assets/visuals/'+p)
+          skills=json.load(open('skills/manifest.json'))
+          names={x['name'] for x in skills['skills']}
+          assert 'sound-club-project' in names
+          assert 'react-visuals' in names
+          print('Registry / SVG / skills source checks pass')
+          PY
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start preview
+        run: |
+          python3 -m http.server 4194 --directory . > /tmp/sound-club-http.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4194/projects/sound-club-visuals.html >/dev/null && exit 0; sleep 1; done
+          cat /tmp/sound-club-http.log
+          exit 1
+      - name: Run React Visuals QA
+        run: node xxxia-studio/tests/sound-club-visuals-qa.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sound-club-react-visuals
+          path: .qa/sound-club-visuals/
+          if-no-files-found: ignore
+          retention-days: 14
