@@ -8,7 +8,7 @@
 - Legacy route: `projects/sound-club-palma.html`
 - XXXIA legacy archive slug retained: `sound-club-palma`
 
-## Public implementation v2.1
+## Public implementation v2.2
 
 - React 18 long-form case page.
 - GSAP + ScrollTrigger enhancement layer.
@@ -16,6 +16,9 @@
 - Scroll World-style sticky visual story.
 - SC08 motion-ready story stage with still fallback.
 - `motion-manifest.json` controls promotion from stills to scroll-scrub master video.
+- React Bits-inspired Bounce Cards gallery is public-safe and metadata-driven.
+- Model Viewer shell is wired to `model-manifest.json`; 4 model slots remain `PENDING_GLB` until verified geometry is exported.
+- Project technology/vendor rail uses a restrained Logo Loop pattern.
 - Metadata-driven public media registry.
 - Architecture/editorial visual system.
 - Mobile and reduced-motion fallback.
@@ -38,6 +41,14 @@
 - Public story only resolves `publicSafe: true` media.
 - Generated boards and diagrams remain explicitly classified.
 - 2300 K remains a portfolio visualization target.
+
+## Interactive model status
+
+- Venue / master architecture: PENDING_GLB.
+- Central DJ booth: PENDING_GLB.
+- Technical counter / furniture: PENDING_GLB.
+- Suspended structure / decoupling: PENDING_GLB.
+- Browser delivery target: GLB/glTF only; raw SKP/DWG remains private.
 
 ## Geometry status
 
