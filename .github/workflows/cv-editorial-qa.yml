@@ -30,10 +30,10 @@ jobs:
           python3 - <<'PY'
           import json,glob,xml.etree.ElementTree as ET
           m=json.load(open('skills/manifest.json',encoding='utf-8'))
-          assert {'scroll-world','cv-editorial-architecture'} <= {x['name'] for x in m['skills']}
+          assert {'scroll-world','cv-editorial-architecture','reactbits-portfolio-components'} <= {x['name'] for x in m['skills']}
           for p in glob.glob('cv/world-assets/*.svg'): ET.parse(p)
           assert len(glob.glob('cv/world-assets/*.svg'))==4
-          print('Skill manifest and 4 SVG storyboard scenes OK')
+          print('Skill manifest including React Bits portfolio layer and 4 SVG storyboard scenes OK')
           PY
           test -s skills/scroll-world/LICENSE
           test -s skills/scroll-world/SKILL.md
