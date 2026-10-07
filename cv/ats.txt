@@ -1,0 +1,55 @@
+HÉCTOR LOBATO
+Systems Integration & Automation · IT/OT · AV · Applied AI
+Zamora, España
+Email: lobatohernandezhector@gmail.com
+GitHub: github.com/HectorLobatoHernandez
+Portfolio: hectorlobatohernandez.github.io
+
+PERFIL PROFESIONAL
+Perfil técnico orientado a diseñar, integrar, poner en marcha y documentar sistemas multidisciplinares que combinan automatización, audiovisual, redes IT/OT, ingeniería de proyecto y software aplicado. Enfoque: survey, arquitectura, integración, commissioning, troubleshooting, documentación y mejora continua.
+
+COMPETENCIAS
+Automation & Control: KNX, ETS6, DALI, Gira, Crestron, escenas, estados, interoperabilidad.
+Audio & AV: DSP, matrices, amplificación, routing, zonas, limitación, conceptos Dante.
+IT/OT & Networks: TCP/IP, VLAN, UniFi, VPN, PoE, cableado estructurado, diagnóstico.
+Engineering Delivery: AutoCAD, BOM, presupuestos, proveedores, QA, documentación, change control.
+Software & Applied AI: Python, JavaScript, APIs, Git/GitHub, GIS, agentes IA, automatización.
+Technical Operations: troubleshooting, incidencias, soporte, observabilidad, procesos, mejora continua.
+
+EXPERIENCIA TÉCNICA SELECCIONADA
+2026 — Club Mar Salada · Club del Mar
+Rol: Diseño técnico · integración · coordinación · commissioning
+- Integración de audio profesional, DSP, KNX/DALI, iluminación y red.
+- Routing, zonas, escenas, grupos, interfaces, rack y documentación.
+- Coordinación de electricidad, cableado, herrería, iluminación, acústica y puesta en marcha.
+
+2026 — GAZA Operations Intelligence
+Rol: Arquitectura funcional · UX operativa · modelo de información
+- Mission Control público para operaciones, logística, GIS, clima e IT/OT.
+- Plant 3D, Territory, GIS y Systems con separación PUBLIC / INFERRED / SIMULATED.
+- Gateway read-only y contratos de integración.
+- GitHub, JavaScript, Three.js, Open-Meteo, AEMET bridge y QA automatizado.
+
+2026 — RHB STUDIO
+Rol: Arquitectura funcional · producto interno · automatización
+- Plataforma local-first para proyectos, CAD, BOM, presupuestos, documentación y agentes IA.
+- Pipeline Survey → CAD → diseño → BOM → aprobación → fabricación → montaje → QA → entrega.
+- OmniRoute, OpenClaw y NEXO.
+
+OTROS PROYECTOS
+Casa NOAH · Las Dalias / Akasha · Residencia tecnológica privada · XXXIA Studio.
+
+FORMACIÓN
+2013–2016 — Bachelor's Degree — Audio Engineering & Audio Production · Middlesex University, London
+
+CERTIFICACIONES
+2018 — KNX Advanced · Grupo Conitec Ingeniería y Domótica
+2019 — Crestron CTI-P101 · Foundations of Crestron Programming · Crestron Technical Institute
+2019 — Crestron NVX · Design and Application · Crestron Technical Institute
+2021 — AXIS · Network Audio / System Design / Camera Station / Analytics · Axis Communications
+
+MÉTODO
+Survey · Architecture · Integration · Commissioning · Troubleshooting · Documentation · Operations · Continuous Improvement
+
+TRAZABILIDAD
+Versión project-based construida únicamente con información ya documentada. La cronología laboral completa por empresa/cargo no se publica hasta contrastar fechas y responsabilidades.
