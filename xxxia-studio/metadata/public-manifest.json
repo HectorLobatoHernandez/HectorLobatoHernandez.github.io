@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "studioId": "XXXIA_STUDIO",
+  "title": "XXXIA STUDIO",
+  "updatedAt": "2026-10-08",
+  "classification": "PUBLIC_SHOWCASE",
+  "mission": "Controlled visual-production system for turning project references and verified geometry into diagrams, boards, exploded views, storyboards and motion assets.",
+  "pipeline": [
+    "REFERENCES",
+    "BRIEF",
+    "STORYBOARD",
+    "GENERATE",
+    "QA",
+    "ARCHIVE",
+    "EMBED"
+  ],
+  "capabilities": [
+    {
+      "id": "direction",
+      "title": "Art Direction",
+      "summary": "Project-specific visual language, materials, light and evidence boundaries."
+    },
+    {
+      "id": "diagrams",
+      "title": "Technical Diagrams",
+      "summary": "Plan/system communication derived from documented project data."
+    },
+    {
+      "id": "exploded",
+      "title": "Exploded Views",
+      "summary": "Controlled decomposition of architecture, furniture and systems."
+    },
+    {
+      "id": "story",
+      "title": "Storyboards",
+      "summary": "Shot structure, timing, camera grammar and frame handoff."
+    },
+    {
+      "id": "motion",
+      "title": "Motion Briefs",
+      "summary": "Frame-locked visual sequences prepared for scroll or video delivery."
+    },
+    {
+      "id": "provenance",
+      "title": "QA / Provenance",
+      "summary": "Classification, provider/job metadata, versioning and promotion gates."
+    }
+  ],
+  "evidenceClasses": [
+    "PRIVATE_REFERENCE_ONLY",
+    "GENERATED_CONCEPT",
+    "GENERATED_DIAGRAM",
+    "GENERATED_MOTION",
+    "VERIFIED_DRAWING",
+    "VERIFIED_FINAL_PHOTO"
+  ],
+  "publicRules": {
+    "publishOriginalPrivateMedia": false,
+    "providerIndependent": true,
+    "preserveProvenance": true,
+    "publicOnlyApprovedOrPublicSafe": true,
+    "verifiedGeometryRequiredForAsBuiltMotion": true
+  },
+  "selectedCase": {
+    "projectId": "MAR_SALADA_CDM",
+    "title": "MAR SALADA — CLUB DEL MAR PALMA",
+    "publicPage": "/projects/mar-salada.html",
+    "mediaRegistry": "/xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json",
+    "motionManifest": "/xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json"
+  }
+}
