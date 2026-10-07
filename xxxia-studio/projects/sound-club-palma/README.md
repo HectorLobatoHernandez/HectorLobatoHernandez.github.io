@@ -40,8 +40,8 @@ Current promoted documented video is stored as REMOTE_ONLY and referenced by sta
 The public case now uses a metadata-driven React scroll narrative.
 
 Canonical files:
-- `05_metadata/project-media.json` — schema v2 / 12 classified assets.
-- `05_metadata/visual-story.json` — 7-scene narrative order and copy.
+- `05_metadata/project-media.json` — schema v2 / 8 classified public assets.
+- `05_metadata/visual-story.json` — 8-scene narrative order and copy.
 - `assets/js/sound-club-story.js` — runtime.
 - `assets/css/sound-club-story.css` — sticky architectural presentation layer.
 
@@ -51,9 +51,7 @@ Promoted generated boards:
 - SC04 DJ booth exploded.
 - SC05 lighting 2300K.
 
-Promoted documented videos:
-- general project footage.
-- control / programming.
-- finished interior atmosphere.
-
-The SC01 generated-motion prototype remains WAITING and is not exposed as a completed output.
+Private source policy:
+- User-supplied photos and videos are PRIVATE_REFERENCE_ONLY.
+- They are not published, linked from the public case, or used as provider motion references without explicit approval.
+- New generated motion should be driven from verified CAD/SKP geometry and approved visual references.
