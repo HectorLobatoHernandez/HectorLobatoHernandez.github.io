@@ -1,0 +1,62 @@
+name: CV Editorial Variants QA
+on:
+  pull_request:
+    paths:
+      - 'cv/**'
+      - 'skills/cv-editorial-architecture/**'
+      - 'skills/scroll-world/**'
+      - 'skills/manifest.json'
+      - 'start/cv.html'
+      - 'start/index.html'
+      - 'index.html'
+      - '.github/workflows/cv-editorial-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  editorial-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Syntax and skill checks
+        run: |
+          node --check cv/reveal.js
+          node --check cv/tests/visual-qa.mjs
+          node --check skills/scroll-world/references/scrub-engine.js
+          python3 - <<'PY'
+          import json,glob,xml.etree.ElementTree as ET
+          m=json.load(open('skills/manifest.json',encoding='utf-8'))
+          assert {'scroll-world','cv-editorial-architecture'} <= {x['name'] for x in m['skills']}
+          for p in glob.glob('cv/world-assets/*.svg'): ET.parse(p)
+          assert len(glob.glob('cv/world-assets/*.svg'))==4
+          print('Skill manifest and 4 SVG storyboard scenes OK')
+          PY
+          test -s skills/scroll-world/LICENSE
+          test -s skills/scroll-world/SKILL.md
+      - name: Install browser
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static site
+        run: |
+          python3 -m http.server 4186 --directory . > /tmp/cv-editorial-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4186/cv/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/cv-editorial-http.log
+          exit 1
+      - name: Visual and functional QA
+        run: node cv/tests/visual-qa.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cv-editorial-qa
+          path: .qa/cv-editorial/
+          if-no-files-found: ignore
+          retention-days: 15
