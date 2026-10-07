@@ -3,102 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#070b10">
+  <meta name="theme-color" content="#0d1110">
+  <meta name="description" content="RHB STUDIO · plataforma local-first para proyectos, CAD, fabricación, documentación y agentes IA.">
   <title>RHB STUDIO — Héctor Lobato</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../styles.css?v=3">
+  <link rel="stylesheet" href="../assets/css/rhb-studio-case.css?v=1">
 </head>
 <body>
-<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-<header class="header">
-  <div class="shell nav">
-    <a class="mark" href="../index.html">HL</a>
-    <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="primaryNav"><span></span><span></span><span class="sr-only">Menu</span></button>
-    <nav id="primaryNav" class="primary-nav">
-      <a href="../index.html#profile" data-es="Perfil" data-en="Profile">Perfil</a>
-      <a href="../index.html#capabilities" data-es="Sistemas" data-en="Systems">Sistemas</a>
-      <a href="../index.html#projects" data-es="Proyectos" data-en="Projects">Proyectos</a>
-      <a href="../index.html#contact" data-es="Contacto" data-en="Contact">Contacto</a>
-    </nav>
-    <div class="spacer"></div>
-    <div class="lang-switch"><button data-lang-btn="es" class="active">ES</button><button data-lang-btn="en">EN</button></div>
-  </div>
-</header>
-<main>
-<section class="shell hero-slim">
-<a class="back-link" href="../index.html#projects" data-es="← Volver a proyectos" data-en="← Back to projects">← Volver a proyectos</a>
-<p class="eyebrow">ENGINEERING PLATFORM / AI OPERATIONS</p>
-<div class="project-hero">
-  <div data-reveal>
-    <h1>RHB STUDIO</h1>
-    <p class="lead" data-es="Una plataforma interna para convertir una empresa técnica en un sistema coordinado de proyectos, fabricación, CAD, documentación y agentes IA." data-en="An internal platform turning a technical company into a coordinated system of projects, fabrication, CAD, documentation and AI agents.">Una plataforma interna para convertir una empresa técnica en un sistema coordinado de proyectos, fabricación, CAD, documentación y agentes IA.</p>
-    <div class="project-meta">
-      <article class="mini-card"><h4 data-es="Base" data-en="Base">Base</h4><p>Zamora</p></article>
-      <article class="mini-card"><h4 data-es="Rol" data-en="Role">Rol</h4><p data-es="Arquitectura funcional · producto interno · automatización" data-en="Functional architecture · internal product · automation">Arquitectura funcional · producto interno · automatización</p></article>
-      <article class="mini-card"><h4 data-es="Enfoque" data-en="Focus">Enfoque</h4><p>Local-first · modular · auditable</p></article>
-      <article class="mini-card"><h4 data-es="Estado" data-en="Status">Estado</h4><p data-es="En desarrollo activo" data-en="Active development">En desarrollo activo</p></article>
-    </div>
-  </div>
-  <div class="notice" data-reveal>
-    <strong data-es="Objetivo" data-en="Objective">Objetivo</strong>
-    <p data-es="Unificar información, agentes, herramientas CAD, proyectos, outputs y documentación sin convertir la empresa en una colección de aplicaciones aisladas." data-en="Unify information, agents, CAD tools, projects, outputs and documentation without turning the company into a collection of isolated applications.">Unificar información, agentes, herramientas CAD, proyectos, outputs y documentación sin convertir la empresa en una colección de aplicaciones aisladas.</p>
-  </div>
-</div>
-</section>
-
-<section class="section shell visual-case" data-reveal>
-  <figure class="case-figure">
-    <img src="../assets/visuals/rhb-studio-system.svg" alt="Arquitectura de RHB STUDIO" loading="eager" decoding="async" style="width:100%;height:auto;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:#070b10">
-    <figcaption class="muted" style="margin-top:12px">Mapa visual del stack actual: proyectos, OmniRoute, OpenClaw, agentes especializados y outputs técnicos.</figcaption>
-  </figure>
-</section>
-
-<section class="section shell">
-  <p class="kicker" data-es="01 — ARQUITECTURA DEL SISTEMA" data-en="01 — SYSTEM ARCHITECTURE">01 — ARQUITECTURA DEL SISTEMA</p>
-  <h3 data-es="Una capa de orquestación entre personas, agentes y herramientas." data-en="An orchestration layer between people, agents and tools.">Una capa de orquestación entre personas, agentes y herramientas.</h3>
-  <div class="system-map" data-reveal>
-    <div class="map-row">
-      <div class="map-node"><small>INPUT</small><strong>Projects / Images / Requirements</strong></div>
-      <div class="map-node"><small>ROUTING</small><strong>OmniRoute</strong></div>
-      <div class="map-node"><small>AGENTS</small><strong>OpenClaw + specialist agents</strong></div>
-      <div class="map-node"><small>OUTPUT</small><strong>CAD / Docs / Budgets / Visuals</strong></div>
-    </div>
-    <div class="map-row">
-      <div class="map-node"><small>CONTROL</small><strong>NEXO Core / health / state</strong></div>
-      <div class="map-node"><small>PROJECT DATA</small><strong>Project folders + versioning</strong></div>
-      <div class="map-node"><small>EXECUTION</small><strong>Scripts / local services</strong></div>
-      <div class="map-node"><small>REVIEW</small><strong>Human approval + QA</strong></div>
-    </div>
-  </div>
-  <div class="project-callout" data-reveal>
-    <article><h4 data-es="Principio" data-en="Principle">Principio</h4><p data-es="Antes de automatizar, entender el proceso existente; después modularizarlo para poder sustituir componentes sin romper el sistema." data-en="Understand the existing process before automating it; then modularize it so components can be replaced without breaking the system.">Antes de automatizar, entender el proceso existente; después modularizarlo para poder sustituir componentes sin romper el sistema.</p></article>
-    <article><h4 data-es="Valor" data-en="Value">Valor</h4><p data-es="Menos trabajo repetitivo, mayor trazabilidad y una memoria operativa de proyectos que puede crecer con la empresa." data-en="Less repetitive work, greater traceability and an operational project memory that can grow with the company.">Menos trabajo repetitivo, mayor trazabilidad y una memoria operativa de proyectos que puede crecer con la empresa.</p></article>
-  </div>
-</section>
-
-<section class="section shell">
-  <p class="kicker" data-es="02 — MÓDULOS" data-en="02 — MODULES">02 — MÓDULOS</p>
-  <div class="journey-grid">
-    <article class="journey-card" data-reveal><h4>Photo → CAD</h4><p data-es="Transformación del levantamiento visual en geometría editable y verificable." data-en="Transforming visual surveys into editable, verifiable geometry.">Transformación del levantamiento visual en geometría editable y verificable.</p></article>
-    <article class="journey-card" data-reveal><h4>Project Core</h4><p data-es="Estado, documentación, decisiones, versiones y entregables por proyecto." data-en="State, documentation, decisions, versions and deliverables per project.">Estado, documentación, decisiones, versiones y entregables por proyecto.</p></article>
-    <article class="journey-card" data-reveal><h4>Agent Routing</h4><p data-es="Asignación de tareas al agente y modelo apropiado según disciplina." data-en="Routing tasks to the appropriate agent and model by discipline.">Asignación de tareas al agente y modelo apropiado según disciplina.</p></article>
-    <article class="journey-card" data-reveal><h4>Documentation</h4><p data-es="Memorias, BOM, presupuestos, fichas y documentación de obra." data-en="Technical reports, BOMs, budgets, sheets and site documentation.">Memorias, BOM, presupuestos, fichas y documentación de obra.</p></article>
-    <article class="journey-card" data-reveal><h4>Health / Ops</h4><p data-es="Monitorización de servicios locales, puertos, latencia y estado." data-en="Monitoring local services, ports, latency and state.">Monitorización de servicios locales, puertos, latencia y estado.</p></article>
-    <article class="journey-card" data-reveal><h4>Visual / AI</h4><p data-es="Renders, material de cliente, comunicación visual y automatización creativa." data-en="Renders, client material, visual communication and creative automation.">Renders, material de cliente, comunicación visual y automatización creativa.</p></article>
-  </div>
-</section>
-
-<section class="section shell">
-  <p class="kicker" data-es="03 — ROADMAP VISUAL" data-en="03 — VISUAL ROADMAP">03 — ROADMAP VISUAL</p>
-  <div class="gallery-panel">
-    <div class="placeholder"><strong>Architecture</strong><span data-es="Mapa completo de módulos" data-en="Complete module map">Mapa completo de módulos</span></div>
-    <div class="placeholder"><strong>CAD Agent</strong><span data-es="Photo2CAD / editor" data-en="Photo2CAD / editor">Photo2CAD / editor</span></div>
-    <div class="placeholder"><strong>Operations</strong><span data-es="Health, logs y control" data-en="Health, logs and control">Health, logs y control</span></div>
-    <div class="placeholder"><strong>Projects</strong><span data-es="Familias y plantillas" data-en="Families and templates">Familias y plantillas</span></div>
-    <div class="placeholder"><strong>Agents</strong><span data-es="Organigrama técnico" data-en="Technical agent map">Organigrama técnico</span></div>
-    <div class="placeholder"><strong>Outputs</strong><span data-es="Entregables trazables" data-en="Traceable deliverables">Entregables trazables</span></div>
-  </div>
-</section></main>
-<footer class="shell footer"><span>© 2026 Héctor Lobato</span><span>RHB STUDIO</span></footer>
-<script src="../script.js?v=3"></script>
-</body></html>
+  <div id="rhbRoot" class="rhb-boot">Loading RHB STUDIO…</div>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="../assets/js/rhb-studio-case.js?v=1"></script>
+</body>
+</html>
