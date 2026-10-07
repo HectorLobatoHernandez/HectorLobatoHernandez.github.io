@@ -1,4 +1,4 @@
-# MAR SALADA React Scroll Case — Project Page Skill v2
+# MAR SALADA React Scroll Case — Project Page Skill v2.1
 
 ## Mission
 
@@ -11,6 +11,7 @@ Use this skill before changing:
 - `assets/css/mar-salada-case-v2.css`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
+- `xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json`
 
 ## Canonical identity
 
@@ -46,6 +47,7 @@ The page must keep these conceptual components:
 - `Card`
 - `Figure`
 - `Story`
+- `MotionStage`
 - project `App`
 
 New page modules should be added as components or metadata, not by inserting unrelated DOM fragments after React mounts.
@@ -155,7 +157,12 @@ The correct sequence is:
 
 `CAD/SKP master → verified geometry → stills / diagrams → frame-locked XXXIA sequence → Scroll World scrub integration`
 
-SC08 remains the intended portfolio scroll master.
+SC08 is the portfolio scroll master and is declared in `motion-manifest.json`.
+
+Runtime rule:
+- while `master.status !== APPROVED` or `master.src` is empty, `MotionStage` must show the public-safe still/diagram fallback;
+- once `APPROVED`, the same React story stage scrubs the master video against scroll position;
+- reduced-motion mode must never depend on video playback.
 
 Do not launch paid render merely because the page supports it. Render only when motion is explicitly approved and geometry/evidence status is appropriate.
 
@@ -170,4 +177,6 @@ Do not launch paid render merely because the page supports it. Render only when 
 7. Reduced-motion path remains fully readable.
 8. No original private media paths exist in public HTML/JS/CSS/JSON.
 9. No generated concept is labelled `VERIFIED_DRAWING`.
-10. Canonical page title remains **MAR SALADA — CLUB DEL MAR PALMA**.
+10. `motion-manifest.json` parses and its `projectId` is `MAR_SALADA_CDM`.
+11. Pending motion exposes no public video element.
+12. Canonical page title remains **MAR SALADA — CLUB DEL MAR PALMA**.
