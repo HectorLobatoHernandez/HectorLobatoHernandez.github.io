@@ -17,3 +17,19 @@
 
 ## Source policy
 The source project is real and executed. Generated frames are visual interpretations for communication and motion design. They are not as-built drawings unless explicitly marked as such.
+
+
+## React Visuals
+
+Interactive public explorer:
+- `projects/sound-club-visuals.html`
+- canonical media registry: `05_metadata/project-media.json`
+- project-specific operating skill: `skills/sound-club-project/SKILL.md`
+
+Current promoted diagrams:
+- zoning / lighting
+- audio distribution
+- KNX / DALI control
+- AV / control architecture
+
+Current promoted documented video is stored as REMOTE_ONLY and referenced by stable media URL.
