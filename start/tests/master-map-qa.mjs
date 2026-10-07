@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const base=process.env.MAP_BASE_URL||'http://127.0.0.1:4187';
 const projectPaths=[
- 'projects/mar-salada.html','projects/gaza-logistics-ia.html','projects/rhb-studio.html',
+ 'projects/sound-club-palma.html','projects/gaza-logistics-ia.html','projects/rhb-studio.html',
  'projects/casa-noah.html','projects/las-dalias-akasha.html',
  'projects/private-tech-residence.html','projects/xxxia-studio.html'
 ];
