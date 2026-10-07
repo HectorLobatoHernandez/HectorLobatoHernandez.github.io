@@ -99,70 +99,7 @@
       "providerMediaId": "49148b16-917b-4e57-9286-3e85315320ce",
       "format": "image/png",
       "note": "Generated lighting/atmosphere communication board centred on warm 2300K architectural lighting."
-    },
-    {
-      "id": "SC-VID-01",
-      "title": "Documented Project Footage",
-      "kind": "VIDEO",
-      "classification": "DOCUMENTED_REFERENCE",
-      "archiveStatus": "REMOTE_ONLY",
-      "publicSafe": true,
-      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/0b5631c4-2cec-44af-b6fe-2f1d48cf5409.mp4",
-      "provider": "Higgsfield media store",
-      "providerMediaId": "0b5631c4-2cec-44af-b6fe-2f1d48cf5409",
-      "originalName": "WhatsApp Video 2026-10-07 at 15.44.54.mp4",
-      "format": "video/mp4",
-      "durationSec": 93.316667,
-      "width": 848,
-      "height": 480,
-      "note": "Real project footage supplied by the project owner. Used as documented reference, not generated motion."
-    },
-    {
-      "id": "SC-MOTION-01",
-      "title": "SC01 Prototype Motion",
-      "kind": "MOTION",
-      "classification": "GENERATED_MOTION",
-      "archiveStatus": "PLANNED",
-      "publicSafe": true,
-      "provider": "Higgsfield",
-      "providerJobId": "7bdd52e8-1372-488f-97a3-244d9e9ada05",
-      "model": "hf_mult_motion_control",
-      "status": "WAITING",
-      "note": "Free-only prototype job. Do not show as completed until a result URL is returned."
-    },
-    {
-      "id": "SC-VID-02",
-      "title": "Control / Programming Walkthrough",
-      "kind": "VIDEO",
-      "classification": "DOCUMENTED_REFERENCE",
-      "archiveStatus": "REMOTE_ONLY",
-      "publicSafe": true,
-      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/f52b39de-933b-4f9b-8b8f-70710537082c.mp4",
-      "provider": "Higgsfield media store",
-      "providerMediaId": "f52b39de-933b-4f9b-8b8f-70710537082c",
-      "originalName": "WhatsApp Video 2026-10-07 at 15.44.51.mp4",
-      "format": "video/mp4",
-      "durationSec": 58.266667,
-      "width": 848,
-      "height": 480,
-      "note": "Real project footage showing control/programming operation. Documented reference."
-    },
-    {
-      "id": "SC-VID-03",
-      "title": "Interior Atmosphere / Final Space",
-      "kind": "VIDEO",
-      "classification": "DOCUMENTED_REFERENCE",
-      "archiveStatus": "REMOTE_ONLY",
-      "publicSafe": true,
-      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/48aa050a-98d2-4d7e-bad6-8f103de731b5.mp4",
-      "provider": "Higgsfield media store",
-      "providerMediaId": "48aa050a-98d2-4d7e-bad6-8f103de731b5",
-      "originalName": "WhatsApp Video 2026-10-07 at 15.47.54.mp4",
-      "format": "video/mp4",
-      "durationSec": 89.733333,
-      "width": 848,
-      "height": 480,
-      "note": "Real walkthrough of the finished interior atmosphere and hospitality lighting."
     }
-  ]
+  ],
+  "privateSourcePolicy": "User-supplied photos/videos are private working references and must not be published or promoted without explicit approval."
 }
