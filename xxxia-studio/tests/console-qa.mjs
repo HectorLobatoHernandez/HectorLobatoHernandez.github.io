@@ -11,7 +11,7 @@ page.on('pageerror',e=>errors.push(String(e)));
 page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
 const res=await page.goto(base+'/xxxia-studio/',{waitUntil:'networkidle'});
 if(!res?.ok())throw new Error('XXXIA console HTTP '+res?.status());
-await page.waitForFunction(()=>window.__XXXIA_CONSOLE__?.pieces===7,{timeout:10000});
+await page.waitForFunction(()=>window.__XXXIA_CONSOLE__?.pieces===8,{timeout:30000});
 const state=await page.evaluate(()=>({
   contract:window.__XXXIA_CONSOLE__,
   jobs:document.querySelectorAll('.job').length,
@@ -25,12 +25,12 @@ await browser.close();
 const failures=[];
 if(state.title!=='XXXIA STUDIO — Production Console')failures.push('title mismatch');
 if(state.contract?.schemaVersion!==2)failures.push('contract schema mismatch');
-if(state.contract?.pieces!==7)failures.push('expected 7 production pieces');
+if(state.contract?.pieces!==8)failures.push('expected 8 production pieces');
 if(state.contract?.jobs!==0)failures.push('private-reference provider jobs must not be registered');
 if(state.contract?.boards!==4)failures.push('expected 4 tracked generated boards');
 if(state.contract?.available!==4)failures.push('expected 4 available generated boards');
-if(state.contract?.media!==8)failures.push('expected 8 public media assets');
-if(state.jobs!==7)failures.push('expected 7 rendered job cards');
+if(state.contract?.media!==10)failures.push('expected 10 public media assets');
+if(state.jobs!==8)failures.push('expected 8 rendered job cards');
 if(state.pipeline!==7)failures.push('pipeline stages mismatch');
 if(!state.publicCase)failures.push('public Sound Club route missing');
 if(state.overflow)failures.push('horizontal overflow');
