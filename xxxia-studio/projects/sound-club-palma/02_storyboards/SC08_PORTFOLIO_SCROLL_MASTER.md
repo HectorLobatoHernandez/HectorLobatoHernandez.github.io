@@ -1,77 +1,120 @@
 # SC08 — PORTFOLIO SCROLL MASTER
 
-## Objective
+## Status
 
-Create the future motion spine for the public React case:
-`projects/mar-salada.html`.
+**BRIEF_READY / PENDING_VERIFIED_GEOMETRY**
 
-This is not a request to render now. Status is **BRIEF_READY**.
+Target public surface:
+`projects/mar-salada.html`
+
+The React page is already motion-ready. Until a master MP4 is approved, it falls back to the current public-safe still/diagram story.
+
+## Purpose
+
+SC08 is the single motion spine for the MAR SALADA case study. It must explain the project as **architecture + systems + fabrication + as-built engineering**, not as a music-video montage.
 
 ## Source hierarchy
 
 1. VERIFIED CAD/SKP master geometry.
-2. Verified technical drawings.
-3. Approved generated boards.
-4. Private source photos/videos only as non-public visual reference; never publish or embed originals.
+2. Verified technical drawings and dimensions.
+3. Approved generated boards/diagrams.
+4. Private source photos/videos only as non-public visual reference.
 
-Do not promote recovered/autosave CAD as master without QA.
+Original user-supplied photos/videos are `PRIVATE_REFERENCE_ONLY`: never publish, commit, embed or link them.
 
-## Narrative
+Recovered/autosave CAD files are not authoritative until QA promotes them.
 
-Continuous architectural journey, approximately 32 s master:
-1. exterior / venue context → interior volume;
-2. room shell separates into technical layers;
-3. audio system highlights by zone;
-4. central DJ booth decomposes into structure / finish / equipment / light;
-5. camera rises to suspended pipe system;
-6. close technical reveal of spring isolator + M8 rod + clamp + Ø48.3 mm tube;
-7. lighting transitions to warm 2300 K portfolio scene;
-8. KNX/DALI and audio/control paths converge;
-9. layers reassemble into the complete venue.
+## Master format
+
+- ID: `SC08-MASTER`
+- Classification: `GENERATED_MOTION`
+- Desktop: 16:9
+- Target duration: ~36 s
+- Audio: muted by default
+- Page behaviour: scroll-scrub
+- Motion architecture: one continuous architectural journey, or frame-locked legs assembled into one master
+- Current page manifest: `05_metadata/motion-manifest.json`
+
+## Timeline / story mapping
+
+| Time | Story media | Sequence |
+|---|---|---|
+| 00–04 s | SC-BOARD-01 | Architecture / venue overview |
+| 04–08 s | SC-BOARD-02 | Building separates into technical layers |
+| 08–11 s | SC-PLAN-01 | Lighting / hospitality zoning |
+| 11–15 s | SC-BOARD-04 | Central DJ booth exploded |
+| 15–18 s | SC-DETAIL-04 | Documented DJ booth dimensions |
+| 18–22 s | SC-BOARD-05 | 2300 K portfolio lighting transition |
+| 22–26 s | SC-PLAN-02 | Audio distribution / Interior vs Exterior |
+| 26–29 s | SC-PLAN-03 | KNX + DALI control topology |
+| 29–33 s | SC-DETAIL-07 | Spring isolator / threaded rod / clamp / Ø48.3 mm tube |
+| 33–36 s | SC-SYS-01 | Systems converge and venue reassembles |
 
 ## Camera grammar
 
-Preferred once geometry is verified:
-- continuous walkthrough / architectural glide;
+Preferred camera once geometry is verified:
+
+- continuous architectural glide;
+- forward continuity at every seam;
+- restrained crane / lateral / orbit only inside a leg;
+- final ~1 s of every leg settles into the same slow forward drift used by the next leg;
+- preserve real scale and room proportions;
+- no jump cuts;
 - no aggressive gaming orbit;
-- calm camera acceleration;
-- preserve scale;
-- frame-identical seams if built as multiple clips;
-- 16:9 desktop master first.
+- no fake people;
+- no invented logos/signage;
+- no impossible wall/ceiling deformation unless explicitly used to explain an exploded layer.
+
+For multi-clip generation, every handoff must be frame-locked or crossfaded only after QA.
 
 ## Visual language
 
-- architectural/editorial;
+- architecture/editorial;
 - warm timber;
 - dark metal;
 - mineral/concrete surfaces;
 - muted brass technical linework;
 - restrained cyan/teal external contrast;
-- 2300 K portfolio lighting;
-- no invented signage or logos.
+- 2300 K only as **portfolio visualization language**;
+- technical/as-built CCT values remain separate.
 
-## Technical overlays
+## Technical overlays allowed
 
-Use overlays only where they add evidence:
+Only factual overlays already supported by the project data:
+
 - Ecler MIMO88;
 - Lynx GTX DSP;
 - Gira X1;
 - KNX + DALI;
-- Ø48.3 mm suspended structural pipe;
-- DJ booth base dimensions only when shown as documented data.
+- Interior / Exterior zones;
+- Restaurant / Club presets;
+- suspended structural pipe Ø48.3 mm as current documented priority;
+- spring anti-vibration suspension;
+- threaded rod / clamp;
+- DJ booth documented base dimensions.
 
-## Evidence labels
+Do not show Ø63 mm as the final installed value; retain it only as a documented preliminary conflict.
 
-Generated motion: `GENERATED_MOTION`.
-Never label the motion as as-built geometry until it is driven from verified CAD/SKP.
+## Promotion gate
+
+SC08 cannot move to `APPROVED` until:
+
+1. DWG/SKP units, origin and alignment are checked;
+2. master geometry is identified;
+3. generated technical labels are reviewed;
+4. scroll-scrub timing is checked on desktop and mobile fallback;
+5. public media registry gets an explicit `publicSafe: true` entry.
 
 ## Output contract
 
-When rendered:
-- desktop MP4/H.264, muted by default in page;
+When rendered and approved:
+
+- H.264 MP4 desktop master;
 - poster frame;
 - stable media ID;
-- provider/job provenance;
-- add to `project-media.json`;
-- frame/scrub QA before promotion;
-- optional portrait chain only after explicit approval.
+- provider/model/job provenance;
+- exact duration;
+- no original private media embedded;
+- add master URL to `motion-manifest.json`;
+- add public-safe asset to `project-media.json`;
+- run MAR SALADA React Case QA before merge.
