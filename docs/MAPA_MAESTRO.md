@@ -30,7 +30,7 @@ flowchart TD
 1. Portada editorial (Atelier + jerarquía Swiss).
 2. Perfil profesional y trayectoria. Revisar fechas, roles, empleadores y formación antes de publicar afirmaciones nuevas.
 3. Competencias: integración AV/DSP, KNX/DALI, redes/IT-OT, CAD y fabricación, desarrollo web/GIS, automatización y agentes.
-4. Archivo de proyectos: **Sound Club, Palma, GAZA, RHB STUDIO, Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO**, con ficha fuente.
+4. Archivo de proyectos: **MAR SALADA — CLUB DEL MAR PALMA, GAZA, RHB STUDIO, Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO**, con ficha fuente.
 5. Storytelling por scroll: imágenes existentes de **cada proyecto**, planos y diagramas reales etiquetados. No sustituir fotografías pendientes por imágenes fotorrealistas ficticias.
 6. Método: levantamiento → proyecto → ejecución → commissioning → documentación.
 7. Contacto y un CV imprimible ATS (pendiente; no confundir una web narrativa con un CV ATS).
@@ -76,9 +76,21 @@ flowchart LR
 
 **Entorno**: el runtime de OmniRoute/OpenClaw/NEXO/CAD es **local**. Su capacidad y salud no son verificables desde GitHub Pages. El portal público es un escaparate, no un escritorio remoto ni un simulador que mienta sobre conectividad.
 
+**Skill pública de página:** `skills/rhb-studio-portfolio/SKILL.md`.
+
 **Antes de presentar como operativo en nube:** repositorio sincronizado, configuración sin secretos, backend autorizado, pruebas con un proyecto de ejemplo real y despliegue seguro con autenticación.
 
-## 4. Manuales y QA
+## 4. Skills de proyecto / portfolio
+
+- `skills/mar-salada-react-scroll/SKILL.md`: MAR SALADA, React/Scroll/3D/media.
+- `skills/rhb-studio-portfolio/SKILL.md`: RHB STUDIO, ingeniería local-first y fabricación.
+- `skills/xxxia-studio-portfolio/SKILL.md`: XXXIA STUDIO, producción visual/provenance.
+- `skills/akasha-project/SKILL.md`: Las Dalias / Akasha, reconstrucción evidence-first.
+- `skills/casa-noah-project/SKILL.md`: Casa NOAH, reconstrucción residencial privacy-first.
+
+Cada página conserva su propio lenguaje y frontera factual; no se aplica una plantilla visual única a todos los proyectos.
+
+## 5. Manuales y QA
 
 | Sector | Guía | Qué debe comprobarse |
 | --- | --- | --- |
@@ -89,7 +101,7 @@ flowchart LR
 
 **Definición de terminado por sector:** entrada directa + módulo funcional verificable + datos/procedencia + manual + QA reproducible + fallback o error visible. Un apartado conceptual no se rotula «production-ready».
 
-## 5. Backlog priorizado
+## 6. Backlog priorizado
 
 **P0 — confianza y accesibilidad:** conservar el inventario factual del CV; mapear desde la portada sectorial a manuales; QA de enlaces; etiquetas PUBLIC/DEMO/LOCAL.
 
@@ -101,6 +113,6 @@ flowchart LR
 
 **P2 — producto:** puesta en marcha por usuario no técnico, versiones, exportaciones, controles de permisos, analítica de errores y accesibilidad.
 
-## Política de imágenes y scroll
+## 7. Política de imágenes y scroll
 
 Una experiencia tipo Apple puede usar `position:sticky`, `IntersectionObserver` y secuencias de imágenes/diagramas **reales o rotulados como conceptuales**. Para vídeos seamless de `scroll-world`, consultar licencia, presupuesto y pipeline de frames; el storyboard gratuito actual no es un vuelo cinematográfico. No iniciar servicios de generación de pago sin autorización.
