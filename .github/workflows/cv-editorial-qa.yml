@@ -4,6 +4,7 @@ on:
     paths:
       - 'cv/**'
       - 'skills/cv-editorial-architecture/**'
+      - 'skills/reactbits-portfolio-components/**'
       - 'skills/scroll-world/**'
       - 'skills/manifest.json'
       - 'start/cv.html'
