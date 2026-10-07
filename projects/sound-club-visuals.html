@@ -48,6 +48,16 @@ function App(){
  if(!data)return html`<div className="loading">Loading Sound Club media registry…</div>`;
  const active=data.items.find(x=>x.id===activeId)||items[0];
  const filters=['ALL','PLAN','SYSTEM','VIDEO','MOTION'];
+ window.__SOUND_CLUB_VISUALS__={
+   schemaVersion:1,
+   mediaSchema:data.schemaVersion,
+   total:data.items.length,
+   publicItems:data.items.filter(x=>x.publicSafe).length,
+   plans:data.items.filter(x=>x.publicSafe&&x.kind==='PLAN').length,
+   videos:data.items.filter(x=>x.publicSafe&&x.kind==='VIDEO').length,
+   motionWaiting:data.items.filter(x=>x.kind==='MOTION'&&x.status==='WAITING').length,
+   activeId:active?.id||null
+ };
  return html`<div>
    <div className="toolbar">${filters.map(f=>html`<button key=${f} className=${'filter '+(filter===f?'active':'')} onClick=${()=>setFilter(f)}>${f}</button>`)}</div>
    <div className="workspace">
