@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0d0b">
+<meta name="description" content="Sound Club, Palma — React Visuals project explorer">
+<title>Sound Club, Palma — React Visuals</title>
+<style>
+:root{--bg:#090c0a;--panel:#111713;--panel2:#161e19;--ink:#f4eee4;--muted:#8b978f;--line:#2e3932;--warm:#c9955a;--warm2:#efc27a;--sage:#99b48d;--blue:#7597a8;--danger:#d2756b}
+*{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 74% 10%,#1b211b 0,transparent 25%),var(--bg);color:var(--ink);font:14px/1.5 Inter,Arial,sans-serif}
+a{color:inherit}.shell{width:min(1540px,95vw);margin:auto}.top{position:sticky;top:0;z-index:30;background:#090c0ae8;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}.top .in{height:66px;display:flex;align-items:center;gap:20px}.brand{font:700 10px monospace;letter-spacing:.16em;text-decoration:none;text-transform:uppercase}.crumb{color:var(--muted);font:600 9px monospace;text-transform:uppercase}.top nav{margin-left:auto;display:flex;gap:16px}.top nav a{font:600 9px monospace;text-decoration:none;text-transform:uppercase;color:var(--muted)}
+.hero{padding:72px 0 42px;display:grid;grid-template-columns:1.1fr .9fr;gap:7vw;border-bottom:1px solid var(--line)}.eyebrow{font:700 9px monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--warm)}h1{font:500 clamp(58px,8vw,132px)/.82 Arial,sans-serif;letter-spacing:-.07em;margin:13px 0 24px}.hero p{max-width:68ch;color:var(--muted);font-size:16px}.hero-note{border-left:1px solid var(--line);padding-left:26px;align-self:end}.hero-note strong{display:block;font-size:24px;margin:8px 0}.hero-note span{color:var(--muted)}
+.lab{padding:34px 0 70px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.filter{appearance:none;border:1px solid var(--line);background:#0d120f;color:var(--muted);padding:9px 12px;font:700 9px monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.filter.active{color:var(--ink);border-color:#725d44;background:#17130f}
+.workspace{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px}.rail{border:1px solid var(--line);background:#0c110e;padding:10px;max-height:790px;overflow:auto}.asset{width:100%;text-align:left;border:1px solid transparent;background:transparent;color:var(--ink);padding:14px;cursor:pointer;display:grid;gap:7px;border-bottom-color:#1f2922}.asset:hover{background:#111713}.asset.active{background:#171f1a;border-color:#66523b}.asset-top{display:flex;justify-content:space-between;gap:10px}.asset-id{font:700 9px monospace;color:var(--warm)}.kind{font:700 8px monospace;color:#728078}.asset h3{font-size:16px;margin:0;letter-spacing:-.02em}.asset p{font-size:11px;color:var(--muted);margin:0}.viewer{min-width:0;border:1px solid var(--line);background:#060806;position:relative;min-height:760px;display:flex;flex-direction:column}.viewer-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:20px 22px;border-bottom:1px solid var(--line);background:#101512}.viewer-title h2{font-size:26px;margin:3px 0 5px;letter-spacing:-.04em}.viewer-title p{margin:0;color:var(--muted);font-size:12px}.badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.badge{display:inline-flex;border:1px solid var(--line);padding:6px 9px;font:700 8px monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}.badge.generated{color:var(--warm2);border-color:#684f34}.badge.reference{color:var(--sage);border-color:#4a6147}.badge.remote{color:var(--blue);border-color:#435a65}
+.stage{flex:1;display:grid;place-items:center;overflow:hidden;position:relative;background-image:linear-gradient(#101710 1px,transparent 1px),linear-gradient(90deg,#101710 1px,transparent 1px);background-size:32px 32px}.stage img{width:100%;height:100%;max-height:650px;object-fit:contain;display:block;background:#090d0a}.stage video{width:100%;height:auto;max-height:650px;background:#000}.no-output{padding:60px;text-align:center;color:var(--muted);max-width:650px}.no-output b{display:block;color:var(--ink);font-size:22px;margin-bottom:9px}.meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:#101512}.meta div{padding:14px 18px;border-right:1px solid var(--line)}.meta div:last-child{border-right:0}.meta small{display:block;font:700 8px monospace;color:#69766d;text-transform:uppercase}.meta b{display:block;margin-top:4px;font-size:11px;word-break:break-word}.notice{margin-top:18px;padding:18px;border:1px solid #5c4935;background:#17120d;color:#d5b487}.notice b{font-family:monospace}.below{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.card{border:1px solid var(--line);background:var(--panel);padding:20px}.card h3{font-size:21px;margin:5px 0 10px}.card p{color:var(--muted);margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.btn{border:1px solid var(--line);padding:9px 11px;text-decoration:none;font:700 8px monospace;text-transform:uppercase}.btn:hover{background:#ffffff0c}
+.loading{padding:100px 20px;text-align:center;color:var(--muted);border:1px solid var(--line)}.error{color:var(--danger)}.foot{padding:26px 0 44px;display:flex;justify-content:space-between;color:#69746d;font:600 9px monospace;text-transform:uppercase}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}.hero-note{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.workspace{grid-template-columns:1fr}.rail{max-height:none;display:grid;grid-template-columns:repeat(2,1fr)}.viewer{min-height:600px}.below{grid-template-columns:1fr}}@media(max-width:650px){.rail{grid-template-columns:1fr}.meta{grid-template-columns:1fr 1fr}.meta div:nth-child(2){border-right:0}.top .crumb{display:none}.top nav a:nth-child(n+2){display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="shell in"><a class="brand" href="sound-club-palma.html">Sound Club, Palma</a><span class="crumb">/ React Visuals</span><nav><a href="../xxxia-studio/">XXXIA Console</a><a href="xxxia-studio.html">XXXIA Studio</a><a href="../cv/dossier.html">Dossier</a></nav></div></header>
+<section class="hero shell">
+<div><div class="eyebrow">React Visuals · project explorer</div><h1>Plans.<br>Systems.<br>Motion.</h1><p>Visor técnico del proyecto: diagramas versionados, arquitectura de audio/control y vídeo real en una misma interfaz. El sistema diferencia expresamente documentación, diagramas generados y motion generado.</p></div>
+<div class="hero-note"><div class="eyebrow">Current evidence boundary</div><strong>No verified CAD floor plan in archive yet.</strong><span>Los tres planos actuales son esquemas de proyecto basados en inventario y lógica documentada. Se sustituirán por el CAD/PDF verificado cuando esté disponible.</span></div>
+</section>
+<main class="lab shell"><div id="root" class="loading">Loading Sound Club media registry…</div></main>
+<footer class="foot shell"><span>Sound Club, Palma · React Visuals</span><span>XXXIA STUDIO · 2026</span></footer>
+<script type="module">
+import React,{useEffect,useMemo,useState} from 'https://esm.sh/react@19.2.0';
+import {createRoot} from 'https://esm.sh/react-dom@19.2.0/client';
+import htm from 'https://esm.sh/htm@3.1.1';
+const html=htm.bind(React.createElement);
+const DATA='../xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json';
+
+const cls=(c)=>c==='DOCUMENTED_REFERENCE'?'reference':'generated';
+const archiveCls=(a)=>a==='REMOTE_ONLY'?'remote':'';
+
+function App(){
+ const [data,setData]=useState(null);
+ const [error,setError]=useState('');
+ const [filter,setFilter]=useState('ALL');
+ const [activeId,setActiveId]=useState(null);
+ useEffect(()=>{fetch(DATA,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(d=>{setData(d);const first=d.items.find(x=>x.publicSafe&&x.src);setActiveId(first?.id||null)}).catch(e=>setError(String(e)))},[]);
+ const items=useMemo(()=>data?.items?.filter(x=>x.publicSafe&&(filter==='ALL'||x.kind===filter))||[],[data,filter]);
+ useEffect(()=>{if(items.length&&!items.some(x=>x.id===activeId))setActiveId(items.find(x=>x.src)?.id||items[0].id)},[filter,data]);
+ if(error)return html`<div className="loading error">Media registry failed: ${error}</div>`;
+ if(!data)return html`<div className="loading">Loading Sound Club media registry…</div>`;
+ const active=data.items.find(x=>x.id===activeId)||items[0];
+ const filters=['ALL','PLAN','SYSTEM','VIDEO','MOTION'];
+ return html`<div>
+   <div className="toolbar">${filters.map(f=>html`<button key=${f} className=${'filter '+(filter===f?'active':'')} onClick=${()=>setFilter(f)}>${f}</button>`)}</div>
+   <div className="workspace">
+     <aside className="rail">
+       ${items.map(item=>html`<button key=${item.id} className=${'asset '+(active?.id===item.id?'active':'')} onClick=${()=>setActiveId(item.id)}>
+         <div className="asset-top"><span className="asset-id">${item.id}</span><span className="kind">${item.kind}</span></div>
+         <h3>${item.title}</h3>
+         <p>${item.classification.replaceAll('_',' ')} · ${item.archiveStatus}</p>
+       </button>`)}
+     </aside>
+     <section className="viewer">
+       <div className="viewer-head">
+         <div className="viewer-title"><span className="eyebrow">${active?.id} / ${active?.kind}</span><h2>${active?.title}</h2><p>${active?.note||''}</p></div>
+         <div className="badges"><span className=${'badge '+cls(active?.classification)}>${active?.classification}</span><span className=${'badge '+archiveCls(active?.archiveStatus)}>${active?.archiveStatus}</span></div>
+       </div>
+       <div className="stage">
+         ${active?.kind==='VIDEO'&&active?.src?html`<video key=${active.id} controls preload="metadata" playsInline src=${active.src}></video>`:
+           active?.src?html`<img key=${active.id} src=${active.src} alt=${active.title}/>`:
+           html`<div className="no-output"><b>${active?.status||'No output yet'}</b><span>${active?.note||'This production slot is tracked but has no promoted public output.'}</span></div>`}
+       </div>
+       <div className="meta">
+         <div><small>Kind</small><b>${active?.kind||'—'}</b></div>
+         <div><small>Classification</small><b>${active?.classification||'—'}</b></div>
+         <div><small>Archive</small><b>${active?.archiveStatus||'—'}</b></div>
+         <div><small>Provider / model</small><b>${active?.provider||active?.model||'GitHub SVG'}</b></div>
+       </div>
+     </section>
+   </div>
+   <div className="notice"><b>NOT AS-BUILT:</b> Los planos SVG actuales representan zonas, recuentos y topologías documentadas, pero no afirman cotas ni geometría CAD verificada.</div>
+   <div className="below">
+     <article className="card"><div className="eyebrow">Project skill</div><h3>One source of truth for agents.</h3><p>La skill específica del proyecto fija identidad pública, inventario, clasificación de evidencia, rutas y reglas de promoción de media.</p><div className="actions"><a className="btn" href="../skills/sound-club-project/SKILL.md">Open project skill</a><a className="btn" href="../xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json">Media registry</a></div></article>
+     <article className="card"><div className="eyebrow">XXXIA pipeline</div><h3>From reference to generated motion.</h3><p>Storyboards SC01–SC07, provider jobs, QA y archive status siguen gestionándose desde XXXIA STUDIO.</p><div className="actions"><a className="btn" href="../xxxia-studio/">Production Console</a><a className="btn" href="sound-club-palma.html">Public case</a></div></article>
+   </div>
+ `};
+}
+createRoot(document.getElementById('root')).render(html`<${App}/>`);
+</script>
+</body></html>
