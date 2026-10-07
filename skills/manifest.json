@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.6",
+  "version": "2026-10-07.7",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -134,6 +134,20 @@
       "path": "skills/xxxia-studio-portfolio/SKILL.md",
       "license": "project-internal",
       "focus": "public XXXIA STUDIO visual-production case, provenance, media manifests and project-specific generated assets"
+    },
+    {
+      "name": "akasha-project",
+      "source": "local Hector portfolio",
+      "path": "skills/akasha-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "evidence-first reconstruction of Las Dalias / Akasha with project-specific visual and technical boundaries"
+    },
+    {
+      "name": "casa-noah-project",
+      "source": "local Hector portfolio",
+      "path": "skills/casa-noah-project/SKILL.md",
+      "license": "project-internal",
+      "focus": "privacy-first reconstruction of Casa NOAH residential systems case"
     }
   ]
 }
