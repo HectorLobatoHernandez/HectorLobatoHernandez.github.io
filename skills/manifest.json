@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.4",
+  "version": "2026-10-07.5",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -112,6 +112,13 @@
       "path": "skills/mar-salada-react-scroll/SKILL.md",
       "license": "project-internal",
       "focus": "React-first architecture/editorial long-scroll case study; composes Mar Salada data, React Visuals, Scroll World and XXXIA"
+    },
+    {
+      "name": "reactbits-portfolio-components",
+      "source": "DavidHDev/react-bits + local integration policy",
+      "path": "skills/reactbits-portfolio-components/SKILL.md",
+      "license": "MIT upstream / project-internal integration",
+      "focus": "Model Viewer, Bounce Cards, Tech Text, Particles and Logo Loop for technical portfolio surfaces"
     }
   ]
 }
