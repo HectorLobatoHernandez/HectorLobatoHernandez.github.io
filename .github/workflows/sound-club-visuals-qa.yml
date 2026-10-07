@@ -75,6 +75,14 @@ jobs:
           assert len(mo['master']['segments'])==10
           assert {x['storyMediaId'] for x in mo['master']['segments']}=={x['mediaId'] for x in s['scenes']}
           if mo['master']['status']!='APPROVED': assert not mo['master'].get('src')
+          cad=json.load(open('docs/projects/mar-salada/cad-source-manifest.json'))
+          assert cad['projectId']=='MAR_SALADA_CDM'
+          assert cad['sourcePolicy']=='PRIVATE_SOURCE_FILES_NOT_COMMITTED'
+          assert len(cad['files'])==14
+          dup=[x for x in cad['dedupe'] if x['group']=='A'][0]
+          assert dup['count']==3
+          assert sum(1 for x in cad['files'] if x['status']=='DUPLICATE_GROUP_A')==3
+          assert all(not x['name'].lower().endswith('.skp') for x in cad['files'])
           for p in [
             'sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg',
             'sound-club-system.svg','mar-salada-suspension-detail.svg','mar-salada-dj-booth-plan.svg'
