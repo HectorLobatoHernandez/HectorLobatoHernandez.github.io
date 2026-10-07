@@ -162,11 +162,11 @@
   }
 
   const CONCEPTS=[
-    {id:'systems',label:'Sistemas y control',desc:'Arquitectura, interfaces y commissioning',left:'18%',top:'18%',labelStyle:{left:'-152px',top:'52px'}},
-    {id:'industrial',label:'Operación industrial',desc:'Campo, procesos y diagnóstico',left:'12%',top:'70%',labelStyle:{left:'-164px',top:'54px'}},
-    {id:'architecture',label:'Arquitectura técnica',desc:'Espacio, planos y coordinación',left:'82%',top:'15%',labelStyle:{left:'104px',top:'33px'}},
-    {id:'av',label:'AV y automatización',desc:'DSP, KNX, DALI y experiencia',left:'91%',top:'51%',labelStyle:{left:'104px',top:'30px'}},
-    {id:'strategy',label:'Producto + IA',desc:'Software, agentes y sistemas',left:'79%',top:'84%',labelStyle:{left:'104px',top:'42px'}}
+    {id:'systems',label:'Sistemas y control',desc:'Arquitectura, interfaces y commissioning',left:'18%',top:'18%',labelStyle:{marginLeft:'-156px',marginTop:'42px'}},
+    {id:'industrial',label:'Operación industrial',desc:'Campo, procesos y diagnóstico',left:'12%',top:'70%',labelStyle:{marginLeft:'-168px',marginTop:'38px'}},
+    {id:'architecture',label:'Arquitectura técnica',desc:'Espacio, planos y coordinación',left:'82%',top:'15%',labelStyle:{marginLeft:'72px',marginTop:'24px'}},
+    {id:'av',label:'AV y automatización',desc:'DSP, KNX, DALI y experiencia',left:'91%',top:'51%',labelStyle:{marginLeft:'72px',marginTop:'18px'}},
+    {id:'strategy',label:'Producto + IA',desc:'Software, agentes y sistemas',left:'79%',top:'84%',labelStyle:{marginLeft:'72px',marginTop:'28px'}}
   ];
   function PortraitCarousel(){
     const [active,setActive]=useState(0);
@@ -234,7 +234,7 @@
             h('button',{className:'rb-menu-trigger',type:'button',onClick:()=>setMenu(true),'aria-expanded':menu?'true':'false'},h(MenuDots),'Menú')
           )
         ),
-        h(StaggeredMenu,{open:menu,setOpen:menuValue=>setMenu(menuValue)}),
+        h(StaggeredMenu,{open:menu,setOpen:setMenu}),
         h('div',{className:'rb-stage'},
           h('div',{className:'rb-copy'},
             h('div',{className:'rb-kicker'},'Systems Integration / Automation / IT/OT / AV / AI'),
