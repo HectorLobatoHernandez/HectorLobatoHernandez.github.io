@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "projectId": "MAR_SALADA_CDM",
+  "updatedAt": "2026-10-07",
+  "browserFormat": "glb/gltf",
+  "rawSourcePolicy": "PRIVATE_REFERENCE_ONLY",
+  "note": "Raw SKP/DWG files are never served directly. Promote only verified geometry to optimized GLB/glTF.",
+  "models": [
+    {
+      "id": "MS-MODEL-VENUE",
+      "title": "Venue / Master Architecture",
+      "role": "ARCHITECTURE_MASTER",
+      "status": "PENDING_GLB",
+      "src": null,
+      "posterMediaId": "SC-BOARD-01",
+      "sourceIntent": "verified SKP + architectural DWG",
+      "classification": "PENDING_VERIFIED_GEOMETRY",
+      "default": true
+    },
+    {
+      "id": "MS-MODEL-DJ",
+      "title": "Central DJ Booth",
+      "role": "CUSTOM_FABRICATION",
+      "status": "PENDING_GLB",
+      "src": null,
+      "posterMediaId": "SC-BOARD-04",
+      "sourceIntent": "verified DJ booth CAD/SKP",
+      "classification": "PENDING_VERIFIED_GEOMETRY"
+    },
+    {
+      "id": "MS-MODEL-COUNTER",
+      "title": "Technical Counter / Furniture",
+      "role": "TECHNICAL_FURNITURE",
+      "status": "PENDING_GLB",
+      "src": null,
+      "posterMediaId": "SC-BOARD-02",
+      "sourceIntent": "verified furniture geometry",
+      "classification": "PENDING_VERIFIED_GEOMETRY"
+    },
+    {
+      "id": "MS-MODEL-SUSPENSION",
+      "title": "Suspended Structure / Decoupling",
+      "role": "STRUCTURE_DETAIL",
+      "status": "PENDING_GLB",
+      "src": null,
+      "posterMediaId": "SC-DETAIL-07",
+      "sourceIntent": "verified tube/support geometry",
+      "classification": "PENDING_VERIFIED_GEOMETRY"
+    }
+  ],
+  "promotionGate": [
+    "SKP ingested",
+    "DWG/SKP units and origin aligned",
+    "authoritative geometry promoted",
+    "model simplified/optimized",
+    "GLB/glTF exported",
+    "visual QA and evidence classification passed"
+  ]
+}
