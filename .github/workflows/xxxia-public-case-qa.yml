@@ -1,0 +1,63 @@
+name: XXXIA Public Studio Case QA
+on:
+  pull_request:
+    paths:
+      - 'projects/xxxia-studio.html'
+      - 'assets/js/xxxia-studio-case.js'
+      - 'assets/css/xxxia-studio-case.css'
+      - 'assets/visuals/xxxia-*.svg'
+      - 'xxxia-studio/metadata/public-manifest.json'
+      - 'skills/xxxia-studio-project/**'
+      - '.github/workflows/xxxia-public-case-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  xxxia-public-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate public studio source
+        run: |
+          node --check assets/js/xxxia-studio-case.js
+          node --check xxxia-studio/tests/public-case-qa.mjs
+          python3 - <<'PY'
+          import json,xml.etree.ElementTree as ET
+          s=json.load(open('xxxia-studio/metadata/public-manifest.json',encoding='utf-8'))
+          assert s['studioId']=='XXXIA_STUDIO'
+          assert s['classification']=='PUBLIC_SHOWCASE'
+          assert len(s['pipeline'])==7
+          assert len(s['capabilities'])==6
+          assert s['publicRules']['publishOriginalPrivateMedia'] is False
+          assert s['publicRules']['preserveProvenance'] is True
+          ET.parse('assets/visuals/xxxia-production-flow.svg')
+          ET.parse('assets/visuals/xxxia-provenance.svg')
+          print('XXXIA public manifest/assets OK')
+          PY
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start preview
+        run: |
+          python3 -m http.server 4197 --directory . > /tmp/xxxia-public-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4197/projects/xxxia-studio.html > /dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/xxxia-public-http.log
+          exit 1
+      - name: Run XXXIA public QA
+        run: node xxxia-studio/tests/public-case-qa.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xxxia-public-case-qa
+          path: .qa/xxxia-public/
+          if-no-files-found: ignore
+          retention-days: 15
