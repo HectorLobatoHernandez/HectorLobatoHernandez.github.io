@@ -7,7 +7,9 @@ description: Apply selected React Bits interaction patterns to Hector's technica
 
 ## Source
 
-Upstream: `DavidHDev/react-bits` (MIT).
+Upstream: `DavidHDev/react-bits` at `63a008de65732d73010bd219d25d15c47739bb31`.
+
+Current upstream license: **MIT + Commons Clause License Condition v1.0**. Use inside the portfolio/application is permitted; do not sell, sublicense or redistribute the React Bits components themselves as a component bundle/ported library.
 
 Requested component references:
 
