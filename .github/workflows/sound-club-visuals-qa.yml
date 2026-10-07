@@ -9,11 +9,14 @@ on:
       - 'assets/visuals/mar-salada-*.svg'
       - 'assets/css/mar-salada-case.css'
       - 'assets/js/mar-salada-case.js'
+      - 'assets/css/mar-salada-case-v2.css'
+      - 'assets/js/mar-salada-case-v2.js'
       - 'assets/css/sound-club-react-visuals.css'
       - 'assets/js/sound-club-react-visuals.js'
       - 'skills/mar-salada-project/**'
       - 'skills/mar-salada-react-scroll/**'
       - 'skills/react-visuals/**'
+      - 'skills/reactbits-portfolio-components/**'
       - 'skills/manifest.json'
       - 'xxxia-studio/projects/sound-club-palma/**'
       - 'xxxia-studio/tests/sound-club-visuals-qa.mjs'
@@ -28,11 +31,14 @@ on:
       - 'assets/visuals/mar-salada-*.svg'
       - 'assets/css/mar-salada-case.css'
       - 'assets/js/mar-salada-case.js'
+      - 'assets/css/mar-salada-case-v2.css'
+      - 'assets/js/mar-salada-case-v2.js'
       - 'assets/css/sound-club-react-visuals.css'
       - 'assets/js/sound-club-react-visuals.js'
       - 'skills/mar-salada-project/**'
       - 'skills/mar-salada-react-scroll/**'
       - 'skills/react-visuals/**'
+      - 'skills/reactbits-portfolio-components/**'
       - 'skills/manifest.json'
       - 'xxxia-studio/projects/sound-club-palma/**'
       - 'xxxia-studio/tests/sound-club-visuals-qa.mjs'
@@ -64,6 +70,27 @@ jobs:
           assert len(s['scenes']) == 10
           ids={x['id'] for x in m['items']}
           assert all(x['mediaId'] in ids for x in s['scenes'])
+          mo=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json'))
+          assert mo['projectId']=='MAR_SALADA_CDM'
+          assert mo['motionId']=='SC08_PORTFOLIO_SCROLL_MASTER'
+          assert mo['master']['status'] in {'PENDING_VERIFIED_GEOMETRY','APPROVED'}
+          assert len(mo['master']['segments'])==10
+          assert {x['storyMediaId'] for x in mo['master']['segments']}=={x['mediaId'] for x in s['scenes']}
+          if mo['master']['status']!='APPROVED': assert not mo['master'].get('src')
+          model=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json'))
+          assert model['projectId']=='MAR_SALADA_CDM'
+          assert model['browserFormat']=='glb/gltf'
+          assert len(model['models'])==4
+          assert all(x['status']=='PENDING_GLB' and not x.get('src') for x in model['models'])
+          assert any(x.get('default') for x in model['models'])
+          cad=json.load(open('docs/projects/mar-salada/cad-source-manifest.json'))
+          assert cad['projectId']=='MAR_SALADA_CDM'
+          assert cad['sourcePolicy']=='PRIVATE_SOURCE_FILES_NOT_COMMITTED'
+          assert len(cad['files'])==14
+          dup=[x for x in cad['dedupe'] if x['group']=='A'][0]
+          assert dup['count']==3
+          assert sum(1 for x in cad['files'] if x['status']=='DUPLICATE_GROUP_A')==3
+          assert all(not x['name'].lower().endswith('.skp') for x in cad['files'])
           for p in [
             'sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg',
             'sound-club-system.svg','mar-salada-suspension-detail.svg','mar-salada-dj-booth-plan.svg'
@@ -71,7 +98,7 @@ jobs:
               ElementTree.parse('assets/visuals/'+p)
           skills=json.load(open('skills/manifest.json'))
           names={x['name'] for x in skills['skills']}
-          assert {'mar-salada-project','mar-salada-react-scroll','react-visuals','scroll-world'} <= names
+          assert {'mar-salada-project','mar-salada-react-scroll','react-visuals','scroll-world','reactbits-portfolio-components'} <= names
           print('MAR SALADA registry / story / SVG / skills checks pass')
           PY
       - name: Install Playwright

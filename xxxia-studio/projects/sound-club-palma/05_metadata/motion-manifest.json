@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "projectId": "MAR_SALADA_CDM",
+  "motionId": "SC08_PORTFOLIO_SCROLL_MASTER",
+  "status": "BRIEF_READY",
+  "mode": "master-scroll-scrub",
+  "updatedAt": "2026-10-07",
+  "privacy": {
+    "sourceMedia": "PRIVATE_REFERENCE_ONLY",
+    "publishOriginals": false,
+    "publishOnlyApprovedGeneratedOrVerified": true
+  },
+  "master": {
+    "id": "SC08-MASTER",
+    "classification": "GENERATED_MOTION",
+    "status": "PENDING_VERIFIED_GEOMETRY",
+    "src": null,
+    "posterMediaId": "SC-BOARD-01",
+    "aspectRatio": "16:9",
+    "targetDurationSeconds": 36,
+    "muted": true,
+    "playsInline": true,
+    "scrollScrub": true,
+    "segments": [
+      {
+        "storyMediaId": "SC-BOARD-01",
+        "start": 0,
+        "end": 4,
+        "label": "Architecture / venue overview"
+      },
+      {
+        "storyMediaId": "SC-BOARD-02",
+        "start": 4,
+        "end": 8,
+        "label": "Building exploded / systems layers"
+      },
+      {
+        "storyMediaId": "SC-PLAN-01",
+        "start": 8,
+        "end": 11,
+        "label": "Lighting and hospitality zoning"
+      },
+      {
+        "storyMediaId": "SC-BOARD-04",
+        "start": 11,
+        "end": 15,
+        "label": "DJ booth exploded"
+      },
+      {
+        "storyMediaId": "SC-DETAIL-04",
+        "start": 15,
+        "end": 18,
+        "label": "DJ booth documented dimensions"
+      },
+      {
+        "storyMediaId": "SC-BOARD-05",
+        "start": 18,
+        "end": 22,
+        "label": "2300 K portfolio lighting transition"
+      },
+      {
+        "storyMediaId": "SC-PLAN-02",
+        "start": 22,
+        "end": 26,
+        "label": "Audio distribution"
+      },
+      {
+        "storyMediaId": "SC-PLAN-03",
+        "start": 26,
+        "end": 29,
+        "label": "KNX / DALI control topology"
+      },
+      {
+        "storyMediaId": "SC-DETAIL-07",
+        "start": 29,
+        "end": 33,
+        "label": "Suspension and mechanical decoupling"
+      },
+      {
+        "storyMediaId": "SC-SYS-01",
+        "start": 33,
+        "end": 36,
+        "label": "Integrated system / reassembly"
+      }
+    ]
+  },
+  "promotionGate": [
+    "DWG/SKP units, origin and alignment verified",
+    "authoritative master geometry promoted",
+    "generated motion reviewed for factual overlays",
+    "first/last frame and scroll scrub QA passed",
+    "publicSafe registry entry created"
+  ]
+}

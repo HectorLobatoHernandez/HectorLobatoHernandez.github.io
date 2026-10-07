@@ -8,12 +8,17 @@
 - Legacy route: `projects/sound-club-palma.html`
 - XXXIA legacy archive slug retained: `sound-club-palma`
 
-## Public implementation v2
+## Public implementation v2.2
 
 - React 18 long-form case page.
 - GSAP + ScrollTrigger enhancement layer.
 - Scroll progress + active chapter rail.
 - Scroll World-style sticky visual story.
+- SC08 motion-ready story stage with still fallback.
+- `motion-manifest.json` controls promotion from stills to scroll-scrub master video.
+- React Bits-inspired Bounce Cards gallery is public-safe and metadata-driven.
+- Model Viewer shell is wired to `model-manifest.json`; 4 model slots remain `PENDING_GLB` until verified geometry is exported.
+- Project technology/vendor rail uses a restrained Logo Loop pattern.
 - Metadata-driven public media registry.
 - Architecture/editorial visual system.
 - Mobile and reduced-motion fallback.
@@ -37,6 +42,14 @@
 - Generated boards and diagrams remain explicitly classified.
 - 2300 K remains a portfolio visualization target.
 
+## Interactive model status
+
+- Venue / master architecture: PENDING_GLB.
+- Central DJ booth: PENDING_GLB.
+- Technical counter / furniture: PENDING_GLB.
+- Suspended structure / decoupling: PENDING_GLB.
+- Browser delivery target: GLB/glTF only; raw SKP/DWG remains private.
+
 ## Geometry status
 
 DWG material exists, including architecture, suspended structure, anti-vibration support and DJ booth drawings.
@@ -52,9 +65,11 @@ Promotion path:
 ## XXXIA
 
 - Existing visual boards and technical diagrams are registered.
-- SC08 portfolio scroll master remains the motion target.
+- SC08 portfolio scroll master is now wired into the React runtime.
+- Current status: `PENDING_VERIFIED_GEOMETRY`; no public motion URL is set.
+- Target master: ~36 s, 16:9, muted, scroll-scrub.
 - No original source videos are to be uploaded.
-- Motion should derive from approved generated/verified assets.
+- Motion must derive from approved generated/verified assets.
 
 ## Next implementation pass
 
@@ -62,4 +77,6 @@ Promotion path:
 - verify CAD/SKP alignment;
 - promote verified geometry;
 - replace conceptual exploded assets where appropriate;
-- connect frame-locked motion to the existing React Scroll World shell.
+- render SC08 only after geometry promotion;
+- set the approved SC08 URL in the motion manifest;
+- let the existing React `MotionStage` activate it without restructuring the page.

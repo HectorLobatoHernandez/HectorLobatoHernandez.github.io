@@ -36,8 +36,8 @@ body.dossier.rb-system-theme footer{position:relative;z-index:3}
 body.dossier.rb-system-theme main{background:linear-gradient(180deg,rgba(13,19,16,.15),rgba(13,19,16,.74) 11%,rgba(13,19,16,.91) 42%,rgba(13,19,16,.96))}
 .rb-global-effects{position:fixed;z-index:0;inset:0;pointer-events:none;overflow:hidden}
 .rb-global-effects .rb-canvas{position:absolute;inset:0;width:100%;height:100%}
-.rb-global-effects .rb-waves{opacity:.27;mix-blend-mode:screen}
-.rb-global-effects .rb-particles{opacity:.38}
+.rb-global-effects .rb-waves{opacity:.10;mix-blend-mode:screen}
+.rb-global-effects .rb-particles{opacity:.52}
 .rb-page-vignette{position:absolute;inset:0;background:
   radial-gradient(circle at 72% 16%,transparent 0 17%,rgba(13,19,16,.19) 35%,rgba(13,19,16,.63) 72%),
   linear-gradient(90deg,rgba(13,19,16,.68),rgba(13,19,16,.20) 60%,rgba(13,19,16,.58));}
@@ -241,4 +241,31 @@ body.rb-system-theme .reveal.on{transform:none}
   body.rb-system-theme .section-head h2,body.rb-system-theme .project-copy h2,body.rb-system-theme .final h2{color:#111!important}
   body.rb-system-theme .section-head p,body.rb-system-theme .project-copy>p,body.rb-system-theme .final p,body.rb-system-theme .profile-grid p,body.rb-system-theme .cap p,body.rb-system-theme .method p,body.rb-system-theme .archive p,body.rb-system-theme .cred small{color:#444!important}
   body.rb-system-theme .profile-grid article,body.rb-system-theme .cap,body.rb-system-theme .archive a{background:white!important;backdrop-filter:none!important}
+}
+
+/* React Bits Logo Loop — dossier technology rail */
+.rb-logo-loop-wrap{margin-top:28px;border-top:1px solid var(--rb-line);border-bottom:1px solid var(--rb-line);padding:14px 0 12px;overflow:hidden}
+.rb-logo-loop-head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:12px;color:var(--rb-muted);font:600 8px "IBM Plex Mono",monospace;letter-spacing:.11em;text-transform:uppercase}
+.rb-logo-loop-head small{font:500 8px "IBM Plex Mono",monospace;color:#67736b}
+.rb-logo-loop-mask{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.rb-logo-loop-track{display:flex;width:max-content;animation:rb-logo-loop 34s linear infinite}
+.rb-logo-item{min-width:170px;padding:12px 20px;border-right:1px solid var(--rb-line);display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rb-logo-item b{font:650 11px "Space Grotesk",Arial,sans-serif;letter-spacing:.02em;color:#d8ddd6}
+.rb-logo-item span{font:500 8px "IBM Plex Mono",monospace;color:#708077;text-transform:uppercase}
+@keyframes rb-logo-loop{to{transform:translateX(-50%)}}
+
+/* Tech Text scan line: keeps the name legible while making the effect visible */
+.rb-name[data-reactbits-tech-text="true"]{position:relative}
+.rb-name[data-reactbits-tech-text="true"]::after{content:"";position:absolute;left:0;right:12%;top:49%;height:1px;background:linear-gradient(90deg,transparent,rgba(184,201,159,.65),transparent);opacity:.28;animation:rb-tech-scan 4.8s ease-in-out infinite;pointer-events:none}
+@keyframes rb-tech-scan{0%,100%{transform:translateY(-52px);opacity:0}35%,65%{opacity:.3}50%{transform:translateY(48px)}}
+
+@media(max-width:650px){
+  .rb-logo-item{min-width:140px;padding:10px 14px}
+  .rb-logo-loop-head{align-items:flex-start;flex-direction:column;gap:5px}
+}
+@media(prefers-reduced-motion:reduce){
+  .rb-logo-loop-track,.rb-name[data-reactbits-tech-text="true"]::after{animation:none}
+}
+@media print{
+  #cv-logo-loop-root{display:none!important}
 }

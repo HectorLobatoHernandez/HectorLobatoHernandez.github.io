@@ -36,9 +36,11 @@ const localAssets=[
   '/assets/visuals/sound-club-system.svg',
   '/assets/visuals/mar-salada-suspension-detail.svg',
   '/assets/visuals/mar-salada-dj-booth-plan.svg',
-  '/assets/css/mar-salada-case.css',
-  '/assets/js/mar-salada-case.js',
-  '/xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json'
+  '/assets/css/mar-salada-case-v2.css',
+  '/assets/js/mar-salada-case-v2.js',
+  '/xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json',
+  '/xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json',
+  '/xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json'
 ];
 for(const asset of localAssets){
   const r=await page.request.get(base+asset);
@@ -70,6 +72,14 @@ const publicState=await casePage.evaluate(()=>({
   storySteps:document.querySelectorAll('.ms-story-step').length,
   storyRoot:!!document.querySelector('.ms-story-shell'),
   videoCount:document.querySelectorAll('video').length,
+  motionStatus:window.__MAR_SALADA_CASE__?.motionStatus,
+  motionId:window.__MAR_SALADA_CASE__?.motionId,
+  cadAuditLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.includes('CAD_INGEST_AUDIT.md')),
+  modelSection:!!document.querySelector('#models'),
+  modelOptions:document.querySelectorAll('.ms-model-option').length,
+  modelReady:window.__MAR_SALADA_CASE__?.modelReady,
+  bounceCards:document.querySelectorAll('.ms-bounce-card').length,
+  logoMarks:document.querySelectorAll('.ms-logo-mark').length,
   reactLink:[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='sound-club-visuals.html'),
   suspension:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-suspension-detail.svg')),
   djPlan:[...document.querySelectorAll('img')].some(x=>x.src.includes('mar-salada-dj-booth-plan.svg')),
@@ -81,7 +91,7 @@ await casePage.screenshot({path:out+'/mar-salada-case-desktop.png',fullPage:true
 await casePage.setViewportSize({width:390,height:844});
 await casePage.reload({waitUntil:'domcontentloaded',timeout:45000});
 await casePage.waitForFunction(()=>window.__MAR_SALADA_CASE__?.storyScenes===10,{timeout:30000});
-const caseMobile=await casePage.evaluate(()=>({overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2,storyScenes:window.__MAR_SALADA_CASE__?.storyScenes}));
+const caseMobile=await casePage.evaluate(()=>({overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2,storyScenes:window.__MAR_SALADA_CASE__?.storyScenes,bounceCards:document.querySelectorAll('.ms-bounce-card').length,modelOptions:document.querySelectorAll('.ms-model-option').length}));
 await casePage.screenshot({path:out+'/mar-salada-case-mobile.png',fullPage:true});
 
 const legacy=await casePage.request.get(base+'/projects/sound-club-palma.html');
@@ -102,9 +112,14 @@ if(state.overflow||mobile.overflow)failures.push('React Visuals horizontal overf
 if(mobile.boards!==4||mobile.plans!==3||mobile.details!==2||mobile.videos!==0)failures.push('mobile media counts mismatch');
 if(publicState.contract?.projectId!=='MAR_SALADA_CDM'||publicState.contract?.storyScenes!==10)failures.push('MAR SALADA case contract mismatch');
 if(publicState.storySteps!==10||!publicState.storyRoot)failures.push('MAR SALADA story structure mismatch');
-if(publicState.videoCount!==0)failures.push('public case must not expose source video');
-if(!publicState.reactLink||!publicState.suspension||!publicState.djPlan)failures.push('MAR SALADA links/technical diagrams missing');
+if(publicState.motionStatus!=='PENDING_VERIFIED_GEOMETRY')failures.push('SC08 should remain pending verified geometry');
+if(publicState.motionId!=='SC08_PORTFOLIO_SCROLL_MASTER')failures.push('SC08 motion manifest not wired');
+if(publicState.videoCount!==0)failures.push('pending SC08 must not expose a public video element');
+if(!publicState.reactLink||!publicState.suspension||!publicState.djPlan||!publicState.cadAuditLink)failures.push('MAR SALADA links/technical diagrams/CAD audit missing');
+if(!publicState.modelSection||publicState.modelOptions!==4||publicState.modelReady!==0)failures.push('MAR SALADA model viewer fallback contract mismatch');
+if(publicState.bounceCards!==5||publicState.logoMarks<6)failures.push('MAR SALADA React Bits gallery/logo layer missing');
 if(publicState.overflow||caseMobile.overflow)failures.push('MAR SALADA case horizontal overflow');
+if(caseMobile.bounceCards!==5||caseMobile.modelOptions!==4)failures.push('MAR SALADA mobile model/gallery inventory mismatch');
 if(!legacy.ok()||!legacyText.includes('mar-salada.html'))failures.push('legacy route redirect missing');
 if(errors.length)failures.push('visual browser/request errors: '+errors.join(' | '));
 if(caseErrors.length)failures.push('case browser errors: '+caseErrors.join(' | '));
