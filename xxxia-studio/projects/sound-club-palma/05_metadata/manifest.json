@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "project": "sound-club-palma",
-  "publicTitle": "Sound Club, Palma",
+  "project": "mar-salada-cdm",
+  "publicTitle": "MAR SALADA — CLUB DEL MAR PALMA",
   "location": "Puerto Deportivo de Palma",
   "studio": "XXXIA STUDIO",
   "lot": "LOT_01",
-  "visualLanguage": "architectural-premium-warm-2300k",
+  "visualLanguage": "architectural-editorial-warm-2300k-portfolio",
   "provider": "adapter-not-bound",
   "archivePolicy": "brief+prompt+storyboard+output+provenance",
   "pieces": [
@@ -50,6 +50,14 @@
       "slug": "decoupling-detail",
       "durationSec": 18,
       "status": "WAITING_REFERENCE"
+    },
+    {
+      "id": "SC08",
+      "slug": "portfolio-scroll-master",
+      "durationSec": 32,
+      "status": "BRIEF_READY"
     }
-  ]
+  ],
+  "projectId": "MAR_SALADA_CDM",
+  "legacyArchiveSlug": "sound-club-palma"
 }
