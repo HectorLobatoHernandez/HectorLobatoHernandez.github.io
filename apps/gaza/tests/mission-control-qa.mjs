@@ -12,7 +12,7 @@ const s=await page.evaluate(()=>({
   title:document.title,
   tabs:document.querySelectorAll('[data-view]').length,
   matrix:!!document.getElementById('matrixView'),
-  plantSrc:document.querySelector('[data-pane="plant"] iframe')?.getAttribute('src')||'',
+  matrixPlantSrc:document.querySelector('#matrixView .matrixCell iframe')?.getAttribute('src')||'',
   risk:document.getElementById('risk')?.textContent||'',
   temp:document.getElementById('temp')?.textContent||'',
   boundary:document.body.textContent.includes('No automatic process, safety or PLC control'),
@@ -20,7 +20,7 @@ const s=await page.evaluate(()=>({
   matrixOn:document.getElementById('matrixView')?.classList.contains('on')||false,
   runtime:window.__GAZA_MISSION_CONTROL__||null
 }));
-if(s.tabs<5||!s.matrix||!s.plantSrc.includes('qa=1')||s.risk!=='NORMAL'||s.temp!=='17.0 °C'||!s.boundary||!s.mission||!s.matrixOn||s.runtime?.initialView!=='matrix'||s.runtime?.fullscreenAvailable!==true)errors.push('mission shell/direct-start invalid: '+JSON.stringify(s));
+if(s.tabs<5||!s.matrix||!s.matrixPlantSrc.includes('qa=1')||s.risk!=='NORMAL'||s.temp!=='17.0 °C'||!s.boundary||!s.mission||!s.matrixOn||s.runtime?.initialView!=='matrix'||s.runtime?.fullscreenAvailable!==true)errors.push('mission shell/direct-start invalid: '+JSON.stringify(s));
 await browser.close();
 if(errors.length){console.error(JSON.stringify({s,errors},null,2));process.exit(2)}
 console.log('GAZA Mission Control QA OK',s);
