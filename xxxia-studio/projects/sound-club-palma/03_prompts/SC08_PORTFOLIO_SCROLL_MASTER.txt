@@ -1,12 +1,27 @@
 MAR SALADA — CLUB DEL MAR PALMA / SC08 PORTFOLIO SCROLL MASTER
 
-Create a restrained high-end architectural camera journey based on VERIFIED project geometry. The sequence must feel like an architecture and systems case study, not a music-video montage.
+Create a restrained, high-end architectural systems journey driven by VERIFIED project geometry. The result must read as an architecture / engineering case study, not as a music-video montage.
 
-Journey:
-venue shell -> interior room -> exploded systems -> audio zones -> circular DJ booth exploded -> rise to suspended ceiling structure -> spring isolator / threaded rod M8 / clamp / structural pipe Ø48.3 mm -> warm 2300 K portfolio lighting -> KNX/DALI + audio control convergence -> complete venue.
+MASTER TARGET
+36 seconds, 16:9, muted, continuous motion suitable for scroll-scrubbing.
 
-Materials: warm timber, dark metal, mineral/concrete surfaces, glass, muted brass technical linework. Lighting: very warm 2300 K portfolio atmosphere with restrained cyan/teal exterior contrast.
+TIMELINE
+00–04 s: establish the verified venue volume and central DJ position.
+04–08 s: architectural shell separates cleanly into legible technical layers.
+08–11 s: lighting and hospitality zones become visible as restrained technical overlays.
+11–15 s: isolate the circular central DJ booth and explode structure / finish / equipment / lighting.
+15–18 s: reveal documented DJ booth dimensions without implying generated geometry is authoritative.
+18–22 s: reassemble into a warm 2300 K PORTFOLIO visualization state; keep technical/as-built CCT separate.
+22–26 s: highlight Interior / Exterior audio distribution, Ecler MIMO88 and Lynx GTX DSP architecture.
+26–29 s: transition to Gira X1 + KNX + DALI topology and scene logic.
+29–33 s: move upward to the suspended structure; reveal spring isolator, threaded rod, clamp and structural pipe Ø48.3 mm.
+33–36 s: technical layers converge and the venue returns to a complete integrated system.
 
-Camera: continuous architectural glide, slow and legible, preserve scale, no jump cuts, no aggressive orbit, no fake people, no invented branding. If generated as multiple clips, seams must be frame-identical.
+MATERIALS
+Warm timber, dark metal, mineral/concrete surfaces, glass, muted brass technical linework. Restrained cyan/teal external contrast. No invented signage or branding.
 
-Evidence: this is GENERATED_MOTION unless driven from verified CAD/SKP; technical labels must remain factual. Never embed original private source photos/videos in the output.
+CAMERA
+One calm architectural glide. Preserve real scale and proportions. No jump cuts, no aggressive orbit, no fake people. Mid-leg movements may orbit/crane/laterally track, but every leg must end by settling into a slow forward drift and the next leg must begin by continuing that same drift. If generated as multiple clips, frame-lock every seam.
+
+EVIDENCE
+Classification is GENERATED_MOTION unless driven from verified CAD/SKP master geometry. Technical labels must be factual. Do not embed or reproduce original private source photos/videos. Ø48.3 mm is the current documented as-built priority; Ø63 mm is a preliminary-document conflict, not a final installed claim.
