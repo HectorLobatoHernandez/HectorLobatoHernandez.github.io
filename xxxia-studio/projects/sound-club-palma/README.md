@@ -1,57 +1,40 @@
-# Sound Club, Palma — XXXIA production case
+# MAR SALADA — CLUB DEL MAR PALMA · XXXIA production archive
 
-**Public location:** Puerto Deportivo de Palma  
-**Type:** Hospitality / architecture / professional audio / lighting / control  
-**Visual language:** classical, elegant, architectural detail, warm timber, 2300K lighting, dark metal, glass, restrained blue-violet ambience.
+**Project ID:** `MAR_SALADA_CDM`  
+**Archive slug:** `sound-club-palma` (legacy; intentionally retained)  
+**Type:** Hospitality / architecture / professional audio / lighting / control / custom fabrication  
+**Visual language:** architectural/editorial, warm timber, dark metal, glass, 2300 K portfolio lighting, restrained cyan/teal contrast.
 
-## Lot 01
+## Public case
+
+- Canonical: `projects/mar-salada.html`
+- React visual explorer: `projects/sound-club-visuals.html`
+- Page skill: `skills/mar-salada-react-scroll/SKILL.md`
+- Project skill: `skills/mar-salada-project/SKILL.md`
+
+## Visual / motion lot
+
 | ID | Piece | Status |
 |---|---|---|
-| SC01 | Building Overview | brief ready / keyframe generated |
-| SC02 | Building Exploded | brief ready / keyframe generated |
+| SC01 | Building Overview | keyframe generated |
+| SC02 | Building Exploded | keyframe generated |
 | SC03 | Building to Plan | brief ready |
-| SC04 | DJ Booth Exploded | brief ready / keyframe generated |
-| SC05 | Lighting 2300K System | brief ready / keyframe generated |
+| SC04 | DJ Booth Exploded | keyframe generated |
+| SC05 | Lighting 2300K System | keyframe generated |
 | SC06 | Programming & Control | brief ready |
-| SC07 | Decoupling Detail | waiting for final detail references |
+| SC07 | Decoupling Detail | technical diagram promoted / motion pending |
+| SC08 | Portfolio Scroll Master | brief ready |
 
 ## Source policy
-The source project is real and executed. Generated frames are visual interpretations for communication and motion design. They are not as-built drawings unless explicitly marked as such.
 
+The project is real and executed. Original user-supplied photos/videos are private working references and are not public repository assets.
 
-## React Visuals
+Generated frames and diagrams are communication assets unless explicitly promoted as verified drawings. Recover/autosave CAD files are not master geometry by default.
 
-Interactive public explorer:
-- `projects/sound-club-visuals.html`
-- canonical media registry: `05_metadata/project-media.json`
-- project-specific operating skill: `skills/sound-club-project/SKILL.md`
+## Current React story
 
-Current promoted diagrams:
-- zoning / lighting
-- audio distribution
-- KNX / DALI control
-- AV / control architecture
+The public case uses a 10-scene metadata-driven React scroll narrative from:
+- `05_metadata/project-media.json`
+- `05_metadata/visual-story.json`
 
-Current promoted documented video is stored as REMOTE_ONLY and referenced by stable media URL.
-
-
-## Visual Story v3
-
-The public case now uses a metadata-driven React scroll narrative.
-
-Canonical files:
-- `05_metadata/project-media.json` — schema v2 / 8 classified public assets.
-- `05_metadata/visual-story.json` — 8-scene narrative order and copy.
-- `assets/js/sound-club-story.js` — runtime.
-- `assets/css/sound-club-story.css` — sticky architectural presentation layer.
-
-Promoted generated boards:
-- SC01 building overview.
-- SC02 building exploded.
-- SC04 DJ booth exploded.
-- SC05 lighting 2300K.
-
-Private source policy:
-- User-supplied photos and videos are PRIVATE_REFERENCE_ONLY.
-- They are not published, linked from the public case, or used as provider motion references without explicit approval.
-- New generated motion should be driven from verified CAD/SKP geometry and approved visual references.
+The current page uses stills/diagrams without requiring paid motion. SC08 defines the later Scroll World upgrade when verified CAD/SKP geometry is available.
