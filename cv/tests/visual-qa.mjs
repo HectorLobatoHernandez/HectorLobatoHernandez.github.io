@@ -27,6 +27,10 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       try{await page.waitForFunction(()=>window.__CV_HERO__?.mounted===true,{timeout:8000})}catch{failures.push('dossier React hero did not mount')}
       await page.waitForTimeout(1050);
     }
+    if(test.id==='ats'){
+      try{await page.waitForFunction(()=>window.__CV_ATS_REACT__?.mounted===true,{timeout:8000})}catch{failures.push('ATS React layer did not mount')}
+      await page.waitForTimeout(500);
+    }
     const state=await page.evaluate(()=>({
       title:document.title,bodyClass:document.body.className,
       h1:document.querySelector('h1')?.textContent||'',
@@ -46,6 +50,13 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       atsH2:[...document.querySelectorAll('main.cv h2')].map(x=>x.textContent.trim()),
       atsToolbar:[...document.querySelectorAll('.toolbar a,.toolbar button')].map(x=>x.textContent.trim()),
       atsText:document.querySelector('main.cv')?.innerText||'',
+      atsReact:window.__CV_ATS_REACT__||null,
+      atsWaves:!!document.querySelector('.ats-waves[data-reactbits="Waves"]'),
+      atsPixelTrail:!!document.querySelector('.ats-pixel-trail[data-reactbits="PixelTrail"]'),
+      atsRoot:!!document.querySelector('#ats-react-root'),
+      atsH1Font:(()=>{const x=document.querySelector('main.cv h1');return x?getComputedStyle(x).fontFamily:null})(),
+      atsH2Font:(()=>{const x=document.querySelector('main.cv h2');return x?getComputedStyle(x).fontFamily:null})(),
+      atsCvBg:(()=>{const x=document.querySelector('main.cv');return x?getComputedStyle(x).backgroundImage:null})(),
       present:window.__CV_PRESENT__||null,
       presentSteps:document.querySelectorAll('.step').length,
       evidenceCards:document.querySelectorAll('#evidence .archive a').length,
@@ -117,12 +128,16 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       if(state.present?.schemaVersion!==1||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
     }
     if(test.id==='ats'){
-      if(state.ats?.schemaVersion!==2||state.ats.format!=='EXPANDED_PROFESSIONAL_PDF_ATS'||state.ats.print!==true||state.ats.employmentChronology!==true||state.ats.selectedProjects!==8||state.ats.featuredProjects!==5||state.ats.mastersInProgress!==1||state.ats.certificationsAndTraining!==8||state.ats.duplicateDossierButton!==false)failures.push('ATS contract mismatch');
+      if(state.ats?.schemaVersion!==3||state.ats.format!=='EXPANDED_PROFESSIONAL_PDF_ATS'||state.ats.print!==true||state.ats.employmentChronology!==true||state.ats.selectedProjects!==8||state.ats.featuredProjects!==5||state.ats.mastersInProgress!==1||state.ats.certificationsAndTraining!==8||state.ats.duplicateDossierButton!==false||state.ats.screenReact!==true||state.ats.screenPalette!=='IVORY_ATLAS'||!['Waves','PixelTrail'].every(x=>state.ats.screenComponents?.includes(x)))failures.push('ATS contract mismatch');
       const required=['Perfil profesional','Competencias principales','Experiencia profesional','Proyectos técnicos seleccionados','Formación superior y máster','Certificaciones, formación de fabricante y cursos','Tecnologías y herramientas','Idiomas','Método de trabajo'];
       if(state.atsSections<9||!required.every(x=>state.atsH2.includes(x)))failures.push('ATS semantic sections missing');
       if(state.atsToolbar.filter(x=>/Dossier/i.test(x)).length!==1||state.atsToolbar.length!==3||!state.atsToolbar.some(x=>/Imprimir \/ Guardar PDF/i.test(x)))failures.push('ATS toolbar has duplicate/missing actions: '+state.atsToolbar.join(' | '));
       const requiredText=['Studio Ingenia','2021 – Actualidad','Estudio Áureo','2018 – 2021','Máster en Inteligencia Artificial','CURSANDO ACTUALMENTE','Ecler','Void Acoustics','Lynx Pro Audio','Sound Club, Palma','Casa NOAH','Las Dalias / Club Akasha','GAZA Operations Intelligence','RHB STUDIO'];
       if(!requiredText.every(x=>state.atsText.includes(x)))failures.push('ATS expanded experience/education/certification content incomplete');
+      if(state.atsReact?.schemaVersion!==1||state.atsReact?.engine!=='REACT_18_UMD'||state.atsReact?.palette!=='IVORY_ATLAS'||state.atsReact?.trailColor!=='#93884b'||state.atsReact?.printFallback!==true||!['Waves','PixelTrail'].every(x=>state.atsReact?.components?.includes(x)))failures.push('ATS React Bits contract mismatch');
+      if(!state.bodyClass.includes('ats-react-theme')||!state.atsRoot||!state.atsWaves||!state.atsPixelTrail)failures.push('ATS Waves / PixelTrail surface missing');
+      if(!state.atsH1Font?.includes('Instrument Serif')||!state.atsH2Font?.includes('Instrument Serif'))failures.push('ATS Ivory Atlas typography missing: '+state.atsH1Font+' / '+state.atsH2Font);
+      if(state.bodyBg!=='rgb(0, 0, 0)')failures.push('ATS screen background must be black behind Waves: '+state.bodyBg);
     }
     if(test.id==='world'){
       if(state.world?.mode!=='STORYBOARD_SVG_NO_GENERATED_VIDEO'||state.world.scenes!==4||state.world.videoClips!==0)failures.push('Scroll World provenance mismatch');
