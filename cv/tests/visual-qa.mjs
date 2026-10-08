@@ -10,7 +10,7 @@ const cases=[
   {id:'chooser',path:'/cv/',title:'Currículum',theme:'gallery',links:4},
   {id:'dossier',path:'/cv/dossier.html',title:'Dossier',theme:'dossier',project:'Club Mar Salada'},
   {id:'present',path:'/cv/present.html',title:'Presentation Route',theme:null,project:'Club Mar Salada'},
-  {id:'ats',path:'/cv/ats.html',title:'CV ATS',theme:null,project:'Club Mar Salada'},
+  {id:'ats',path:'/cv/ats.html',title:'CV Profesional',theme:null,project:'Sound Club, Palma'},
   {id:'atelier',path:'/cv/atelier.html',title:'Atelier',theme:'atelier',project:'GAZA Operations Intelligence'},
   {id:'swiss',path:'/cv/swiss.html',title:'Swiss',theme:'swiss',project:'Mar Salada.'},
   {id:'monograph',path:'/cv/monograph.html',title:'Monograph',theme:'monograph',project:'GAZA Operations Intelligence'},
@@ -121,7 +121,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       const required=['Perfil profesional','Competencias principales','Experiencia profesional','Proyectos técnicos seleccionados','Formación superior y máster','Certificaciones, formación de fabricante y cursos','Tecnologías y herramientas','Idiomas','Método de trabajo'];
       if(state.atsSections<9||!required.every(x=>state.atsH2.includes(x)))failures.push('ATS semantic sections missing');
       if(state.atsToolbar.filter(x=>/Dossier/i.test(x)).length!==1||state.atsToolbar.length!==3||!state.atsToolbar.some(x=>/Imprimir \/ Guardar PDF/i.test(x)))failures.push('ATS toolbar has duplicate/missing actions: '+state.atsToolbar.join(' | '));
-      const requiredText=['Studio Ingenia','2021 – Actualidad','Estudio Áureo','2018 – 2021','Máster en Inteligencia Artificial','Cursando actualmente','Ecler','Void Acoustics','Lynx Pro Audio','Sound Club, Palma','Casa NOAH','Las Dalias / Club Akasha','GAZA Operations Intelligence','RHB STUDIO'];
+      const requiredText=['Studio Ingenia','2021 – Actualidad','Estudio Áureo','2018 – 2021','Máster en Inteligencia Artificial','CURSANDO ACTUALMENTE','Ecler','Void Acoustics','Lynx Pro Audio','Sound Club, Palma','Casa NOAH','Las Dalias / Club Akasha','GAZA Operations Intelligence','RHB STUDIO'];
       if(!requiredText.every(x=>state.atsText.includes(x)))failures.push('ATS expanded experience/education/certification content incomplete');
     }
     if(test.id==='world'){
