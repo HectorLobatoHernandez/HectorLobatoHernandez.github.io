@@ -56,7 +56,8 @@ The new registered master has now been converted successfully using the memory-s
 - Safe streaming trim dry-run completed: 169 nodes removable, estimated BIN reduction 8.22%, leaving ~688.5 MB BIN and 191,817 meshes. This is far from the web target, so `-Build` remains blocked.
 - Exact buffer-ownership scenarios completed: safe delete = 8.22% BIN reduction; proxy/instance candidates = 44.77%; proxy/instance + simplifiable architecture/acoustics = 90.79%, leaving ~65.88 MiB BIN before replacement payload.
 - The source file still has ~118.5 MiB of JSON/header overhead because of 191,986 nodes/meshes, so node/mesh fragmentation must also be reduced.
-- Next required step: run `tools/sound-club/ANALYZE_EXACT_MESH_DUPLICATES.ps1` to quantify lossless mesh reuse before proxy/simplification work.
+- Exact byte-identical dedupe completed: 973 duplicate pairs, only ~0.566 MiB recoverable (~0.079% BIN), therefore exact dedupe is not a meaningful optimization path.
+- Next required step: run `tools/sound-club/ANALYZE_TRANSLATION_INSTANCES.ps1` to detect repeated component geometry whose transforms were baked into vertex positions. This may enable much larger mesh reuse without changing shape.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
