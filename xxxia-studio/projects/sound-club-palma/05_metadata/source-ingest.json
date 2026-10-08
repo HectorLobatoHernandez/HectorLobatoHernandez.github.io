@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "projectId": "SOUND_CLUB_CDM",
   "updatedAt": "2026-10-08",
   "policy": {
@@ -21,25 +21,36 @@
   },
   "skp": {
     "format": "SKP",
+    "masterFilename": "CLUB_DEL_MAR_12_02_2026_3.skp",
+    "masterSelection": "USER_SELECTED_CURRENT_MASTER",
     "version": "24.0.594",
     "unit": "Meter",
-    "sizeBytes": 51471031,
-    "sha256": "8729f3a98812c71933586a921c18dd661a8451f041bb86122ad333a0215fb21a",
-    "internalModelBytes": 104699785,
-    "zipEntries": 1120,
-    "materials": 499,
-    "componentThumbnails": 83,
-    "textures": 110,
-    "status": "INGESTED_PENDING_SINGLE_GLB",
-    "derivedPreview": "/assets/visuals/sound-club-skp-line-preview.svg",
-    "conversionTool": "tools/sound-club/CONVERT_SKP_TO_GLB.ps1"
+    "sizeBytes": 251178212,
+    "sha256": "ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665",
+    "zipEntries": 6928,
+    "materials": 2488,
+    "sceneThumbnails": 1,
+    "vrayNamedMaterialFamilies": [
+      "BRANCO_GENERICO_vray 3.4",
+      "CHROME_VRAY 3.4",
+      "FILAMENTO_VRAY_3.4",
+      "OURO_VRAY_3.2",
+      "VIDRO_PRINCIPAL_VRAY 3.4",
+      "VIDRO_SECUNDARIO_VRAY 3.4"
+    ],
+    "vrayStatus": "MATERIAL_NAMING_DETECTED_RENDER_SETTINGS_NOT_YET_VERIFIED",
+    "status": "REGISTERED_MASTER_PENDING_GLB_QA",
+    "derivedPreview": "/assets/visuals/sound-club-master-2026-02-12-preview.svg",
+    "conversionTool": "tools/sound-club/CONVERT_SKP_TO_GLB.ps1",
+    "note": "This replaces the previously registered SKP master by explicit user instruction. Raw SKP remains private."
   },
   "nextGate": [
-    "Run tools/sound-club/CONVERT_SKP_TO_GLB.ps1 locally against the private SKP master",
-    "Inspect candidate GLB and QA report",
-    "Check DWG/SKP origin and axes",
-    "Promote one authoritative GLB only after human QA",
-    "Validate DESIGN technical treatment and RENDER original-material/warm-light treatment in the same Three.js camera",
-    "Enable zone hotspots only after verified model coordinates exist"
+    "Convert the registered 2026-02-12 SKP master locally to candidate GLB",
+    "Inspect candidate bounds and isolate terrain/geolocation/remote geometry if required",
+    "Validate model visually through localhost ?candidate=1",
+    "Verify DWG/SKP spatial relationship",
+    "Promote one authoritative GLB only after bounds + visual QA",
+    "Export matched-camera V-Ray stills for BEFORE/AFTER comparison",
+    "Enable verified zone hotspots"
   ]
 }
