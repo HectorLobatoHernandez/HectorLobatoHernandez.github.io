@@ -1,6 +1,6 @@
 # Manual de usuario · CV editorial
 
-**Acceso:** [Presentar en 5 min](https://hectorlobatohernandez.github.io/cv/present.html) · [Dossier recomendado](https://hectorlobatohernandez.github.io/cv/dossier.html) · [CV ATS](https://hectorlobatohernandez.github.io/cv/ats.html) · [Portada CV](https://hectorlobatohernandez.github.io/start/cv.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
+**Acceso principal:** [Dossier profesional](https://hectorlobatohernandez.github.io/) · [Presentar en 5 min](https://hectorlobatohernandez.github.io/cv/present.html) · [CV ATS](https://hectorlobatohernandez.github.io/cv/ats.html) · [Variantes](https://hectorlobatohernandez.github.io/cv/)
 
 ## 1. Para una persona que visita por primera vez
 
@@ -30,7 +30,7 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 ## 6. Dossier canónico
 
-`cv/dossier.html` es la síntesis profesional recomendada. Conserva siete proyectos, destaca Sound Club, Palma / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.
+`cv/dossier.html` es la síntesis profesional canónica y también el destino de la raíz pública del sitio. Conserva siete proyectos, destaca Sound Club, Palma / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.
 
 ## 7. CV ATS
 
@@ -39,3 +39,7 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 ## 8. Presentation Route
 
 `cv/present.html` es el punto de entrada para una presentación breve. Orden recomendado: Dossier → Sound Club, Palma → GAZA Mission Control/Systems → RHB STUDIO → ATS/GitHub. Expone `window.__CV_PRESENT__` y no añade hechos nuevos: sólo organiza evidencias existentes.
+
+## 9. Dirección visual canónica
+
+El dossier usa fondo negro real y una escala fría de grises inspirada en Pantone Cool Gray. El nombre **Héctor Lobato** con TechText es la identidad visual dominante de la primera pantalla. No usar el portfolio clásico como entrada principal; se conserva únicamente como archivo histórico interno del repositorio.

@@ -1,6 +1,6 @@
-# CV Design Studies / Héctor Lobato
+# CV / Dossier profesional · Héctor Lobato
 
-**Cuatro direcciones de diseño sin React**, conservando el CV WOW anterior como comparativa.
+`dossier.html` es la entrada profesional canónica y usa React Bits de forma controlada. El antiguo portfolio principal ya no es la portada pública; la raíz del sitio redirige al dossier.
 
 - `atelier.html`: editorial de arquitectura; serif Instrument, proporciones y fotografía.
 - `swiss.html`: retícula suiza, Archivo, jerarquía precisa y proyectos indexados.
@@ -20,3 +20,13 @@ CSS + JavaScript nativo; tipografías Google Fonts opcionales con serif/sans/mon
 ### Estrategia
 
 Elegir una variante base para el CV final. Usar Scroll World como sección de narrativa opcional, no como único medio de acceder a experiencia, casos y contacto.
+
+
+### Dirección canónica 2026
+
+- fondo negro real `#000000`;
+- tipografía y UI en familia gris fría inspirada en Pantone Cool Gray;
+- `TechText` en **Héctor Lobato** como elemento dominante del hero;
+- `Particles` visibles en toda la experiencia, siempre en escala de grises;
+- retrato con `DitherVeil` y botón para alternar a fotografía normal;
+- sin acceso al antiguo portfolio principal desde las rutas de CV.

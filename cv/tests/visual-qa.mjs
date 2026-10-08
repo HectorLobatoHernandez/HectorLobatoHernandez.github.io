@@ -66,6 +66,9 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       portraitToggle:!!document.querySelector('.rb-portrait-toggle'),
       portraitView:document.querySelector('[data-dither-veil="true"]')?.getAttribute('data-portrait-view')||null,
       bodyBg:getComputedStyle(document.body).backgroundColor,
+      heroNameFirstColor:(()=>{const x=document.querySelector('.rb-name .rb-tech-line:first-child');return x?getComputedStyle(x).color:null})(),
+      heroNameLastColor:(()=>{const x=document.querySelector('.rb-name .rb-tech-line:last-child');return x?getComputedStyle(x).color:null})(),
+      particlesOpacity:(()=>{const x=document.querySelector('.rb-particles');return x?Number(getComputedStyle(x).opacity):null})(),
       imageLoaded:(()=>{const i=document.querySelector('.atelier-photo img');return i?i.complete&&i.naturalWidth>0:null})(),
       asset404:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src)
     }));
@@ -85,7 +88,9 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier full-page React Bits UI missing');
       if(!state.portraitToggle||state.portraitView!=='interactive')failures.push('Dossier portrait viewer toggle missing or wrong default state');
       if(state.heroActionLabels.includes('Portfolio técnico')||state.heroActionLabels.includes('Contacto')||state.heroActionLabels.length!==3)failures.push('Dossier hero actions not simplified');
-      if(state.bodyBg==='rgb(242, 239, 230)'||state.bodyBg==='rgb(255, 255, 255)')failures.push('Dossier dark full-page background missing');
+      if(state.bodyBg!=='rgb(0, 0, 0)')failures.push('Dossier canonical background must be true black: '+state.bodyBg);
+      if(state.heroNameFirstColor!=='rgb(217, 217, 214)'||state.heroNameLastColor!=='rgb(200, 201, 199)')failures.push('Dossier TechText grayscale hierarchy mismatch: '+state.heroNameFirstColor+' / '+state.heroNameLastColor);
+      if(state.particlesOpacity===null||state.particlesOpacity<.7)failures.push('Dossier particles are not visible enough on black');
       if(!state.marSaladaCanonical||state.legacyProjectButtons)failures.push('Dossier Mar Salada canonical identity/public buttons mismatch');
       await page.click('.rb-menu-trigger');await page.waitForTimeout(350);
       const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));
@@ -115,6 +120,17 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     await page.close();
   }
 }
+const rootPage=await browser.newPage({viewport:{width:1440,height:950}});
+await rootPage.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
+await rootPage.waitForTimeout(650);
+const rootState=await rootPage.evaluate(()=>({
+  path:location.pathname,
+  hero:!!document.querySelector('[data-reactbits-hero="true"]'),
+  title:document.title
+}));
+if(rootState.path!=='/cv/dossier.html'||!rootState.hero||!rootState.title.includes('Dossier'))failures.push('Public root must resolve to canonical dossier: '+JSON.stringify(rootState));
+await rootPage.close();
+
 const other=await browser.newPage();
 await other.goto(base+'/start/cv.html',{waitUntil:'domcontentloaded'});
 const start=await other.evaluate(()=>({

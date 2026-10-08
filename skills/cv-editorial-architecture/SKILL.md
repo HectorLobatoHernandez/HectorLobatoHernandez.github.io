@@ -3,7 +3,7 @@ name: cv-editorial-architecture
 description: Design elegant, typographically rigorous technical curricula and engineering portfolios inspired by architectural publishing, the Swiss Style and software documentation. Prefer semantic HTML/CSS/vanilla JS; select motion only where it improves reading. Use when the user asks for an architecture-oriented CV, an engineering presentation, a portfolio design review or several visual design alternatives.
 ---
 
-# CV Editorial · Architecture × Software
+# CV Editorial · Architecture × Software v2
 
 ## Intent
 
@@ -15,9 +15,23 @@ Reuse the existing portfolio and case studies for factual content. Do not invent
 
 ## Canonical dossier composition
 
-The professional default is now `cv/dossier.html`: **Atelier** supplies identity and editorial tone, **Swiss Grid** supplies information architecture, **Technical Monograph** supplies evidence/technical metadata, and Scroll World remains an optional narrative layer. Compose the interactive layer with `../reactbits-portfolio-components/SKILL.md`. Do not turn the four studies into four competing canonical CVs.
+The professional default is `cv/dossier.html`, and the public site root must resolve to that dossier rather than a separate principal portfolio. **Atelier** supplies identity and editorial tone, **Swiss Grid** supplies information architecture, **Technical Monograph** supplies evidence/technical metadata, and Scroll World remains an optional narrative layer. Compose the interactive layer with `../reactbits-portfolio-components/SKILL.md`. Do not turn the four studies into four competing canonical CVs.
 
 The dossier must preserve the seven documented project routes, distinguish executed / active-development / demonstrator / confidential states, reuse only documented visuals, remain printable, and expose a small QA contract in `window.__CV_DOSSIER__`.
+
+## Canonical dossier art direction
+
+The selected dossier direction is now **black + cool gray**. Use a true black canvas and a restrained Pantone-inspired Cool Gray family for typography, rules and UI hierarchy:
+
+- background: `#000000`;
+- primary text / Cool Gray 1 approximation: `#D9D9D6`;
+- secondary display / Cool Gray 3 approximation: `#C8C9C7`;
+- body / Cool Gray 5 approximation: `#B1B3B3`;
+- labels / Cool Gray 7 approximation: `#97999B`;
+- muted metadata / Cool Gray 9 approximation: `#75787B`;
+- structural rules / Cool Gray 11 approximation: `#53565A`.
+
+Do not reintroduce sage, copper, green or beige into the canonical dossier unless explicitly requested. The React `TechText` treatment on **Héctor Lobato** is the dominant first-screen identity and must retain maximum contrast and legibility over Particles. The background effects stay ambient and grayscale.
 
 ## Three typographic art directions
 
@@ -27,9 +41,10 @@ The dossier must preserve the seven documented project routes, distinguish execu
 
 ## Approved React Bits layer
 
-The canonical dossier may use the curated React Bits skill for:
-- Tech Text on **Héctor Lobato**;
-- Particles as the ambient full-dossier background;
+The canonical dossier uses the curated React Bits skill for:
+- Tech Text on **Héctor Lobato** as the dominant identity element;
+- Particles as the ambient full-dossier background on black;
+- Dither Veil on the portrait with a visible **normal photo / React viewer** toggle;
 - Logo Loop below the skills/capability section.
 
 Keep these effects secondary to content. Preserve print and reduced-motion fallbacks.
