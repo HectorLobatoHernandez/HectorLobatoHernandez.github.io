@@ -91,3 +91,22 @@ After restart, continue directly with the **venue-web-v1 derivative build**:
 ```
 
 Wait for the final JSON summary and keep `venue-web-v1.build-report.json`. Do not run `-Promote`.
+
+
+## Current production continuation
+
+V1 is complete locally:
+
+- ~715.61 MiB;
+- ~609.48 MiB BIN;
+- 191,817 nodes;
+- 159,114 meshes;
+- public web gate not yet met.
+
+Continue with:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V2.ps1
+```
+
+Do not rebuild V1 and do not use `-Force` unless intentionally replacing a reviewed derivative.
