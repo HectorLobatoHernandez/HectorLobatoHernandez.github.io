@@ -3,7 +3,7 @@ name: cv-ats-pdf
 description: Build and maintain Héctor Lobato's printable professional CV / ATS page and plain-text mirror. Use when editing cv/ats.html, exporting PDF, adding verified experience, education, ongoing master's studies, certifications, technologies or project summaries.
 ---
 
-# CV ATS / PDF · Héctor Lobato
+# CV ATS / PDF · Héctor Lobato v2
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The printable CV must be useful on its own. Do not make it a thin index that for
 
 ## Content hierarchy
 
-Use this order unless a job-specific variant requires another sequence:
+Use this order unless a job-specific variant requires another sequence. The canonical CV is comprehensive but concise: every section should add distinct evidence, not repeat marketing copy.
 
 1. identity + professional headline;
 2. concise professional profile;
@@ -29,10 +29,11 @@ Use this order unless a job-specific variant requires another sequence:
 6. higher education + master's studies;
 7. certifications / manufacturer training / courses;
 8. technologies and tools;
-9. languages;
-10. working method / delivery lifecycle.
+9. applied experience domains;
+10. languages;
+11. working method / delivery lifecycle.
 
-Target length: normally **2–3 A4 pages** when printed. Prefer useful density over forcing everything into one page.
+Target length: normally **3 A4 pages**, allowing 4 when the complete technical history genuinely requires it. Prefer useful density and evidence over forcing a one-page résumé. The PDF must summarize the breadth of the user's actual multidisciplinary experience, not only the latest projects.
 
 ## Source and evidence rules
 
@@ -86,7 +87,7 @@ Summarize:
 - client/site coordination.
 
 ### 2026 R&D / products
-Keep RHB STUDIO and GAZA as **technical product / R&D work**, separate from employment chronology unless the user explicitly requests a legal-company framing.
+Keep RHB STUDIO and GAZA as **technical product / R&D work**, separate from employment chronology unless the user explicitly requests a legal-company framing. Include XXXIA Studio as creative/technical presentation R&D when space permits.
 
 ## Current selected project set
 
@@ -102,7 +103,7 @@ Keep short, technically specific entries for:
 
 Use the current public alias/privacy rules. Do not restore deprecated project naming if a newer public name exists.
 
-## Education
+## Education and master's studies
 
 Verified:
 - **2013–2016 — Bachelor's Degree · Audio Engineering & Audio Production · Middlesex University, London**.
@@ -112,7 +113,7 @@ Incomplete studies must be explicit:
 - use `Cursando actualmente`, `En curso`, or `No finalizado`;
 - never imply the master's degree has been awarded.
 
-If more master's programmes are later recovered, add them only after exact title/institution is known.
+If more master's programmes are later recovered, add them even if incomplete, but only when the exact programme title and institution are known. Every unfinished programme must explicitly say **Cursando en la actualidad**, **En curso** or **No finalizado**. Never imply completion.
 
 ## Certifications and manufacturer training
 
@@ -123,13 +124,12 @@ Keep the documented entries:
 - 2020 — JAVA IFCD033PO;
 - 2021 — AXIS · Network Audio / System Design / Camera Station / Analytics.
 
-User-confirmed manufacturer credentials/training to show even when exact date/title is not yet documented:
-- Ecler;
-- Void Acoustics;
-- Lynx Pro Audio.
+User-confirmed manufacturer certifications to show even when exact date/title is not yet documented:
+- **Ecler** — certification in professional audio / DSP matrices / control / EclerNet ecosystem;
+- **Void Acoustics** — manufacturer certification in professional electroacoustic systems;
+- **Lynx Pro Audio** — manufacturer certification in amplification / DSP / professional system configuration.
 
-For those three, do **not** invent a year or exact certificate title. Use a neutral formulation such as:
-`certificación / formación técnica de fabricante en ...`.
+For those three, do **not** invent a year or branded course title. State them as **certificación técnica de fabricante** and describe the technical domain conservatively.
 
 ## Skills vocabulary
 
@@ -198,12 +198,31 @@ Do not turn the ATS page into a marketing microsite: effects demonstrate interac
 
 ## Toolbar and navigation
 
-The ATS/PDF page must have only distinct actions:
+The ATS/PDF page must not repeat the dossier navigation. This page is already reached from the dossier and is meant for printing/export.
+
+Canonical toolbar actions:
 - `Presentar 5 min`;
-- `Dossier interactivo`;
 - `Imprimir / Guardar PDF`.
 
-Do not add duplicate links such as `Dossier` + `Dossier web` pointing to the same destination.
+Do **not** include `Dossier`, `Dossier web`, `Dossier interactivo` or equivalent buttons in this toolbar.
+
+## Experience completeness
+
+The CV should cover, in compressed form, the full established scope of experience:
+- technical direction and project engineering;
+- Studio Ingenia end-to-end delivery;
+- Estudio Áureo department leadership;
+- acoustics / electroacoustics / pro audio / DSP / AV;
+- KNX / ETS6 / DALI / Gira / Crestron;
+- IT/OT / networks / Wi-Fi / VLAN / VPN / PoE;
+- CAD / BOM / BOQ / estimating / procurement;
+- custom fabrication coordination and technical furniture/structures;
+- commissioning / troubleshooting / handover;
+- residential high-end / hospitality / music & entertainment / restoration;
+- applied software / AI / agents / local-first tooling;
+- RHB STUDIO / GAZA / XXXIA R&D.
+
+Do not hide this breadth behind generic phrases. Use compact, technically specific bullets.
 
 ## Print / PDF requirements
 
@@ -243,9 +262,9 @@ Do not add duplicate links such as `Dossier` + `Dossier web` pointing to the sam
 - screen component list.
 
 Playwright QA should assert:
-- no duplicate dossier buttons;
+- no dossier buttons in the toolbar;
 - chronology contains Studio Ingenia and Estudio Áureo;
-- master's study shows `Cursando actualmente`;
+- master's study shows `Cursando en la actualidad` or equivalent explicit in-progress status;
 - Ecler, Void Acoustics and Lynx Pro Audio are present;
 - print button exists;
 - no horizontal overflow on desktop/mobile;
