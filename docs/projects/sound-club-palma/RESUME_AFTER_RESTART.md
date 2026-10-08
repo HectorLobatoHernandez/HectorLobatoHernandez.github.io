@@ -84,4 +84,10 @@ Get-Item ".\assets\models\sound-club\_candidate\venue-master.glb" |
 
 Do **not** run `CONVERT_SKP_TO_GLB.ps1` again and do **not** use `-Promote`.
 
-After restart, continue directly with the **venue-web-v1 derivative build**.
+After restart, continue directly with the **venue-web-v1 derivative build**:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V1.ps1
+```
+
+Wait for the final JSON summary and keep `venue-web-v1.build-report.json`. Do not run `-Promote`.

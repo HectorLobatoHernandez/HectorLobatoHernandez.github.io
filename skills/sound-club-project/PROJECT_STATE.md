@@ -59,7 +59,8 @@ The new registered master has now been converted successfully using the memory-s
 - Exact byte-identical dedupe completed: 973 duplicate pairs, only ~0.566 MiB recoverable (~0.079% BIN), therefore exact dedupe is not a meaningful optimization path.
 - Translation-equivalent analysis completed: 12,727 equivalence sets, 32,703 duplicate mesh definitions beyond representatives, ~47.33 MiB recoverable BIN, ~6.62% BIN reduction and ~17.03% mesh-definition reduction (estimated 159,283 mesh definitions after reuse).
 - Translation reuse alone is helpful but still insufficient for the web target. The diagnostic phase is now considered complete enough to proceed.
-- **NEXT PRODUCTION STEP:** stop adding diagnostics and build a separate optimized derivative (`venue-web-v1.glb`) using three layers: (1) safe removal of decor/minor hardware, (2) translation-equivalent mesh reuse where exact transform recovery is verified, and (3) proxy/simplification for the heavy P1 groups (`TECHO_ENTERO`, `CORTINAS`, sofa, threaded rods, lighting fixtures). Never overwrite `venue-master.glb`.
+- **CURRENT PRODUCTION STEP:** `tools/sound-club/BUILD_WEB_V1.ps1` builds the first separate derivative (`venue-web-v1.glb`) using safe decor/minor-hardware removal plus verified translation-equivalent mesh reuse. It protects the source SHA, applies consistent local translation to node matrices, streams retained BIN ranges, validates the written GLB, and writes `venue-web-v1.build-report.json`.
+- **NEXT AFTER V1 VALIDATION:** controlled proxy/merge/simplification of the heavy P1 groups (`TECHO_ENTERO`, `CORTINAS`, sofa, threaded rods and repeated lighting) until the ≤95 MiB / ≤20,000 mesh public gate is reached. Never overwrite `venue-master.glb`.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
