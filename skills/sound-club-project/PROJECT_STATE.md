@@ -57,7 +57,9 @@ The new registered master has now been converted successfully using the memory-s
 - Exact buffer-ownership scenarios completed: safe delete = 8.22% BIN reduction; proxy/instance candidates = 44.77%; proxy/instance + simplifiable architecture/acoustics = 90.79%, leaving ~65.88 MiB BIN before replacement payload.
 - The source file still has ~118.5 MiB of JSON/header overhead because of 191,986 nodes/meshes, so node/mesh fragmentation must also be reduced.
 - Exact byte-identical dedupe completed: 973 duplicate pairs, only ~0.566 MiB recoverable (~0.079% BIN), therefore exact dedupe is not a meaningful optimization path.
-- Next required step: run `tools/sound-club/ANALYZE_TRANSLATION_INSTANCES.ps1` to detect repeated component geometry whose transforms were baked into vertex positions. This may enable much larger mesh reuse without changing shape.
+- Translation-equivalent analysis completed: 12,727 equivalence sets, 32,703 duplicate mesh definitions beyond representatives, ~47.33 MiB recoverable BIN, ~6.62% BIN reduction and ~17.03% mesh-definition reduction (estimated 159,283 mesh definitions after reuse).
+- Translation reuse alone is helpful but still insufficient for the web target. The diagnostic phase is now considered complete enough to proceed.
+- **NEXT PRODUCTION STEP:** stop adding diagnostics and build a separate optimized derivative (`venue-web-v1.glb`) using three layers: (1) safe removal of decor/minor hardware, (2) translation-equivalent mesh reuse where exact transform recovery is verified, and (3) proxy/simplification for the heavy P1 groups (`TECHO_ENTERO`, `CORTINAS`, sofa, threaded rods, lighting fixtures). Never overwrite `venue-master.glb`.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
@@ -149,13 +151,11 @@ http://localhost:8000/projects/sound-club-palma.html?candidate=1
 
 ## Next decision gates
 
-1. Run `ANALYZE_GLB_CANDIDATE.ps1`.
-2. Inspect `venue-master.analysis.json` and `venue-master.top-geometry.csv`.
-3. Identify terrain/geolocation/site-context/remote geometry before deletion.
-4. Build a cleaned venue-only candidate.
-5. Reduce geometry count and file size below the public web gate.
-6. Verify DWG/SKP alignment.
-7. Export matched-camera V-Ray stills.
-8. Only then run `-Promote`.
-9. Add verified zone hotspots.
-10. Continue refining the architect / engineer / designer-facing project dossier.
+1. Build the first **derived optimized** `venue-web-v1.glb` from the verified source candidate. No more diagnostic-only loops before this build.
+2. Validate the derived GLB: geometry/bounds, size, mesh count and visual comparison against the private SketchUp master.
+3. Continue optimization until ≤95 MiB / ≤20,000 geometries (prefer 25–50 MiB).
+4. Verify DWG/SKP alignment.
+5. Connect the optimized GLB to the Spatial Explorer and add verified zone/system views.
+6. Export matched-camera V-Ray stills for BEFORE/AFTER render evidence.
+7. Only after visual + origin QA, run the public promotion gate.
+8. Continue the architect / engineer / designer-facing dossier.
