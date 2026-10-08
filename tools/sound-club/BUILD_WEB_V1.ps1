@@ -17,6 +17,37 @@ $expectedSourceSha = "0fc257b69448ed23739dceada7798113cc4dcdc457ec86efd8661902b9
 if (-not (Test-Path $source)) { throw "Source GLB not found: $source" }
 if (-not (Test-Path $plan)) { throw "Optimization plan not found: $plan" }
 
+if ((Test-Path $output) -and -not $Force) {
+  if (-not (Test-Path $report)) {
+    throw "venue-web-v1.glb already exists but its build report is missing: $report"
+  }
+
+  Write-Host "=== SOUND CLUB · venue-web-v1 ALREADY BUILT ==="
+  Write-Host "Protected source remains unchanged."
+  Write-Host "Existing derivative: $output"
+  Write-Host "Existing build report: $report"
+  Write-Host ""
+
+  $status = Get-Content $report -Raw | ConvertFrom-Json
+
+  [pscustomobject]@{
+    SizeMiB              = [math]::Round([double]$status.derived.sizeMiB, 2)
+    Nodes                = [int64]$status.derived.nodes
+    Meshes               = [int64]$status.derived.meshes
+    BinMiB               = [math]::Round(([double]$status.derived.binBytes / 1MB), 2)
+    FileReductionPercent = [math]::Round([double]$status.reduction.filePercent, 2)
+    BinReductionPercent  = [math]::Round([double]$status.reduction.binPercent, 2)
+    MeshReductionPercent = [math]::Round([double]$status.reduction.meshDefinitionPercent, 2)
+    WebSizeOK            = [bool]$status.webGate.sizeOk
+    WebMeshCountOK       = [bool]$status.webGate.meshCountOk
+    WebReady             = [bool]$status.webGate.ready
+  } | Format-List
+
+  Write-Host "V1 is complete. Do not rebuild it and do not use -Force unless the existing derivative is intentionally being replaced."
+  Write-Host "Next stage: controlled V2 merge/proxy/simplification."
+  return
+}
+
 $py = Get-Command python -ErrorAction SilentlyContinue
 if (-not $py) { $py = Get-Command py -ErrorAction SilentlyContinue }
 if (-not $py) { throw "Python is required." }
