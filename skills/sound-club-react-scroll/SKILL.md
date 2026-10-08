@@ -1,246 +1,384 @@
-# Sound Club React Scroll Case — Project Page Skill v2.4
+# SOUND CLUB Technical Deconstruction — React Project Skill v3.0
 
 ## Mission
 
-Build and maintain the public **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca** case study as a React-first, architecture/editorial, long-scroll technical narrative.
+Build and maintain the public **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca** dossier as a technical deconstruction of a multidisciplinary hospitality project.
 
-Compose this skill with `../reactbits-portfolio-components/SKILL.md` for Model Viewer, Bounce Cards and project technology/vendor rails.
+The page is not a generic portfolio gallery. It must read like a hybrid of:
+- architectural monograph;
+- engineering design review;
+- systems-integration dossier;
+- construction-development sequence;
+- interactive spatial model.
 
-Use this skill before changing:
+Primary audiences:
+- architects;
+- engineers;
+- interior designers;
+- lighting designers;
+- KNX / DALI / control integrators;
+- acoustic consultants;
+- audio professionals;
+- custom furniture / wood / metal fabrication studios;
+- hospitality developers and technical clients.
 
-- `projects/sound-club-palma.html`
-- `assets/js/sound-club-case-v2.js`
-- `assets/css/sound-club-case-v2.css`
-- `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
-- `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
-- `xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json`
-- `xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json`
-- `xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json`
-- `assets/visuals/sound-club-cad-blueprint.svg`
-- `assets/visuals/sound-club-skp-line-preview.svg`
+The page must demonstrate **how the project was developed**, not only what the final space looks like.
 
 ## Canonical identity
 
 - Project ID: `SOUND_CLUB_CDM`
 - Public title: **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**
 - Canonical page: `projects/sound-club-palma.html`
-- Legacy archive slug: `sound-club-palma`
+- Runtime: React 18 + GSAP + Three.js
+- Source CAD/SKP: private masters
+- Public model: verified derived GLB only
 
-## Required frontend stack
+## Narrative principle
 
-This page remains React-controlled.
+The public story follows this order:
 
-Current buildless GitHub Pages stack:
+```
+SITE
+→ CAD
+→ SPATIAL MODEL
+→ ZONES
+→ DEVELOPMENT PHASES
+→ SYSTEMS
+→ BUILD / INTEGRATION
+→ FINAL ATMOSPHERE
+→ AS-BUILT / DOCUMENTATION
+```
 
-- React 18 UMD
-- ReactDOM `createRoot`
-- GSAP
-- ScrollTrigger
-- metadata-driven Scroll World narrative
-- plain CSS
-- no JSX transpilation required
+Do not start with equipment lists.
 
-Do not regress the page to a hand-written static gallery.
+The spatial problem comes first. Technical systems are explained as layers applied to the space.
 
-If the portfolio later moves to Vite, migrate the same component responsibilities rather than redesigning the information architecture.
+## Required page chapters
 
-## React component responsibilities
+1. **Project Identity / Hero**
+2. **CAD Depth / Existing Space**
+3. **Spatial Model / SketchUp**
+4. **Development Phases**
+5. **Systems Deconstruction**
+6. **Audio / Electroacoustics**
+7. **Lighting / KNX / DALI / Control**
+8. **Acoustics / Isolation / Decoupling**
+9. **Custom Fabrication / Wood / Metal / DJ Booth**
+10. **Render Build / Material + Light Evolution**
+11. **As-Built / Commissioning / Documentation**
+12. **Technical Dossier / Evidence**
 
-The page must keep these conceptual components:
+## Hero / CAD depth
 
-- `ChapterRail`
-- `Metric`
-- `Card`
-- `Figure`
-- `CADBlueprintLayer`
-- `SpatialExplorer`
-- `Story`
-- `MotionStage`
-- project `App`
-
-New page modules should be added as components or metadata, not by inserting unrelated DOM fragments after React mounts.
-
-## Scroll behaviour
-
-Use scroll as information architecture, not decoration.
+The hero must feel like entering a working technical drawing.
 
 Required:
+- derived CAD plan fixed behind the page;
+- layered depth, not a flat wallpaper;
+- restrained pointer parallax;
+- CAD crosshair cursor on fine-pointer devices;
+- horizontal / vertical datum lines;
+- small reference readout;
+- technical grid and drawing annotation language;
+- dark mineral architectural background;
+- content remains readable above the drawing.
 
-1. top progress line;
-2. active chapter rail;
-3. intersection-driven section state;
-4. GSAP/ScrollTrigger reveal motion;
-5. restrained parallax/depth motion;
-6. sticky Scroll World visual stage;
-7. mobile fallback with no sticky trap;
-8. `prefers-reduced-motion` support.
+Never present viewport X/Y as real dimensions until calibrated vector CAD exists.
 
-Avoid:
-- gratuitous scroll hijacking;
-- long blank pinning regions;
-- mouse-wheel lock;
-- neon HUD / gaming UI;
-- animation that hides technical content.
+The hero copy should communicate multidisciplinary coordination:
 
-## Page grammar
+**Architecture · Audio · Lighting · Control · Acoustics · Fabrication**
 
-Required chapters:
+Avoid generic marketing language.
 
-1. Hero / identity
-2. Project overview
-3. Spatial model explorer / CAD background
-4. Audio architecture
-5. Lighting + KNX/DALI
-6. Suspended structure / as-built
-7. DJ booth / technical furniture
-8. Curated Bounce Cards gallery
-9. Scroll World visual story
-10. Dossier / public evidence
+## Spatial Model / SketchUp
+
+Immediately after the CAD/existing-space chapter, show the 3D model.
+
+Runtime:
+- Three.js;
+- OrbitControls;
+- one authoritative verified GLB;
+- one camera and one geometry.
+
+Modes:
+- `DESIGN`: neutral technical material + edge overlay;
+- `ZONES`: zoning overlays / isolation of functional areas;
+- `SYSTEMS`: system overlays when coordinates are verified;
+- `RENDER`: original/final materials + warm lighting treatment.
+
+Until the verified GLB is promoted:
+- use the real SKP-derived line preview;
+- never invent substitute geometry;
+- local development may use `?candidate=1` only on localhost.
+
+## Zone model
+
+Target spatial zones:
+- Restaurant;
+- Main bar;
+- Secondary bar;
+- DJ booth;
+- Dance floor;
+- VIP / rear floor;
+- Exterior;
+- Rack / technical control;
+- suspended structure;
+- lighting axes.
+
+Hotspots become interactive only after coordinates are verified against the master model.
+
+Each zone may expose:
+- function;
+- systems affecting it;
+- drawing / detail;
+- equipment;
+- control logic;
+- relevant render / final image;
+- commissioning notes.
+
+## Development phases
+
+The project must be explained as a sequence of decisions.
+
+Required phases:
+
+### P01 — Existing space / survey
+Existing architecture, constraints, access, ceiling, services, public/private areas.
+
+### P02 — Spatial zoning
+Restaurant, bars, DJ, dance floor, VIP, exterior, technical positions.
+
+### P03 — Acoustic / electroacoustic strategy
+Coverage, LF strategy, zoning, vibration paths, isolation constraints.
+
+### P04 — Lighting / atmosphere
+Decorative lighting, track lighting, scene logic, dimming architecture.
+
+### P05 — Control / systems architecture
+DSP, KNX, DALI, Gira X1, user interfaces, presets, feedback and future expansion.
+
+### P06 — Fabrication / integration
+DJ booth, technical furniture, structural suspension, cable routes, custom details.
+
+### P07 — Programming / commissioning
+DSP routing, presets, lighting scenes, dimming, control verification, troubleshooting.
+
+### P08 — As-built / operational handover
+Installed configuration, evidence, documentation, maintenance and future roadmap.
+
+Each phase must state:
+- objective;
+- inputs;
+- technical decisions;
+- outputs;
+- verification / evidence status.
+
+## Systems deconstruction
+
+The project is shown as coordinated layers.
+
+Required disciplines:
+
+### Architecture / interior
+Spatial organization, circulation, geometry, integration with interior design.
+
+### Audio / electroacoustics
+Ecler MIMO88, Lynx DSP amplification, TSI systems, zoning, presets and limit strategy.
+
+### Lighting
+Decorative DALI pendants, track spots, DJ lighting strip, scene hierarchy and future DMX path.
+
+### Automation / control
+KNX, DALI, Gira X1, wall control, iPad/user interaction, states and commissioning.
+
+### Acoustic control / isolation
+Suspension decoupling, vibration paths, curtains / treatment where documented, boundary with formal sound-insulation evidence.
+
+### Structure / fabrication
+Suspended tube, threaded rods, clamps, DJ booth, wood / metal / custom technical furniture.
+
+### Network / serviceability
+Where supported by evidence: IP control, maintainability, diagnostics and expansion.
+
+Systems must be shown as related layers, not unrelated cards.
+
+## Render-build sequence
+
+The visual sequence should communicate **construction of the design**:
+
+```
+wireframe
+→ architectural massing
+→ technical systems
+→ material assignment
+→ lighting
+→ finished render
+```
+
+Rules:
+- original project renders may be used only when approved for public use;
+- source photos/videos remain private unless explicitly promoted;
+- generated render stages must be labelled `GENERATED_*`;
+- never imply a generated image is an as-built photograph;
+- DESIGN and RENDER use the same authoritative geometry whenever geometry is shown.
+
+The scroll interaction should allow the viewer to understand how the final atmosphere emerges from technical layers.
 
 ## Visual language
 
-- architectural / editorial
-- classical and technical rather than futuristic
-- dark mineral background
-- warm timber and muted brass
-- serif display typography
-- technical sans/mono secondary layer
-- controlled amber lighting
-- restrained cyan / teal contrast
-- dense information, but generous rhythm and hierarchy
+Desired:
+- architectural;
+- technical;
+- deconstructed;
+- editorial;
+- sober;
+- material-aware;
+- construction-oriented.
 
-## CAD background + CAD cursor
+Palette:
+- dark mineral / charcoal;
+- off-white drawing paper;
+- muted steel / cyan linework;
+- warm brass / timber accent;
+- restrained 2300 K amber for final-lighting moments.
 
-The public case may use a **derived** visual preview from the private DWG as a fixed React background layer.
+Typography:
+- elegant serif for architectural chapter titles;
+- neutral technical sans for body copy;
+- mono for drawing IDs, phases, coordinates, system tags and QA state.
 
-Rules:
-- raw DWG is never committed;
-- raster/derived preview is visual navigation only until authoritative vector geometry is exported;
-- crosshair/cursor may show viewport reference coordinates, but must not label them as metres or fabrication dimensions;
-- real dimensions require calibrated vector geometry;
-- keep the CAD layer behind content and reduce it on mobile / coarse pointer devices.
+Avoid:
+- cyberpunk;
+- gaming HUD;
+- neon interfaces;
+- generic SaaS cards;
+- decorative animation with no technical meaning.
 
-## Spatial Explorer / Three.js
+## React component responsibilities
 
-The web runtime is Three.js. Blender may be used as an authoring / material / lighting stage, but it is not the browser runtime.
+Maintain / evolve these conceptual components:
+- `CADBlueprintLayer`
+- `ChapterRail`
+- `SpatialExplorer`
+- `DevelopmentPhases`
+- `DisciplineMatrix`
+- `SystemLayer`
+- `RenderBuild`
+- `Figure`
+- `Story`
+- `MotionStage`
+- `TechnicalDossier`
 
-The primary model uses **one authoritative verified GLB**. The browser never swaps geometry between visual modes:
-- `DESIGN`: Three.js applies neutral technical materials plus an edge overlay at runtime;
-- `RENDER`: Three.js restores the GLB's original materials/textures and applies warm presentation lighting.
+The architecture may change internally, but page modules stay React-controlled.
 
-Both modes therefore share the exact same mesh, transforms, scale and camera state. Never publish a fake 3D placeholder as verified geometry. Until GLB exists, use the SKP-derived line preview with `GLB PENDING`.
+## Local candidate model mode
 
-## Model Viewer and gallery
+Local QA is allowed through:
 
-The project page must be ready to display verified geometry without publishing raw CAD.
+`http://localhost:<port>/projects/sound-club-palma.html?candidate=1`
 
-Model runtime contract:
-- source CAD/SKP stays private;
-- browser assets are optimized GLB/glTF;
-- `model-manifest.json` controls model status and public source;
-- `PENDING_GLB` renders a poster/fallback, never a fake 3D object;
-- viewer is React-controlled;
-- `source-ingest.json` records source hash/version/unit facts without publishing raw files;
-- `model-manifest.json` promotes one authoritative GLB;
-- `tools/sound-club/CONVERT_SKP_TO_GLB.ps1` creates a candidate locally and only promotes with an explicit `-Promote` flag;
-- Three.js OrbitControls preserve one camera across mode changes.
+Contract:
+- candidate mode activates only for `localhost` or `127.0.0.1`;
+- it loads `assets/models/sound-club/_candidate/venue-master.glb`;
+- it never changes `model-manifest.json`;
+- it never runs on GitHub Pages;
+- it is clearly marked `LOCAL CANDIDATE / NOT VERIFIED`.
 
-Gallery contract:
-- Bounce Cards consume only `publicSafe: true` project media;
-- reduced-motion collapses to a static grid;
-- generated assets retain their classification labels.
+This is the required inspection path before `-Promote`.
 
-## Public / internal navigation boundary
+## Source / evidence boundary
 
-The public case must not expose implementation-only buttons or navigation to:
-- React Visuals;
-- XXXIA Production Console;
-- project skills;
-- internal project state files.
+Raw assets:
+- DWG = private reference;
+- SKP = private reference;
+- original private photos/video = private reference unless explicitly approved.
 
-Those surfaces remain available inside the repository for development/QA, but the client/recruiter-facing case should present the project itself, the interactive model layer, gallery, story and public technical evidence.
-
-## Evidence contract
-
-Only render public media where `publicSafe === true`.
+Public:
+- derived CAD/SVG;
+- approved technical diagrams;
+- approved original renders;
+- verified GLB;
+- generated concept/render assets with correct labels;
+- final photos only when explicitly approved.
 
 Evidence classes:
+- `PRIVATE_REFERENCE_ONLY`
+- `DOCUMENTED_REFERENCE`
+- `GENERATED_DIAGRAM`
+- `GENERATED_CONCEPT`
+- `GENERATED_MOTION`
+- `VERIFIED_DRAWING`
+- `VERIFIED_GEOMETRY`
+- `VERIFIED_FINAL_PHOTO`
 
-- DOCUMENTED_REFERENCE
-- GENERATED_DIAGRAM
-- GENERATED_CONCEPT
-- GENERATED_MOTION
-- VERIFIED_DRAWING
-- VERIFIED_FINAL_PHOTO
+## Model promotion gate
 
-Original user photos/videos remain **PRIVATE_REFERENCE_ONLY** and must never be committed or linked publicly.
+Before public GLB promotion:
+1. selected SKP hash matches the registered master;
+2. GLB parses;
+3. geometry count is non-zero;
+4. bounding box is plausible for the venue;
+5. remote / geolocation / terrain geometry is removed or isolated;
+6. DWG/SKP origin relationship is understood;
+7. visual inspection passes;
+8. public file size is acceptable;
+9. DESIGN / RENDER show identical geometry;
+10. zone coordinates are verified.
 
-Generated imagery may communicate supported facts, but it must not be labelled as verified geometry.
+A valid GLB file is **not automatically a valid venue master**.
 
-## Current project facts allowed on the public page
+## Current technical facts allowed
+
+### Geometry
+- interior area approx. 326.23 m²;
+- exterior area approx. 137.08 m²;
+- main ceiling height 3.545 m;
+- upper window-profile height 3.421 m.
 
 ### Audio
-- Ecler MIMO88
-- 8 × TSI Hexagon Top 12"
-- 8 × TSI Megatron Sub 18"
-- 2 × Lynx GTX 5K DSP
-- 2 × Lynx GTX 14K DSP interior
-- 1 × Lynx GTX 14K DSP exterior
-- Interior / Exterior zoning
-- Restaurant / Club presets
+- Ecler MIMO88;
+- 8 × TSI Hexagon Top 12";
+- 8 × TSI Megatron Sub 18";
+- 2 × Lynx GTX 5K DSP;
+- 2 × Lynx GTX 14K DSP interior;
+- 1 × Lynx GTX 14K DSP exterior;
+- Interior / Exterior zoning;
+- Restaurant / Club presets.
 
 ### Lighting / control
-- Gira X1
-- KNX + DALI
-- 15 decorative pendants
-- 20 track spots
-- 24 V DJ strip via DALI DT8
-- future DMX readiness
+- Gira X1;
+- KNX + DALI;
+- 15 decorative pendants;
+- 20 track spots;
+- 24 V DJ strip via DALI DT8;
+- future DMX readiness.
 
 ### Structure
-- current installed/documented priority: Ø48.3 mm structural pipe
-- spring anti-vibration suspension
-- threaded rod + clamp
-- Ø63 mm retained only as a conflicting preliminary value pending CAD validation
+- documented/as-built priority Ø48.3 mm structural pipe;
+- spring anti-vibration suspension;
+- threaded rod + clamp;
+- Ø63 mm remains a conflicting preliminary value until evidence resolves it.
 
 ### DJ booth
-- Ø2570 exterior
-- Ø1200 interior
-- access 990 mm
-- lateral step 490 mm
-- nominal height 1000 mm
-
-## XXXIA motion rule
-
-Do not publish the original reference videos.
-
-The correct sequence is:
-
-`CAD/SKP master → verified geometry → stills / diagrams → frame-locked XXXIA sequence → Scroll World scrub integration`
-
-SC08 is the portfolio scroll master and is declared in `motion-manifest.json`.
-
-Runtime rule:
-- while `master.status !== APPROVED` or `master.src` is empty, `MotionStage` must show the public-safe still/diagram fallback;
-- once `APPROVED`, the same React story stage scrubs the master video against scroll position;
-- reduced-motion mode must never depend on video playback.
-
-Do not launch paid render merely because the page supports it. Render only when motion is explicitly approved and geometry/evidence status is appropriate.
+- Ø2570 exterior;
+- Ø1200 interior;
+- access 990 mm;
+- lateral step 490 mm;
+- nominal height 1000 mm.
 
 ## QA before shipping
 
-1. React root mounts without console errors.
-2. GSAP and ScrollTrigger load without blocking core content.
-3. Metadata JSON returns 200.
-4. All rendered media are `publicSafe`.
-5. Desktop story stage remains sticky and usable.
-6. Mobile becomes one-column and non-sticky.
-7. Reduced-motion path remains fully readable.
-8. No original private media paths exist in public HTML/JS/CSS/JSON.
-9. No generated concept is labelled `VERIFIED_DRAWING`.
-10. `motion-manifest.json` parses and its `projectId` is `SOUND_CLUB_CDM`.
-11. Pending motion exposes no public video element.
-12. Canonical page title remains **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**.
-13. CAD cursor readout is explicitly reference-only until vector calibration.
-14. DESIGN/RENDER are runtime treatments of one GLB and cannot diverge.
-15. Raw DWG/SKP paths or binaries are absent from public assets.
+- React mounts with no console errors.
+- CAD layer is visible but subordinate to content.
+- Fine-pointer cursor behaves like a technical crosshair.
+- Mobile falls back to readable non-CAD cursor behaviour.
+- Local candidate mode cannot activate on public host.
+- Public model is never loaded from `_candidate`.
+- Current public GLB bounds are plausible for the venue.
+- Phases appear before equipment-heavy sections.
+- Systems are grouped by discipline.
+- Original private media remain private.
+- Generated assets are never mislabelled.
+- Reduced-motion remains readable.
+- Canonical public title remains unchanged.
