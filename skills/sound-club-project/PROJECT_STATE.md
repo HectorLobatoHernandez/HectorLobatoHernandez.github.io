@@ -1,82 +1,146 @@
 # SOUND CLUB and restaurant — Current Project State
 
-## Canonical identity
+## Checkpoint
 
-- Project ID: `SOUND_CLUB_CDM`
-- Public title: **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**
-- Public case: `projects/sound-club-palma.html`
-- Legacy route: `projects/sound-club-palma.html`
-- XXXIA legacy archive slug retained: `sound-club-palma`
+- Checkpoint date: 2026-10-08
+- Public project: **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**
+- Canonical page: `projects/sound-club-palma.html`
+- Public case runtime: technical deconstruction v3.1
+- Backup purpose: safe restart / immediate continuation
 
-## Public implementation v2.2
+## Current private masters
 
-- React 18 long-form case page.
-- GSAP + ScrollTrigger enhancement layer.
-- Scroll progress + active chapter rail.
-- Scroll World-style sticky visual story.
-- SC08 motion-ready story stage with still fallback.
-- `motion-manifest.json` controls promotion from stills to scroll-scrub master video.
-- React Bits-inspired Bounce Cards gallery is public-safe and metadata-driven.
-- Model Viewer shell is wired to `model-manifest.json`; 4 model slots remain `PENDING_GLB` until verified geometry is exported.
-- Project technology/vendor rail uses a restrained Logo Loop pattern.
-- Metadata-driven public media registry.
-- Architecture/editorial visual system.
-- Mobile and reduced-motion fallback.
-- Public technical dossier summary under `docs/projects/sound-club-palma/`.
-- Page-specific skill: `skills/sound-club-palma-react-scroll/SKILL.md`.
+### CAD
+- Format: DWG AC1032
+- Raw DWG: PRIVATE_REFERENCE_ONLY
+- Public derivative: `assets/visuals/sound-club-cad-blueprint.svg`
+- CAD background / crosshair / technical-depth layer is implemented.
+- Real metric cursor remains blocked until vector calibration.
 
-## Public technical content
+### SketchUp
+- Current master: `CLUB_DEL_MAR_12_02_2026_3.skp`
+- Selected explicitly as the current finished project source.
+- SketchUp: 24.0.594
+- Unit: Meter
+- Size: 251,178,212 bytes
+- SHA-256: `ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665`
+- Archive entries: 6,928
+- Material definitions: 2,488
+- V-Ray-named material families detected.
+- V-Ray light/render settings are NOT yet asserted as verified.
+- Raw SKP remains private and is not committed.
 
-- Venue: 326.23 m² interior / 137.08 m² exterior / 3.545 m main ceiling.
-- Audio: Ecler MIMO88, 8 × TSI Hexagon 12", 8 × TSI Megatron 18", Lynx GTX DSP amplification.
-- Control: Gira X1 + KNX + DALI.
-- Lighting: 15 pendants, 20 track spots, 24 V DT8 DJ strip.
-- Suspended structure: Ø48.3 mm installed/documented priority; Ø63 mm retained as conflicting preliminary value.
-- DJ booth base dimensions: Ø2570 / Ø1200 / access 990 / step 490 / nominal height 1000 mm.
+## Local GLB conversion — latest result
 
-## Evidence and privacy
+The new registered master has now been converted successfully using the memory-safe web pipeline.
 
-- Original user photos/videos: PRIVATE_REFERENCE_ONLY.
-- They are not published or promoted.
-- Public story only resolves `publicSafe: true` media.
-- Generated boards and diagrams remain explicitly classified.
-- 2300 K remains a portfolio visualization target.
+- Candidate path (local only): `assets/models/sound-club/_candidate/venue-master.glb`
+- QA report (local only): `assets/models/sound-club/_candidate/venue-master.qa.json`
+- Candidate policy: geometry + material colours, no embedded texture images by default
+- Source SHA-256: `ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665`
+- GLB SHA-256: `0fc257b69448ed23739dceada7798113cc4dcdc457ec86efd8661902b9604135`
+- Size result: exceeds 95 MiB; optimization required before public commit
+- Promotion status: **NOT PROMOTED**
+- Public model status: **PENDING_GLB**
+- Next required check: read QA report for geometry count, bounds and extents.
+- Next required visual check: localhost candidate viewer.
 
-## Interactive model status
+The candidate directory remains gitignored. Restarting Windows does not remove these local files.
 
-- Venue / master architecture: PENDING_GLB.
-- Central DJ booth: PENDING_GLB.
-- Technical counter / furniture: PENDING_GLB.
-- Suspended structure / decoupling: PENDING_GLB.
-- Browser delivery target: GLB/glTF only; raw SKP/DWG remains private.
+## Web / portfolio state
 
-## Geometry status
+Current narrative:
 
-DWG material exists, including architecture, suspended structure, anti-vibration support and DJ booth drawings.
+```
+CAD / EXISTING SPACE
+→ SPATIAL MODEL
+→ BEFORE / AFTER · RENDER DEVELOPMENT
+→ DEVELOPMENT PHASES
+→ SYSTEMS DECONSTRUCTION
+→ AUDIO
+→ LIGHTING / KNX / DALI / CONTROL
+→ ACOUSTICS / STRUCTURE
+→ FABRICATION / DJ BOOTH
+→ BUILD / FINAL / AS-BUILT
+→ DOCUMENTATION
+```
 
-Recover/autosave files are not authoritative by default.
+Implemented:
+- deep CAD background;
+- CAD-style crosshair cursor;
+- Three.js Spatial Explorer;
+- localhost-only `?candidate=1` mode;
+- DESIGN / RENDER runtime concept;
+- Development Phases;
+- Systems Deconstruction;
+- before/after render-development block;
+- registered master provenance;
+- V-Ray matched-camera export placeholder.
 
-SKP master: pending ingestion.
+## Render strategy
 
-Promotion path:
+The interactive GLB and V-Ray output are intentionally separate.
 
-`DWG + SKP → units / origin / alignment QA → verified master → drawings → web model → exploded → XXXIA`
+### Interactive
+- authoritative geometry = one verified optimized GLB;
+- DESIGN = technical runtime material / edges;
+- RENDER = presentation-lighting view of same geometry;
+- no geometry divergence between modes.
 
-## XXXIA
+### Photorealistic / V-Ray
+- exported stills remain the photorealistic evidence layer;
+- before/after must use matched camera positions;
+- current 2300 K atmosphere image is an interim labelled study;
+- replace with matched-camera V-Ray exports from the registered master.
 
-- Existing visual boards and technical diagrams are registered.
-- SC08 portfolio scroll master is now wired into the React runtime.
-- Current status: `PENDING_VERIFIED_GEOMETRY`; no public motion URL is set.
-- Target master: ~36 s, 16:9, muted, scroll-scrub.
-- No original source videos are to be uploaded.
-- Motion must derive from approved generated/verified assets.
+## Evidence / privacy
 
-## Next implementation pass
+- Raw DWG: private.
+- Raw SKP: private.
+- Original private photos/videos: private unless explicitly promoted.
+- Candidate GLB: local / gitignored / not public.
+- Public page only exposes derived or approved assets.
 
-- ingest SKP;
-- verify CAD/SKP alignment;
-- promote verified geometry;
-- replace conceptual exploded assets where appropriate;
-- render SC08 only after geometry promotion;
-- set the approved SC08 URL in the motion manifest;
-- let the existing React `MotionStage` activate it without restructuring the page.
+## Immediate continuation after reboot
+
+From PowerShell:
+
+```powershell
+cd "$env:USERPROFILE\Desktop\HectorLobatoHernandez.github.io"
+git pull origin main
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+```
+
+Check local candidate:
+
+```powershell
+Get-Item ".\assets\models\sound-club\_candidate\venue-master.glb" |
+  Select-Object Length, LastWriteTime
+
+Get-Content ".\assets\models\sound-club\_candidate\venue-master.qa.json" -Raw
+```
+
+Start local viewer:
+
+```powershell
+python -m http.server 8000
+```
+
+Open:
+
+```text
+http://localhost:8000/projects/sound-club-palma.html?candidate=1
+```
+
+## Next decision gates
+
+1. Inspect `venue-master.qa.json`.
+2. Confirm geometry count and X/Y/Z extents.
+3. Inspect the candidate visually in Three.js.
+4. Determine whether terrain/geolocation/remote geometry must be removed.
+5. Optimize candidate below public delivery target.
+6. Verify DWG/SKP alignment.
+7. Export matched-camera V-Ray stills.
+8. Only then run `-Promote`.
+9. Add verified zone hotspots.
+10. Continue refining the architect / engineer / designer-facing project dossier.
