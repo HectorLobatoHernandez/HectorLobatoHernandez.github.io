@@ -32,9 +32,18 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 `cv/dossier.html` es la síntesis profesional canónica y también el destino de la raíz pública del sitio. Conserva siete proyectos, destaca Sound Club, Palma / GAZA / RHB STUDIO, reutiliza diagramas documentados y expone `window.__CV_DOSSIER__` para QA. No reemplaza las fichas fuente ni inventa material visual pendiente.
 
-## 7. CV ATS
+## 7. CV ATS / PDF
 
-`cv/ats.html` es una versión de una columna, semántica y preparada para imprimir/guardar en PDF. `cv/ats.txt` contiene el mismo núcleo en texto plano. La versión actual es **project-based** porque la cronología laboral completa por empresa/cargo no está todavía verificada; no inventar esas fechas para rellenar el CV.
+`cv/ats.html` es el CV profesional imprimible y `cv/ats.txt` su espejo ATS en texto plano. Desde la revisión 2026-10-08 deja de ser un resumen project-based mínimo y pasa a incluir la cronología ya recuperada: **Studio Ingenia (2021–Actualidad)** y **Estudio Áureo (2018–2021)**, además de proyectos seleccionados, formación, Máster en Inteligencia Artificial (VIU, cursando actualmente), certificaciones, formación de fabricante, tecnologías, idiomas y método de trabajo.
+
+La edición de esta superficie se rige por `skills/cv-ats-pdf/SKILL.md`. Mantener siempre:
+- contenido suficiente para entregar el PDF sin depender del dossier web;
+- información seleccionable/semántica para ATS;
+- 2–3 páginas A4 como objetivo razonable;
+- etiquetas explícitas para estudios en curso;
+- confidencialidad de clientes;
+- ausencia de fechas/títulos de certificado inventados;
+- sincronía sustantiva entre HTML y TXT.
 
 ## 8. Presentation Route
 
