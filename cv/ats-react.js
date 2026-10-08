@@ -89,7 +89,6 @@
           });
           ctx.stroke();
         });
-        if(!reduced())raf=requestAnimationFrame(draw);
       };
       const updateMouse=(x,y)=>{mouse.x=x-bounds.left;mouse.y=y-bounds.top;if(!mouse.set){mouse.sx=mouse.x;mouse.sy=mouse.y;mouse.lx=mouse.x;mouse.ly=mouse.y;mouse.set=true}};
       const move=e=>updateMouse(e.clientX,e.clientY);
@@ -98,6 +97,7 @@
         mouse.sx+=(mouse.x-mouse.sx)*.1;mouse.sy+=(mouse.y-mouse.sy)*.1;
         const dx=mouse.x-mouse.lx,dy=mouse.y-mouse.ly,d=Math.hypot(dx,dy);mouse.v=d;mouse.vs+=(d-mouse.vs)*.1;mouse.vs=Math.min(100,mouse.vs);mouse.lx=mouse.x;mouse.ly=mouse.y;mouse.a=Math.atan2(dy,dx);
         draw(time);
+        raf=requestAnimationFrame(tick);
       };
       setSize();setLines();
       if(reduced())draw(0);else raf=requestAnimationFrame(tick);
