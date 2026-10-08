@@ -354,7 +354,9 @@ def self_test_semantic_parser():
 
 
 def main() -> int:
-    self_test_semantic_parser()\n\n    ap = argparse.ArgumentParser(description="Low-memory GLB structural analyzer.")
+    self_test_semantic_parser()
+
+    ap = argparse.ArgumentParser(description="Low-memory GLB structural analyzer.")
     ap.add_argument("glb", type=Path)
     ap.add_argument("--json", dest="json_out", type=Path, required=True)
     ap.add_argument("--csv", dest="csv_out", type=Path, required=True)
