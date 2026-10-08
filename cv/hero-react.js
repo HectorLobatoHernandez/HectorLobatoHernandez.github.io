@@ -5,7 +5,7 @@
  */
 (function(){
   const contract={
-    schemaVersion:3,
+    schemaVersion:4,
     engine:'REACT_18_UMD',
     upstream:'DavidHDev/react-bits@63a008de65732d73010bd219d25d15c47739bb31',
     components:['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'],
@@ -14,7 +14,8 @@
     portraitImages:1,
     generatedPortraits:0,
     globalEffects:true,
-    techMode:'TECH_TEXT_LETTER_REVEAL_SELECTION_DRAG_SWEEP',
+    techMode:'REACT_BITS_TECH_TEXT_VISIBLE_DEMO',
+    techTextProps:{reveal:'letter',reach:200,softness:.7,lineStyle:'dashed',dashLength:4,dashGap:2,strokeWidth:1.5,specks:15,selection:true,labels:true,draggable:true,sweep:true,speed:1},
     techHeadings:0,
     mounted:false
   };
@@ -158,7 +159,28 @@
       });
     };
 
-    const activate=index=>{setActive(index);requestAnimationFrame(()=>updateFrame(index))};
+    const setProximity=(centerIndex,event=null)=>{
+      const root=ref.current;if(!root)return;
+      const chars=[...root.querySelectorAll('.rb-tech-char')];
+      const reach=compact?132:200;
+      chars.forEach((el,i)=>{
+        let p=0;
+        if(event){
+          const rr=el.getBoundingClientRect();
+          const d=Math.hypot(event.clientX-(rr.left+rr.width/2),event.clientY-(rr.top+rr.height/2));
+          p=Math.max(0,1-d/reach);
+        }else if(centerIndex>=0){
+          p=Math.max(0,1-Math.abs(i-centerIndex)/2.7);
+        }
+        el.style.setProperty('--rb-proximity',p.toFixed(3));
+      });
+    };
+
+    const activate=index=>{
+      setActive(index);
+      setProximity(index);
+      requestAnimationFrame(()=>updateFrame(index));
+    };
 
     useEffect(()=>{
       if(reduced||inside||flat.length<2)return;
@@ -184,7 +206,11 @@
         const d=Math.hypot(dx,dy);
         if(d<bestDist){bestDist=d;best=i}
       });
-      if(best>=0&&bestDist<(compact?110:220))activate(best);
+      setProximity(best,e);
+      if(best>=0&&bestDist<(compact?132:210)){
+        setActive(best);
+        requestAnimationFrame(()=>updateFrame(best));
+      }
     };
 
     const down=(e,index)=>{
@@ -225,7 +251,12 @@
       'data-tech-mode':'letter',
       onPointerEnter:e=>{setInside(true);nearest(e)},
       onPointerMove:move,
-      onPointerLeave:()=>{setInside(false);if(!reduced){setActive(-1);setFrame(null)}},
+      onPointerLeave:()=>{
+        setInside(false);
+        const root=ref.current;
+        root?.querySelectorAll('.rb-tech-char').forEach(el=>el.style.setProperty('--rb-proximity','0'));
+        if(!reduced){setActive(-1);setFrame(null)}
+      },
       onPointerUp:up,
       onPointerCancel:up
     },
@@ -238,6 +269,7 @@
             key:lineIndex+'-'+charIndex,
             className:'rb-tech-char'+(char===' '?' is-space':'')+(active===index?' is-active':''),
             'data-char':char===' '?'SPACE':value,
+            style:{'--char-index':index},
             onPointerDown:e=>down(e,index)
           },
             value,
@@ -261,7 +293,7 @@
 
   function TechText(){
     return h('h1',{className:'rb-name','aria-label':'Héctor Lobato','data-reactbits-tech-text':'true'},
-      h(TechWordmark,{lines:['Héctor','Lobato.'],compact:false,draggable:true,label:'IDENTITY'})
+      h(TechWordmark,{lines:['Héctor','Lobato.'],compact:false,draggable:true,label:'REACT BITS / TECH TEXT'})
     );
   }
 
@@ -277,7 +309,7 @@
       el.classList.add('rb-doc-tech');
       el.setAttribute('aria-label',lines.join(' '));
       const root=window.ReactDOM.createRoot(el);
-      root.render(h(TechWordmark,{lines:lines.length?lines:[''],compact:true,draggable:true,label:'TITLE '+String(index+1).padStart(2,'0')}));
+      root.render(h(TechWordmark,{lines:lines.length?lines:[''],compact:true,draggable:true,label:'TECH TEXT / TITLE '+String(index+1).padStart(2,'0')}));
       roots.push(root);
     });
     window.__CV_TECH_HEADING_ROOTS__=roots;
