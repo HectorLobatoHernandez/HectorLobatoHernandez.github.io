@@ -94,7 +94,7 @@ body.dossier{margin:0;background:var(--paper);color:var(--ink);font-family:"DM S
 <figure class="project-visual reveal"><img src="../assets/visuals/rhb-studio-system.svg" alt="Diagrama funcional de RHB STUDIO"><figcaption class="plate-caption"><span>Local-first engineering platform</span><span>CAD · Agents · Project Ops</span></figcaption></figure>
 <div class="project-copy reveal"><span class="project-no">05 / Selected work · Engineering platform</span><h2>RHB<br>STUDIO.</h2><p class="project-lead">Una plataforma interna para coordinar proyectos, CAD, fabricación, documentación y agentes IA.</p><p>El objetivo es convertir el ciclo técnico completo en un sistema trazable: solicitud, levantamiento, CAD, diseño, BOM, presupuesto, aprobación, fabricación, montaje, QA y entrega. El runtime completo es local; la web pública es un showcase.</p>
 <div class="project-facts"><div class="fact"><span>Rol</span><span>Arquitectura funcional · producto interno · automatización</span></div><div class="fact"><span>Estado</span><span>En desarrollo activo</span></div><div class="fact"><span>Core</span><span>Project state · versiones · documentación · decisiones · entregables</span></div><div class="fact"><span>Runtime</span><span>OmniRoute · OpenClaw · NEXO · agentes y herramientas locales</span></div></div>
-<div class="project-links"><a class="dos-btn primary" href="../projects/rhb-studio.html">Abrir arquitectura ↗</a></div></div>
+<div class="project-links"><a class="dos-btn primary" href="../apps/rhb/">Abrir demo funcional ↗</a><a class="dos-btn" href="../projects/rhb-studio.html">Arquitectura</a></div></div>
 </section>
 
 <section class="section dos-shell" id="evidence">
@@ -108,7 +108,7 @@ body.dossier{margin:0;background:var(--paper);color:var(--ink);font-family:"DM S
 <div class="archive reveal" style="margin-top:28px">
 <a href="../apps/gaza/mission-control.html?guide=1"><small>LIVE DEMO / PRODUCT</small><h3>GAZA Mission Control</h3><p>Superficie navegable que conecta operaciones, Plant 3D, GIS, Territory, clima y sistemas con procedencia visible.</p></a>
 <a href="../apps/gaza/systems.html"><small>ARCHITECTURE / INTEGRATION</small><h3>GAZA Systems</h3><p>Gateway, discovery de interfaces, contratos canónicos, límites OT y estrategia de integración read-only.</p></a>
-<a href="../projects/rhb-studio.html"><small>LOCAL-FIRST / AGENTS</small><h3>RHB STUDIO</h3><p>Arquitectura de proyectos, routing de modelos, OpenClaw, OmniRoute, NEXO, CAD y outputs técnicos.</p></a>
+<a href="../apps/rhb/"><small>FUNCTIONAL DEMO / LOCAL-FIRST</small><h3>RHB STUDIO</h3><p>Demo navegable de Project Core, Survey/CAD, BOM, routing, documentación y QA; runtime privado separado.</p></a>
 <a href="https://github.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io" target="_blank" rel="noopener"><small>VERSION CONTROL / QA</small><h3>Repositorio GitHub</h3><p>Código, skills, workflows, documentación, tests y evolución trazable del portfolio y los demostradores.</p></a>
 </div>
 <div class="project-links reveal"><a class="dos-btn primary" href="../skills/manifest.json">Skill manifest ↗</a><a class="dos-btn" href="../start/mapa.html">Mapa técnico completo ↗</a><a class="dos-btn" href="present.html">Ruta de presentación ↗</a></div>
@@ -159,6 +159,6 @@ const p=document.getElementById('progress');
 const update=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;p.style.width=(m>0?Math.min(100,scrollY/m*100):0)+'%'};
 addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.08,rootMargin:'0px 0px -4%'});document.querySelectorAll('.reveal').forEach(el=>io.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('on'));
-window.__CV_DOSSIER__={schemaVersion:3,design:'ATELIER_SWISS_MONOGRAPH_REACTBITS',projects:7,featured:3,visualEvidence:3,evidenceCards:4,presentationRoute:true,ats:false,print:true,reactBits:['TechText','Particles','LogoLoop']};
+window.__CV_DOSSIER__={schemaVersion:4,design:'ATELIER_SWISS_MONOGRAPH_REACTBITS',projects:7,featured:3,visualEvidence:3,evidenceCards:4,presentationRoute:true,ats:false,print:true,reactBits:['TechText','Particles','LogoLoop']};
 </script>
 </body></html>
