@@ -7,7 +7,7 @@ const pages=[
   ['/start/','START HERE',['CV','GAZA','RHB STUDIO','Labs']],
   ['/start/cv.html','Currículum',['Atelier','Swiss','Monograph','Scroll World']],
   ['/start/gaza.html','GAZA',['ARRANCAR MISSION CONTROL','ABRIR MATRIX']],
-  ['/start/rhb.html','RHB STUDIO',['LOCAL RUNTIME','Showcase público']],
+  ['/start/rhb.html','RHB STUDIO',['LOCAL RUNTIME','Demo pública funcional','ABRIR DEMO FUNCIONAL']],
   ['/start/labs.html','Labs',['App Test Center','GIS 3D']]
 ];
 
