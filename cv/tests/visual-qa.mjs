@@ -72,6 +72,12 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       heroNameFirstColor:(()=>{const x=document.querySelector('.rb-name .rb-tech-line:first-child');return x?getComputedStyle(x).color:null})(),
       heroNameLastColor:(()=>{const x=document.querySelector('.rb-name .rb-tech-line:last-child');return x?getComputedStyle(x).color:null})(),
       particlesOpacity:(()=>{const x=document.querySelector('.rb-particles');return x?Number(getComputedStyle(x).opacity):null})(),
+      heroNameFont:(()=>{const x=document.querySelector('.rb-name');return x?getComputedStyle(x).fontFamily:null})(),
+      firstDocTitleFont:(()=>{const x=document.querySelector('.rb-doc-tech');return x?getComputedStyle(x).fontFamily:null})(),
+      techSelectionLabelVisible:(()=>{const x=document.querySelector('.rb-tech-selection-label');return x?getComputedStyle(x).display!=='none':false})(),
+      activeTechBackground:(()=>{const x=document.querySelector('.rb-tech-char.is-active');return x?getComputedStyle(x).backgroundColor:null})(),
+      activeTechOutlineOpacity:(()=>{const x=document.querySelector('.rb-tech-char.is-active');return x?Number(getComputedStyle(x,'::after').opacity):0})(),
+      activeProximity:(()=>{const x=document.querySelector('.rb-tech-char.is-active');return x?Number(getComputedStyle(x).getPropertyValue('--rb-proximity')||0):0})(),
       imageLoaded:(()=>{const i=document.querySelector('.atelier-photo img');return i?i.complete&&i.naturalWidth>0:null})(),
       asset404:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src)
     }));
@@ -84,15 +90,17 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      if(state.dossier?.schemaVersion!==5||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossier?.schemaVersion!==6||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
       if(state.dossierProjects!==3||state.dossierArchive!==8||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
       const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
-      if(state.hero?.schemaVersion!==3||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||state.hero?.techMode!=='TECH_TEXT_LETTER_REVEAL_SELECTION_DRAG_SWEEP'||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
+      if(state.hero?.schemaVersion!==4||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||state.hero?.techMode!=='REACT_BITS_TECH_TEXT_VISIBLE_DEMO'||state.hero?.palette!=='IVORY_ATLAS'||state.hero?.displayFont!=='INSTRUMENT_SERIF'||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
       if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||state.techShells<state.techHeadings+1||state.techSelections<1||state.techActiveChars<1||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier amplified React Bits / TechText UI missing');
       if(!state.portraitToggle||state.portraitView!=='interactive')failures.push('Dossier portrait viewer toggle missing or wrong default state');
       if(state.heroActionLabels.includes('Portfolio técnico')||state.heroActionLabels.includes('Contacto')||state.heroActionLabels.length!==3)failures.push('Dossier hero actions not simplified');
       if(state.bodyBg!=='rgb(0, 0, 0)')failures.push('Dossier canonical background must be true black: '+state.bodyBg);
-      if(state.heroNameFirstColor!=='rgb(210, 221, 211)'||state.heroNameLastColor!=='rgb(175, 192, 177)')failures.push('Dossier TechText green-gray hierarchy mismatch: '+state.heroNameFirstColor+' / '+state.heroNameLastColor);
+      if(state.heroNameFirstColor!=='rgb(226, 223, 207)'||state.heroNameLastColor!=='rgb(188, 208, 209)')failures.push('Dossier Ivory Atlas TechText hierarchy mismatch: '+state.heroNameFirstColor+' / '+state.heroNameLastColor);
+      if(!state.heroNameFont?.includes('Instrument Serif')||!state.firstDocTitleFont?.includes('Instrument Serif'))failures.push('Editorial serif typography missing: '+state.heroNameFont+' / '+state.firstDocTitleFont);
+      if(!state.techSelectionLabelVisible||!state.activeTechBackground||state.activeTechBackground==='rgba(0, 0, 0, 0)'||state.activeTechOutlineOpacity<.8||state.activeProximity<=0)failures.push('TechText is not visibly active at idle: '+JSON.stringify({label:state.techSelectionLabelVisible,bg:state.activeTechBackground,outline:state.activeTechOutlineOpacity,proximity:state.activeProximity}));
       if(state.particlesOpacity===null||state.particlesOpacity<.9)failures.push('Dossier particles are not prominent enough for the React demo');
       if(!state.marSaladaCanonical||state.legacyProjectButtons)failures.push('Dossier Mar Salada canonical identity/public buttons mismatch');
       await page.click('.rb-menu-trigger');await page.waitForTimeout(350);

@@ -19,7 +19,7 @@ Requested component references:
 - Particles — https://reactbits.dev/backgrounds/particles
 - Logo Loop — https://reactbits.dev/animations/logo-loop
 
-This is a **curated portfolio integration skill**, not a wholesale vendor copy. Keep the visual language architectural/editorial and use animation only where it improves understanding.
+This is a **curated portfolio integration skill**, not a wholesale vendor copy. In the personal dossier, React Bits is intentionally used as a visible front-end capability demonstration while preserving readability and evidence boundaries.
 
 ## Component policy
 
@@ -69,19 +69,29 @@ On reduced motion, render a static grid.
 Primary approved use:
 
 - **Héctor Lobato** in the main dossier hero;
-- selected major technical headings only when the effect remains legible.
+- all major dossier section/project titles, but never paragraph copy or metadata.
 
-Do not animate every paragraph or metadata label.
+For the personal dossier, align behavior with the current React Bits Tech Text controls:
 
-The accessible name must remain plain text.
+- `reveal: 'letter'`;
+- reach ≈ `200px`;
+- softness ≈ `0.7`;
+- dashed technical selection language;
+- dash length ≈ `4px`, gap ≈ `2px`, stroke ≈ `1.5px`;
+- visible specks;
+- selection frame + labels;
+- draggable letters with spring return;
+- idle sweep enabled.
+
+The effect must remain obvious in a static frame: a low-level outline/reveal state is allowed at rest, while pointer proximity and the sweep intensify the selected letter. The accessible heading/name remains plain semantic text.
 
 ### Particles
 
 Approved as the ambient background layer for the personal dossier.
 
 Rules:
-- low density;
-- low opacity;
+- moderate density for the personal dossier demonstration;
+- clearly visible but subordinate to text;
 - no gaming/starfield aesthetic;
 - do not reduce text contrast;
 - pause/reduce motion for `prefers-reduced-motion`;
@@ -106,8 +116,8 @@ Never imply sponsorship, certification or partnership merely by showing a techno
 Compose with `skills/cv-editorial-architecture/SKILL.md`.
 
 Required:
-- Tech Text on the main name;
-- Particles as the dominant ambient background;
+- Tech Text on the main name **and major titles**;
+- Particles/Waves as a clearly visible ambient interactive background;
 - Logo Loop under the skills/capability area;
 - keep the dossier printable: all animated layers disappear in print.
 

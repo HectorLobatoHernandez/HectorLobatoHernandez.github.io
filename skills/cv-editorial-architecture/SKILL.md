@@ -3,7 +3,7 @@ name: cv-editorial-architecture
 description: Design elegant, typographically rigorous technical curricula and engineering portfolios inspired by architectural publishing, the Swiss Style and software documentation. Prefer semantic HTML/CSS/vanilla JS; select motion only where it improves reading. Use when the user asks for an architecture-oriented CV, an engineering presentation, a portfolio design review or several visual design alternatives.
 ---
 
-# CV Editorial · Architecture × Software v3
+# CV Editorial · Architecture × Software v4
 
 ## Intent
 
@@ -21,18 +21,26 @@ The dossier must preserve the seven documented project routes, distinguish execu
 
 ## Canonical dossier art direction
 
-The selected dossier direction is now **black + green-gray**. Use a true black canvas and a restrained Pantone-inspired gray-green family for typography, rules and UI hierarchy:
+The selected dossier direction is now **IVORY ATLAS × React Tech**: true black as the structural canvas, editorial high-contrast serif typography, and a four-colour accent system sampled from the user-approved reference.
 
-- background: `#000000`;
-- primary text: `#D2DDD3`;
-- secondary display: `#C2D0C4`;
-- body: `#AFC0B1`;
-- labels: `#788B7D`;
-- muted metadata: `#5D7063`;
-- structural rules: `#3E4C43`;
-- interactive accent: `#B8CBB9`.
+Canonical palette:
 
-Do not reintroduce copper, beige or unrelated accent colors into the canonical dossier unless explicitly requested. The React `TechText` treatment on **Héctor Lobato** and all major dossier titles is the dominant interaction language. Use the gray-green palette consistently across text, selection frames, particles, labels and technical UI.
+- black: `#000000`;
+- burgundy: `#370001`;
+- ivory: `#E2DFCF`;
+- ice blue: `#BCD0D1`;
+- olive: `#93884B`;
+- supporting sage-gray: `#A5A999`.
+
+Typography:
+
+- **Instrument Serif** for `Héctor Lobato`, major section titles, project titles and large editorial statements;
+- **DM Sans** for descriptive/body copy;
+- **IBM Plex Mono** for technical labels, states, captions and React interaction metadata.
+
+The colour system must be visible, not merely implied: use four-colour rules, selected card accents, interaction frames and labels. Keep the page predominantly black so the colour and React layers remain deliberate rather than decorative.
+
+The React `TechText` treatment on **Héctor Lobato** and all major dossier titles is a primary capability demonstration. It must be visibly active at idle and become stronger under pointer interaction.
 
 ## Three typographic art directions
 
@@ -49,7 +57,7 @@ The canonical dossier uses the curated React Bits skill as a **visible capabilit
 - Dither Veil on the portrait keeps the visible **normal photo / React viewer** toggle;
 - Logo Loop remains a live technology/systems band below the skills section.
 
-The React layer must be conspicuous enough to demonstrate front-end/interaction capability without reducing readability, accessibility, print fallback or reduced-motion behavior.
+The React layer must be conspicuous enough to demonstrate front-end/interaction capability without reducing readability, accessibility, print fallback or reduced-motion behavior. A static screenshot should still show clear TechText evidence through outlines/selection framing; pointer movement then increases reveal intensity.
 
 ## Scroll storytelling integration
 
