@@ -13,6 +13,7 @@ $candidateDir = Join-Path $repo "assets\models\sound-club\_candidate"
 $candidate = Join-Path $candidateDir "venue-master.glb"
 $report = Join-Path $candidateDir "venue-master.qa.json"
 $manifest = Join-Path $repo "xxxia-studio\projects\sound-club-palma\05_metadata\model-manifest.json"
+$sourceIngest = Join-Path $repo "xxxia-studio\projects\sound-club-palma\05_metadata\source-ingest.json"
 $publicGlb = Join-Path $repo "assets\models\sound-club\venue-master.glb"
 
 if (-not (Test-Path -LiteralPath $SkpPath)) {
@@ -31,6 +32,7 @@ if (-not $py) {
 
 Write-Host "=== SOUND CLUB / PRIVATE SKP -> GLB ==="
 Write-Host "Source stays local: $SkpPath"
+Write-Host "Registered master gate: $sourceIngest"
 Write-Host "Installing pinned OpenSKP conversion stack..."
 
 & $py.Source -m pip install --upgrade "openskp==1.3.0" "trimesh>=3.0" "shapely>=1.8" "defusedxml>=0.7.1" "mapbox-earcut>=1.0" "pillow>=12.3.0"
@@ -40,7 +42,8 @@ $argsList = @(
   $pythonScript,
   $SkpPath,
   "--output", $candidate,
-  "--report", $report
+  "--report", $report,
+  "--source-ingest", $sourceIngest
 )
 if ($NoTextures) { $argsList += "--no-textures" }
 if ($Promote) {
