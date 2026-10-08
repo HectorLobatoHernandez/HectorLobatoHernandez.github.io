@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "projectId": "SOUND_CLUB_CDM",
+  "sourcePolicy": "PRIVATE_SOURCE_FILES_NOT_COMMITTED",
+  "auditedAt": "2026-10-07",
+  "files": [
+    {
+      "name": "ARQ_BASE.dwg",
+      "role": "ARCHITECTURE_CANDIDATE",
+      "status": "CANDIDATE_NOT_VERIFIED",
+      "sizeBytes": 1703010,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "e704864373d74aad5904bc968eae95b3584a57c7fbbcbff599bf928c3e64ab7c"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL 2024.dwg",
+      "role": "HISTORICAL_ARCHIVE",
+      "status": "DUPLICATE_GROUP_A",
+      "sizeBytes": 1990106,
+      "dwgVersion": "AutoCAD 2004/2005/2006",
+      "sha256": "79faa012bc2c0f821a0ca02a6f2def2e37d7ecafdd81fe2172b741b17ee144fc"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL 2024002.dwg",
+      "role": "HISTORICAL_ARCHIVE",
+      "status": "DUPLICATE_GROUP_A",
+      "sizeBytes": 1990106,
+      "dwgVersion": "AutoCAD 2004/2005/2006",
+      "sha256": "79faa012bc2c0f821a0ca02a6f2def2e37d7ecafdd81fe2172b741b17ee144fc"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL 2024003.dwg",
+      "role": "HISTORICAL_ARCHIVE",
+      "status": "DUPLICATE_GROUP_A",
+      "sizeBytes": 1990106,
+      "dwgVersion": "AutoCAD 2004/2005/2006",
+      "sha256": "79faa012bc2c0f821a0ca02a6f2def2e37d7ecafdd81fe2172b741b17ee144fc"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL 2024(1).dwg",
+      "role": "ARCHITECTURE_VARIANT",
+      "status": "REQUIRES_GEOMETRY_COMPARE",
+      "sizeBytes": 1693363,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "01739d3183ff96b28e9b30d28c82d3ba3e7e64351bbfd681f295a25b19828a28"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL 2024_1_22428_8aeea3cf.sv$.dwg",
+      "role": "AUTOSAVE_RECOVERY",
+      "status": "NEVER_AUTO_PROMOTE",
+      "sizeBytes": 1691912,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "f3d35bf6ccdf9b4381aafc4cfda2a4c67cf9bfbf4d4541ff6a1fc03cec111662"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL MESA DE DJ.dwg",
+      "role": "DJ_BOOTH_CANDIDATE",
+      "status": "CANDIDATE_NOT_VERIFIED",
+      "sizeBytes": 1713143,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "7adaa5d4540075b58d9134dbb1bce91caaea624891706d4429ca11ea3bb6cd06"
+    },
+    {
+      "name": "CLUB DE MAR ABRIL MESA DE DJ(1).dwg",
+      "role": "DJ_BOOTH_VARIANT",
+      "status": "REQUIRES_GEOMETRY_COMPARE",
+      "sizeBytes": 1699221,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "5e801aa10b9297deb130368603519953d73fca96611e2f3586ec5e9641969a42"
+    },
+    {
+      "name": "CORTES MESA DJ.dwg",
+      "role": "DJ_BOOTH_DETAIL",
+      "status": "DETAIL_REFERENCE",
+      "sizeBytes": 38007,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "e8dcf04dbed0c2c11bc9e2fcd25638f63b438d94fce7a42946fb5f7ff2a58d09"
+    },
+    {
+      "name": "AMORTIGUADOR TECHO SPEAKERS.dwg",
+      "role": "SUSPENSION_DETAIL_CANDIDATE",
+      "status": "CANDIDATE_NOT_VERIFIED",
+      "sizeBytes": 46197,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "9a4844f6e7b099a1c9283f8f90263ec2979c8d92c8f197b674c211e2ed800bb1"
+    },
+    {
+      "name": "AMORTIGUADOR TECHO SPEAKERS_recover.dwg",
+      "role": "SUSPENSION_RECOVERY",
+      "status": "NEVER_AUTO_PROMOTE",
+      "sizeBytes": 90150,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "f2cb92cc2124c78e8453d861a76005259073e65c942b5b2720869d5f644e2f07"
+    },
+    {
+      "name": "AMORTIGUADOR TECHO SPEAKERS_recover2.dwg",
+      "role": "SUSPENSION_RECOVERY",
+      "status": "NEVER_AUTO_PROMOTE",
+      "sizeBytes": 90186,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "4a0f741f0b71f8bccdc3b2f05ce5fe084c4174e5ac70534841f6d5c3dae24c60"
+    },
+    {
+      "name": "CDM_STR_TUBOS_recover.dwg",
+      "role": "STRUCTURE_RECOVERY",
+      "status": "NEVER_AUTO_PROMOTE",
+      "sizeBytes": 277523,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "91e368a6033c53a91fa5d0b1c66d5b3e22bfb8bb09bb21134701dd946960b02b"
+    },
+    {
+      "name": "CDM_STR_TUBOS_recover2.dwg",
+      "role": "STRUCTURE_RECOVERY",
+      "status": "NEVER_AUTO_PROMOTE",
+      "sizeBytes": 334824,
+      "dwgVersion": "AutoCAD 2018/2019/2020",
+      "sha256": "52b0a8889ee634a6425b4ff620715047dde492502385fcdbe1f980e6aeba7b96"
+    }
+  ],
+  "dedupe": [
+    {
+      "group": "A",
+      "sha256": "79faa012bc2c0f821a0ca02a6f2def2e37d7ecafdd81fe2172b741b17ee144fc",
+      "count": 3,
+      "note": "Three filenames are byte-identical; retain one historical copy only in private source storage."
+    }
+  ],
+  "nextGate": "SKP ingestion + DWG geometry extraction/compare before VERIFIED_DRAWING promotion"
+}
