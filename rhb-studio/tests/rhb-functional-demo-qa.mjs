@@ -10,8 +10,6 @@ const page=await browser.newPage({viewport:{width:1600,height:1000}});
 const errors=[];
 page.on('pageerror',e=>errors.push('pageerror: '+String(e)));
 page.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
-await page.addInitScript(()=>localStorage.clear());
-
 const res=await page.goto(base+'/apps/rhb/',{waitUntil:'domcontentloaded',timeout:45000});
 if(!res?.ok())throw new Error('RHB demo HTTP '+res?.status());
 await page.waitForFunction(()=>window.__RHB_STUDIO_DEMO__?.projectCount===2,{timeout:30000});
