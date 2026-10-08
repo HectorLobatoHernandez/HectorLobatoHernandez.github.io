@@ -271,3 +271,32 @@ The wrapper is idempotent. If `venue-web-v1.glb` and its build report already ex
 does **not** rebuild or overwrite the derivative. It prints the existing V1 size, node/mesh counts, reduction percentages and web-gate status, then exits successfully.
 
 Use `-Force` only when intentionally replacing the existing V1 after its report has been reviewed.
+
+
+## Production build: venue-web-v2
+
+After V1 is complete, build the controlled P1 proxy derivative:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V2.ps1
+```
+
+V2 reads `venue-web-v1.glb`, verifies it against `venue-web-v1.build-report.json`, and writes a separate:
+
+- `assets/models/sound-club/_candidate/venue-web-v2.glb`
+- `assets/models/sound-club/_candidate/venue-web-v2.build-report.json`
+
+V2 replaces only groups already classified for controlled merge/proxy/simplification:
+
+- ceiling / architecture merge candidates;
+- acoustic curtains and acoustic fabrication groups;
+- furniture proxy candidates;
+- repeated threaded hardware;
+- repeated lighting / rail fixtures;
+- DJ equipment already classified for proxy use.
+
+The replacement is a technical spatial proxy, not a claim of fabrication-level geometry. Each source mesh node contributes its world-space AABB; boxes are clustered by group/category in an adaptive metric grid and represented by a shared unit-cube mesh. All unclassified geometry remains untouched.
+
+The adaptive clustering targets at most 6,000 proxy nodes. V2 then repacks only retained source bufferViews plus one reusable proxy cube. The report records source-node replacement counts, proxy counts, file/BIN/mesh/node reductions, world bounds and the web gate.
+
+Even if V2 meets the ≤95 MiB / ≤20,000-mesh gate, public promotion remains blocked until visual QA against the private SketchUp master.
