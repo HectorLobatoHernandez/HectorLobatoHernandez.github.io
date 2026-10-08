@@ -3,7 +3,7 @@ name: cv-editorial-architecture
 description: Design elegant, typographically rigorous technical curricula and engineering portfolios inspired by architectural publishing, the Swiss Style and software documentation. Prefer semantic HTML/CSS/vanilla JS; select motion only where it improves reading. Use when the user asks for an architecture-oriented CV, an engineering presentation, a portfolio design review or several visual design alternatives.
 ---
 
-# CV Editorial · Architecture × Software v4
+# CV Editorial · Architecture × Software v5
 
 ## Intent
 
@@ -59,6 +59,19 @@ The canonical dossier uses the curated React Bits skill as a **visible capabilit
 
 The React layer must be conspicuous enough to demonstrate front-end/interaction capability without reducing readability, accessibility, print fallback or reduced-motion behavior. A static screenshot should still show clear TechText evidence through outlines/selection framing; pointer movement then increases reveal intensity.
 
+### Presentation Route
+
+`cv/present.html` shares the canonical IVORY ATLAS identity but uses a more cinematic evidence-route layout. Compose it with `../cv-presentation-route/SKILL.md` and `../reactbits-portfolio-components/SKILL.md`.
+
+Required:
+- Instrument Serif for hero and major titles;
+- DM Sans for explanatory copy;
+- IBM Plex Mono for navigation, timing, labels and CTAs;
+- React Bits Threads as the full-page background;
+- no duplicated navigation links;
+- five evidence steps / five-minute target;
+- keep evidence states accurate.
+
 ## Scroll storytelling integration
 
 Use vendored `../scroll-world/SKILL.md` for full video generation **only after verifying budget, providers and obtaining authorisation**. Use its framework-agnostic `references/scrub-engine.js` when an actual scroll-scrub world is desired. A zero-cost storyboard may use SVG still images and no videos; it must be labeled **storyboard**, not cinematic seamless camera flight. Preserve original MIT notice and identify synthetic drawings as conceptual.
@@ -83,4 +96,5 @@ Use vendored `../scroll-world/SKILL.md` for full video generation **only after v
 - `cv/swiss.html`: Swiss edition.
 - `cv/monograph.html`: code/engineering edition.
 - `cv/world.html`: scroll narrative storyboard.
+- `cv/present.html`: 5-minute IVORY ATLAS + Threads evidence route.
 - `skills/scroll-world/`: MIT upstream skill, references and engine.

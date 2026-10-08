@@ -47,7 +47,7 @@ La edición de esta superficie se rige por `skills/cv-ats-pdf/SKILL.md`. Mantene
 
 ## 8. Presentation Route
 
-`cv/present.html` es el punto de entrada para una presentación breve. Orden recomendado: Dossier → Sound Club, Palma → GAZA Mission Control/Systems → RHB STUDIO → ATS/GitHub. Expone `window.__CV_PRESENT__` y no añade hechos nuevos: sólo organiza evidencias existentes.
+`cv/present.html` es el punto de entrada para una presentación breve. Orden recomendado: Dossier → Sound Club, Palma → GAZA Mission Control/Systems → RHB STUDIO → ATS/GitHub. Expone `window.__CV_PRESENT__` y no añade hechos nuevos: sólo organiza evidencias existentes. La superficie usa la misma identidad **IVORY ATLAS** del dossier, con Instrument Serif / DM Sans / IBM Plex Mono y un fondo React Bits **Threads** de viewport completo, interactivo con el cursor y reducido/congelado cuando el sistema solicita menos movimiento. Su edición se rige por `skills/cv-presentation-route/SKILL.md`.
 
 ## 9. Dirección visual canónica
 
