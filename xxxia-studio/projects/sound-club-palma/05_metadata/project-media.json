@@ -107,7 +107,7 @@
       "classification": "GENERATED_DIAGRAM",
       "archiveStatus": "ARCHIVED",
       "publicSafe": true,
-      "src": "/assets/visuals/mar-salada-dj-booth-plan.svg",
+      "src": "/assets/visuals/sound-club-dj-booth-plan.svg",
       "format": "image/svg+xml",
       "note": "Diagrammatic geometry using documented base dimensions: Ø2570 exterior, Ø1200 interior, access 990 mm, lateral step 490 mm, nominal height 1000 mm. Verify against CAD/SKP master before fabrication/as-built claim."
     },
@@ -118,7 +118,7 @@
       "classification": "GENERATED_DIAGRAM",
       "archiveStatus": "ARCHIVED",
       "publicSafe": true,
-      "src": "/assets/visuals/mar-salada-suspension-detail.svg",
+      "src": "/assets/visuals/sound-club-suspension-detail.svg",
       "format": "image/svg+xml",
       "note": "Diagram based on installation report and site-reference evidence: structural pipe Ø48.3 mm, spring isolator, threaded rod M8 and clamp. Ø63 mm remains a preliminary-document conflict pending CAD validation."
     }
