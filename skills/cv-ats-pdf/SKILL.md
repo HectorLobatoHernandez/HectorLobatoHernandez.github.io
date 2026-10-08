@@ -7,7 +7,7 @@ description: Build and maintain Héctor Lobato's printable professional CV / ATS
 
 ## Purpose
 
-This skill governs the **printable / ATS professional CV**, not the interactive dossier.
+This skill governs the **printable / ATS professional CV** and its browser presentation layer. The content remains ATS-safe; the web view may use the same React Bits visual language as the dossier as long as print output remains semantic and animation-free.
 
 Canonical surfaces:
 - `cv/ats.html` — human-readable, printable A4 CV;
@@ -145,6 +145,57 @@ Prefer these clusters:
 - OpenClaw / OmniRoute / agents / model routing / local-first automation;
 - commissioning / troubleshooting / documentation / handover.
 
+## Canonical browser art direction
+
+Use the same **IVORY ATLAS × React Tech** palette as the dossier:
+
+- black `#000000`;
+- burgundy `#370001`;
+- ivory `#E2DFCF`;
+- ice blue `#BCD0D1`;
+- olive `#93884B`;
+- sage-gray `#A5A999`.
+
+Typography:
+- **Instrument Serif** for the name and major section titles in the browser view;
+- **DM Sans** for body copy;
+- **IBM Plex Mono** for toolbar labels, tags and technical metadata.
+
+The browser page must feel related to the dossier but more restrained and document-oriented.
+
+### React Bits background
+
+The entire browser viewport uses **React Bits Waves** as the base animated background. Preserve the upstream interaction language:
+- layered animated lines;
+- pointer-driven deformation;
+- low enough opacity to preserve reading contrast;
+- palette line colours: primarily ice blue with olive accents;
+- fixed full-viewport canvas behind the CV;
+- reduce/pause motion under `prefers-reduced-motion`.
+
+### Pixel Trail
+
+Add **Pixel Trail** as a cursor interaction layer:
+- use **olive `#93884B`** as the primary trail colour;
+- keep it behind document content but above the Waves layer;
+- trail must never intercept pointer events;
+- keep pixel density moderate and decay fast enough not to obscure text;
+- on reduced motion, disable continuous trailing.
+
+For static GitHub Pages, a lightweight 2D adaptation is allowed when loading the upstream Three.js / React Three Fiber implementation would add disproportionate runtime weight. Preserve the visual contract and label the adaptation in `window.__CV_ATS_REACT__`.
+
+### Menus and document details
+
+Carry the palette into:
+- toolbar borders and hover states;
+- section-title rules;
+- status chips;
+- project-card top rules;
+- tags;
+- small technical labels.
+
+Do not turn the ATS page into a marketing microsite: effects demonstrate interaction capability, while content density and legibility remain primary.
+
 ## Toolbar and navigation
 
 The ATS/PDF page must have only distinct actions:
@@ -162,7 +213,7 @@ Do not add duplicate links such as `Dossier` + `Dossier web` pointing to the sam
 - no box shadow in print;
 - sections and jobs should avoid bad page breaks;
 - semantic headings and ordinary text remain selectable/searchable;
-- no React/canvas dependency;
+- printed/PDF content must not depend on React/canvas; browser-only React/canvas layers must disappear in print;
 - hyperlinks may remain visible but must not be required for comprehension;
 - `ats.txt` must mirror the substantive content.
 
@@ -186,7 +237,10 @@ Do not add duplicate links such as `Dossier` + `Dossier web` pointing to the sam
 - selected project count;
 - master's-in-progress count;
 - certification/training count;
-- duplicate dossier button status.
+- duplicate dossier button status;
+- screen React flag;
+- screen palette;
+- screen component list.
 
 Playwright QA should assert:
 - no duplicate dossier buttons;
@@ -195,4 +249,8 @@ Playwright QA should assert:
 - Ecler, Void Acoustics and Lynx Pro Audio are present;
 - print button exists;
 - no horizontal overflow on desktop/mobile;
-- required section headings are present.
+- required section headings are present;
+- `window.__CV_ATS_REACT__` mounts successfully;
+- Waves and PixelTrail canvases are present in screen mode;
+- IVORY ATLAS palette is applied to the screen view;
+- React layers are hidden in print.
