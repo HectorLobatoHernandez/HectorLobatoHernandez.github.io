@@ -3,34 +3,146 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111813">
+<meta name="theme-color" content="#000000">
 <meta name="description" content="Ruta de presentación de 5 minutos del perfil técnico de Héctor Lobato.">
 <title>Héctor Lobato — Presentation Route</title>
-<style>
-:root{--bg:#111813;--panel:#17221b;--ink:#eef2eb;--soft:#9dab9f;--line:#334037;--accent:#cf9875}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}a{color:inherit}
-.shell{width:min(1280px,92vw);margin:auto}.top{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:#111813e8;backdrop-filter:blur(12px)}.top .inner{height:64px;display:flex;align-items:center;gap:20px}.brand{font:700 12px monospace;text-decoration:none}.top nav{margin-left:auto;display:flex;gap:14px}.top nav a{font:600 10px monospace;text-transform:uppercase;text-decoration:none;color:var(--soft)}
-.hero{padding:84px 0 54px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1.3fr .7fr;gap:7vw}.eyebrow{font:600 10px monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}h1{font:400 clamp(62px,9vw,138px)/.82 Georgia,serif;letter-spacing:-.055em;margin:16px 0 26px}.hero p{max-width:65ch;color:var(--soft);font-size:17px}.hero aside{border-left:1px solid var(--line);padding-left:24px;color:var(--soft)}.hero aside strong{display:block;color:var(--ink);font-size:28px;margin:5px 0 8px}
-.route{padding:72px 0}.step{display:grid;grid-template-columns:88px 1fr auto;gap:28px;align-items:start;padding:26px 0;border-top:1px solid var(--line)}.step:last-child{border-bottom:1px solid var(--line)}.step .n{font:700 12px monospace;color:var(--accent)}.step h2{font:400 clamp(30px,4vw,54px)/1 Georgia,serif;margin:0 0 8px}.step p{margin:0;max-width:70ch;color:var(--soft)}.step .time{font:600 10px monospace;color:var(--soft);text-transform:uppercase}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{display:inline-flex;padding:10px 13px;border:1px solid #5a685e;text-decoration:none;font:600 10px monospace;text-transform:uppercase}.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.final{padding:72px 0}.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}.card{padding:24px;border:1px solid var(--line);background:var(--panel)}.card h3{font:400 28px Georgia,serif;margin:7px 0 10px}.card p{color:var(--soft);margin:0}.footer{padding:24px 0 38px;border-top:1px solid var(--line);font:500 10px monospace;color:var(--soft);display:flex;justify-content:space-between;gap:20px}
-@media(max-width:760px){.hero,.final-grid{grid-template-columns:1fr}.hero aside{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.step{grid-template-columns:44px 1fr}.step .time{grid-column:2}.top nav a:nth-child(n+3){display:none}}
-</style>
+<link rel="stylesheet" href="present-react.css?v=2">
 </head>
 <body>
-<header class="top"><div class="shell inner"><a class="brand" href="dossier.html">HL / PRESENTATION ROUTE</a><nav><a href="dossier.html">Dossier</a><a href="ats.html">ATS</a><a href="../start/mapa.html">Mapa</a><a href="dossier.html">Dossier</a></nav></div></header>
-<main>
-<section class="hero shell"><div><div class="eyebrow">Presentation mode · 5 minutes</div><h1>Systems.<br>Field to software.</h1><p>Ruta corta para presentar un perfil técnico multidisciplinar sin recorrer todo el repositorio. Empieza por el contexto profesional, demuestra una integración ejecutada, enseña un producto digital industrial, explica la arquitectura de agentes y termina con CV/GitHub.</p></div><aside><span class="eyebrow">Uso recomendado</span><strong>5 bloques / 5 min</strong>Abre cada botón en una pestaña nueva si vas a compartir pantalla. Los proyectos mantienen etiquetas claras entre ejecutado, demo, local y confidencial.</aside></section>
+<div id="present-react-root" aria-hidden="true"></div>
 
-<section class="route shell">
-<article class="step"><div class="n">01</div><div><h2>Perfil / Dossier</h2><p>Quién soy, qué disciplinas conecto, stack técnico, método de trabajo y archivo completo de proyectos.</p><div class="actions"><a class="btn primary" href="dossier.html">Abrir dossier</a></div></div><div class="time">~60 s</div></article>
-<article class="step"><div class="n">02</div><div><h2>MAR SALADA — Club del Mar Palma</h2><p>Prueba de integración ejecutada: DSP, audio profesional, KNX/DALI, coordinación, interfaces y commissioning en un sistema real multidisciplinar.</p><div class="actions"><a class="btn primary" href="../projects/mar-salada.html">Case study</a></div></div><div class="time">~60 s</div></article>
-<article class="step"><div class="n">03</div><div><h2>GAZA Operations Intelligence</h2><p>Prueba de producto y software: Mission Control, Three.js, GIS, clima, gateway read-only, procedencia de datos y QA automatizado.</p><div class="actions"><a class="btn primary" href="../apps/gaza/mission-control.html?guide=1">Mission Control</a><a class="btn" href="../apps/gaza/systems.html">Systems</a></div></div><div class="time">~90 s</div></article>
-<article class="step"><div class="n">04</div><div><h2>RHB STUDIO</h2><p>Prueba de producto y arquitectura local-first: demo funcional de Project Core, Survey/CAD, BOM, routing, documentación y QA; OmniRoute/OpenClaw/NEXO permanecen en el runtime privado.</p><div class="actions"><a class="btn primary" href="../apps/rhb/">Demo RHB</a><a class="btn" href="../projects/rhb-studio.html">Arquitectura</a></div></div><div class="time">~60 s</div></article>
-<article class="step"><div class="n">05</div><div><h2>ATS / GitHub / Evidencia</h2><p>Termina con el CV de una columna y el repositorio para demostrar código, skills, PRs, documentación, tests y workflows.</p><div class="actions"><a class="btn primary" href="ats.html">CV ATS / PDF</a><a class="btn" href="https://github.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io" target="_blank" rel="noopener">GitHub</a><a class="btn" href="../skills/manifest.json">Skill stack</a></div></div><div class="time">~50 s</div></article>
+<header class="top">
+  <div class="shell inner">
+    <a class="brand" href="dossier.html"><span>Presentation Route</span></a>
+    <nav aria-label="Presentación">
+      <a href="dossier.html">Dossier</a>
+      <a href="ats.html">ATS / PDF</a>
+      <a href="../start/mapa.html">Mapa</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero shell">
+  <div>
+    <div class="eyebrow">Presentation mode · 5 minutes</div>
+    <h1><span>Systems.</span><span class="ice">Field to</span><span class="olive">software.</span></h1>
+    <p>Ruta corta para presentar un perfil técnico multidisciplinar sin recorrer todo el repositorio. Empieza por el contexto profesional, demuestra una integración ejecutada, enseña un producto digital industrial, explica la arquitectura de agentes y termina con CV/GitHub.</p>
+  </div>
+  <aside>
+    <span class="eyebrow">Uso recomendado</span>
+    <strong>5 bloques / 5 min</strong>
+    Abre cada botón en una pestaña nueva si vas a compartir pantalla. Los proyectos mantienen etiquetas claras entre ejecutado, demo, local y confidencial.
+  </aside>
 </section>
 
-<section class="final shell"><div class="final-grid"><article class="card"><span class="eyebrow">Mensaje principal</span><h3>No soy un perfil de una sola herramienta.</h3><p>El hilo conductor es integración de sistemas: entender interfaces, restricciones y operación, y unir espacio físico, control, redes, software y documentación en soluciones utilizables.</p></article><article class="card"><span class="eyebrow">Frontera de evidencia</span><h3>Lo ejecutado y lo demostrado se separan.</h3><p>MAR SALADA — Club del Mar Palma se presenta como caso documentado de integración. GAZA es un demostrador público read-only. RHB STUDIO tiene demo browser-only pública y runtime local avanzado separado. Los proyectos confidenciales preservan el anonimato.</p></article></div></section>
+<section class="route shell">
+  <div class="route-head">
+    <div>
+      <div class="eyebrow">Ruta de evidencia</div>
+      <h2>De campo a sistema.</h2>
+    </div>
+    <p>Cinco bloques para explicar el perfil completo: integración, commissioning, software aplicado, arquitectura local-first y evidencia técnica verificable.</p>
+  </div>
+
+  <article class="step">
+    <div class="n">01</div>
+    <div>
+      <h2>Perfil / Dossier</h2>
+      <p>Quién soy, qué disciplinas conecto, stack técnico, método de trabajo y archivo completo de proyectos.</p>
+      <div class="actions"><a class="btn primary" href="dossier.html">Abrir dossier</a></div>
+    </div>
+    <div class="time">~60 s</div>
+  </article>
+
+  <article class="step">
+    <div class="n">02</div>
+    <div>
+      <h2>MAR SALADA — Club del Mar Palma</h2>
+      <p>Prueba de integración ejecutada: DSP, audio profesional, KNX/DALI, coordinación, interfaces y commissioning en un sistema real multidisciplinar.</p>
+      <div class="actions"><a class="btn primary" href="../projects/mar-salada.html">Case study</a></div>
+    </div>
+    <div class="time">~60 s</div>
+  </article>
+
+  <article class="step">
+    <div class="n">03</div>
+    <div>
+      <h2>GAZA Operations Intelligence</h2>
+      <p>Prueba de producto y software: Mission Control, Three.js, GIS, clima, gateway read-only, procedencia de datos y QA automatizado.</p>
+      <div class="actions">
+        <a class="btn primary" href="../apps/gaza/mission-control.html?guide=1">Mission Control</a>
+        <a class="btn" href="../apps/gaza/systems.html">Systems</a>
+      </div>
+    </div>
+    <div class="time">~90 s</div>
+  </article>
+
+  <article class="step">
+    <div class="n">04</div>
+    <div>
+      <h2>RHB STUDIO</h2>
+      <p>Prueba de producto y arquitectura local-first: demo funcional de Project Core, Survey/CAD, BOM, routing, documentación y QA; OmniRoute/OpenClaw/NEXO permanecen en el runtime privado.</p>
+      <div class="actions">
+        <a class="btn primary" href="../apps/rhb/">Demo RHB</a>
+        <a class="btn" href="../projects/rhb-studio.html">Arquitectura</a>
+      </div>
+    </div>
+    <div class="time">~60 s</div>
+  </article>
+
+  <article class="step">
+    <div class="n">05</div>
+    <div>
+      <h2>ATS / GitHub / Evidencia</h2>
+      <p>Termina con el CV profesional y el repositorio para demostrar código, skills, PRs, documentación, tests y workflows.</p>
+      <div class="actions">
+        <a class="btn primary" href="ats.html">CV ATS / PDF</a>
+        <a class="btn" href="https://github.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="../skills/manifest.json">Skill stack</a>
+      </div>
+    </div>
+    <div class="time">~50 s</div>
+  </article>
+</section>
+
+<section class="final shell">
+  <div class="final-grid">
+    <article class="card">
+      <span class="eyebrow">Mensaje principal</span>
+      <h3>No soy un perfil de una sola herramienta.</h3>
+      <p>El hilo conductor es integración de sistemas: entender interfaces, restricciones y operación, y unir espacio físico, control, redes, software y documentación en soluciones utilizables.</p>
+    </article>
+    <article class="card">
+      <span class="eyebrow">Frontera de evidencia</span>
+      <h3>Lo ejecutado y lo demostrado se separan.</h3>
+      <p>MAR SALADA — Club del Mar Palma se presenta como caso documentado de integración. GAZA es un demostrador público read-only. RHB STUDIO tiene demo browser-only pública y runtime local avanzado separado. Los proyectos confidenciales preservan el anonimato.</p>
+    </article>
+  </div>
+</section>
 </main>
-<footer class="footer shell"><span>Héctor Lobato · Systems Integration & Automation</span><span>Presentation Route · 2026</span></footer>
-<script>window.__CV_PRESENT__={schemaVersion:1,steps:5,targetMinutes:5,dossier:true,ats:true,proofLinks:true};</script>
-</body></html>
+
+<footer class="footer shell">
+  <span>Héctor Lobato · Systems Integration & Automation</span>
+  <span>Presentation Route · 2026</span>
+</footer>
+
+<script>
+window.__CV_PRESENT__={
+  schemaVersion:2,
+  steps:5,
+  targetMinutes:5,
+  dossier:true,
+  ats:true,
+  proofLinks:true,
+  palette:"IVORY_ATLAS",
+  typography:["Instrument Serif","DM Sans","IBM Plex Mono"],
+  background:"Threads",
+  duplicateDossierNav:false
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="present-react.js?v=2"></script>
+</body>
+</html>
