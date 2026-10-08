@@ -16,6 +16,8 @@
     globalEffects:true,
     techMode:'REACT_BITS_TECH_TEXT_VISIBLE_DEMO',
     techTextProps:{reveal:'letter',reach:200,softness:.7,lineStyle:'dashed',dashLength:4,dashGap:2,strokeWidth:1.5,specks:15,selection:true,labels:true,draggable:true,sweep:true,speed:1},
+    palette:'IVORY_ATLAS',
+    displayFont:'INSTRUMENT_SERIF',
     techHeadings:0,
     mounted:false
   };
@@ -71,7 +73,7 @@
           const y0=base+j*17;
           ctx.beginPath();
           ctx.lineWidth=.68;
-          ctx.strokeStyle='rgba(142,160,145,'+(0.19-j*.0045)+')';
+          ctx.strokeStyle='rgba(147,136,75,'+(0.24-j*.005)+')';
           for(let x=-50;x<=w+50;x+=7){
             const wave=Math.sin(x*.0105+t*.006+j*.43)*13+Math.sin(x*.0031-t*.003+j*.9)*20;
             const dx=x-pointer.x,dy=y0-pointer.y,dist=Math.hypot(dx,dy);
@@ -114,10 +116,10 @@
           const d=Math.hypot(p.x-pointer.x,p.y-pointer.y);
           const a=d<170?.7:.27;
           ctx.beginPath();
-          ctx.fillStyle=p.warm?'rgba(157,174,159,'+Math.min(.92,a+.08)+')':'rgba(207,218,208,'+Math.min(.88,a+.04)+')';
+          ctx.fillStyle=p.warm?'rgba(147,136,75,'+Math.min(.94,a+.12)+')':'rgba(188,208,209,'+Math.min(.94,a+.10)+')';
           ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
           if(d<115){
-            ctx.beginPath();ctx.strokeStyle='rgba(170,189,172,'+((1-d/115)*.22)+')';ctx.lineWidth=.65;
+            ctx.beginPath();ctx.strokeStyle='rgba(226,223,207,'+((1-d/115)*.30)+')';ctx.lineWidth=.72;
             ctx.moveTo(p.x,p.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke();
           }
         });
@@ -407,7 +409,7 @@
 
         base.width=w;base.height=hh;
         const bctx=base.getContext('2d');
-        bctx.fillStyle='#080808';bctx.fillRect(0,0,w,hh);
+        bctx.fillStyle='#000000';bctx.fillRect(0,0,w,hh);
         const matrix=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
         const step=4;
         for(let y=0;y<hh;y+=step){
@@ -416,7 +418,7 @@
             const idx=(py*w+px)*4;
             const lum=(pixels[idx]*.299+pixels[idx+1]*.587+pixels[idx+2]*.114)/255;
             const threshold=(matrix[(y/step)%4|0][(x/step)%4|0]+.5)/16;
-            bctx.fillStyle=lum>threshold?'rgba(217,217,214,.94)':'rgba(8,8,8,.97)';
+            bctx.fillStyle=lum>threshold?'rgba(226,223,207,.96)':'rgba(0,0,0,.98)';
             bctx.fillRect(x,y,step,step);
           }
         }
