@@ -228,3 +228,33 @@ The analyzer:
 - does not modify either GLB.
 
 This is intended to detect repeated components that OpenSKP exported with transforms baked into vertex positions. A future build step may reuse one representative mesh and move nodes by the measured translation, but no remapping is authorized until this analysis is reviewed.
+
+
+## Production build: venue-web-v1
+
+The diagnostic phase is closed. Build the first real optimized derivative with:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V1.ps1
+```
+
+This production step:
+
+- verifies the protected source SHA-256 before doing anything;
+- never overwrites `venue-master.glb`;
+- removes only groups already classified as safe decor/minor-hardware drops;
+- recomputes translation-equivalent mesh reuse at 0.001 mm tolerance;
+- only reuses a representative mesh when every primitive shares one consistent translation;
+- applies that translation to the node matrix so world placement is preserved;
+- repacks only retained accessors/bufferViews by streaming from disk;
+- writes a separate local `venue-web-v1.glb`;
+- validates the written GLB and records source/derived bounds, size, mesh counts and SHA-256.
+
+Outputs:
+
+- `assets/models/sound-club/_candidate/venue-web-v1.glb`
+- `assets/models/sound-club/_candidate/venue-web-v1.build-report.json`
+
+This is an **intermediate production derivative**, not a public model. It is expected to remain above the final web gate. The following stage will apply controlled P1 merge/proxy/simplification to architecture, acoustic treatments, furniture, threaded hardware and repeated lighting.
+
+Do not run `-Promote` after this build.
