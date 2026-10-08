@@ -305,8 +305,8 @@
         E('section',{className:'ms-shell ms-section',id:'docs'},
           E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'09 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
           E('div',{className:'ms-doc-grid'},
-            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
-            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
+            E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
+            E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
             E('a',{className:'ms-doc',href:'../index.html#projects'},E('i',null,'PORTFOLIO'),E('b',null,'Selected projects'),E('span',null,'Return to the public portfolio →'))
           ),
           E('div',{className:'ms-motion'},
