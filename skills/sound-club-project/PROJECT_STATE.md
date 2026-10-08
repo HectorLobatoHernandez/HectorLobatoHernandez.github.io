@@ -1,10 +1,10 @@
-# MAR SALADA — Current Project State
+# SOUND CLUB and restaurant — Current Project State
 
 ## Canonical identity
 
-- Project ID: `MAR_SALADA_CDM`
-- Public title: **MAR SALADA — CLUB DEL MAR PALMA**
-- Public case: `projects/mar-salada.html`
+- Project ID: `SOUND_CLUB_CDM`
+- Public title: **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**
+- Public case: `projects/sound-club-palma.html`
 - Legacy route: `projects/sound-club-palma.html`
 - XXXIA legacy archive slug retained: `sound-club-palma`
 
@@ -22,8 +22,8 @@
 - Metadata-driven public media registry.
 - Architecture/editorial visual system.
 - Mobile and reduced-motion fallback.
-- Public technical dossier summary under `docs/projects/mar-salada/`.
-- Page-specific skill: `skills/mar-salada-react-scroll/SKILL.md`.
+- Public technical dossier summary under `docs/projects/sound-club-palma/`.
+- Page-specific skill: `skills/sound-club-palma-react-scroll/SKILL.md`.
 
 ## Public technical content
 

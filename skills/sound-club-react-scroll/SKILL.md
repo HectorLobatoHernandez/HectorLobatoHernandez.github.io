@@ -1,16 +1,16 @@
-# MAR SALADA React Scroll Case — Project Page Skill v2.2
+# Sound Club React Scroll Case — Project Page Skill v2.2
 
 ## Mission
 
-Build and maintain the public **MAR SALADA — CLUB DEL MAR PALMA** case study as a React-first, architecture/editorial, long-scroll technical narrative.
+Build and maintain the public **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca** case study as a React-first, architecture/editorial, long-scroll technical narrative.
 
 Compose this skill with `../reactbits-portfolio-components/SKILL.md` for Model Viewer, Bounce Cards and project technology/vendor rails.
 
 Use this skill before changing:
 
-- `projects/mar-salada.html`
-- `assets/js/mar-salada-case-v2.js`
-- `assets/css/mar-salada-case-v2.css`
+- `projects/sound-club-palma.html`
+- `assets/js/sound-club-case-v2.js`
+- `assets/css/sound-club-case-v2.css`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json`
@@ -18,9 +18,9 @@ Use this skill before changing:
 
 ## Canonical identity
 
-- Project ID: `MAR_SALADA_CDM`
-- Public title: **MAR SALADA — CLUB DEL MAR PALMA**
-- Canonical page: `projects/mar-salada.html`
+- Project ID: `SOUND_CLUB_CDM`
+- Public title: **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**
+- Canonical page: `projects/sound-club-palma.html`
 - Legacy archive slug: `sound-club-palma`
 
 ## Required frontend stack
@@ -208,6 +208,6 @@ Do not launch paid render merely because the page supports it. Render only when 
 7. Reduced-motion path remains fully readable.
 8. No original private media paths exist in public HTML/JS/CSS/JSON.
 9. No generated concept is labelled `VERIFIED_DRAWING`.
-10. `motion-manifest.json` parses and its `projectId` is `MAR_SALADA_CDM`.
+10. `motion-manifest.json` parses and its `projectId` is `SOUND_CLUB_CDM`.
 11. Pending motion exposes no public video element.
-12. Canonical page title remains **MAR SALADA — CLUB DEL MAR PALMA**.
+12. Canonical page title remains **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**.

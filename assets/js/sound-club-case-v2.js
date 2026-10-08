@@ -68,7 +68,7 @@
 
   function ChapterRail({active}){
     return E('aside',{className:'ms-rail'},
-      E('div',{className:'ms-rail-brand'},'MAR SALADA',E('small',null,'CLUB DEL MAR PALMA')),
+      E('div',{className:'ms-rail-brand'},'SOUND CLUB and restaurant',E('small',null,'(CLUB del MAR) Palma de Mallorca')),
       ...SECTIONS.map((id,i)=>E('a',{key:id,href:'#'+id,className:active===id?'active':''},
         E('span',null,String(i+1).padStart(2,'0')),E('b',null,id)
       ))
@@ -146,7 +146,7 @@
       video.addEventListener('loadedmetadata',update);addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);update();
       return()=>{video.removeEventListener('loadedmetadata',update);removeEventListener('scroll',onScroll);removeEventListener('resize',onScroll);if(raf)cancelAnimationFrame(raf)};
     },[approved,motion?.master?.src]);
-    if(approved)return E('video',{ref:videoRef,src:motion.master.src,poster:media?.src||'',muted:true,playsInline:true,preload:'metadata','aria-label':'MAR SALADA SC08 scroll motion master'});
+    if(approved)return E('video',{ref:videoRef,src:motion.master.src,poster:media?.src||'',muted:true,playsInline:true,preload:'metadata','aria-label':'SOUND CLUB and restaurant SC08 scroll motion master'});
     return media?.src?E('img',{key:media.id,src:media.src,alt:media.title,decoding:'async'}):null;
   }
 
@@ -193,13 +193,13 @@
 
     const mediaMap=useMemo(()=>new Map((media?.items||[]).filter(x=>x.publicSafe).map(x=>[x.id,x])),[media]);
     if(error)return E('div',{className:'ms-error'},'No se pudo cargar el registro visual: '+error);
-    if(!media||!story)return E('div',{className:'ms-boot'},'Loading MAR SALADA case study…');
+    if(!media||!story)return E('div',{className:'ms-boot'},'Loading SOUND CLUB and restaurant case study…');
 
     const hero=mediaMap.get('SC-BOARD-01'), audioPlan=mediaMap.get('SC-PLAN-02'), light=mediaMap.get('SC-BOARD-05'),
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__MAR_SALADA_CASE__={version:'2.3',projectId:'MAR_SALADA_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
+    window.__SOUND_CLUB_CASE__={version:'2.3',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
@@ -211,11 +211,11 @@
       E(ChapterRail,{active}),
       E('main',{className:'ms-page'},
         E('section',{className:'ms-hero'},
-          E('div',{className:'ms-hero-media','data-ms-parallax':''},hero?.src?E('img',{src:hero.src,alt:'MAR SALADA architectural concept board'}):null),
+          E('div',{className:'ms-hero-media','data-ms-parallax':''},hero?.src?E('img',{src:hero.src,alt:'SOUND CLUB and restaurant architectural concept board'}):null),
           E('div',{className:'ms-hero-shade'}),
           E('div',{className:'ms-shell ms-hero-copy','data-ms-reveal':''},
             E('p',{className:'ms-kicker'},'AUDIO · LIGHTING · KNX/DALI · AS-BUILT'),
-            E('h1',null,'MAR SALADA',E('span',null,'CLUB DEL MAR PALMA')),
+            E('h1',null,'SOUND CLUB and restaurant',E('span',null,'(CLUB del MAR) Palma de Mallorca')),
             E('p',{className:'ms-lead'},'Integración multidisciplinar de audio profesional, iluminación, automatización, fabricación técnica y control vibratorio para un espacio hospitality / club de operación día-noche.'),
             E('div',{className:'ms-hero-meta'},...['Ecler MIMO88','Lynx GTX DSP','KNX + DALI','Gira X1','Custom fabrication','Commissioning'].map(x=>E(Pill,{key:x},x)))
           ),
@@ -305,8 +305,8 @@
         E('section',{className:'ms-shell ms-section',id:'docs'},
           E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'09 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
           E('div',{className:'ms-doc-grid'},
-            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
-            E('a',{className:'ms-doc',href:'../docs/projects/mar-salada/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
+            E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
+            E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
             E('a',{className:'ms-doc',href:'../index.html#projects'},E('i',null,'PORTFOLIO'),E('b',null,'Selected projects'),E('span',null,'Return to the public portfolio →'))
           ),
           E('div',{className:'ms-motion'},
@@ -314,11 +314,11 @@
             E(Card,{label:'NEXT',title:'Verified geometry promotion',body:'DWG + SKP → alignment / units / origin QA → verified master → web model / exploded / frame-locked sequence.'})
           )
         ),
-        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'MAR SALADA · CLUB DEL MAR PALMA · CASE V2.3 · PUBLIC CASE'))
+        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'SOUND CLUB and restaurant · (CLUB del MAR) Palma de Mallorca · CASE V2.3 · PUBLIC CASE'))
       )
     );
   }
 
-  const root=document.getElementById('marSaladaRoot');
+  const root=document.getElementById('soundClubRoot');
   if(root)ReactDOM.createRoot(root).render(E(App));
 })();

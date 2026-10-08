@@ -1,4 +1,4 @@
-# MAR SALADA — CAD ingest audit
+# SOUND CLUB and restaurant — CAD ingest audit
 
 ## Scope
 
@@ -92,6 +92,6 @@ Required next gate:
 
 See:
 
-`docs/projects/mar-salada/cad-source-manifest.json`
+`docs/projects/sound-club-palma/cad-source-manifest.json`
 
 The manifest contains SHA-256 values for source identity while keeping the actual DWG files private.

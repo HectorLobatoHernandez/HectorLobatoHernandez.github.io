@@ -1,10 +1,10 @@
-# MAR SALADA — CLUB DEL MAR PALMA
+# SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca
 
 ## Public technical dossier · repository summary
 
-**Project ID:** `MAR_SALADA_CDM`  
+**Project ID:** `SOUND_CLUB_CDM`  
 **Status:** consolidated technical case study / as-built documentary layer  
-**Public page:** `/projects/mar-salada.html`
+**Public page:** `/projects/sound-club-palma.html`
 
 ## Scope
 
@@ -89,8 +89,8 @@ The public case is a buildless React 18 page enhanced with GSAP + ScrollTrigger 
 
 Operating skill:
 
-`skills/mar-salada-react-scroll/SKILL.md`
+`skills/sound-club-palma-react-scroll/SKILL.md`
 
 Project state:
 
-`skills/mar-salada-project/PROJECT_STATE.md`
+`skills/sound-club-palma-project/PROJECT_STATE.md`

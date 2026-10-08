@@ -1,17 +1,17 @@
-# MAR SALADA — Project Skill
+# SOUND CLUB and restaurant — Project Skill
 
 ## Mission
 
-Project-specific operating skill for **MAR SALADA — CLUB DEL MAR PALMA** and its technical / visual archive.
+Project-specific operating skill for **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca** and its technical / visual archive.
 
 Use this skill whenever an agent edits, generates, documents, visualises or publishes material for this project.
 
 ## Identity
 
-- Project ID: `MAR_SALADA_CDM`
-- Canonical public title: **MAR SALADA — CLUB DEL MAR PALMA**
+- Project ID: `SOUND_CLUB_CDM`
+- Canonical public title: **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**
 - Location label: **Club del Mar Palma / Palma de Mallorca**
-- Canonical case page: `projects/mar-salada.html`
+- Canonical case page: `projects/sound-club-palma.html`
 - Legacy page: `projects/sound-club-palma.html` redirects to the canonical case.
 - Legacy XXXIA archive slug: `xxxia-studio/projects/sound-club-palma/` (keep until controlled migration).
 
@@ -96,19 +96,19 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 
 ## Canonical GitHub paths
 
-- Case: `projects/mar-salada.html`
+- Case: `projects/sound-club-palma.html`
 - Legacy case redirect: `projects/sound-club-palma.html`
 - React visual explorer: `projects/sound-club-visuals.html`
-- React case runtime: `assets/js/mar-salada-case.js`
-- React case styling: `assets/css/mar-salada-case.css`
-- Page-specific skill: `skills/mar-salada-react-scroll/SKILL.md`
+- React case runtime: `assets/js/sound-club-palma-case.js`
+- React case styling: `assets/css/sound-club-palma-case.css`
+- Page-specific skill: `skills/sound-club-palma-react-scroll/SKILL.md`
 - Media registry: `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - Story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
 - XXXIA archive: `xxxia-studio/projects/sound-club-palma/`
 
 ## Rules for agents
 
-1. Read this skill plus `skills/mar-salada-react-scroll/SKILL.md` before changing the public case.
+1. Read this skill plus `skills/sound-club-palma-react-scroll/SKILL.md` before changing the public case.
 2. Understand existing code/data before modifying it.
 3. Keep React as the page component/runtime layer.
 4. Preserve evidence/provenance labels.
@@ -116,4 +116,4 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 6. Prefer SVG for technical diagrams.
 7. Resolve technical contradictions explicitly instead of silently choosing whichever value looks convenient.
 8. Do not start paid XXXIA/Scroll World motion rendering without explicit user approval.
-9. Run the Mar Salada QA checklist after every media/story promotion.
+9. Run the Sound Club and restaurant QA checklist after every media/story promotion.

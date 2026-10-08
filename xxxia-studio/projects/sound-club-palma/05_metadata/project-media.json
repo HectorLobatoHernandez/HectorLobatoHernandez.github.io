@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "project": "mar-salada-cdm",
-  "publicTitle": "MAR SALADA — CLUB DEL MAR PALMA",
+  "project": "sound-club-cdm",
+  "publicTitle": "SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca",
   "updatedAt": "2026-10-07",
   "items": [
     {
@@ -107,7 +107,7 @@
       "classification": "GENERATED_DIAGRAM",
       "archiveStatus": "ARCHIVED",
       "publicSafe": true,
-      "src": "/assets/visuals/mar-salada-dj-booth-plan.svg",
+      "src": "/assets/visuals/sound-club-dj-booth-plan.svg",
       "format": "image/svg+xml",
       "note": "Diagrammatic geometry using documented base dimensions: Ø2570 exterior, Ø1200 interior, access 990 mm, lateral step 490 mm, nominal height 1000 mm. Verify against CAD/SKP master before fabrication/as-built claim."
     },
@@ -118,13 +118,13 @@
       "classification": "GENERATED_DIAGRAM",
       "archiveStatus": "ARCHIVED",
       "publicSafe": true,
-      "src": "/assets/visuals/mar-salada-suspension-detail.svg",
+      "src": "/assets/visuals/sound-club-suspension-detail.svg",
       "format": "image/svg+xml",
       "note": "Diagram based on installation report and site-reference evidence: structural pipe Ø48.3 mm, spring isolator, threaded rod M8 and clamp. Ø63 mm remains a preliminary-document conflict pending CAD validation."
     }
   ],
   "privateSourcePolicy": "Original user-supplied photos/videos are PRIVATE_REFERENCE_ONLY and must not be published, committed, linked or promoted. Public storytelling uses approved generated outputs and diagrams only.",
-  "projectId": "MAR_SALADA_CDM",
+  "projectId": "SOUND_CLUB_CDM",
   "legacyArchiveSlug": "sound-club-palma",
-  "canonicalPage": "/projects/mar-salada.html"
+  "canonicalPage": "/projects/sound-club-palma.html"
 }
