@@ -105,4 +105,4 @@ This creates two local/gitignored files:
 - `venue-master.analysis.json`
 - `venue-master.top-geometry.csv`
 
-The report identifies the largest meshes and the densest X/Z spatial cells so terrain, remote objects, site context and other outliers can be identified before destructive cleanup.
+The analyzer now runs in **GLB JSON-only low-memory mode**: it reads the GLB JSON chunk, node transforms and accessor min/max bounds without loading binary vertex buffers. This is specifically intended for very large candidates such as the current ~874 MiB Sound Club model. The report identifies the largest node/mesh instances and densest X/Z spatial cells so terrain, remote objects, site context and other outliers can be identified before destructive cleanup.
