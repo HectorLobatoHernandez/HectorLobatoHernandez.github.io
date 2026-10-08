@@ -13,10 +13,10 @@
       "status": "PENDING_GLB",
       "src": null,
       "posterMediaId": "SC-BOARD-01",
-      "sourceIntent": "private SketchUp 24.0.594 master + architectural DWG alignment",
+      "sourceIntent": "private master CLUB_DEL_MAR_12_02_2026_3.skp + architectural DWG alignment",
       "classification": "PENDING_VERIFIED_GEOMETRY",
       "default": true,
-      "previewSrc": "/assets/visuals/sound-club-skp-line-preview.svg",
+      "previewSrc": "/assets/visuals/sound-club-master-2026-02-12-preview.svg",
       "views": {
         "design": {
           "status": "PENDING_GLB",
@@ -52,7 +52,14 @@
           "label": "Exterior",
           "status": "PENDING_MODEL_COORDINATES"
         }
-      ]
+      ],
+      "sourceSha256": "ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665",
+      "renderAuthoring": {
+        "source": "SketchUp master",
+        "vrayMaterialNamingDetected": true,
+        "vrayRenderSettingsVerified": false,
+        "matchedCameraStills": "PENDING_EXPORT"
+      }
     },
     {
       "id": "MS-MODEL-DJ",

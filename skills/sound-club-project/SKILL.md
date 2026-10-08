@@ -37,8 +37,11 @@ Original source photos/videos and raw CAD/SKP are private references. Do not com
 
 ### Current master-source ingest
 - DWG: AC1032, ingested as private master; public background uses only a derived preview. DWG units are not asserted from the binary preview.
-- SKP: SketchUp 24.0.594, unit = Meter, ingested as private master.
-- SKP archive inspection: 499 materials, 83 component thumbnails, 110 texture assets; browser geometry remains pending verified GLB export.
+- Current SKP master: `CLUB_DEL_MAR_12_02_2026_3.skp`, selected explicitly as the current finished project source.
+- SketchUp version: 24.0.594; unit = Meter.
+- Registered private-master SHA-256: `ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665`.
+- File size: 251,178,212 bytes; archive entries: 6,928; material definitions: 2,488.
+- V-Ray-named material families are present, but V-Ray render settings/lights are not asserted until exported and verified.
 - Web runtime uses one authoritative verified GLB. DESIGN and RENDER are material/lighting treatments of that same mesh.
 - Local inspection may use `?candidate=1` only on localhost; it must be visibly marked NOT VERIFIED.
 - A GLB with implausible venue bounds must not be promoted even when conversion succeeds.
@@ -141,3 +144,5 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 12. Public order is CAD → 3D → phases → systems → discipline details → build/final → documentation.
 13. Use the page to demonstrate coordination between architecture, audio, lighting, control, acoustics and fabrication.
 14. Do not promote a model whose bounding box includes unreviewed terrain, geolocation or remote geometry.
+15. The render comparison block may use the existing 2300 K atmosphere study only as a labelled interim AFTER state.
+16. Replace the interim AFTER state with matched-camera V-Ray stills from the registered master when exported; do not claim direct before/after geometry until cameras match.
