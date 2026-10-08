@@ -60,7 +60,9 @@ The new registered master has now been converted successfully using the memory-s
 - Translation-equivalent analysis completed: 12,727 equivalence sets, 32,703 duplicate mesh definitions beyond representatives, ~47.33 MiB recoverable BIN, ~6.62% BIN reduction and ~17.03% mesh-definition reduction (estimated 159,283 mesh definitions after reuse).
 - Translation reuse alone is helpful but still insufficient for the web target. The diagnostic phase is now considered complete enough to proceed.
 - **V1 BUILD COMPLETED LOCALLY:** `venue-web-v1.glb` and `venue-web-v1.build-report.json` exist. Re-running `BUILD_WEB_V1.ps1` is now idempotent: it reports the existing V1 status instead of treating the protected existing output as an error.
-- **NEXT AFTER V1 VALIDATION:** controlled proxy/merge/simplification of the heavy P1 groups (`TECHO_ENTERO`, `CORTINAS`, sofa, threaded rods and repeated lighting) until the ≤95 MiB / ≤20,000 mesh public gate is reached. Never overwrite `venue-master.glb`.
+- V1 measured locally: 715.61 MiB, 609.48 MiB BIN, 191,817 nodes and 159,114 meshes; 14.19% file reduction and 17.12% mesh-definition reduction from the master-derived candidate.
+- **CURRENT PRODUCTION STEP:** `tools/sound-club/BUILD_WEB_V2.ps1` builds `venue-web-v2.glb` from V1. It replaces only classified heavy P1 groups with clustered world-space technical proxies while preserving all unclassified geometry, then measures the ≤95 MiB / ≤20,000 mesh / venue-bounds gate.
+- Even if V2 passes numerical gates, visual QA against the private SketchUp master is mandatory before any public promotion.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
