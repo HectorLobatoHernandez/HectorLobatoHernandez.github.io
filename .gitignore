@@ -12,3 +12,6 @@ brag-output-*/
 .vscode/
 .DS_Store
 Thumbs.db
+# SOUND CLUB private/local 3D conversion candidates
+assets/models/sound-club/_candidate/*
+!assets/models/sound-club/_candidate/.gitkeep
