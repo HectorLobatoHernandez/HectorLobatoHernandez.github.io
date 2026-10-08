@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "projectId": "SOUND_CLUB_CDM",
-  "updatedAt": "2026-10-07",
+  "updatedAt": "2026-10-08",
   "browserFormat": "glb/gltf",
   "rawSourcePolicy": "PRIVATE_REFERENCE_ONLY",
   "note": "Raw SKP/DWG files are never served directly. Promote only verified geometry to optimized GLB/glTF.",
@@ -10,12 +10,49 @@
       "id": "MS-MODEL-VENUE",
       "title": "Venue / Master Architecture",
       "role": "ARCHITECTURE_MASTER",
-      "status": "PENDING_GLB",
+      "status": "INGESTED_PENDING_GLB",
       "src": null,
       "posterMediaId": "SC-BOARD-01",
-      "sourceIntent": "verified SKP + architectural DWG",
+      "sourceIntent": "private SketchUp 24.0.594 master + architectural DWG alignment",
       "classification": "PENDING_VERIFIED_GEOMETRY",
-      "default": true
+      "default": true,
+      "previewSrc": "/assets/visuals/sound-club-skp-line-preview.svg",
+      "views": {
+        "design": {
+          "status": "PENDING_GLB",
+          "src": null,
+          "treatment": "technical / neutral materials / line-led",
+          "evidence": "VERIFIED_GEOMETRY_REQUIRED"
+        },
+        "render": {
+          "status": "PENDING_GLB",
+          "src": null,
+          "treatment": "finished materials + hospitality lighting; same geometry/camera",
+          "evidence": "VERIFIED_GEOMETRY_REQUIRED"
+        }
+      },
+      "zones": [
+        {
+          "id": "restaurant",
+          "label": "Restaurant",
+          "status": "PENDING_MODEL_COORDINATES"
+        },
+        {
+          "id": "dj",
+          "label": "DJ / dance floor",
+          "status": "PENDING_MODEL_COORDINATES"
+        },
+        {
+          "id": "bars",
+          "label": "Bars",
+          "status": "PENDING_MODEL_COORDINATES"
+        },
+        {
+          "id": "exterior",
+          "label": "Exterior",
+          "status": "PENDING_MODEL_COORDINATES"
+        }
+      ]
     },
     {
       "id": "MS-MODEL-DJ",
@@ -55,5 +92,13 @@
     "model simplified/optimized",
     "GLB/glTF exported",
     "visual QA and evidence classification passed"
-  ]
+  ],
+  "ingestMetadata": "/xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json",
+  "viewer": {
+    "engine": "three.js",
+    "cameraPolicy": "SHARED_BETWEEN_DESIGN_AND_RENDER",
+    "rawSourcePolicy": "PRIVATE_REFERENCE_ONLY",
+    "designRenderContract": "Both public variants must derive from the same verified geometry and origin.",
+    "hotspotsStatus": "PENDING_VERIFIED_MODEL_COORDINATES"
+  }
 }
