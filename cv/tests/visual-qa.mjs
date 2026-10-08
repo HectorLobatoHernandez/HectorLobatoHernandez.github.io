@@ -62,6 +62,10 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       techHeadings:document.querySelectorAll('main [data-rb-tech="1"]').length,
       menuTrigger:!!document.querySelector('.rb-menu-trigger'),
       latticeCells:document.querySelectorAll('.rb-cell').length,
+      heroActionLabels:[...document.querySelectorAll('.rb-actions .rb-btn')].map(x=>x.textContent.trim()),
+      portraitToggle:!!document.querySelector('.rb-portrait-toggle'),
+      portraitView:document.querySelector('[data-dither-veil="true"]')?.getAttribute('data-portrait-view')||null,
+      bodyBg:getComputedStyle(document.body).backgroundColor,
       imageLoaded:(()=>{const i=document.querySelector('.atelier-photo img');return i?i.complete&&i.naturalWidth>0:null})(),
       asset404:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src)
     }));
@@ -79,11 +83,17 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
       if(state.hero?.schemaVersion!==2||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
       if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier full-page React Bits UI missing');
+      if(!state.portraitToggle||state.portraitView!=='interactive')failures.push('Dossier portrait viewer toggle missing or wrong default state');
+      if(state.heroActionLabels.includes('Portfolio técnico')||state.heroActionLabels.includes('Contacto')||state.heroActionLabels.length!==3)failures.push('Dossier hero actions not simplified');
+      if(state.bodyBg==='rgb(242, 239, 230)'||state.bodyBg==='rgb(255, 255, 255)')failures.push('Dossier dark full-page background missing');
       if(!state.marSaladaCanonical||state.legacyProjectButtons)failures.push('Dossier Mar Salada canonical identity/public buttons mismatch');
       await page.click('.rb-menu-trigger');await page.waitForTimeout(350);
       const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));
       if(!menu.open||menu.links!==7)failures.push('Staggered menu did not open correctly');
       await page.click('.rb-menu-close');await page.waitForTimeout(120);
+      await page.click('.rb-portrait-toggle');await page.waitForTimeout(120);
+      const portrait=await page.evaluate(()=>({view:document.querySelector('[data-dither-veil="true"]')?.getAttribute('data-portrait-view'),pressed:document.querySelector('.rb-portrait-toggle')?.getAttribute('aria-pressed'),canvasOpacity:getComputedStyle(document.querySelector('.rb-dither-canvas')).opacity}));
+      if(portrait.view!=='plain'||portrait.pressed!=='true'||Number(portrait.canvasOpacity)>.05)failures.push('Dossier portrait normal-photo toggle failed');
     }
     if(test.id==='present'){
       if(state.present?.schemaVersion!==1||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
