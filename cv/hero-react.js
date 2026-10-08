@@ -69,7 +69,7 @@
           const y0=base+j*17;
           ctx.beginPath();
           ctx.lineWidth=.68;
-          ctx.strokeStyle='rgba(184,201,159,'+(0.18-j*.005)+')';
+          ctx.strokeStyle='rgba(177,179,179,'+(0.15-j*.004)+')';
           for(let x=-50;x<=w+50;x+=7){
             const wave=Math.sin(x*.0105+t*.006+j*.43)*13+Math.sin(x*.0031-t*.003+j*.9)*20;
             const dx=x-pointer.x,dy=y0-pointer.y,dist=Math.hypot(dx,dy);
@@ -112,10 +112,10 @@
           const d=Math.hypot(p.x-pointer.x,p.y-pointer.y);
           const a=d<170?.7:.27;
           ctx.beginPath();
-          ctx.fillStyle=p.warm?'rgba(197,154,103,'+a+')':'rgba(232,235,225,'+a+')';
+          ctx.fillStyle=p.warm?'rgba(151,153,155,'+a+')':'rgba(217,217,214,'+a+')';
           ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
           if(d<115){
-            ctx.beginPath();ctx.strokeStyle='rgba(184,201,159,'+((1-d/115)*.14)+')';ctx.lineWidth=.5;
+            ctx.beginPath();ctx.strokeStyle='rgba(200,201,199,'+((1-d/115)*.12)+')';ctx.lineWidth=.5;
             ctx.moveTo(p.x,p.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke();
           }
         });
@@ -278,7 +278,7 @@
 
         base.width=w;base.height=hh;
         const bctx=base.getContext('2d');
-        bctx.fillStyle='#111814';bctx.fillRect(0,0,w,hh);
+        bctx.fillStyle='#080808';bctx.fillRect(0,0,w,hh);
         const matrix=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
         const step=4;
         for(let y=0;y<hh;y+=step){
@@ -287,7 +287,7 @@
             const idx=(py*w+px)*4;
             const lum=(pixels[idx]*.299+pixels[idx+1]*.587+pixels[idx+2]*.114)/255;
             const threshold=(matrix[(y/step)%4|0][(x/step)%4|0]+.5)/16;
-            bctx.fillStyle=lum>threshold?'rgba(232,235,225,.94)':'rgba(17,24,20,.96)';
+            bctx.fillStyle=lum>threshold?'rgba(217,217,214,.94)':'rgba(8,8,8,.97)';
             bctx.fillRect(x,y,step,step);
           }
         }
@@ -400,7 +400,7 @@
       h('section',{className:'rb-hero-shell','data-reactbits-hero':'true'},
         h('header',{className:'rb-nav'},
           h('div',{className:'rb-nav-inner'},
-            h('a',{className:'rb-brand',href:'../'},h('span',{className:'rb-brand-mark'},'HL.'),h('span',{className:'rb-brand-name'},'Héctor Lobato')),
+            h('a',{className:'rb-brand',href:'#hero-react-root'},h('span',{className:'rb-brand-mark'},'HL.'),h('span',{className:'rb-brand-name'},'Héctor Lobato')),
             h('button',{className:'rb-menu-trigger',type:'button',onClick:()=>setMenu(true),'aria-expanded':menu?'true':'false'},h(MenuDots),'Menú')
           )
         ),
