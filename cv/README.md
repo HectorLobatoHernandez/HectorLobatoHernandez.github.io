@@ -37,3 +37,7 @@ Elegir una variante base para el CV final. Usar Scroll World como sección de na
 `ats.html` ya no es un resumen mínimo: funciona como CV profesional imprimible de 2–3 páginas A4, con cronología laboral, proyectos, formación superior, Máster en Inteligencia Artificial en curso, certificaciones/formación de fabricante, tecnologías e idiomas. `ats.txt` mantiene el mismo contenido esencial para ATS.
 
 Su edición se rige por `skills/cv-ats-pdf/SKILL.md`; no duplicar botones hacia el dossier ni inventar fechas/títulos de certificación no documentados.
+
+### ATS browser visual layer · Waves + PixelTrail
+
+La vista web de `ats.html` comparte la gama IVORY ATLAS del dossier y monta una capa React separada: **Waves** ocupa todo el viewport y **PixelTrail** usa oliva `#93884B`. La capa es exclusivamente de presentación; `@media print` la elimina por completo y restaura el documento blanco/negro para exportación PDF y ATS.
