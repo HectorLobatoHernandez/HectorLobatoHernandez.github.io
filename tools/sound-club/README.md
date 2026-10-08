@@ -258,3 +258,16 @@ Outputs:
 This is an **intermediate production derivative**, not a public model. It is expected to remain above the final web gate. The following stage will apply controlled P1 merge/proxy/simplification to architecture, acoustic treatments, furniture, threaded hardware and repeated lighting.
 
 Do not run `-Promote` after this build.
+
+
+### Re-running BUILD_WEB_V1.ps1
+
+The wrapper is idempotent. If `venue-web-v1.glb` and its build report already exist, running:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V1.ps1
+```
+
+does **not** rebuild or overwrite the derivative. It prints the existing V1 size, node/mesh counts, reduction percentages and web-gate status, then exits successfully.
+
+Use `-Force` only when intentionally replacing the existing V1 after its report has been reviewed.
