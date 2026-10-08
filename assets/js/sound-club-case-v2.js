@@ -205,6 +205,7 @@
 
     const zones=model?.zones||[];
     const activeReady=view==='design'?designReady:renderReady;
+    const anyReady=designReady||renderReady;
     return E('section',{className:'ms-shell ms-section',id:'spatial'},
       E('div',{className:'ms-spatial-head','data-ms-reveal':''},
         E('div',null,E('p',{className:'ms-kicker'},'02 / SPATIAL MODEL EXPLORER'),E('h2',{className:'ms-title'},'Design ↔ Render. Same geometry, same camera.')),
@@ -224,16 +225,13 @@
       ),
       E('div',{className:'ms-spatial-layout'},
         E('div',{className:'ms-spatial-stage','data-view':view,'data-ready':activeReady?'true':'false'},
-          activeReady?E('div',{className:'ms-three-host',ref:stageRef}):
-            E(React.Fragment,null,
-              E('img',{className:'ms-skp-preview',src:preview,alt:'Derived line preview of the private SketchUp master model'}),
-              E('div',{className:'ms-spatial-pending'},
-                E('strong',null,view.toUpperCase()+' · VERIFIED GLB PENDING'),
-                E('span',null,model?.title||'Venue / Master Architecture'),
-                E('small',null,view==='design'?'El preview procede del SKP real; todavía no se presenta como geometría web verificable.':'El render final no se simula: se activará cuando Blender/GLB comparta exactamente la geometría verificada del modo DESIGN.')
-              )
-            ),
-          E('div',{className:'ms-spatial-hud'},E('b',null,'ORBIT / PAN / ZOOM'),E('span',null,activeReady?'Interactive Three.js scene':'Source preview · no fake geometry'))
+          anyReady?E('div',{className:'ms-three-host',ref:stageRef}):E('img',{className:'ms-skp-preview',src:preview,alt:'Derived line preview of the private SketchUp master model'}),
+          !activeReady?E('div',{className:'ms-spatial-pending'},
+            E('strong',null,view.toUpperCase()+' · VERIFIED GLB PENDING'),
+            E('span',null,model?.title||'Venue / Master Architecture'),
+            E('small',null,view==='design'?'El preview procede del SKP real; todavía no se presenta como geometría web verificable.':'El render final no se simula: se activará cuando Blender/GLB comparta exactamente la geometría verificada del modo DESIGN.')
+          ):null,
+          E('div',{className:'ms-spatial-hud'},E('b',null,'ORBIT / PAN / ZOOM'),E('span',null,activeReady?'Interactive Three.js scene':(anyReady?'Camera retained · selected view pending':'Source preview · no fake geometry')))
         ),
         E('aside',{className:'ms-spatial-side'},
           E('p',{className:'ms-kicker'},'MODEL MAP'),
@@ -357,7 +355,7 @@
 
         E('section',{className:'ms-shell ms-section',id:'audio'},
           E('div',{className:'ms-split'},
-            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'02 / AUDIO ARCHITECTURE'),E('h2',{className:'ms-title'},'Power, clarity and control.'),
+            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'03 / AUDIO ARCHITECTURE'),E('h2',{className:'ms-title'},'Power, clarity and control.'),
               E('p',{className:'ms-subtitle'},'Matriz DSP central, amplificación dedicada y separación operacional Interior / Exterior, con presets Restaurante / Club y arquitectura preparada para limitación homologada por zona.'),
               E('div',{className:'ms-zone-row'},...['Interior','Exterior','Restaurant preset','Club preset'].map(x=>E('span',{className:'ms-zone',key:x},x)))
             ),
@@ -376,7 +374,7 @@
         ),
 
         E('section',{className:'ms-shell ms-section',id:'lighting'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'03 / LIGHTING & CONTROL'),E('h2',{className:'ms-title'},'Atmosphere in every moment.'),E('p',{className:'ms-subtitle'},'Control central Gira X1, KNX + DALI, escenas hospitality/club, colgantes decorativos, spots de pista y previsión de ampliación DMX.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'04 / LIGHTING & CONTROL'),E('h2',{className:'ms-title'},'Atmosphere in every moment.'),E('p',{className:'ms-subtitle'},'Control central Gira X1, KNX + DALI, escenas hospitality/club, colgantes decorativos, spots de pista y previsión de ampliación DMX.')),
           E('div',{className:'ms-control-layout'},
             E('div',{className:'ms-control-list'},
               E(Card,{label:'SUPERVISION',title:'Gira X1',body:'Visualización y control centralizado.'}),
@@ -410,7 +408,7 @@
         ),
 
         E('section',{className:'ms-shell ms-section',id:'dj'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'05 / DJ BOOTH · TECHNICAL FURNITURE'),E('h2',{className:'ms-title'},'A central technical object.'),E('p',{className:'ms-subtitle'},'La cabina circular combina estructura, encimera, aislamiento vibratorio, acometidas, iluminación y servicio técnico. La geometría generada permanece separada de las cotas documentadas.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'06 / DJ BOOTH · TECHNICAL FURNITURE'),E('h2',{className:'ms-title'},'A central technical object.'),E('p',{className:'ms-subtitle'},'La cabina circular combina estructura, encimera, aislamiento vibratorio, acometidas, iluminación y servicio técnico. La geometría generada permanece separada de las cotas documentadas.')),
           E('div',{className:'ms-dj-grid'},
             E(Figure,{item:dj,caption:'GENERATED CONCEPT · not authoritative geometry',depth:true}),
             E('div',{className:'ms-dj-stack'},E(Figure,{item:djPlan,contain:true,caption:'DOCUMENTED DIMENSIONS · diagrammatic geometry'}),
@@ -428,6 +426,7 @@
           E('div',{className:'ms-doc-grid'},
             E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
             E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
+            E('a',{className:'ms-doc',href:'../xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json'},E('i',null,'SOURCE INGEST'),E('b',null,'DWG + SKP master metadata'),E('span',null,'Version, units, hashes and GLB promotion gate →')),
             E('a',{className:'ms-doc',href:'../index.html#projects'},E('i',null,'PORTFOLIO'),E('b',null,'Selected projects'),E('span',null,'Return to the public portfolio →'))
           ),
           E('div',{className:'ms-motion'},
