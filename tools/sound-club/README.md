@@ -205,3 +205,26 @@ The analyzer:
 - does not write or mutate any GLB.
 
 This is a **lossless-analysis stage only**. If exact duplicates are substantial, a later build step may remap duplicate nodes to one representative mesh and repack unused accessors/bufferViews. If duplicates are small, optimization proceeds through proxies, instancing and controlled simplification.
+
+
+## Translation-equivalent mesh analysis
+
+Exact byte-for-byte deduplication recovered only a negligible amount of payload, so the next lossless-oriented test checks whether repeated SketchUp components were exported as the same mesh shape with positions baked at different translations.
+
+Run:
+
+```powershell
+.\tools\sound-club\ANALYZE_TRANSLATION_INSTANCES.ps1
+```
+
+Output:
+- `assets/models/sound-club/_candidate/venue-master.translation-instances.json`
+
+The analyzer:
+- first groups meshes by topology/accessor layout/material and metric extents;
+- then hashes POSITION data after subtracting the first vertex, using a strict 0.001 mm tolerance;
+- requires indices, non-position attributes and material content to match;
+- reports translation-equivalent sets, potential mesh-definition reduction and recoverable BIN payload;
+- does not modify either GLB.
+
+This is intended to detect repeated components that OpenSKP exported with transforms baked into vertex positions. A future build step may reuse one representative mesh and move nodes by the measured translation, but no remapping is authorized until this analysis is reviewed.
