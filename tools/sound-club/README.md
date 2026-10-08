@@ -184,3 +184,24 @@ It reports:
   - `replaceProxyInstanceAndSimplifiableArchitectureAcoustics`.
 
 Scenario reductions represent **payload that could be removed before replacement**. They are not final GLB sizes and do not include the future proxy/instance payload.
+
+
+## Lossless exact-mesh duplicate analysis
+
+Before replacing geometry with proxies, test whether the GLB contains byte-identical duplicated meshes that can share one representative geometry without visual loss:
+
+```powershell
+.\tools\sound-club\ANALYZE_EXACT_MESH_DUPLICATES.ps1
+```
+
+Output:
+- `assets/models/sound-club/_candidate/venue-master.exact-dedupe.json`
+
+The analyzer:
+- hashes every GLB `bufferView` by streaming from disk;
+- fingerprints each mesh from accessor content, primitive structure and material content;
+- groups only exact duplicate meshes;
+- estimates duplicate BIN bytes that could be recovered by standard glTF mesh reuse;
+- does not write or mutate any GLB.
+
+This is a **lossless-analysis stage only**. If exact duplicates are substantial, a later build step may remap duplicate nodes to one representative mesh and repack unused accessors/bufferViews. If duplicates are small, optimization proceeds through proxies, instancing and controlled simplification.
