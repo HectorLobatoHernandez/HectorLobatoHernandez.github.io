@@ -46,7 +46,8 @@ The new registered master has now been converted successfully using the memory-s
 - Current web gate target: ≤120 m horizontal extent, ≤40 m height, ≤95 MiB, ≤20,000 geometries.
 - Current classification: **SOURCE VALID / WEB NOT READY**.
 - Detailed low-memory analysis: 53,670,334 vertices / 31,137,869 triangles / 191,986 mesh instances.
-- Current dominant heavy families include vegetation, decorative fruit basket assets, woven bamboo lamps, repeated 2D acoustic diffuser plates and drill-press clamp/bolt detail.
+- Confirmed specific heavy families include vegetation, decorative fruit basket assets, woven bamboo lamps, repeated 2D acoustic diffuser plates, threaded rods and drill-press clamp/bolt detail.
+- The first semantic classifier over-grouped descendants under `TECHO` and produced generic `COMPO/COMPON` buckets; classifier v2 separates top-level group, semantic family and leaf family before any geometry is removed.
 - Optimization policy: preserve private SKP master; optimize only a derived web GLB using KEEP / INSTANCE / PROXY / REMOVE_WEB_DECOR decisions.
 - Promotion status: **NOT PROMOTED**.
 - Public model status: **PENDING_GLB**.
