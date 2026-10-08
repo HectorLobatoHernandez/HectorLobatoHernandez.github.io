@@ -195,19 +195,19 @@ def mesh_weight_stats(doc, mesh_index):
 
 
 def semantic_path(name: str):
-    clean = re.sub(r"^mesh_\\d+_", "", name or "", flags=re.IGNORECASE)
+    clean = re.sub(r"^mesh_\d+_", "", name or "", flags=re.IGNORECASE)
     clean = re.sub(r"^ROOT__", "", clean, flags=re.IGNORECASE)
 
     out = []
     for raw in [part for part in clean.split("__") if part]:
         token = re.sub(r"_AB(?:_.*)?$", "", raw, flags=re.IGNORECASE).strip()
-        token = re.sub(r"#\\d+$", "", token).strip()
+        token = re.sub(r"#\d+$", "", token).strip()
 
         # Generic SketchUp grouping nodes carry no semantic meaning.
-        if re.fullmatch(r"Grupo#?\\d*", token, flags=re.IGNORECASE):
+        if re.fullmatch(r"Grupo#?\d*", token, flags=re.IGNORECASE):
             continue
 
-        component = re.fullmatch(r"Component_\\d+(?:_(.+))?", token, flags=re.IGNORECASE)
+        component = re.fullmatch(r"Component_\d+(?:_(.+))?", token, flags=re.IGNORECASE)
         if component:
             token = (component.group(1) or "").strip()
             if not token:
@@ -217,7 +217,7 @@ def semantic_path(name: str):
         if re.fullmatch(r"(COMPONENTE?|GROUP|GRUPO|AGRUPAR|AGRU)", token, flags=re.IGNORECASE):
             continue
 
-        token = re.sub(r"\\s+", " ", token).strip(" _-")
+        token = re.sub(r"\s+", " ", token).strip(" _-")
         if token:
             out.append(token.upper())
 
@@ -316,8 +316,45 @@ def family_summaries(rows):
     }
 
 
+def self_test_semantic_parser():
+    cases = [
+        (
+            "mesh_35529_ROOT__TECHO_ENTERO__TECHO_COMPLETO__Grupo#80_AB",
+            ["TECHO_ENTERO", "TECHO_COMPLETO"],
+        ),
+        (
+            "mesh_142796_ROOT__Component_8278557_VEGETACION",
+            ["VEGETACION"],
+        ),
+        (
+            "mesh_294_ROOT__Weaved_lamp_Bamboo__Component_4842210_AB",
+            ["WEAVED_LAMP_BAMBOO"],
+        ),
+    ]
+    failures = []
+    for source, expected in cases:
+        actual = semantic_path(source)
+        if actual != expected:
+            failures.append({"source": source, "expected": expected, "actual": actual})
+
+    family, top, leaf, action, _ = classify_semantic_family(
+        "mesh_35529_ROOT__TECHO_ENTERO__TECHO_COMPLETO__Grupo#80_AB"
+    )
+    if top != "TECHO_ENTERO" or action != "KEEP_ARCHITECTURE":
+        failures.append({
+            "source": "TECHO hierarchy classification",
+            "expected": {"top": "TECHO_ENTERO", "action": "KEEP_ARCHITECTURE"},
+            "actual": {"top": top, "leaf": leaf, "family": family, "action": action},
+        })
+
+    if failures:
+        raise SystemExit(
+            "Semantic parser self-test failed:\n" + json.dumps(failures, indent=2, ensure_ascii=False)
+        )
+
+
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Low-memory GLB structural analyzer.")
+    self_test_semantic_parser()\n\n    ap = argparse.ArgumentParser(description="Low-memory GLB structural analyzer.")
     ap.add_argument("glb", type=Path)
     ap.add_argument("--json", dest="json_out", type=Path, required=True)
     ap.add_argument("--csv", dest="csv_out", type=Path, required=True)
@@ -481,7 +518,7 @@ def main() -> int:
         "globalExtentM": result["globalExtentM"],
         "topFamilies": [
             {
-                "family": item["family"],
+                "family": item["semanticFamily"],
                 "instanceCount": item["instanceCount"],
                 "estimatedReferencedBufferMiB": item["estimatedReferencedBufferMiB"],
                 "suggestedAction": item["dominantSuggestedAction"],
