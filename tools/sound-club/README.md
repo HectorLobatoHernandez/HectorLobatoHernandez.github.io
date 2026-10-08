@@ -159,3 +159,28 @@ Output:
 - `assets/models/sound-club/_candidate/venue-web-v1.trim-report.json`
 
 The script repacks only referenced binary ranges by streaming them from the source GLB. It never overwrites `venue-master.glb` and never modifies the private SKP.
+
+
+## Exact buffer ownership + scenario analysis
+
+The safe-delete dry-run only removes a small number of high-confidence groups. Before building any derivative, calculate **exclusive vs shared BIN bytes** by top-level group:
+
+```powershell
+.\tools\sound-club\ANALYZE_WEB_SCENARIOS.ps1
+```
+
+Output:
+- `assets/models/sound-club/_candidate/venue-master.buffer-ownership.json`
+
+This analysis is JSON-only / low-memory and does not modify either GLB.
+
+It reports:
+- exact unique buffer bytes referenced by each top-level group;
+- bytes exclusive to one group;
+- bytes shared with other groups;
+- three non-mutating scenarios:
+  - `safeDeleteOnly`;
+  - `replaceProxyAndInstanceCandidates`;
+  - `replaceProxyInstanceAndSimplifiableArchitectureAcoustics`.
+
+Scenario reductions represent **payload that could be removed before replacement**. They are not final GLB sizes and do not include the future proxy/instance payload.
