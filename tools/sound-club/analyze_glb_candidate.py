@@ -140,6 +140,59 @@ def transform_bounds(bounds, matrix):
     return [out_lo, out_hi]
 
 
+def mesh_weight_stats(doc, mesh_index):
+    accessors = doc.get("accessors", [])
+    buffer_views = doc.get("bufferViews", [])
+    meshes = doc.get("meshes", [])
+    if mesh_index is None or mesh_index >= len(meshes):
+        return {
+            "primitiveCount": 0,
+            "vertexCount": 0,
+            "indexCount": 0,
+            "triangleCount": 0,
+            "referencedBufferBytes": 0,
+        }
+
+    vertex_count = 0
+    index_count = 0
+    used_buffer_views = set()
+    primitives = meshes[mesh_index].get("primitives", [])
+
+    for prim in primitives:
+        attrs = prim.get("attributes") or {}
+        pos = attrs.get("POSITION")
+        if pos is not None and pos < len(accessors):
+            vertex_count += int(accessors[pos].get("count", 0) or 0)
+
+        idx = prim.get("indices")
+        if idx is not None and idx < len(accessors):
+            index_count += int(accessors[idx].get("count", 0) or 0)
+
+        accessor_ids = list(attrs.values())
+        if idx is not None:
+            accessor_ids.append(idx)
+
+        for accessor_id in accessor_ids:
+            if accessor_id is None or accessor_id >= len(accessors):
+                continue
+            view_id = accessors[accessor_id].get("bufferView")
+            if view_id is not None and view_id < len(buffer_views):
+                used_buffer_views.add(view_id)
+
+    referenced_bytes = sum(
+        int(buffer_views[view_id].get("byteLength", 0) or 0)
+        for view_id in used_buffer_views
+    )
+
+    return {
+        "primitiveCount": len(primitives),
+        "vertexCount": vertex_count,
+        "indexCount": index_count,
+        "triangleCount": index_count // 3,
+        "referencedBufferBytes": referenced_bytes,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Low-memory GLB structural analyzer.")
     ap.add_argument("glb", type=Path)
@@ -176,6 +229,7 @@ def main() -> int:
         mesh_index = node.get("mesh")
         if mesh_index is not None:
             visited_instances += 1
+            weight = mesh_weight_stats(doc, mesh_index)
             if mesh_index not in local_bounds_cache:
                 local_bounds_cache[mesh_index] = mesh_local_bounds(doc, mesh_index)
             world_bounds = transform_bounds(local_bounds_cache[mesh_index], world)
@@ -199,6 +253,12 @@ def main() -> int:
                         "meshIndex": mesh_index,
                         "meshName": meshes[mesh_index].get("name", "") if mesh_index < len(meshes) else "",
                         "path": "/".join(map(str, node_path)),
+                        "primitiveCount": weight["primitiveCount"],
+                        "vertexCount": weight["vertexCount"],
+                        "indexCount": weight["indexCount"],
+                        "triangleCount": weight["triangleCount"],
+                        "referencedBufferBytes": weight["referencedBufferBytes"],
+                        "referencedBufferMiB": weight["referencedBufferBytes"] / (1024.0 * 1024.0),
                         "extent_x_m": extent_m[0],
                         "extent_y_m": extent_m[1],
                         "extent_z_m": extent_m[2],
@@ -216,8 +276,10 @@ def main() -> int:
     for root in root_nodes:
         visit(root, identity, [])
 
-    rows.sort(key=lambda row: row["diag_m"], reverse=True)
-    top_rows = rows[: args.top]
+    rows_by_diagonal = sorted(rows, key=lambda row: row["diag_m"], reverse=True)
+    rows_by_weight = sorted(rows, key=lambda row: row["referencedBufferBytes"], reverse=True)
+    top_rows = rows_by_diagonal[: args.top]
+    top_weight_rows = rows_by_weight[: args.top]
 
     global_extent_m = None
     global_bounds_m = None
@@ -246,6 +308,13 @@ def main() -> int:
         },
         "globalBoundsM": global_bounds_m,
         "globalExtentM": global_extent_m,
+        "totals": {
+            "vertexCount": sum(row["vertexCount"] for row in rows),
+            "indexCount": sum(row["indexCount"] for row in rows),
+            "triangleCount": sum(row["triangleCount"] for row in rows),
+            "referencedBufferBytesAcrossInstances": sum(row["referencedBufferBytes"] for row in rows)
+        },
+        "topNodeInstancesByReferencedBytes": top_weight_rows[:50],
         "topNodeInstancesByDiagonal": top_rows[:50],
         "densestXZCells": [
             {
@@ -272,7 +341,7 @@ def main() -> int:
     with args.csv_out.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
-        for row in top_rows:
+        for row in top_weight_rows:
             writer.writerow(row)
 
     print(json.dumps({
