@@ -39,18 +39,30 @@
       "VIDRO_SECUNDARIO_VRAY 3.4"
     ],
     "vrayStatus": "MATERIAL_NAMING_DETECTED_RENDER_SETTINGS_NOT_YET_VERIFIED",
-    "status": "REGISTERED_MASTER_PENDING_GLB_QA",
+    "status": "REGISTERED_MASTER_CANDIDATE_GLB_CREATED_LOCAL_QA_PENDING",
     "derivedPreview": "/assets/visuals/sound-club-master-2026-02-12-preview.svg",
     "conversionTool": "tools/sound-club/CONVERT_SKP_TO_GLB.ps1",
     "note": "This replaces the previously registered SKP master by explicit user instruction. Raw SKP remains private."
   },
   "nextGate": [
-    "Convert the registered 2026-02-12 SKP master locally to candidate GLB",
-    "Inspect candidate bounds and isolate terrain/geolocation/remote geometry if required",
-    "Validate model visually through localhost ?candidate=1",
-    "Verify DWG/SKP spatial relationship",
-    "Promote one authoritative GLB only after bounds + visual QA",
+    "Read local venue-master.qa.json for geometryCount, bounds and extentM",
+    "Inspect candidate through localhost ?candidate=1",
+    "Remove/isolate terrain, geolocation or remote geometry if bounds are implausible",
+    "Optimize candidate below public delivery target",
+    "Verify DWG/SKP alignment",
     "Export matched-camera V-Ray stills for BEFORE/AFTER comparison",
+    "Promote one authoritative GLB only after hash + bounds + visual QA",
     "Enable verified zone hotspots"
-  ]
+  ],
+  "localCandidate": {
+    "visibility": "LOCAL_GITIGNORED",
+    "path": "assets/models/sound-club/_candidate/venue-master.glb",
+    "qaReport": "assets/models/sound-club/_candidate/venue-master.qa.json",
+    "sourceSha256": "ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665",
+    "glbSha256": "0fc257b69448ed23739dceada7798113cc4dcdc457ec86efd8661902b9604135",
+    "texturesEmbedded": false,
+    "exceeds95MiB": true,
+    "publicPromotion": false,
+    "status": "CREATED_QA_PENDING"
+  }
 }
