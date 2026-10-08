@@ -42,4 +42,8 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 ## 9. Dirección visual canónica
 
-El dossier usa fondo negro real y una escala fría de grises inspirada en Pantone Cool Gray. El nombre **Héctor Lobato** con TechText es la identidad visual dominante de la primera pantalla. El portfolio clásico ya no forma parte de la entrada pública ni se conserva como página HTML activa. La raíz sirve directamente el dossier.
+El dossier usa fondo negro real y una escala gris verdosa inspirada en Pantone. El nombre **Héctor Lobato** y los títulos principales usan TechText como demostración visible de interacción React. El portfolio clásico ya no forma parte de la entrada pública ni se conserva como página HTML activa. La raíz sirve directamente el dossier.
+
+### React TechText
+
+El nombre y los títulos principales deben mostrar interacción de letra, outline, selección técnica, labels, specks, sweep automático y drag controlado. Particles/Waves permanecen visibles en toda la página como capa demostrativa, con fallback de movimiento reducido.
