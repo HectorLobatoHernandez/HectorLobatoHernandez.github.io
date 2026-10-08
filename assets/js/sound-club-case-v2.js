@@ -110,6 +110,8 @@
         raf=0;
         root.style.setProperty('--cad-x',(x*100).toFixed(3)+'vw');
         root.style.setProperty('--cad-y',(y*100).toFixed(3)+'vh');
+        root.style.setProperty('--cad-pan-x',((.5-x)*18).toFixed(2)+'px');
+        root.style.setProperty('--cad-pan-y',((.5-y)*12).toFixed(2)+'px');
         if(labelRef.current)labelRef.current.textContent='REF X '+(x*100).toFixed(1)+' / Y '+(y*100).toFixed(1);
       };
       const move=e=>{x=Math.min(1,Math.max(0,e.clientX/Math.max(1,innerWidth)));y=Math.min(1,Math.max(0,e.clientY/Math.max(1,innerHeight)));if(!raf)raf=requestAnimationFrame(paint)};
