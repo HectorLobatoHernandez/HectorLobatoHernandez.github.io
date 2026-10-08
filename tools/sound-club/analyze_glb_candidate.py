@@ -194,38 +194,78 @@ def mesh_weight_stats(doc, mesh_index):
     }
 
 
-def classify_family(name: str):
-    upper = (name or "").upper()
-    rules = [
-        ("VEGETACION", "PROXY_OR_REMOVE", "Decorative vegetation is a high-poly web candidate; keep only if composition needs it."),
-        ("CESTA+FRUTAS", "REMOVE_WEB_DECOR", "Decorative tabletop prop; omit from technical web geometry."),
-        ("WEAVED_LAMP_BAMBOO", "INSTANCE_OR_PROXY_KEEP_LOCATIONS", "Design-significant pendant; keep location/count but instance or proxy the repeated geometry."),
-        ("DIFUSOR_2D", "INSTANCE_KEEP_ACOUSTIC_INTENT", "Acoustic element; preserve design intent and placement, but instance repeated geometry."),
-        ("DRILL_PRESS_CLAMP", "REVIEW_REMOVE_HARDWARE_DETAIL", "Imported hardware/detail family; review whether it belongs in the final venue model."),
-        ("TECHO", "KEEP_ARCHITECTURE", "Architectural ceiling geometry."),
-        ("MUROS", "KEEP_ARCHITECTURE", "Architectural wall geometry."),
-        ("COLUMNAS", "KEEP_ARCHITECTURE", "Architectural column geometry."),
-        ("RAIL_BLACK", "KEEP_SIMPLIFY_LIGHTING", "Lighting rail; preserve route/position and simplify repeated detail."),
-        ("RAIL_WHITE", "KEEP_SIMPLIFY_LIGHTING", "Lighting rail; preserve route/position and simplify repeated detail."),
-        ("DJ", "KEEP_TECHNICAL", "DJ/fabrication geometry should be preserved for the technical case."),
+def semantic_path(name: str):
+    clean = re.sub(r"^mesh_\\d+_", "", name or "", flags=re.IGNORECASE)
+    clean = re.sub(r"^ROOT__", "", clean, flags=re.IGNORECASE)
+
+    out = []
+    for raw in [part for part in clean.split("__") if part]:
+        token = re.sub(r"_AB(?:_.*)?$", "", raw, flags=re.IGNORECASE).strip()
+        token = re.sub(r"#\\d+$", "", token).strip()
+
+        # Generic SketchUp grouping nodes carry no semantic meaning.
+        if re.fullmatch(r"Grupo#?\\d*", token, flags=re.IGNORECASE):
+            continue
+
+        component = re.fullmatch(r"Component_\\d+(?:_(.+))?", token, flags=re.IGNORECASE)
+        if component:
+            token = (component.group(1) or "").strip()
+            if not token:
+                continue
+
+        # Ignore other purely generic container labels.
+        if re.fullmatch(r"(COMPONENTE?|GROUP|GRUPO|AGRUPAR|AGRU)", token, flags=re.IGNORECASE):
+            continue
+
+        token = re.sub(r"\\s+", " ", token).strip(" _-")
+        if token:
+            out.append(token.upper())
+
+    return out
+
+
+def classify_semantic_family(name: str):
+    path = semantic_path(name)
+    joined = " :: ".join(path)
+    top = path[0] if path else "UNNAMED"
+    leaf = path[-1] if path else "UNNAMED"
+
+    specific_rules = [
+        ("VEGETACION", "PROXY_OR_REMOVE", "Decorative vegetation: use low-poly proxy or omit from technical web geometry."),
+        ("CESTA+FRUTAS", "REMOVE_WEB_DECOR", "Decorative tabletop prop: keep in render evidence, omit from technical web GLB."),
+        ("WEAVED_LAMP_BAMBOO", "INSTANCE_OR_PROXY_KEEP_LOCATIONS", "Design-significant pendant: preserve positions/count and instance/proxy repeated geometry."),
+        ("LUMINARIA-DIARA-77-CM-TRANCADO-EM-CORDA-NAUTICA-BEGE", "INSTANCE_OR_PROXY_KEEP_LOCATIONS", "Design-significant pendant: preserve positions/count and instance/proxy repeated geometry."),
+        ("DIFUSOR_2D", "INSTANCE_KEEP_ACOUSTIC_INTENT", "Acoustic element: preserve placement/intent but instance repeated geometry."),
+        ("DRILL_PRESS_CLAMP", "REVIEW_REMOVE_HARDWARE_DETAIL", "Imported hardware detail: remove or proxy unless needed for a technical close-up."),
+        ("THREADED_ROD_-_WRB", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated threaded rod: preserve engineering route/count but simplify or instance."),
+        ("THREADED_ROD_-_RAILS", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated threaded rod: preserve engineering route/count but simplify or instance."),
+        ("THREADED_ROD_-_1/4_-_20_X_WRB", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated threaded rod: preserve engineering route/count but simplify or instance."),
+        ("THREADED_ROD_-_1/4_-_20_X_RAILS", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated threaded rod: preserve engineering route/count but simplify or instance."),
+        ("GASKET VERTICAL", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated small hardware: instance or simplify."),
+        ("GASKET 1", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated small hardware: instance or simplify."),
+        ("GASKET 2", "INSTANCE_SIMPLIFY_HARDWARE", "Repeated small hardware: instance or simplify."),
+        ("RAIL_BLACK", "KEEP_SIMPLIFY_LIGHTING", "Lighting rail: preserve route/position, merge or instance repeated detail."),
+        ("RAIL_WHITE", "KEEP_SIMPLIFY_LIGHTING", "Lighting rail: preserve route/position, merge or instance repeated detail."),
     ]
-    for needle, action, reason in rules:
-        if needle in upper:
-            return needle, action, reason
+    for needle, action, reason in specific_rules:
+        if needle in joined:
+            return needle, top, leaf, action, reason
 
-    clean = re.sub(r"^mesh_\d+_", "", name or "")
-    clean = clean.replace("ROOT__", "")
-    clean = re.sub(r"Grupo#\d+__", "", clean, flags=re.IGNORECASE)
-    clean = re.sub(r"_AB(?:_.*)?$", "", clean)
-    parts = [p for p in clean.split("__") if p]
-    family = parts[-1] if parts else (clean or "UNNAMED")
-    family = re.sub(r"#\d+$", "", family)
-    family = re.sub(r"Component_\d+_", "", family, flags=re.IGNORECASE)
-    family = family[:120]
-    return family.upper(), "REVIEW", "No automatic web action assigned."
+    # Architecture is classified only from the meaningful top-level group,
+    # never because a descendant path happens to contain the word.
+    if top.startswith("TECHO"):
+        return leaf, top, leaf, "KEEP_ARCHITECTURE", "Ceiling hierarchy: keep, but merge/simplify the web derivative."
+    if top.startswith("MUROS"):
+        return leaf, top, leaf, "KEEP_ARCHITECTURE", "Wall hierarchy: keep architectural geometry."
+    if top.startswith("COLUMNAS"):
+        return leaf, top, leaf, "KEEP_ARCHITECTURE", "Column hierarchy: keep architectural geometry."
+    if top.startswith("DJ") or leaf.startswith("DJ"):
+        return leaf, top, leaf, "KEEP_TECHNICAL", "DJ/fabrication geometry is relevant to the technical case."
+
+    return leaf, top, leaf, "REVIEW", "No automatic web action assigned."
 
 
-def family_summary(rows):
+def aggregate_rows(rows, key_field):
     grouped = defaultdict(lambda: {
         "instanceCount": 0,
         "estimatedReferencedBufferBytes": 0,
@@ -233,31 +273,47 @@ def family_summary(rows):
         "triangleCount": 0,
         "maxDiagM": 0.0,
         "exampleNames": [],
-        "suggestedAction": "REVIEW",
-        "reason": "",
+        "suggestedActions": Counter(),
     })
 
     for row in rows:
-        family, action, reason = classify_family(row.get("nodeName", ""))
-        item = grouped[family]
-        item["family"] = family
+        key = row.get(key_field) or "UNNAMED"
+        item = grouped[key]
+        item[key_field] = key
         item["instanceCount"] += 1
         item["estimatedReferencedBufferBytes"] += int(row.get("referencedBufferBytes", 0) or 0)
         item["vertexCount"] += int(row.get("vertexCount", 0) or 0)
         item["triangleCount"] += int(row.get("triangleCount", 0) or 0)
         item["maxDiagM"] = max(item["maxDiagM"], float(row.get("diag_m", 0.0) or 0.0))
-        item["suggestedAction"] = action
-        item["reason"] = reason
+        item["suggestedActions"][row.get("suggestedAction", "REVIEW")] += 1
         if len(item["exampleNames"]) < 3:
             item["exampleNames"].append(row.get("nodeName", ""))
 
     out = []
     for item in grouped.values():
         item["estimatedReferencedBufferMiB"] = item["estimatedReferencedBufferBytes"] / (1024.0 * 1024.0)
+        actions = item.pop("suggestedActions")
+        item["dominantSuggestedAction"] = actions.most_common(1)[0][0] if actions else "REVIEW"
         out.append(item)
 
     out.sort(key=lambda x: x["estimatedReferencedBufferBytes"], reverse=True)
     return out
+
+
+def family_summaries(rows):
+    for row in rows:
+        family, top, leaf, action, reason = classify_semantic_family(row.get("nodeName", ""))
+        row["semanticFamily"] = family
+        row["topLevelGroup"] = top
+        row["leafFamily"] = leaf
+        row["suggestedAction"] = action
+        row["classificationReason"] = reason
+
+    return {
+        "semantic": aggregate_rows(rows, "semanticFamily"),
+        "topLevel": aggregate_rows(rows, "topLevelGroup"),
+        "leaf": aggregate_rows(rows, "leafFamily"),
+    }
 
 
 def main() -> int:
@@ -345,7 +401,7 @@ def main() -> int:
 
     rows_by_diagonal = sorted(rows, key=lambda row: row["diag_m"], reverse=True)
     rows_by_weight = sorted(rows, key=lambda row: row["referencedBufferBytes"], reverse=True)
-    families = family_summary(rows)
+    summaries = family_summaries(rows)
     top_rows = rows_by_diagonal[: args.top]
     top_weight_rows = rows_by_weight[: args.top]
 
@@ -382,7 +438,9 @@ def main() -> int:
             "triangleCount": sum(row["triangleCount"] for row in rows),
             "referencedBufferBytesAcrossInstances": sum(row["referencedBufferBytes"] for row in rows)
         },
-        "familySummaryByEstimatedReferencedBytes": families[:100],
+        "semanticFamilySummaryByEstimatedReferencedBytes": summaries["semantic"][:120],
+        "topLevelGroupSummaryByEstimatedReferencedBytes": summaries["topLevel"][:120],
+        "leafFamilySummaryByEstimatedReferencedBytes": summaries["leaf"][:160],
         "topNodeInstancesByReferencedBytes": top_weight_rows[:50],
         "topNodeInstancesByDiagonal": top_rows[:50],
         "densestXZCells": [
@@ -400,8 +458,9 @@ def main() -> int:
             "bufferViews shared by several meshes. Use it for ranking, not as exact GLB storage size."
         ),
         "recommendation": (
-            "Use familySummaryByEstimatedReferencedBytes to decide KEEP / INSTANCE / PROXY / REMOVE "
-            "without modifying the private SketchUp master. No binary mesh buffers were loaded by this analysis."
+            "Use semanticFamilySummaryByEstimatedReferencedBytes together with topLevelGroupSummary and "
+            "leafFamilySummary before any optimization. KEEP / INSTANCE / PROXY / REMOVE decisions apply only "
+            "to a derived web GLB; the private SketchUp master remains unchanged."
         ),
     }
 
@@ -425,9 +484,18 @@ def main() -> int:
                 "family": item["family"],
                 "instanceCount": item["instanceCount"],
                 "estimatedReferencedBufferMiB": item["estimatedReferencedBufferMiB"],
-                "suggestedAction": item["suggestedAction"],
+                "suggestedAction": item["dominantSuggestedAction"],
             }
-            for item in result["familySummaryByEstimatedReferencedBytes"][:15]
+            for item in result["semanticFamilySummaryByEstimatedReferencedBytes"][:15]
+        ],
+        "topLevelGroups": [
+            {
+                "group": item["topLevelGroup"],
+                "instanceCount": item["instanceCount"],
+                "estimatedReferencedBufferMiB": item["estimatedReferencedBufferMiB"],
+                "dominantSuggestedAction": item["dominantSuggestedAction"],
+            }
+            for item in result["topLevelGroupSummaryByEstimatedReferencedBytes"][:12]
         ],
         "densestXZCells": result["densestXZCells"][:10],
         "json": str(args.json_out),
