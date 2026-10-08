@@ -47,11 +47,12 @@ The new registered master has now been converted successfully using the memory-s
 - Current classification: **SOURCE VALID / WEB NOT READY**.
 - Detailed low-memory analysis: 53,670,334 vertices / 31,137,869 triangles / 191,986 mesh instances.
 - Confirmed specific heavy families include vegetation, decorative fruit basket assets, woven bamboo lamps, repeated 2D acoustic diffuser plates, threaded rods and drill-press clamp/bolt detail.
-- The first semantic classifier over-grouped descendants under `TECHO`; classifier v2 then exposed an over-escaped regex and stale summary-key bug. Classifier v3 fixes both and runs parser self-tests before analyzing the 874 MiB candidate. No geometry cleanup is authorized until v3 output is reviewed.
+- Classifier v3 now completes successfully with syntax preflight and parser self-tests. Reliable top-level groups include `TECHO_ENTERO`, `CORTINAS`, sofa furniture, threaded rods, woven bamboo lamps, `DRILL_PRESS_CLAMP`, `MESA_ACSUTICA_2`, vegetation, `TECHNICS_SL-1200_MK_2` and `FOCOS`.
+- Some semantic/leaf buckets remain generic (`COMPONEN`, `COMPO`, `COMPON`); they are ignored for automatic optimization decisions. The dry-run web plan is based on high-confidence top-level groups and explicit family rules.
 - Optimization policy: preserve private SKP master; optimize only a derived web GLB using KEEP / INSTANCE / PROXY / REMOVE_WEB_DECOR decisions.
 - Promotion status: **NOT PROMOTED**.
 - Public model status: **PENDING_GLB**.
-- Next required check: run `tools/sound-club/ANALYZE_GLB_CANDIDATE.ps1` to identify largest meshes and spatial outliers.
+- Next required step: run `tools/sound-club/BUILD_WEB_OPTIMIZATION_PLAN.ps1` to generate a non-destructive KEEP / INSTANCE / PROXY / REMOVE plan from the successful analysis.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
