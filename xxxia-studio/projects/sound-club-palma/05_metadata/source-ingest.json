@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "projectId": "SOUND_CLUB_CDM",
+  "updatedAt": "2026-10-08",
+  "policy": {
+    "rawSources": "PRIVATE_REFERENCE_ONLY",
+    "publishDerivedOnly": true,
+    "note": "DWG/SKP originals are not committed. Public assets are derived previews or verified optimized exports."
+  },
+  "dwg": {
+    "format": "DWG",
+    "dwgVersion": "AC1032",
+    "sizeBytes": 1713143,
+    "sha256": "7adaa5d4540075b58d9134dbb1bce91caaea624891706d4429ca11ea3bb6cd06",
+    "savedBy": "AutoCAD 2027",
+    "savedAt": "2026-04-12T20:59:23",
+    "unitsStatus": "UNVERIFIED_FROM_BINARY",
+    "status": "INGESTED_PREVIEW_ONLY",
+    "derivedPreview": "/assets/visuals/sound-club-cad-blueprint.svg",
+    "measurementPolicy": "Do not derive real dimensions from the raster preview. Promote vector geometry first."
+  },
+  "skp": {
+    "format": "SKP",
+    "version": "24.0.594",
+    "unit": "Meter",
+    "sizeBytes": 51471031,
+    "sha256": "8729f3a98812c71933586a921c18dd661a8451f041bb86122ad333a0215fb21a",
+    "internalModelBytes": 104699785,
+    "zipEntries": 1120,
+    "materials": 499,
+    "componentThumbnails": 83,
+    "textures": 110,
+    "status": "INGESTED_PENDING_GLB",
+    "derivedPreview": "/assets/visuals/sound-club-skp-line-preview.svg"
+  },
+  "nextGate": [
+    "Export authoritative DWG geometry to DXF/SVG or equivalent vector representation",
+    "Align DWG and SKP origin / axes",
+    "Export same verified SKP geometry to optimized GLB",
+    "Create DESIGN and RENDER variants from the same geometry",
+    "Validate camera, scale, materials and public evidence classification"
+  ]
+}
