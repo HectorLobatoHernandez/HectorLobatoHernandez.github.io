@@ -5,8 +5,9 @@ import argparse
 import csv
 import json
 import math
+import re
 import struct
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 
@@ -193,6 +194,72 @@ def mesh_weight_stats(doc, mesh_index):
     }
 
 
+def classify_family(name: str):
+    upper = (name or "").upper()
+    rules = [
+        ("VEGETACION", "PROXY_OR_REMOVE", "Decorative vegetation is a high-poly web candidate; keep only if composition needs it."),
+        ("CESTA+FRUTAS", "REMOVE_WEB_DECOR", "Decorative tabletop prop; omit from technical web geometry."),
+        ("WEAVED_LAMP_BAMBOO", "INSTANCE_OR_PROXY_KEEP_LOCATIONS", "Design-significant pendant; keep location/count but instance or proxy the repeated geometry."),
+        ("DIFUSOR_2D", "INSTANCE_KEEP_ACOUSTIC_INTENT", "Acoustic element; preserve design intent and placement, but instance repeated geometry."),
+        ("DRILL_PRESS_CLAMP", "REVIEW_REMOVE_HARDWARE_DETAIL", "Imported hardware/detail family; review whether it belongs in the final venue model."),
+        ("TECHO", "KEEP_ARCHITECTURE", "Architectural ceiling geometry."),
+        ("MUROS", "KEEP_ARCHITECTURE", "Architectural wall geometry."),
+        ("COLUMNAS", "KEEP_ARCHITECTURE", "Architectural column geometry."),
+        ("RAIL_BLACK", "KEEP_SIMPLIFY_LIGHTING", "Lighting rail; preserve route/position and simplify repeated detail."),
+        ("RAIL_WHITE", "KEEP_SIMPLIFY_LIGHTING", "Lighting rail; preserve route/position and simplify repeated detail."),
+        ("DJ", "KEEP_TECHNICAL", "DJ/fabrication geometry should be preserved for the technical case."),
+    ]
+    for needle, action, reason in rules:
+        if needle in upper:
+            return needle, action, reason
+
+    clean = re.sub(r"^mesh_\d+_", "", name or "")
+    clean = clean.replace("ROOT__", "")
+    clean = re.sub(r"Grupo#\d+__", "", clean, flags=re.IGNORECASE)
+    clean = re.sub(r"_AB(?:_.*)?$", "", clean)
+    parts = [p for p in clean.split("__") if p]
+    family = parts[-1] if parts else (clean or "UNNAMED")
+    family = re.sub(r"#\d+$", "", family)
+    family = re.sub(r"Component_\d+_", "", family, flags=re.IGNORECASE)
+    family = family[:120]
+    return family.upper(), "REVIEW", "No automatic web action assigned."
+
+
+def family_summary(rows):
+    grouped = defaultdict(lambda: {
+        "instanceCount": 0,
+        "estimatedReferencedBufferBytes": 0,
+        "vertexCount": 0,
+        "triangleCount": 0,
+        "maxDiagM": 0.0,
+        "exampleNames": [],
+        "suggestedAction": "REVIEW",
+        "reason": "",
+    })
+
+    for row in rows:
+        family, action, reason = classify_family(row.get("nodeName", ""))
+        item = grouped[family]
+        item["family"] = family
+        item["instanceCount"] += 1
+        item["estimatedReferencedBufferBytes"] += int(row.get("referencedBufferBytes", 0) or 0)
+        item["vertexCount"] += int(row.get("vertexCount", 0) or 0)
+        item["triangleCount"] += int(row.get("triangleCount", 0) or 0)
+        item["maxDiagM"] = max(item["maxDiagM"], float(row.get("diag_m", 0.0) or 0.0))
+        item["suggestedAction"] = action
+        item["reason"] = reason
+        if len(item["exampleNames"]) < 3:
+            item["exampleNames"].append(row.get("nodeName", ""))
+
+    out = []
+    for item in grouped.values():
+        item["estimatedReferencedBufferMiB"] = item["estimatedReferencedBufferBytes"] / (1024.0 * 1024.0)
+        out.append(item)
+
+    out.sort(key=lambda x: x["estimatedReferencedBufferBytes"], reverse=True)
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Low-memory GLB structural analyzer.")
     ap.add_argument("glb", type=Path)
@@ -278,6 +345,7 @@ def main() -> int:
 
     rows_by_diagonal = sorted(rows, key=lambda row: row["diag_m"], reverse=True)
     rows_by_weight = sorted(rows, key=lambda row: row["referencedBufferBytes"], reverse=True)
+    families = family_summary(rows)
     top_rows = rows_by_diagonal[: args.top]
     top_weight_rows = rows_by_weight[: args.top]
 
@@ -314,6 +382,7 @@ def main() -> int:
             "triangleCount": sum(row["triangleCount"] for row in rows),
             "referencedBufferBytesAcrossInstances": sum(row["referencedBufferBytes"] for row in rows)
         },
+        "familySummaryByEstimatedReferencedBytes": families[:100],
         "topNodeInstancesByReferencedBytes": top_weight_rows[:50],
         "topNodeInstancesByDiagonal": top_rows[:50],
         "densestXZCells": [
@@ -326,10 +395,13 @@ def main() -> int:
             }
             for (x, z), count in cells.most_common(30)
         ],
+        "weightAccountingNote": (
+            "referencedBufferBytes is an optimization estimate per mesh instance and may double-count "
+            "bufferViews shared by several meshes. Use it for ranking, not as exact GLB storage size."
+        ),
         "recommendation": (
-            "Use node/mesh names, large extents and dense spatial cells to identify "
-            "venue geometry versus site context, terrain, geolocation and outliers. "
-            "No binary mesh buffers were loaded by this analysis."
+            "Use familySummaryByEstimatedReferencedBytes to decide KEEP / INSTANCE / PROXY / REMOVE "
+            "without modifying the private SketchUp master. No binary mesh buffers were loaded by this analysis."
         ),
     }
 
@@ -348,6 +420,15 @@ def main() -> int:
         "analysisMode": result["analysisMode"],
         "glTF": result["glTF"],
         "globalExtentM": result["globalExtentM"],
+        "topFamilies": [
+            {
+                "family": item["family"],
+                "instanceCount": item["instanceCount"],
+                "estimatedReferencedBufferMiB": item["estimatedReferencedBufferMiB"],
+                "suggestedAction": item["suggestedAction"],
+            }
+            for item in result["familySummaryByEstimatedReferencedBytes"][:15]
+        ],
         "densestXZCells": result["densestXZCells"][:10],
         "json": str(args.json_out),
         "csv": str(args.csv_out),
