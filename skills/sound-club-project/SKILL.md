@@ -35,7 +35,7 @@ Original source photos/videos and raw CAD/SKP are private references. Do not com
 - DWG: AC1032, ingested as private master; public background uses only a derived preview. DWG units are not asserted from the binary preview.
 - SKP: SketchUp 24.0.594, unit = Meter, ingested as private master.
 - SKP archive inspection: 499 materials, 83 component thumbnails, 110 texture assets; browser geometry remains pending verified GLB export.
-- DESIGN and RENDER web variants must derive from the same verified geometry and origin.
+- Web runtime uses one authoritative verified GLB. DESIGN and RENDER are material/lighting treatments of that same mesh.
 
 ## Confirmed / documented project facts
 
@@ -112,6 +112,9 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 - Model manifest: `xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json`
 - Derived CAD background: `assets/visuals/sound-club-cad-blueprint.svg`
 - Derived SKP preview: `assets/visuals/sound-club-skp-line-preview.svg`
+- Local converter: `tools/sound-club/CONVERT_SKP_TO_GLB.ps1`
+- Candidate GLB: `assets/models/sound-club/_candidate/venue-master.glb` (gitignored)
+- Public verified GLB: `assets/models/sound-club/venue-master.glb`
 - Media registry: `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - Story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
 - XXXIA archive: `xxxia-studio/projects/sound-club-palma/`
@@ -128,4 +131,4 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 8. Do not start paid XXXIA/Scroll World motion rendering without explicit user approval.
 9. Run the Sound Club and restaurant QA checklist after every media/story promotion.
 10. Never present viewport cursor coordinates as real CAD dimensions before vector calibration.
-11. Preserve one camera/origin across DESIGN and RENDER model variants.
+11. DESIGN and RENDER must use one authoritative GLB and one camera; only runtime material/lighting treatment changes.
