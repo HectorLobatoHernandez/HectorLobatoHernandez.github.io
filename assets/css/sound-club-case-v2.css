@@ -172,3 +172,25 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
   .ms-discipline{min-height:220px}
   .ms-phase h3,.ms-discipline b{margin-top:46px}
 }
+
+
+/* v3.1 · CAD / render before-after */
+.ms-render-compare{position:relative}
+.ms-render-toolbar{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:12px 0;margin-top:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ms-render-stage{position:relative;min-height:650px;margin-top:18px;border:1px solid var(--line);overflow:hidden;background:#07100e}
+.ms-render-stage:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent 58%,rgba(5,10,9,.72));}
+.ms-render-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ms-render-stage[data-mode="before"] img{object-fit:contain;padding:28px;filter:saturate(.5) contrast(1.08)}
+.ms-render-stage[data-mode="after"] img{filter:saturate(.88) contrast(1.02) brightness(.9)}
+.ms-render-stage[data-mode="after"]:after{content:"ATMOSPHERE STUDY";position:absolute;right:18px;top:18px;z-index:3;padding:8px 10px;border:1px solid rgba(214,164,103,.38);background:rgba(7,16,14,.72);color:var(--gold2);font:700 7px var(--mono);letter-spacing:.12em;backdrop-filter:blur(8px)}
+.ms-render-stamp{position:absolute;z-index:3;left:20px;right:20px;bottom:18px;display:flex;justify-content:space-between;gap:18px;align-items:flex-end}
+.ms-render-stamp b{color:var(--gold);font:700 9px var(--mono);letter-spacing:.13em}
+.ms-render-stamp span{max-width:52ch;text-align:right;color:#a5afa8;font-size:10px}
+.ms-render-empty{position:absolute;inset:0;display:grid;place-items:center;color:#7f8c84;font:700 9px var(--mono);letter-spacing:.12em}
+.ms-render-foot{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.ms-render-foot article{min-height:170px;padding:20px;border:1px solid var(--line);background:rgba(255,255,255,.012)}
+.ms-render-foot small{display:block;color:var(--gold);font:700 8px var(--mono);letter-spacing:.12em}
+.ms-render-foot b{display:block;margin:24px 0 10px;font:500 22px/1.05 var(--display)}
+.ms-render-foot p{margin:0;color:#7f8c84;font-size:11px;line-height:1.65}
+@media(max-width:1050px){.ms-render-toolbar{align-items:flex-start;flex-direction:column}.ms-render-stage{min-height:520px}}
+@media(max-width:680px){.ms-render-stage{min-height:400px}.ms-render-foot{grid-template-columns:1fr}.ms-render-stamp{flex-direction:column;align-items:flex-start}.ms-render-stamp span{text-align:left}}
