@@ -54,7 +54,9 @@ The new registered master has now been converted successfully using the memory-s
 - Public model status: **PENDING_GLB**.
 - Optimization plan generated locally: `venue-master.optimization-plan.json` + CSV.
 - Safe streaming trim dry-run completed: 169 nodes removable, estimated BIN reduction 8.22%, leaving ~688.5 MB BIN and 191,817 meshes. This is far from the web target, so `-Build` remains blocked.
-- Next required step: run `tools/sound-club/ANALYZE_WEB_SCENARIOS.ps1` to measure exact exclusive/shared buffer ownership by top-level group and compare safe-delete vs proxy/instance/simplification scenarios before any geometry mutation.
+- Exact buffer-ownership scenarios completed: safe delete = 8.22% BIN reduction; proxy/instance candidates = 44.77%; proxy/instance + simplifiable architecture/acoustics = 90.79%, leaving ~65.88 MiB BIN before replacement payload.
+- The source file still has ~118.5 MiB of JSON/header overhead because of 191,986 nodes/meshes, so node/mesh fragmentation must also be reduced.
+- Next required step: run `tools/sound-club/ANALYZE_EXACT_MESH_DUPLICATES.ps1` to quantify lossless mesh reuse before proxy/simplification work.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
