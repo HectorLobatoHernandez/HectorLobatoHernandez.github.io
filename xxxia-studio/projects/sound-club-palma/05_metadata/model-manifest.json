@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "projectId": "SOUND_CLUB_CDM",
   "updatedAt": "2026-10-08",
   "browserFormat": "glb/gltf",
@@ -10,7 +10,7 @@
       "id": "MS-MODEL-VENUE",
       "title": "Venue / Master Architecture",
       "role": "ARCHITECTURE_MASTER",
-      "status": "INGESTED_PENDING_GLB",
+      "status": "PENDING_GLB",
       "src": null,
       "posterMediaId": "SC-BOARD-01",
       "sourceIntent": "private SketchUp 24.0.594 master + architectural DWG alignment",
@@ -21,13 +21,13 @@
         "design": {
           "status": "PENDING_GLB",
           "src": null,
-          "treatment": "technical / neutral materials / line-led",
+          "treatment": "runtime neutral technical material + edge overlay",
           "evidence": "VERIFIED_GEOMETRY_REQUIRED"
         },
         "render": {
           "status": "PENDING_GLB",
           "src": null,
-          "treatment": "finished materials + hospitality lighting; same geometry/camera",
+          "treatment": "runtime original GLB materials/textures + warm presentation lighting",
           "evidence": "VERIFIED_GEOMETRY_REQUIRED"
         }
       },
@@ -87,18 +87,22 @@
   ],
   "promotionGate": [
     "SKP ingested",
-    "DWG/SKP units and origin aligned",
-    "authoritative geometry promoted",
-    "model simplified/optimized",
-    "GLB/glTF exported",
-    "visual QA and evidence classification passed"
+    "candidate GLB exported locally with OpenSKP",
+    "candidate GLB magic/hash/geometry sanity checks passed",
+    "DWG/SKP origin alignment visually checked",
+    "human visual QA passed",
+    "explicit -Promote flag used",
+    "public GLB committed",
+    "browser DESIGN/RENDER QA passed"
   ],
   "ingestMetadata": "/xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json",
   "viewer": {
     "engine": "three.js",
-    "cameraPolicy": "SHARED_BETWEEN_DESIGN_AND_RENDER",
+    "cameraPolicy": "ONE_CAMERA_ONE_GEOMETRY",
     "rawSourcePolicy": "PRIVATE_REFERENCE_ONLY",
-    "designRenderContract": "Both public variants must derive from the same verified geometry and origin.",
-    "hotspotsStatus": "PENDING_VERIFIED_MODEL_COORDINATES"
+    "designRenderContract": "DESIGN and RENDER are runtime treatments of the same verified GLB; geometry and transforms cannot diverge.",
+    "hotspotsStatus": "PENDING_VERIFIED_MODEL_COORDINATES",
+    "geometryStrategy": "SINGLE_VERIFIED_GLB_RUNTIME_TREATMENTS",
+    "conversionTool": "tools/sound-club/CONVERT_SKP_TO_GLB.ps1"
   }
 }
