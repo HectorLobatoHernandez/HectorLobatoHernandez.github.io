@@ -53,7 +53,8 @@ The new registered master has now been converted successfully using the memory-s
 - Promotion status: **NOT PROMOTED**.
 - Public model status: **PENDING_GLB**.
 - Optimization plan generated locally: `venue-master.optimization-plan.json` + CSV.
-- Next required step: run `tools/sound-club/PREPARE_WEB_DERIVATIVE.ps1` in default dry-run mode. It estimates safe binary reduction by dropping only high-confidence decor/minor-hardware groups and does not write or mutate a GLB.
+- Safe streaming trim dry-run completed: 169 nodes removable, estimated BIN reduction 8.22%, leaving ~688.5 MB BIN and 191,817 meshes. This is far from the web target, so `-Build` remains blocked.
+- Next required step: run `tools/sound-club/ANALYZE_WEB_SCENARIOS.ps1` to measure exact exclusive/shared buffer ownership by top-level group and compare safe-delete vs proxy/instance/simplification scenarios before any geometry mutation.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
