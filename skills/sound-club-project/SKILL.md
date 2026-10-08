@@ -2,7 +2,7 @@
 
 ## Mission
 
-Project-specific operating skill for **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca** and its technical / visual archive.
+Project-specific operating skill for **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca** as a multidisciplinary technical deconstruction dossier for architects, engineers, designers and specialist integrators.
 
 Use this skill whenever an agent edits, generates, documents, visualises or publishes material for this project.
 
@@ -18,16 +18,20 @@ Use this skill whenever an agent edits, generates, documents, visualises or publ
 ## Source-of-truth pipeline
 
 ```
-CAD/SKP master
-  -> verified geometry
-  -> drawings
-  -> web model
-  -> exploded components
-  -> 2300 K portfolio visualization
-  -> XXXIA sequences
-  -> QA
-  -> GitHub public release
+existing space / survey
+  -> CAD master
+  -> SKP spatial model
+  -> zoning
+  -> acoustic + electroacoustic strategy
+  -> lighting + control architecture
+  -> fabrication / structural integration
+  -> programming / commissioning
+  -> verified geometry / as-built
+  -> material + lighting presentation
+  -> public technical dossier
 ```
+
+The public narrative must follow the same development logic. Equipment lists are evidence inside the process, not the opening story.
 
 Original source photos/videos and raw CAD/SKP are private references. Do not commit, link or publish them.
 
@@ -36,6 +40,8 @@ Original source photos/videos and raw CAD/SKP are private references. Do not com
 - SKP: SketchUp 24.0.594, unit = Meter, ingested as private master.
 - SKP archive inspection: 499 materials, 83 component thumbnails, 110 texture assets; browser geometry remains pending verified GLB export.
 - Web runtime uses one authoritative verified GLB. DESIGN and RENDER are material/lighting treatments of that same mesh.
+- Local inspection may use `?candidate=1` only on localhost; it must be visibly marked NOT VERIFIED.
+- A GLB with implausible venue bounds must not be promoted even when conversion succeeds.
 
 ## Confirmed / documented project facts
 
@@ -132,3 +138,6 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 9. Run the Sound Club and restaurant QA checklist after every media/story promotion.
 10. Never present viewport cursor coordinates as real CAD dimensions before vector calibration.
 11. DESIGN and RENDER must use one authoritative GLB and one camera; only runtime material/lighting treatment changes.
+12. Public order is CAD → 3D → phases → systems → discipline details → build/final → documentation.
+13. Use the page to demonstrate coordination between architecture, audio, lighting, control, acoustics and fabrication.
+14. Do not promote a model whose bounding box includes unreviewed terrain, geolocation or remote geometry.
