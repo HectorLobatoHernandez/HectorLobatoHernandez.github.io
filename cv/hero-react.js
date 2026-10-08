@@ -153,7 +153,7 @@
       const rr=root.getBoundingClientRect(),cr=el.getBoundingClientRect();
       setFrame({
         x:cr.left-rr.left-5,y:cr.top-rr.top-4,w:cr.width+10,h:cr.height+8,
-        char:el.dataset.char==='\u00a0'?'SPACE':el.dataset.char,
+        char:el.dataset.char||'',
         index:index+1
       });
     };
@@ -233,11 +233,11 @@
         h('span',{className:'rb-tech-line',key:lineIndex},...[...line].map((char,charIndex)=>{
           globalIndex++;
           const index=globalIndex;
-          const value=char===' '?'\u00a0':char;
+          const value=char;
           return h('span',{
             key:lineIndex+'-'+charIndex,
-            className:'rb-tech-char'+(active===index?' is-active':''),
-            'data-char':value,
+            className:'rb-tech-char'+(char===' '?' is-space':'')+(active===index?' is-active':''),
+            'data-char':char===' '?'SPACE':value,
             onPointerDown:e=>down(e,index)
           },
             value,
