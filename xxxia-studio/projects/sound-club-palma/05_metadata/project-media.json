@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "project": "mar-salada-cdm",
-  "publicTitle": "MAR SALADA — CLUB DEL MAR PALMA",
+  "project": "sound-club-cdm",
+  "publicTitle": "SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca",
   "updatedAt": "2026-10-07",
   "items": [
     {
@@ -124,7 +124,7 @@
     }
   ],
   "privateSourcePolicy": "Original user-supplied photos/videos are PRIVATE_REFERENCE_ONLY and must not be published, committed, linked or promoted. Public storytelling uses approved generated outputs and diagrams only.",
-  "projectId": "MAR_SALADA_CDM",
+  "projectId": "SOUND_CLUB_CDM",
   "legacyArchiveSlug": "sound-club-palma",
-  "canonicalPage": "/projects/mar-salada.html"
+  "canonicalPage": "/projects/sound-club-palma.html"
 }
