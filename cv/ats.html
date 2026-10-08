@@ -3,111 +3,278 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CV ATS de Héctor Lobato — Systems Integration, Automation, IT/OT, AV y AI.">
-<title>Héctor Lobato — CV ATS</title>
+<meta name="description" content="CV profesional de Héctor Lobato — Systems Integration, Automation, IT/OT, AV, Acoustics y Applied AI.">
+<title>Héctor Lobato — CV Profesional / PDF</title>
 <style>
-:root{--ink:#111;--muted:#555;--line:#cfcfcf;--paper:#fff}
-*{box-sizing:border-box}body{margin:0;background:#f2f2f2;color:var(--ink);font:15px/1.45 Arial,Helvetica,sans-serif}
-.cv{width:min(900px,94vw);margin:32px auto;background:var(--paper);padding:42px 48px;box-shadow:0 8px 30px #0001}
-header{border-bottom:2px solid #111;padding-bottom:16px;margin-bottom:22px}h1{font-size:34px;line-height:1;margin:0 0 8px}h2{font-size:15px;margin:24px 0 8px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--line);padding-bottom:5px}h3{font-size:15px;margin:0}p{margin:5px 0}.subtitle{font-weight:700}.meta,.small{color:var(--muted);font-size:13px}.contact{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px}.contact a{color:#111}.skills{display:grid;grid-template-columns:1fr 1fr;gap:5px 24px}.item{margin:0 0 16px}.item-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline}.item-head .date{white-space:nowrap;color:var(--muted);font-size:13px}.item ul{margin:7px 0 0 18px;padding:0}.item li{margin:4px 0}.cert{display:grid;grid-template-columns:110px 1fr;gap:8px 18px;padding:5px 0}.note{margin-top:24px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
-.toolbar{width:min(900px,94vw);margin:18px auto 0;display:flex;gap:8px}.toolbar a,.toolbar button{font:600 12px Arial;padding:9px 12px;border:1px solid #999;background:#fff;color:#111;text-decoration:none;cursor:pointer}
-@media(max-width:680px){.cv{padding:28px 24px}.skills{grid-template-columns:1fr}.item-head{display:block}.cert{grid-template-columns:1fr}.toolbar{flex-wrap:wrap}}
-@media print{@page{size:A4;margin:12mm}.toolbar{display:none}.cv{width:auto;margin:0;padding:0;box-shadow:none}.item{break-inside:avoid}body{background:white;font-size:10.5pt}h1{font-size:24pt}h2{font-size:11pt;margin-top:15px}.note{font-size:8.5pt}}
+:root{--ink:#101311;--muted:#5b625d;--line:#c9cec9;--paper:#fff;--accent:#35443a;--soft:#f2f4f2;--tag:#e9eeea}
+*{box-sizing:border-box}
+html{background:#eceeec}
+body{margin:0;background:#eceeec;color:var(--ink);font:14.4px/1.43 Arial,Helvetica,sans-serif}
+a{color:inherit}
+.toolbar{width:min(980px,96vw);margin:16px auto 0;display:flex;gap:8px;flex-wrap:wrap}
+.toolbar a,.toolbar button{font:700 11px Arial;padding:9px 12px;border:1px solid #8e9891;background:#fff;color:#111;text-decoration:none;cursor:pointer}
+.toolbar .primary{background:#111;color:#fff;border-color:#111}
+.cv{width:min(980px,96vw);margin:10px auto 34px;background:var(--paper);padding:42px 48px 34px;box-shadow:0 10px 32px #00000012}
+header{border-bottom:2px solid #111;padding-bottom:15px;margin-bottom:20px}
+h1{font-size:35px;line-height:1;margin:0 0 7px;letter-spacing:-.025em}
+.subtitle{font-weight:700;font-size:15px}
+.meta{color:var(--muted);font-size:12.5px;margin-top:4px}
+.contact{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:9px;font-size:12px}
+.contact a{text-decoration:underline;text-underline-offset:2px}
+h2{font-size:13.5px;margin:22px 0 9px;text-transform:uppercase;letter-spacing:.09em;border-bottom:1px solid var(--line);padding-bottom:5px}
+h3{font-size:14.2px;line-height:1.25;margin:0}
+p{margin:5px 0}
+.lead{font-size:14.8px;line-height:1.48}
+.small{color:var(--muted);font-size:12.2px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0 1px}
+.tag{background:var(--tag);border:1px solid #d7ded9;padding:4px 7px;font-size:11px}
+.skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 24px}
+.skills p{margin:0}
+.item{margin:0 0 16px}
+.item-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline}
+.item-head .date{white-space:nowrap;color:var(--muted);font-size:12.2px}
+.role{color:#374038;font-size:12.3px;margin-top:2px}
+.item ul{margin:7px 0 0 18px;padding:0}
+.item li{margin:3px 0}
+.project-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px}
+.project{break-inside:avoid;border-top:2px solid #111;padding-top:7px}
+.project h3{font-size:13.6px}
+.project p{font-size:12.7px;margin:3px 0}
+.timeline{display:grid;grid-template-columns:145px 1fr;gap:8px 18px}
+.timeline .when{font-weight:700}
+.timeline .detail{padding-bottom:7px}
+.status{display:inline-block;margin-left:6px;padding:2px 6px;border:1px solid #aab3ac;background:var(--soft);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 22px}
+.cert{display:grid;grid-template-columns:88px 1fr;gap:7px 12px;padding:4px 0;border-bottom:1px dotted #d4d7d4}
+.cert strong{font-size:11.8px}
+.cert span{font-size:12.3px}
+.stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 24px}
+.stack p{margin:0;font-size:12.6px}
+.languages{display:flex;gap:18px;flex-wrap:wrap}
+.note{margin-top:22px;padding-top:9px;border-top:1px solid var(--line);font-size:10.5px;color:var(--muted)}
+.page-label{display:none}
+@media(max-width:720px){
+  .cv{padding:28px 22px}.skills,.project-grid,.cert-grid,.stack{grid-template-columns:1fr}
+  .item-head{display:block}.timeline{grid-template-columns:1fr;gap:1px}.toolbar{width:min(96vw,980px)}
+}
+@media print{
+  @page{size:A4;margin:10mm}
+  html,body{background:#fff}
+  body{font-size:9.3pt;line-height:1.32}
+  .toolbar{display:none}
+  .cv{width:auto;margin:0;padding:0;box-shadow:none}
+  header{margin-bottom:12px;padding-bottom:9px}
+  h1{font-size:22pt}
+  .subtitle{font-size:10.5pt}.meta{font-size:8.5pt}.contact{font-size:8.2pt}
+  h2{font-size:9.2pt;margin:12px 0 5px;padding-bottom:3px}
+  h3{font-size:9.2pt}
+  .lead{font-size:9.4pt}
+  .small,.role,.item-head .date{font-size:8pt}
+  .item{margin-bottom:9px;break-inside:avoid}
+  .item ul{margin-top:4px}.item li{margin:1.6px 0}
+  .tag{font-size:7.5pt;padding:2px 4px}
+  .project-grid{gap:6px 14px}.project{padding-top:4px;break-inside:avoid}
+  .project p,.cert span,.stack p{font-size:8.2pt}
+  .cert strong{font-size:7.8pt}
+  .timeline{grid-template-columns:105px 1fr;gap:5px 10px}
+  .timeline .detail{padding-bottom:4px}
+  .cert{grid-template-columns:68px 1fr;padding:2px 0}
+  .note{font-size:7.3pt;margin-top:10px}
+  section{break-inside:auto}
+  .page-break-before{break-before:page}
+}
 </style>
 </head>
 <body>
-<div class="toolbar"><a href="present.html">Presentar 5 min</a><a href="dossier.html">Dossier web</a><a href="dossier.html">Dossier</a><button onclick="window.print()">Imprimir / Guardar PDF</button></div>
+<div class="toolbar">
+  <a href="present.html">Presentar 5 min</a>
+  <a href="dossier.html">Dossier interactivo</a>
+  <button class="primary" onclick="window.print()">Imprimir / Guardar PDF</button>
+</div>
+
 <main class="cv">
 <header>
-<h1>Héctor Lobato</h1>
-<div class="subtitle">Systems Integration & Automation · IT/OT · AV · Applied AI</div>
-<div class="meta">Zamora, España · Perfil técnico multidisciplinar · arquitectura funcional → integración → commissioning → operación</div>
-<div class="contact"><a href="mailto:lobatohernandezhector@gmail.com">lobatohernandezhector@gmail.com</a><a href="https://github.com/HectorLobatoHernandez">github.com/HectorLobatoHernandez</a><a href="https://hectorlobatohernandez.github.io/">hectorlobatohernandez.github.io</a></div>
+  <h1>Héctor Lobato</h1>
+  <div class="subtitle">Systems Integration · Automation · Acoustics · AV · IT/OT · Applied AI</div>
+  <div class="meta">Zamora, España · Director técnico / Project Engineer · arquitectura funcional → integración → commissioning → operación</div>
+  <div class="contact">
+    <a href="mailto:lobatohernandezhector@gmail.com">lobatohernandezhector@gmail.com</a>
+    <a href="https://github.com/HectorLobatoHernandez">github.com/HectorLobatoHernandez</a>
+    <a href="https://hectorlobatohernandez.github.io/">hectorlobatohernandez.github.io</a>
+  </div>
 </header>
 
 <section>
 <h2>Perfil profesional</h2>
-<p>Perfil técnico orientado a diseñar, integrar, poner en marcha y documentar sistemas multidisciplinares que combinan automatización, audiovisual, redes IT/OT, ingeniería de proyecto y software aplicado. Experiencia pública documentada en proyectos de integración real, plataformas de ingeniería y demostradores operativos. Enfoque práctico: survey, arquitectura, integración, commissioning, troubleshooting, documentación y mejora continua.</p>
+<p class="lead">Ingeniero de audio y especialista en integración de sistemas con más de 8 años de experiencia en dirección, diseño, ejecución y puesta en marcha de proyectos multidisciplinares. Mi trabajo conecta acústica y electroacústica, automatización KNX/DALI/Crestron, sistemas audiovisuales, redes IT/OT, telecomunicaciones, CAD, documentación técnica, presupuestos y software aplicado. Experiencia en entornos high-end residential, hospitality, music & entertainment y proyectos de ingeniería con múltiples industriales y proveedores. En paralelo desarrollo herramientas locales de automatización e IA para proyectos, operaciones, documentación, CAD y apoyo a decisión.</p>
+<div class="tags">
+  <span class="tag">Technical Direction</span><span class="tag">Systems Engineering</span><span class="tag">Project Delivery</span>
+  <span class="tag">Commissioning</span><span class="tag">Troubleshooting</span><span class="tag">BOM / Cost Control</span>
+  <span class="tag">Client / Supplier Coordination</span><span class="tag">Applied AI</span>
+</div>
 </section>
 
 <section>
 <h2>Competencias principales</h2>
 <div class="skills">
-<p><strong>Automation & Control:</strong> KNX, ETS6, DALI, Gira, Crestron, escenas, estados e interoperabilidad.</p>
-<p><strong>Audio & AV:</strong> DSP, matrices, amplificación, routing, zonas, limitación y conceptos Dante.</p>
-<p><strong>IT/OT & Networks:</strong> TCP/IP, VLAN, UniFi, VPN, PoE, cableado estructurado y diagnóstico.</p>
-<p><strong>Engineering Delivery:</strong> AutoCAD, BOM, presupuestos, proveedores, QA, documentación y change control.</p>
-<p><strong>Software & Applied AI:</strong> Python, JavaScript, APIs, Git/GitHub, GIS, agentes IA y automatización.</p>
-<p><strong>Technical Operations:</strong> troubleshooting, incidencias, soporte, observabilidad, procesos y mejora continua.</p>
+  <p><strong>Acústica & electroacústica:</strong> aislamiento, acondicionamiento, medición, sistemas de sonido profesional, DSP, matrices, amplificación, limitadores, zoning y commissioning.</p>
+  <p><strong>Automation & Control:</strong> KNX / ETS6, DALI, Gira X1, Crestron, lógica de control, escenas, estados, interfaces, integración e interoperabilidad.</p>
+  <p><strong>AV & signal systems:</strong> routing, matrices, DSP, sistemas multizona, audio de red, vídeo, control de fuentes, racks y documentación de señal.</p>
+  <p><strong>IT/OT & Networks:</strong> TCP/IP, VLAN, Wi-Fi, UniFi, VPN, PoE, cableado estructurado, servicios locales, observabilidad y ciberseguridad básica IT/OT.</p>
+  <p><strong>Engineering & CAD:</strong> AutoCAD, Revit, SolidWorks, levantamientos, planos, mediciones, BOM/BOQ, presupuestos, comparativas, QA y change control.</p>
+  <p><strong>Software & Applied AI:</strong> Python, JavaScript, Java, APIs, Git/GitHub, Three.js, agentes IA, OpenClaw, OmniRoute, automatización de procesos y herramientas local-first.</p>
+  <p><strong>Technical Operations:</strong> planificación, coordinación de recursos, proveedores, compras, control de costes, incidencias, commissioning, troubleshooting y mejora continua.</p>
+  <p><strong>Dirección de proyecto:</strong> definición de alcance, arquitectura funcional, coordinación con propiedad/ingeniería/industriales, entregables, cierre técnico y documentación.</p>
 </div>
 </section>
 
 <section>
-<h2>Experiencia técnica seleccionada</h2>
+<h2>Experiencia profesional</h2>
+
 <article class="item">
-<div class="item-head"><h3>Club Mar Salada · Club del Mar — Integración multidisciplinar</h3><span class="date">2026</span></div>
-<div class="small">Diseño técnico · integración · coordinación · commissioning</div>
+<div class="item-head"><h3>Technical Director / Project Engineer · Studio Ingenia</h3><span class="date">2021 – Actualidad</span></div>
+<div class="role">Ibiza / Baleares · proyectos nacionales · ingeniería e integración tecnológica</div>
 <ul>
-<li>Integración de audio profesional, DSP, control KNX/DALI, iluminación y red dentro de una arquitectura operativa común.</li>
-<li>Diseño de routing, zonas, escenas, grupos, interfaces de usuario, rack y documentación técnica.</li>
-<li>Coordinación entre electricidad, cableado, herrería, iluminación, acústica y puesta en marcha.</li>
-<li>Diagnóstico y ajustes de operación orientados a mantenibilidad y uso diario.</li>
+<li>Dirección end-to-end de proyectos técnicos: requisitos, arquitectura, planificación, mediciones, BOM, compras, coordinación de industriales, seguimiento de obra, pruebas, commissioning y cierre documental.</li>
+<li>Integración de automatización y control, redes/IT, iluminación, audio profesional, DSP, AV, telecomunicaciones y sistemas de seguridad.</li>
+<li>Gestión diaria de incidencias, cambios de alcance, materiales, proveedores, costes, plazos y dependencias; interlocución con propiedad, ingeniería, instaladores y fabricantes.</li>
+<li>Elaboración de presupuestos, memorias, comparativas técnicas, planos CAD, documentación de montaje, procesos de QA y procedimientos de troubleshooting.</li>
+<li>Trabajo en residencias privadas high-end, estates multi-edificio, clubs musicales, hospitality, restauración y proyectos especiales con documentación/confidencialidad variable.</li>
+<li>Desarrollo actual de automatización, IA y agentes para acelerar documentación, presupuestos, CAD, project management, observabilidad y soporte a decisión.</li>
 </ul>
 </article>
 
 <article class="item">
-<div class="item-head"><h3>GAZA Operations Intelligence — Product / Industrial Operations Demonstrator</h3><span class="date">2026</span></div>
-<div class="small">Arquitectura funcional · UX operativa · modelo de información</div>
+<div class="item-head"><h3>Director de Departamento · Estudio Áureo</h3><span class="date">2018 – 2021</span></div>
+<div class="role">Ibiza · domótica · IT · electricidad · AV · telecomunicaciones · videoseguridad</div>
 <ul>
-<li>Diseño de un Mission Control público para operaciones, logística, GIS, entorno, clima y arquitectura IT/OT.</li>
-<li>Desarrollo de superficies Plant 3D, Territory, GIS y Systems con separación explícita entre datos públicos, inferidos y simulados.</li>
-<li>Definición de gateway read-only y contratos de integración para futuras fuentes autorizadas.</li>
-<li>Uso de GitHub, JavaScript, Three.js, Open-Meteo, AEMET bridge y QA automatizado en navegador.</li>
+<li>Dirección y elaboración de proyectos de domótica, IT, electricidad, audiovisuales, telecomunicaciones/redes y videoseguridad.</li>
+<li>Diseño y programación KNX; cuadros de control, SAI y regulación; matrices/procesadores AV; cableado estructurado, VPN/DNS y analítica de vídeo.</li>
+<li>Presupuestos, mediciones, cálculos, documentación técnica y planos mediante AutoCAD, Revit y SolidWorks.</li>
+<li>Soporte comercial y técnico, coordinación con obra/cliente y desarrollo del equipo de departamento.</li>
 </ul>
 </article>
 
 <article class="item">
-<div class="item-head"><h3>RHB STUDIO — Engineering Platform</h3><span class="date">2026 · desarrollo activo</span></div>
-<div class="small">Arquitectura funcional · producto interno · automatización</div>
+<div class="item-head"><h3>I+D · Engineering & AI Operations Platforms</h3><span class="date">2026 · desarrollo activo</span></div>
+<div class="role">RHB STUDIO · GAZA Operations Intelligence · herramientas propias</div>
 <ul>
-<li>Diseño de una plataforma local-first para coordinar proyectos, CAD, BOM, presupuestos, documentación y agentes IA.</li>
-<li>Pipeline Survey → CAD → diseño → BOM → aprobación → fabricación → montaje → QA → entrega.</li>
-<li>Integración de herramientas locales y agentes mediante OmniRoute, OpenClaw y NEXO.</li>
-<li>Control de versiones, estado de proyectos, documentación técnica y observabilidad de servicios.</li>
-</ul>
-</article>
-
-<article class="item">
-<div class="item-head"><h3>Otros proyectos documentados</h3><span class="date">Archivo profesional</span></div>
-<ul>
-<li><strong>Casa NOAH:</strong> integración de sistemas y documentación de proyecto residencial de alto nivel.</li>
-<li><strong>Las Dalias / Akasha:</strong> dirección técnica e integración de sistemas; archivo público en reconstrucción documental.</li>
-<li><strong>Residencia tecnológica privada:</strong> proyecto confidencial con identidad y documentación sensible omitidas.</li>
-<li><strong>XXXIA Studio:</strong> dirección creativa, identidad, sistemas de presentación y experimentación con herramientas generativas.</li>
+<li>Diseño de una arquitectura local-first para proyectos, CAD, BOM, presupuestos, documentación, QA, agentes especializados y trazabilidad.</li>
+<li>Integración de OmniRoute, OpenClaw, scripts de health/boot, routing de modelos y agentes por disciplina: core, PM, CAD, research y business.</li>
+<li>Desarrollo de demostradores de operaciones con Digital Twin, GIS, event stream, KPIs, clima, simulación de incidencias y separación explícita entre datos públicos, inferidos y simulados.</li>
+<li>Uso de JavaScript, Three.js, APIs, GitHub Actions y QA automatizado en navegador.</li>
 </ul>
 </article>
 </section>
 
-<section>
-<h2>Formación</h2>
-<div class="cert"><strong>2013–2016</strong><span>Bachelor's Degree — Audio Engineering & Audio Production · Middlesex University, London</span></div>
+<section class="page-break-before">
+<h2>Proyectos técnicos seleccionados</h2>
+<div class="project-grid">
+<article class="project">
+<h3>Sound Club, Palma · Puerto Deportivo de Palma · 2026</h3>
+<p><strong>Rol:</strong> diseño técnico, integración, coordinación y commissioning.</p>
+<p>Arquitectura multidisciplinar de audio profesional, DSP, iluminación, automatización y control. Ecler MIMO88, amplificación Lynx DSP, integración KNX/DALI con Gira X1, zonas/presets, mobiliario técnico, desacoplos, documentación, coordinación de herrería/electricidad/acústica y puesta en marcha.</p>
+</article>
+<article class="project">
+<h3>Las Dalias / Club Akasha · Ibiza</h3>
+<p><strong>Rol:</strong> dirección técnica e integración.</p>
+<p>Proyecto music & entertainment de referencia con integración de sistemas AV/electroacústicos, coordinación técnica, puesta en marcha y troubleshooting en entorno profesional.</p>
+</article>
+<article class="project">
+<h3>Casa NOAH · Ibiza</h3>
+<p><strong>Rol:</strong> integración tecnológica multidisciplinar.</p>
+<p>Proyecto residencial high-end con coordinación técnica, integración de sistemas, documentación y puesta en marcha.</p>
+</article>
+<article class="project">
+<h3>Residencia tecnológica privada · cliente internacional</h3>
+<p><strong>Rol:</strong> integración multi-sistema.</p>
+<p>Residencia de alta complejidad técnica con identidad del cliente y detalles sensibles omitidos por confidencialidad.</p>
+</article>
+<article class="project">
+<h3>Restauración · Formentera</h3>
+<p><strong>Rol:</strong> diseño de audio y documentación técnica.</p>
+<p>Sistema multizona con rack central, matriz Ecler HUB, amplificación Lynx, routing, memoria técnica y documentación asociada a licencia/limitación.</p>
+</article>
+<article class="project">
+<h3>GAZA Operations Intelligence · 2026</h3>
+<p><strong>Rol:</strong> arquitectura funcional, UX operativa y modelo de información.</p>
+<p>Mission Control para operaciones, logística, GIS, clima, entorno e IT/OT; Plant 3D, Territory, Systems, gateway read-only, procedencia de datos y QA automatizado.</p>
+</article>
+<article class="project">
+<h3>RHB STUDIO · 2026</h3>
+<p><strong>Rol:</strong> arquitectura de producto y automatización.</p>
+<p>Plataforma local-first para Survey → CAD → Design → BOM → Approval → Fabrication → Install → Commissioning → Handover, con agentes, documentación y control de versiones.</p>
+</article>
+<article class="project">
+<h3>XXXIA Studio · 2026</h3>
+<p><strong>Rol:</strong> dirección creativa y sistemas de presentación.</p>
+<p>Experimentación con flujos generativos, visualización de proyectos, narrativa técnica, contenido y automatización para documentación/presentación.</p>
+</article>
+</div>
 </section>
 
 <section>
-<h2>Certificaciones y formación técnica</h2>
-<div class="cert"><strong>2018</strong><span>KNX Advanced · Grupo Conitec Ingeniería y Domótica</span></div>
-<div class="cert"><strong>2019</strong><span>Crestron CTI-P101 · Foundations of Crestron Programming · Crestron Technical Institute</span></div>
-<div class="cert"><strong>2019</strong><span>Crestron NVX · Design and Application · Crestron Technical Institute</span></div>
-<div class="cert"><strong>2021</strong><span>AXIS · Network Audio / System Design / Camera Station / Analytics · Axis Communications</span></div>
+<h2>Formación superior y máster</h2>
+<div class="timeline">
+  <div class="when">2013 – 2016</div>
+  <div class="detail"><strong>Bachelor's Degree — Audio Engineering & Audio Production</strong><br><span class="small">Middlesex University, London</span></div>
+
+  <div class="when">2020 – Actualidad</div>
+  <div class="detail"><strong>Máster en Inteligencia Artificial · VIU</strong><span class="status">Cursando actualmente</span><br><span class="small">Formación de posgrado no finalizada; se mantiene identificada explícitamente como estudios en curso.</span></div>
+</div>
+</section>
+
+<section>
+<h2>Certificaciones, formación de fabricante y cursos</h2>
+<div class="cert-grid">
+  <div class="cert"><strong>2018</strong><span>KNX Advanced · Grupo Conitec Ingeniería y Domótica</span></div>
+  <div class="cert"><strong>2019</strong><span>Crestron CTI-P101 · Foundations of Crestron Programming · Crestron Technical Institute</span></div>
+  <div class="cert"><strong>2019</strong><span>Crestron NVX · Design and Application · Crestron Technical Institute</span></div>
+  <div class="cert"><strong>2020</strong><span>JAVA IFCD033PO · formación técnica</span></div>
+  <div class="cert"><strong>2021</strong><span>AXIS · Network Audio / System Design / Camera Station / Analytics</span></div>
+  <div class="cert"><strong>Fabricante</strong><span>Ecler · certificación / formación técnica en audio profesional, matrices DSP y control</span></div>
+  <div class="cert"><strong>Fabricante</strong><span>Void Acoustics · certificación / formación técnica en sistemas electroacústicos profesionales</span></div>
+  <div class="cert"><strong>Fabricante</strong><span>Lynx Pro Audio · certificación / formación técnica en amplificación, DSP y sistemas profesionales</span></div>
+</div>
+</section>
+
+<section>
+<h2>Tecnologías y herramientas</h2>
+<div class="stack">
+<p><strong>Automation:</strong> KNX, ETS6, DALI, Gira X1, Crestron, lógica, escenas, estados.</p>
+<p><strong>Audio / AV:</strong> Ecler, Lynx Pro Audio, Void Acoustics, DSP, matrices, amplificación, zoning, limitadores, audio de red.</p>
+<p><strong>CAD / Engineering:</strong> AutoCAD, Revit, SolidWorks, SketchUp, BOM/BOQ, mediciones y documentación.</p>
+<p><strong>Networks / IT:</strong> TCP/IP, VLAN, Wi-Fi, UniFi, VPN, PoE, DNS, cableado estructurado.</p>
+<p><strong>Software:</strong> Python, JavaScript, Java, APIs, Git/GitHub, Three.js, PowerShell.</p>
+<p><strong>AI / Automation:</strong> OpenClaw, OmniRoute, agentes IA, model routing, workflows y automatización local-first.</p>
+</div>
+</section>
+
+<section>
+<h2>Idiomas</h2>
+<div class="languages"><span><strong>Español:</strong> nativo</span><span><strong>Inglés:</strong> B1</span><span><strong>Italiano:</strong> A2</span></div>
 </section>
 
 <section>
 <h2>Método de trabajo</h2>
-<p>Survey y validación de requisitos · arquitectura técnica · integración y programación · commissioning y troubleshooting · documentación · operación y mejora continua.</p>
+<p>Survey y levantamiento → requisitos → arquitectura funcional → cálculo / diseño → presupuestos / BOM → coordinación de proveedores e industriales → integración y programación → commissioning → troubleshooting → documentación / handover → operación, observabilidad y mejora continua.</p>
 </section>
 
-<p class="note"><strong>Nota de trazabilidad:</strong> esta versión ATS utiliza únicamente información ya documentada públicamente en el portfolio. La cronología laboral completa por empresa/cargo se mantiene fuera hasta disponer de una reconstrucción contrastada de fechas y responsabilidades.</p>
+<p class="note"><strong>Trazabilidad:</strong> CV ampliado a partir de la trayectoria profesional y proyectos ya documentados. Los proyectos confidenciales se describen sin revelar identidades sensibles. Los estudios de máster se presentan explícitamente como <em>cursando actualmente</em>. Las credenciales de fabricante Ecler, Void Acoustics y Lynx Pro Audio se incluyen sin inventar fechas o denominaciones de curso no documentadas.</p>
 </main>
-<script>window.__CV_ATS__={schemaVersion:1,format:'PROJECT_BASED_ATS',print:true,employmentChronology:false,selectedProjects:7,featuredProjects:3};</script>
+<script>
+window.__CV_ATS__={
+  schemaVersion:2,
+  format:'EXPANDED_PROFESSIONAL_PDF_ATS',
+  print:true,
+  employmentChronology:true,
+  yearsExperience:8,
+  selectedProjects:8,
+  featuredProjects:5,
+  mastersInProgress:1,
+  certificationsAndTraining:8,
+  duplicateDossierButton:false
+};
+</script>
 </body>
 </html>
