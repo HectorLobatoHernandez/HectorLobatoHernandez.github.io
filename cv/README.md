@@ -34,9 +34,9 @@ Elegir una variante base para el CV final. Usar Scroll World como sección de na
 
 ### CV ATS / PDF profesional
 
-`ats.html` ya no es un resumen mínimo: funciona como CV profesional imprimible de 2–3 páginas A4, con cronología laboral, proyectos, formación superior, Máster en Inteligencia Artificial en curso, certificaciones/formación de fabricante, tecnologías e idiomas. `ats.txt` mantiene el mismo contenido esencial para ATS.
+`ats.html` ya no es un resumen mínimo: funciona como CV profesional imprimible de 3 páginas A4 aproximadamente, con cronología laboral, responsabilidades técnicas, proyectos, formación superior, másteres en curso, certificaciones de fabricante, tecnologías, dominios de experiencia e idiomas. `ats.txt` mantiene el mismo contenido esencial para ATS.
 
-Su edición se rige por `skills/cv-ats-pdf/SKILL.md`; no duplicar botones hacia el dossier ni inventar fechas/títulos de certificación no documentados.
+Su edición se rige por `skills/cv-ats-pdf/SKILL.md`; la toolbar se limita a `Presentar 5 min` + `Imprimir / Guardar PDF`, sin enlaces redundantes al dossier. No inventar fechas/títulos de certificación ni másteres no documentados.
 
 ### ATS browser visual layer · Waves + PixelTrail
 
