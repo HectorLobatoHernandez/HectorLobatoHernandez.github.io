@@ -52,7 +52,8 @@ The new registered master has now been converted successfully using the memory-s
 - Optimization policy: preserve private SKP master; optimize only a derived web GLB using KEEP / INSTANCE / PROXY / REMOVE_WEB_DECOR decisions.
 - Promotion status: **NOT PROMOTED**.
 - Public model status: **PENDING_GLB**.
-- Next required step: run `tools/sound-club/BUILD_WEB_OPTIMIZATION_PLAN.ps1` to generate a non-destructive KEEP / INSTANCE / PROXY / REMOVE plan from the successful analysis.
+- Optimization plan generated locally: `venue-master.optimization-plan.json` + CSV.
+- Next required step: run `tools/sound-club/PREPARE_WEB_DERIVATIVE.ps1` in default dry-run mode. It estimates safe binary reduction by dropping only high-confidence decor/minor-hardware groups and does not write or mutate a GLB.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
