@@ -3,7 +3,8 @@ param(
   [string]$SkpPath,
 
   [switch]$Promote,
-  [switch]$NoTextures
+  [switch]$NoTextures,
+  [switch]$WithTextures
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,6 +34,8 @@ if (-not $py) {
 Write-Host "=== SOUND CLUB / PRIVATE SKP -> GLB ==="
 Write-Host "Source stays local: $SkpPath"
 Write-Host "Registered master gate: $sourceIngest"
+Write-Host "Web GLB policy: geometry + material colours by default; V-Ray textures stay in the render pipeline."
+if ($WithTextures) { Write-Host "Texture mode: explicit WITH-TEXTURES attempt (memory intensive)" }
 Write-Host "Installing pinned OpenSKP conversion stack..."
 
 & $py.Source -m pip install --upgrade "openskp==1.3.0" "trimesh>=3.0" "shapely>=1.8" "defusedxml>=0.7.1" "mapbox-earcut>=1.0" "pillow>=12.3.0"
@@ -46,6 +49,7 @@ $argsList = @(
   "--source-ingest", $sourceIngest
 )
 if ($NoTextures) { $argsList += "--no-textures" }
+if ($WithTextures) { $argsList += "--with-textures" }
 if ($Promote) {
   $argsList += @(
     "--promote-manifest",

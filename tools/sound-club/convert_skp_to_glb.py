@@ -37,7 +37,10 @@ def main() -> int:
     ap.add_argument("--public-output", type=Path, help="Promoted public GLB path")
     ap.add_argument("--promote-manifest", action="store_true",
                     help="Explicitly promote candidate after human QA")
-    ap.add_argument("--no-textures", action="store_true")
+    ap.add_argument("--no-textures", action="store_true",
+                    help="Compatibility flag: keep textures disabled")
+    ap.add_argument("--with-textures", action="store_true",
+                    help="Attempt to embed textures. Not recommended for large SKP masters.")
     ap.add_argument("--max-extent-m", type=float, default=500.0,
                     help="Maximum accepted X/Z venue extent before promotion is blocked")
     ap.add_argument("--max-height-m", type=float, default=150.0,
@@ -85,13 +88,36 @@ def main() -> int:
     skp = SkpFile.open(skp_path)
     model = skp.parse()
 
-    glb.export(
-        skp,
-        str(args.output),
-        coordinate_system="y-up",
-        units="mm",
-        textures=not args.no_textures,
-    )
+    embed_textures = bool(args.with_textures and not args.no_textures)
+    texture_fallback = False
+
+    try:
+        glb.export(
+            skp,
+            str(args.output),
+            coordinate_system="y-up",
+            units="mm",
+            textures=embed_textures,
+        )
+    except MemoryError:
+        if not embed_textures:
+            raise
+        texture_fallback = True
+        print(
+            "WARNING: textured GLB export exhausted memory. "
+            "Retrying geometry/material-colour export without embedded textures.",
+            file=sys.stderr,
+        )
+        if args.output.exists():
+            args.output.unlink()
+        glb.export(
+            skp,
+            str(args.output),
+            coordinate_system="y-up",
+            units="mm",
+            textures=False,
+        )
+        embed_textures = False
 
     if not args.output.exists() or args.output.stat().st_size < 20:
         raise SystemExit("GLB export did not produce a valid output file.")
@@ -143,7 +169,8 @@ def main() -> int:
             "glbMagic": "glTF",
             "coordinateSystem": "y-up",
             "numericUnits": "mm",
-            "texturesEmbedded": not args.no_textures,
+            "texturesEmbedded": embed_textures,
+            "textureFallbackAfterMemoryError": texture_fallback,
             "geometryCount": geometry_count,
             "bounds": bounds_list,
             "extentMm": extent_mm,
