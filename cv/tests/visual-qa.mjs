@@ -31,6 +31,10 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       try{await page.waitForFunction(()=>window.__CV_ATS_REACT__?.mounted===true,{timeout:8000})}catch{failures.push('ATS React layer did not mount')}
       await page.waitForTimeout(500);
     }
+    if(test.id==='present'){
+      try{await page.waitForFunction(()=>window.__CV_PRESENT_REACT__?.mounted===true,{timeout:8000})}catch{failures.push('Presentation Threads did not mount')}
+      await page.waitForTimeout(650);
+    }
     const state=await page.evaluate(()=>({
       title:document.title,bodyClass:document.body.className,
       h1:document.querySelector('h1')?.textContent||'',
@@ -58,7 +62,15 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       atsH2Font:(()=>{const x=document.querySelector('main.cv h2');return x?getComputedStyle(x).fontFamily:null})(),
       atsCvBg:(()=>{const x=document.querySelector('main.cv');return x?getComputedStyle(x).backgroundImage:null})(),
       present:window.__CV_PRESENT__||null,
+      presentReact:window.__CV_PRESENT_REACT__||null,
       presentSteps:document.querySelectorAll('.step').length,
+      presentThreads:!!document.querySelector('.present-threads[data-reactbits="Threads"]'),
+      presentThreadsSize:(()=>{const x=document.querySelector('.present-threads');return x?{w:x.width,h:x.height}:null})(),
+      presentHeroFont:(()=>{const x=document.querySelector('.hero h1');return x?getComputedStyle(x).fontFamily:null})(),
+      presentStepFont:(()=>{const x=document.querySelector('.step h2');return x?getComputedStyle(x).fontFamily:null})(),
+      presentBodyBg:getComputedStyle(document.body).backgroundColor,
+      presentNav:[...document.querySelectorAll('.top nav a')].map(x=>x.textContent.trim()),
+      presentRoot:!!document.querySelector('#present-react-root'),
       evidenceCards:document.querySelectorAll('#evidence .archive a').length,
       hero:window.__CV_HERO__||null,
       heroRoot:!!document.querySelector('[data-reactbits-hero="true"]'),
@@ -125,7 +137,12 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       if(portrait.view!=='plain'||portrait.pressed!=='true'||Number(portrait.canvasOpacity)>.05)failures.push('Dossier portrait normal-photo toggle failed');
     }
     if(test.id==='present'){
-      if(state.present?.schemaVersion!==1||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
+      if(state.present?.schemaVersion!==2||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.present.palette!=='IVORY_ATLAS'||state.present.background!=='Threads'||state.present.duplicateDossierNav!==false||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
+      if(state.presentReact?.schemaVersion!==1||state.presentReact?.palette!=='IVORY_ATLAS'||state.presentReact?.component!=='Threads'||state.presentReact?.mouseInteraction!==true||state.presentReact?.mounted!==true)failures.push('Presentation Threads contract mismatch');
+      if(!state.presentRoot||!state.presentThreads||!state.presentThreadsSize||state.presentThreadsSize.w<300||state.presentThreadsSize.h<300)failures.push('Presentation Threads surface missing or too small');
+      if(!state.presentHeroFont?.includes('Instrument Serif')||!state.presentStepFont?.includes('Instrument Serif'))failures.push('Presentation IVORY ATLAS typography missing: '+state.presentHeroFont+' / '+state.presentStepFont);
+      if(state.presentBodyBg!=='rgb(0, 0, 0)')failures.push('Presentation background must be black behind Threads: '+state.presentBodyBg);
+      if(state.presentNav.filter(x=>x==='Dossier').length!==1||state.presentNav.length!==3)failures.push('Presentation navigation duplicate/mismatch: '+state.presentNav.join(' | '));
     }
     if(test.id==='ats'){
       if(state.ats?.schemaVersion!==4||state.ats.format!=='EXPANDED_PROFESSIONAL_PDF_ATS'||state.ats.print!==true||state.ats.employmentChronology!==true||state.ats.selectedProjects!==8||state.ats.featuredProjects!==5||state.ats.mastersInProgress!==1||state.ats.certificationsAndTraining!==8||state.ats.appliedExperienceDomains!==6||state.ats.dossierToolbarButton!==false||state.ats.duplicateDossierButton!==false||state.ats.screenReact!==true||state.ats.screenPalette!=='IVORY_ATLAS'||!['Waves','PixelTrail'].every(x=>state.ats.screenComponents?.includes(x)))failures.push('ATS contract mismatch');
