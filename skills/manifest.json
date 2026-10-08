@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.6",
+  "version": "2026-10-08.1",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -75,6 +75,13 @@
       "path": "skills/cv-editorial-architecture/SKILL.md",
       "license": "project-internal",
       "focus": "architecture/editorial typography, responsive technical CV, no React"
+    },
+    {
+      "name": "cv-ats-pdf",
+      "source": "local Hector portfolio",
+      "path": "skills/cv-ats-pdf/SKILL.md",
+      "license": "project-internal",
+      "focus": "printable ATS/PDF CV, employment chronology, education, certifications, manufacturer training and A4 QA"
     },
     {
       "name": "scroll-world",
