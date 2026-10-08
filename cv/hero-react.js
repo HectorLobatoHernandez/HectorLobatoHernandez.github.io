@@ -5,7 +5,7 @@
  */
 (function(){
   const contract={
-    schemaVersion:2,
+    schemaVersion:3,
     engine:'REACT_18_UMD',
     upstream:'DavidHDev/react-bits@63a008de65732d73010bd219d25d15c47739bb31',
     components:['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'],
@@ -14,6 +14,7 @@
     portraitImages:1,
     generatedPortraits:0,
     globalEffects:true,
+    techMode:'TECH_TEXT_LETTER_REVEAL_SELECTION_DRAG_SWEEP',
     techHeadings:0,
     mounted:false
   };
@@ -69,7 +70,7 @@
           const y0=base+j*17;
           ctx.beginPath();
           ctx.lineWidth=.68;
-          ctx.strokeStyle='rgba(177,179,179,'+(0.15-j*.004)+')';
+          ctx.strokeStyle='rgba(142,160,145,'+(0.19-j*.0045)+')';
           for(let x=-50;x<=w+50;x+=7){
             const wave=Math.sin(x*.0105+t*.006+j*.43)*13+Math.sin(x*.0031-t*.003+j*.9)*20;
             const dx=x-pointer.x,dy=y0-pointer.y,dist=Math.hypot(dx,dy);
@@ -94,10 +95,10 @@
       const canvas=ref.current;if(!canvas)return;
       let state=sizeCanvas(canvas),raf=0,t=0;
       const pointer={x:-9999,y:-9999};
-      const count=window.innerWidth<700?30:74;
+      const count=window.innerWidth<700?42:96;
       const particles=Array.from({length:count},(_,i)=>({
         x:Math.random()*state.w,y:Math.random()*state.h,
-        r:.65+Math.random()*1.2,s:.07+Math.random()*.18,
+        r:.72+Math.random()*1.45,s:.07+Math.random()*.20,
         phase:Math.random()*Math.PI*2,warm:i%8===0
       }));
       const resize=()=>{state=sizeCanvas(canvas)};
@@ -112,10 +113,10 @@
           const d=Math.hypot(p.x-pointer.x,p.y-pointer.y);
           const a=d<170?.7:.27;
           ctx.beginPath();
-          ctx.fillStyle=p.warm?'rgba(151,153,155,'+a+')':'rgba(217,217,214,'+a+')';
+          ctx.fillStyle=p.warm?'rgba(157,174,159,'+Math.min(.92,a+.08)+')':'rgba(207,218,208,'+Math.min(.88,a+.04)+')';
           ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
           if(d<115){
-            ctx.beginPath();ctx.strokeStyle='rgba(200,201,199,'+((1-d/115)*.12)+')';ctx.lineWidth=.5;
+            ctx.beginPath();ctx.strokeStyle='rgba(170,189,172,'+((1-d/115)*.22)+')';ctx.lineWidth=.65;
             ctx.moveTo(p.x,p.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke();
           }
         });
@@ -136,54 +137,150 @@
     );
   }
 
-  function TechLine({text}){
-    return h('span',{className:'rb-tech-line'},...[...text].map((char,i)=>{
-      const value=char===' '?'\u00a0':char;
-      return h('span',{
-        key:i,className:'rb-tech-char','data-char':value,
-        onPointerMove:e=>{
-          const r=e.currentTarget.getBoundingClientRect();
-          const x=(e.clientX-(r.left+r.width/2))/Math.max(r.width,1);
-          const y=(e.clientY-(r.top+r.height/2))/Math.max(r.height,1);
-          e.currentTarget.style.transform='translate3d('+(x*5)+'px,'+(y*4)+'px,0) rotate('+x*1.2+'deg)';
-        },
-        onPointerLeave:e=>{e.currentTarget.style.transform=''}
-      },value);
-    }));
+  function TechWordmark({lines,compact=false,draggable=true,label='TECH TEXT'}){
+    const ref=useRef(null);
+    const reduced=useReducedMotion();
+    const [active,setActive]=useState(-1);
+    const [frame,setFrame]=useState(null);
+    const [inside,setInside]=useState(false);
+    const dragRef=useRef(null);
+    const flat=lines.flatMap((line,lineIndex)=>[...line].map((char,charIndex)=>({char,lineIndex,charIndex})));
+
+    const updateFrame=index=>{
+      const root=ref.current;if(!root||index<0){setFrame(null);return}
+      const chars=[...root.querySelectorAll('.rb-tech-char')];
+      const el=chars[index];if(!el){setFrame(null);return}
+      const rr=root.getBoundingClientRect(),cr=el.getBoundingClientRect();
+      setFrame({
+        x:cr.left-rr.left-5,y:cr.top-rr.top-4,w:cr.width+10,h:cr.height+8,
+        char:el.dataset.char||'',
+        index:index+1
+      });
+    };
+
+    const activate=index=>{setActive(index);requestAnimationFrame(()=>updateFrame(index))};
+
+    useEffect(()=>{
+      if(reduced||inside||flat.length<2)return;
+      let i=-1;
+      const tick=()=>{i=(i+1)%flat.length;activate(i)};
+      const first=setTimeout(tick,420);
+      const id=setInterval(tick,760);
+      return()=>{clearTimeout(first);clearInterval(id)};
+    },[reduced,inside,flat.length]);
+
+    useEffect(()=>{
+      const resize=()=>active>=0&&updateFrame(active);
+      window.addEventListener('resize',resize);
+      return()=>window.removeEventListener('resize',resize);
+    },[active]);
+
+    const nearest=e=>{
+      const root=ref.current;if(!root)return;
+      const chars=[...root.querySelectorAll('.rb-tech-char')];
+      let best=-1,bestDist=Infinity;
+      chars.forEach((el,i)=>{
+        const r=el.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+        const d=Math.hypot(dx,dy);
+        if(d<bestDist){bestDist=d;best=i}
+      });
+      if(best>=0&&bestDist<(compact?110:220))activate(best);
+    };
+
+    const down=(e,index)=>{
+      if(!draggable||reduced||e.button!==0)return;
+      const el=e.currentTarget;
+      const r=el.getBoundingClientRect();
+      dragRef.current={el,index,startX:e.clientX,startY:e.clientY,baseX:0,baseY:0};
+      el.setPointerCapture?.(e.pointerId);
+      el.classList.add('is-dragging');
+      activate(index);
+    };
+
+    const move=e=>{
+      nearest(e);
+      const d=dragRef.current;if(!d)return;
+      const max=compact?12:22;
+      const dx=Math.max(-max,Math.min(max,e.clientX-d.startX));
+      const dy=Math.max(-max,Math.min(max,e.clientY-d.startY));
+      d.el.style.setProperty('--drag-x',dx+'px');
+      d.el.style.setProperty('--drag-y',dy+'px');
+      requestAnimationFrame(()=>updateFrame(d.index));
+    };
+
+    const up=e=>{
+      const d=dragRef.current;if(!d)return;
+      d.el.releasePointerCapture?.(e.pointerId);
+      d.el.classList.remove('is-dragging');
+      d.el.style.setProperty('--drag-x','0px');
+      d.el.style.setProperty('--drag-y','0px');
+      dragRef.current=null;
+      setTimeout(()=>active>=0&&updateFrame(active),170);
+    };
+
+    let globalIndex=-1;
+    return h('span',{
+      ref,
+      className:'rb-tech-shell'+(compact?' is-compact':''),
+      'data-tech-mode':'letter',
+      onPointerEnter:e=>{setInside(true);nearest(e)},
+      onPointerMove:move,
+      onPointerLeave:()=>{setInside(false);if(!reduced){setActive(-1);setFrame(null)}},
+      onPointerUp:up,
+      onPointerCancel:up
+    },
+      h('span',{className:'rb-tech-word'},...lines.map((line,lineIndex)=>
+        h('span',{className:'rb-tech-line',key:lineIndex},...[...line].map((char,charIndex)=>{
+          globalIndex++;
+          const index=globalIndex;
+          const value=char;
+          return h('span',{
+            key:lineIndex+'-'+charIndex,
+            className:'rb-tech-char'+(char===' '?' is-space':'')+(active===index?' is-active':''),
+            'data-char':char===' '?'SPACE':value,
+            onPointerDown:e=>down(e,index)
+          },
+            value,
+            active===index?h('span',{className:'rb-tech-specks','aria-hidden':'true'},...Array.from({length:compact?6:12},(_,i)=>
+              h('i',{key:i,style:{'--sx':(((i*37)%100)-50)+'%','--sy':(((i*61)%100)-50)+'%','--sd':((i%5)*.07)+'s'}})
+            )):null
+          );
+        }))
+      )),
+      frame?h('span',{
+        className:'rb-tech-selection',
+        'aria-hidden':'true',
+        style:{transform:'translate3d('+frame.x+'px,'+frame.y+'px,0)',width:frame.w+'px',height:frame.h+'px'}
+      },
+        h('i',{className:'rb-tech-corner c1'}),h('i',{className:'rb-tech-corner c2'}),h('i',{className:'rb-tech-corner c3'}),h('i',{className:'rb-tech-corner c4'}),
+        h('span',{className:'rb-tech-selection-label'},label+' / '+String(frame.index).padStart(2,'0')+' · '+frame.char),
+        h('span',{className:'rb-tech-connector'})
+      ):null
+    );
   }
 
   function TechText(){
     return h('h1',{className:'rb-name','aria-label':'Héctor Lobato','data-reactbits-tech-text':'true'},
-      h('span',{className:'rb-tech-word'},
-        h(TechLine,{text:'Héctor'}),
-        h(TechLine,{text:'Lobato.'})
-      )
+      h(TechWordmark,{lines:['Héctor','Lobato.'],compact:false,draggable:true,label:'IDENTITY'})
     );
   }
 
   function enhanceDocumentHeadings(){
     const targets=[...document.querySelectorAll('main .section-head h2,main .project-copy h2,main .final h2')];
-    targets.forEach(el=>{
+    const roots=[];
+    targets.forEach((el,index)=>{
       if(el.dataset.rbTech==='1')return;
-      const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
-      const nodes=[];let node;
-      while((node=walker.nextNode()))nodes.push(node);
-      nodes.forEach(textNode=>{
-        if(!textNode.nodeValue)return;
-        const frag=document.createDocumentFragment();
-        [...textNode.nodeValue].forEach(char=>{
-          if(char===' '){frag.appendChild(document.createTextNode(' '));return}
-          const span=document.createElement('span');
-          span.className='rb-doc-char';
-          span.dataset.char=char;
-          span.textContent=char;
-          frag.appendChild(span);
-        });
-        textNode.replaceWith(frag);
-      });
+      const raw=el.innerText||el.textContent||'';
+      const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+      el.textContent='';
       el.dataset.rbTech='1';
       el.classList.add('rb-doc-tech');
+      el.setAttribute('aria-label',lines.join(' '));
+      const root=window.ReactDOM.createRoot(el);
+      root.render(h(TechWordmark,{lines:lines.length?lines:[''],compact:true,draggable:true,label:'TITLE '+String(index+1).padStart(2,'0')}));
+      roots.push(root);
     });
+    window.__CV_TECH_HEADING_ROOTS__=roots;
     contract.techHeadings=targets.length;
   }
 

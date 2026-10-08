@@ -25,7 +25,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     await page.waitForTimeout(test.id==='world'?1900:450);
     if(test.id==='dossier'){
       try{await page.waitForFunction(()=>window.__CV_HERO__?.mounted===true,{timeout:8000})}catch{failures.push('dossier React hero did not mount')}
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1050);
     }
     const state=await page.evaluate(()=>({
       title:document.title,bodyClass:document.body.className,
@@ -60,6 +60,9 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       marSaladaCanonical:document.body.textContent.includes('MAR SALADA')&&document.body.textContent.includes('Club del Mar Palma'),
       legacyProjectButtons:[...document.querySelectorAll('#mar-salada .project-links a')].some(a=>/React Visuals|XXXIA Console/.test(a.textContent)),
       techHeadings:document.querySelectorAll('main [data-rb-tech="1"]').length,
+      techShells:document.querySelectorAll('.rb-tech-shell').length,
+      techSelections:document.querySelectorAll('.rb-tech-selection').length,
+      techActiveChars:document.querySelectorAll('.rb-tech-char.is-active').length,
       menuTrigger:!!document.querySelector('.rb-menu-trigger'),
       latticeCells:document.querySelectorAll('.rb-cell').length,
       heroActionLabels:[...document.querySelectorAll('.rb-actions .rb-btn')].map(x=>x.textContent.trim()),
@@ -81,16 +84,16 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      if(state.dossier?.schemaVersion!==4||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossier?.schemaVersion!==5||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
       if(state.dossierProjects!==3||state.dossierArchive!==8||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
       const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
-      if(state.hero?.schemaVersion!==2||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
-      if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier full-page React Bits UI missing');
+      if(state.hero?.schemaVersion!==3||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||state.hero?.techMode!=='TECH_TEXT_LETTER_REVEAL_SELECTION_DRAG_SWEEP'||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
+      if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||state.techShells<state.techHeadings+1||state.techSelections<1||state.techActiveChars<1||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier amplified React Bits / TechText UI missing');
       if(!state.portraitToggle||state.portraitView!=='interactive')failures.push('Dossier portrait viewer toggle missing or wrong default state');
       if(state.heroActionLabels.includes('Portfolio técnico')||state.heroActionLabels.includes('Contacto')||state.heroActionLabels.length!==3)failures.push('Dossier hero actions not simplified');
       if(state.bodyBg!=='rgb(0, 0, 0)')failures.push('Dossier canonical background must be true black: '+state.bodyBg);
-      if(state.heroNameFirstColor!=='rgb(217, 217, 214)'||state.heroNameLastColor!=='rgb(200, 201, 199)')failures.push('Dossier TechText grayscale hierarchy mismatch: '+state.heroNameFirstColor+' / '+state.heroNameLastColor);
-      if(state.particlesOpacity===null||state.particlesOpacity<.7)failures.push('Dossier particles are not visible enough on black');
+      if(state.heroNameFirstColor!=='rgb(210, 221, 211)'||state.heroNameLastColor!=='rgb(175, 192, 177)')failures.push('Dossier TechText green-gray hierarchy mismatch: '+state.heroNameFirstColor+' / '+state.heroNameLastColor);
+      if(state.particlesOpacity===null||state.particlesOpacity<.9)failures.push('Dossier particles are not prominent enough for the React demo');
       if(!state.marSaladaCanonical||state.legacyProjectButtons)failures.push('Dossier Mar Salada canonical identity/public buttons mismatch');
       await page.click('.rb-menu-trigger');await page.waitForTimeout(350);
       const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));

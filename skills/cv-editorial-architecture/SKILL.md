@@ -3,7 +3,7 @@ name: cv-editorial-architecture
 description: Design elegant, typographically rigorous technical curricula and engineering portfolios inspired by architectural publishing, the Swiss Style and software documentation. Prefer semantic HTML/CSS/vanilla JS; select motion only where it improves reading. Use when the user asks for an architecture-oriented CV, an engineering presentation, a portfolio design review or several visual design alternatives.
 ---
 
-# CV Editorial · Architecture × Software v2
+# CV Editorial · Architecture × Software v3
 
 ## Intent
 
@@ -21,17 +21,18 @@ The dossier must preserve the seven documented project routes, distinguish execu
 
 ## Canonical dossier art direction
 
-The selected dossier direction is now **black + cool gray**. Use a true black canvas and a restrained Pantone-inspired Cool Gray family for typography, rules and UI hierarchy:
+The selected dossier direction is now **black + green-gray**. Use a true black canvas and a restrained Pantone-inspired gray-green family for typography, rules and UI hierarchy:
 
 - background: `#000000`;
-- primary text / Cool Gray 1 approximation: `#D9D9D6`;
-- secondary display / Cool Gray 3 approximation: `#C8C9C7`;
-- body / Cool Gray 5 approximation: `#B1B3B3`;
-- labels / Cool Gray 7 approximation: `#97999B`;
-- muted metadata / Cool Gray 9 approximation: `#75787B`;
-- structural rules / Cool Gray 11 approximation: `#53565A`.
+- primary text: `#D2DDD3`;
+- secondary display: `#C2D0C4`;
+- body: `#AFC0B1`;
+- labels: `#788B7D`;
+- muted metadata: `#5D7063`;
+- structural rules: `#3E4C43`;
+- interactive accent: `#B8CBB9`.
 
-Do not reintroduce sage, copper, green or beige into the canonical dossier unless explicitly requested. The React `TechText` treatment on **Héctor Lobato** is the dominant first-screen identity and must retain maximum contrast and legibility over Particles. The background effects stay ambient and grayscale.
+Do not reintroduce copper, beige or unrelated accent colors into the canonical dossier unless explicitly requested. The React `TechText` treatment on **Héctor Lobato** and all major dossier titles is the dominant interaction language. Use the gray-green palette consistently across text, selection frames, particles, labels and technical UI.
 
 ## Three typographic art directions
 
@@ -41,13 +42,14 @@ Do not reintroduce sage, copper, green or beige into the canonical dossier unles
 
 ## Approved React Bits layer
 
-The canonical dossier uses the curated React Bits skill for:
-- Tech Text on **Héctor Lobato** as the dominant identity element;
-- Particles as the ambient full-dossier background on black;
-- Dither Veil on the portrait with a visible **normal photo / React viewer** toggle;
-- Logo Loop below the skills/capability section.
+The canonical dossier uses the curated React Bits skill as a **visible capability demonstration**:
+- Tech Text on **Héctor Lobato** and all major section/project titles;
+- Tech Text behavior should expose letter reveal, selection frame, technical labels, specks, idle sweep and controlled drag/spring interaction;
+- Particles and Waves remain visible across the full dossier and react to the pointer;
+- Dither Veil on the portrait keeps the visible **normal photo / React viewer** toggle;
+- Logo Loop remains a live technology/systems band below the skills section.
 
-Keep these effects secondary to content. Preserve print and reduced-motion fallbacks.
+The React layer must be conspicuous enough to demonstrate front-end/interaction capability without reducing readability, accessibility, print fallback or reduced-motion behavior.
 
 ## Scroll storytelling integration
 

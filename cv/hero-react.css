@@ -408,3 +408,290 @@ body.rb-system-theme .project-visual img{background:#090909!important;filter:sat
 @media(max-width:650px){
   .rb-name{font-size:clamp(66px,22vw,104px)!important}
 }
+
+
+/* ---------- v3 · Pantone-inspired green-gray + amplified React Bits demo ---------- */
+:root{
+  --rb-gg-1:#d2ddd3;
+  --rb-gg-2:#c2d0c4;
+  --rb-gg-3:#afc0b1;
+  --rb-gg-5:#95a798;
+  --rb-gg-7:#788b7d;
+  --rb-gg-9:#5d7063;
+  --rb-gg-11:#3e4c43;
+  --rb-gg-accent:#b8cbb9;
+
+  --rb-bg:#000000;
+  --rb-bg-2:#030504;
+  --rb-panel:rgba(62,76,67,.20);
+  --rb-panel-solid:#070a08;
+  --rb-ink:var(--rb-gg-1);
+  --rb-soft:var(--rb-gg-3);
+  --rb-muted:var(--rb-gg-7);
+  --rb-sage:var(--rb-gg-accent);
+  --rb-gold:var(--rb-gg-5);
+  --rb-line:rgba(184,203,185,.15);
+  --rb-line-strong:rgba(184,203,185,.34);
+}
+body.dossier.rb-system-theme{
+  --paper:#000;
+  --ink:var(--rb-gg-1);
+  --soft:var(--rb-gg-3);
+  --line:var(--rb-line);
+  --accent:var(--rb-gg-5);
+  --deep:var(--rb-gg-2);
+  --cream:#070a08;
+  background:
+    radial-gradient(circle at 72% 10%,rgba(149,167,152,.085),transparent 30%),
+    radial-gradient(circle at 18% 38%,rgba(93,112,99,.045),transparent 24%),
+    #000!important;
+}
+body.dossier.rb-system-theme main{
+  background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.13) 19%,rgba(0,0,0,.32) 58%,rgba(0,0,0,.52))!important;
+}
+.rb-global-effects .rb-particles{opacity:.96!important;filter:none!important}
+.rb-global-effects .rb-waves{opacity:.13!important;filter:none!important}
+.rb-page-vignette{
+  background:
+    radial-gradient(circle at 70% 17%,transparent 0 30%,rgba(0,0,0,.04) 52%,rgba(0,0,0,.20) 82%),
+    linear-gradient(90deg,rgba(0,0,0,.17),rgba(0,0,0,.01) 58%,rgba(0,0,0,.12))!important;
+}
+.rb-page-grain{opacity:.035!important}
+.rb-hero-shell::before{
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.29) 42%,rgba(0,0,0,.035) 72%,rgba(0,0,0,.16) 100%),
+    radial-gradient(circle at 70% 38%,rgba(184,203,185,.075),transparent 35%)!important;
+}
+.rb-nav{background:rgba(0,4,2,.72)!important;border-color:rgba(184,203,185,.16)!important}
+.rb-kicker,.rb-brand-name,.rb-dither-meta span:last-child,.rb-stagger-foot,
+body.rb-system-theme .kicker,
+body.rb-system-theme .meta-label,
+body.rb-system-theme .project-no,
+body.rb-system-theme .fact span:first-child,
+body.rb-system-theme .cap .id,
+body.rb-system-theme .method>article>span,
+body.rb-system-theme .archive small,
+body.rb-system-theme .cred>span{
+  color:var(--rb-gg-7)!important;
+}
+.rb-deck,
+body.rb-system-theme .section-head p,
+body.rb-system-theme .project-copy>p,
+body.rb-system-theme .final p,
+body.rb-system-theme .profile-grid p,
+body.rb-system-theme .cap p,
+body.rb-system-theme .method p,
+body.rb-system-theme .archive p,
+body.rb-system-theme .cred small{
+  color:var(--rb-gg-3)!important;
+}
+body.rb-system-theme .project-copy .project-lead,
+body.rb-system-theme .fact span:last-child{color:var(--rb-gg-2)!important}
+body.rb-system-theme .profile-grid article,
+body.rb-system-theme .cap,
+body.rb-system-theme .archive a{
+  background:linear-gradient(145deg,rgba(13,19,15,.86),rgba(3,6,4,.72))!important;
+  border-color:rgba(184,203,185,.14)!important;
+}
+body.rb-system-theme .profile-grid article:hover,
+body.rb-system-theme .cap:hover,
+body.rb-system-theme .archive a:hover{
+  background:linear-gradient(145deg,rgba(27,38,30,.94),rgba(7,12,9,.88))!important;
+  border-color:rgba(184,203,185,.34)!important;
+  box-shadow:0 16px 52px rgba(90,120,98,.08);
+}
+body.rb-system-theme .project-visual img{
+  background:#050806!important;
+  border-color:rgba(184,203,185,.17)!important;
+  filter:saturate(.72) contrast(1.04) brightness(.90)!important;
+}
+.rb-btn,.rb-portrait-toggle,body.rb-system-theme .dos-btn{
+  border-color:rgba(184,203,185,.31)!important;
+  background:rgba(5,10,7,.52)!important;
+  color:var(--rb-gg-1)!important;
+}
+.rb-btn:hover,.rb-portrait-toggle:hover,body.rb-system-theme .dos-btn:hover{
+  background:rgba(184,203,185,.10)!important;
+  border-color:rgba(210,221,211,.65)!important;
+  box-shadow:0 0 30px rgba(120,145,125,.08);
+}
+.rb-btn.primary,body.rb-system-theme .dos-btn.primary{
+  background:var(--rb-gg-1)!important;
+  color:#071008!important;
+  border-color:var(--rb-gg-1)!important;
+}
+
+/* Tech Text — upstream-style letter reveal / frame / labels / drag / sweep */
+.rb-tech-shell{
+  position:relative;
+  display:inline-block;
+  isolation:isolate;
+  --drag-x:0px;
+  --drag-y:0px;
+  cursor:crosshair;
+}
+.rb-tech-word{display:flex;flex-wrap:wrap;perspective:1100px;position:relative;z-index:2}
+.rb-tech-line{display:flex;width:100%;position:relative}
+.rb-tech-char{
+  display:inline-block;
+  position:relative;
+  color:inherit;
+  transform:translate3d(var(--drag-x,0),var(--drag-y,0),0);
+  transition:
+    transform .34s cubic-bezier(.2,.86,.24,1.25),
+    color .16s ease,
+    text-shadow .18s ease,
+    filter .18s ease;
+  will-change:transform,filter;
+  z-index:2;
+}
+.rb-tech-char::after{
+  content:attr(data-char);
+  position:absolute;
+  inset:0;
+  color:transparent;
+  -webkit-text-stroke:1.45px var(--rb-gg-accent);
+  opacity:0;
+  transform:none;
+  pointer-events:none;
+  transition:opacity .15s ease;
+  filter:drop-shadow(0 0 9px rgba(149,167,152,.16));
+}
+.rb-tech-char.is-active{
+  color:rgba(210,221,211,.08)!important;
+  text-shadow:0 0 30px rgba(184,203,185,.18);
+}
+.rb-tech-char.is-active::after{opacity:1}
+.rb-tech-char.is-dragging{
+  transition:color .12s,text-shadow .12s!important;
+  cursor:grabbing;
+  z-index:7;
+}
+.rb-tech-selection{
+  position:absolute;
+  z-index:8;
+  left:0;top:0;
+  border:1px dashed rgba(184,203,185,.76);
+  pointer-events:none;
+  transition:
+    transform .20s cubic-bezier(.2,.75,.2,1),
+    width .18s ease,height .18s ease,opacity .16s;
+  box-shadow:
+    0 0 0 1px rgba(61,78,66,.30) inset,
+    0 0 28px rgba(120,150,126,.10);
+}
+.rb-tech-corner{position:absolute;width:7px;height:7px;border-color:var(--rb-gg-1);border-style:solid}
+.rb-tech-corner.c1{left:-2px;top:-2px;border-width:1px 0 0 1px}
+.rb-tech-corner.c2{right:-2px;top:-2px;border-width:1px 1px 0 0}
+.rb-tech-corner.c3{right:-2px;bottom:-2px;border-width:0 1px 1px 0}
+.rb-tech-corner.c4{left:-2px;bottom:-2px;border-width:0 0 1px 1px}
+.rb-tech-selection-label{
+  position:absolute;
+  left:-1px;
+  bottom:calc(100% + 8px);
+  white-space:nowrap;
+  padding:4px 6px;
+  border:1px solid rgba(184,203,185,.30);
+  background:rgba(0,7,3,.86);
+  color:var(--rb-gg-2);
+  font:600 7px/1 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.rb-tech-connector{
+  position:absolute;
+  left:50%;top:100%;
+  width:1px;height:18px;
+  background:linear-gradient(var(--rb-gg-7),transparent);
+  opacity:.7;
+}
+.rb-tech-specks{position:absolute;z-index:9;inset:0;pointer-events:none}
+.rb-tech-specks i{
+  position:absolute;
+  left:50%;top:50%;
+  width:3px;height:3px;
+  background:var(--rb-gg-1);
+  box-shadow:0 0 8px rgba(184,203,185,.55);
+  transform:translate(var(--sx),var(--sy));
+  animation:rb-tech-speck .82s steps(2,end) infinite alternate;
+  animation-delay:var(--sd);
+}
+@keyframes rb-tech-speck{
+  0%,22%{opacity:.1;transform:translate(var(--sx),var(--sy)) scale(.55)}
+  55%{opacity:.95;transform:translate(calc(var(--sx) * 1.35),calc(var(--sy) * 1.25)) scale(1)}
+  100%{opacity:.28;transform:translate(calc(var(--sx) * .82),calc(var(--sy) * 1.45)) scale(.72)}
+}
+.rb-name{
+  color:var(--rb-gg-1)!important;
+  font-size:clamp(88px,10.6vw,182px)!important;
+  line-height:.72!important;
+  max-width:7ch!important;
+  text-shadow:0 0 42px rgba(120,150,126,.055);
+}
+.rb-name .rb-tech-line:first-child{color:var(--rb-gg-1)!important}
+.rb-name .rb-tech-line:last-child{color:var(--rb-gg-3)!important}
+.rb-name .rb-tech-selection{border-color:rgba(184,203,185,.82)}
+.rb-name .rb-tech-selection-label{font-size:8px}
+
+/* Every primary dossier title is a real React TechText root. */
+.rb-doc-tech{
+  display:block!important;
+  color:var(--rb-gg-2)!important;
+  overflow:visible;
+}
+.rb-doc-tech .rb-tech-shell{display:inline-block;max-width:100%}
+.rb-doc-tech .rb-tech-word{display:flex}
+.rb-doc-tech .rb-tech-line{flex-wrap:wrap}
+.rb-doc-tech .rb-tech-char::after{-webkit-text-stroke-width:1.15px}
+.rb-doc-tech .rb-tech-selection-label{font-size:6px;bottom:calc(100% + 6px)}
+.rb-doc-tech .rb-tech-specks i{width:2px;height:2px}
+body.rb-system-theme .section-head h2.rb-doc-tech,
+body.rb-system-theme .project-copy h2.rb-doc-tech,
+body.rb-system-theme .final h2.rb-doc-tech{
+  font-family:"Space Grotesk",Arial,sans-serif!important;
+  font-weight:600!important;
+  letter-spacing:-.055em!important;
+  color:var(--rb-gg-2)!important;
+}
+
+/* Make interactive React surfaces visibly intentional, not decorative. */
+.rb-logo-loop-wrap{
+  border-color:rgba(184,203,185,.20)!important;
+  background:rgba(4,8,5,.58)!important;
+  box-shadow:0 24px 90px rgba(75,105,82,.055);
+}
+.rb-logo-item{border-color:rgba(184,203,185,.19)!important}
+.rb-dither-frame{
+  border-color:rgba(184,203,185,.30)!important;
+  background:#050806!important;
+  box-shadow:0 38px 140px rgba(52,78,59,.13)!important;
+}
+.rb-dither-axis{border-color:rgba(184,203,185,.12)!important}
+.rb-dither-axis::before,.rb-dither-axis::after{background:rgba(184,203,185,.16)!important}
+.rb-stagger-panel{background:#050806!important;border-color:rgba(184,203,185,.20)!important}
+.rb-loader,.rb-loader-card{background:#020403!important}
+.rb-cell{background:var(--rb-gg-11)!important}
+.rb-loader-bar i{background:var(--rb-gg-3)!important}
+@keyframes rb-lattice{
+  0%,100%{background:var(--rb-gg-11);transform:scale(.82)}
+  45%{background:var(--rb-gg-2);transform:scale(1.16);box-shadow:0 0 16px rgba(184,203,185,.30)}
+}
+
+@media(max-width:650px){
+  .rb-name{font-size:clamp(66px,22vw,106px)!important}
+  .rb-tech-selection-label{display:none}
+  .rb-tech-selection{border-style:solid;opacity:.72}
+}
+@media(prefers-reduced-motion:reduce){
+  .rb-tech-specks i{animation:none!important}
+  .rb-tech-selection{transition:none!important}
+  .rb-tech-char{transition:none!important}
+}
+
+.rb-tech-line{white-space:pre}.rb-tech-char.is-space{min-width:.28em}
+
+html,body{max-width:100%;overflow-x:clip!important}
+.rb-tech-shell,.rb-tech-word,.rb-tech-line,.rb-doc-tech{max-width:100%}
+.rb-tech-selection-label{max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.rb-tech-shell.is-compact .rb-tech-selection-label,
+.rb-tech-shell.is-compact .rb-tech-connector{display:none}
