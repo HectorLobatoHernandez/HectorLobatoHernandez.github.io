@@ -18,6 +18,8 @@ Requested component references:
 - Tech Text — https://reactbits.dev/text-animations/tech-text
 - Particles — https://reactbits.dev/backgrounds/particles
 - Logo Loop — https://reactbits.dev/animations/logo-loop
+- Waves — https://reactbits.dev/backgrounds/waves
+- Pixel Trail — https://reactbits.dev/animations/pixel-trail
 
 This is a **curated portfolio integration skill**, not a wholesale vendor copy. In the personal dossier, React Bits is intentionally used as a visible front-end capability demonstration while preserving readability and evidence boundaries.
 
@@ -97,6 +99,27 @@ Rules:
 - pause/reduce motion for `prefers-reduced-motion`;
 - canvas must be pointer-transparent.
 
+### Waves
+
+Approved as the full-viewport animated background for:
+- the personal dossier;
+- the browser version of the ATS/PDF CV.
+
+Use the current React Bits Waves interaction model: layered lines plus pointer-driven deformation. For the IVORY ATLAS palette, use ice blue as the dominant line colour and olive as the accent. Keep opacity subordinate to content and disable/reduce animation under reduced-motion preferences.
+
+### Pixel Trail
+
+Approved as a restrained pointer trail for the ATS/PDF CV browser view and future technical UI surfaces.
+
+Rules:
+- use a single palette accent per surface; ATS/PDF uses olive `#93884B`;
+- trail canvas is pointer-transparent;
+- do not cover or replace text;
+- decay quickly;
+- cap DPR and density on mobile;
+- no trail in print;
+- if the exact upstream Three/Fiber/Drei runtime is disproportionate for a static GitHub Pages page, a lightweight 2D adaptation may be used, but document this in the page runtime contract.
+
 ### Logo Loop
 
 Use as a restrained rail for technologies/vendors **where context supports them**.
@@ -110,6 +133,18 @@ Prefer real SVG/image marks when a project-owned/licensed asset exists. Otherwis
 Never imply sponsorship, certification or partnership merely by showing a technology logo.
 
 ## Project-specific composition
+
+### ATS / PDF browser surface
+
+Compose with `skills/cv-ats-pdf/SKILL.md`.
+
+Required:
+- same IVORY ATLAS palette as the dossier;
+- Waves across the entire viewport;
+- Pixel Trail in olive;
+- palette details in toolbar, title rules, tags and project cards;
+- all effects behind semantic document content;
+- print mode strips the interactive layer and returns to a high-contrast document.
 
 ### Personal dossier
 
