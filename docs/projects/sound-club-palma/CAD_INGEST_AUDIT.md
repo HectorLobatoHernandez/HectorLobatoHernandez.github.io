@@ -123,3 +123,17 @@ The manifest contains SHA-256 values for source identity while keeping the actua
 5. Three.js keeps one camera/orbit state while switching DESIGN ↔ RENDER.
 6. Zone hotspots are enabled only after verified model coordinates exist.
 7. Raw DWG/SKP remain private and are never served by GitHub Pages.
+
+
+## Single-GLB runtime rule
+
+The web viewer now has one authoritative-geometry contract:
+
+- local conversion: `tools/sound-club/CONVERT_SKP_TO_GLB.ps1`;
+- candidate output: `assets/models/sound-club/_candidate/venue-master.glb` (gitignored);
+- public output after explicit QA/promotion: `assets/models/sound-club/venue-master.glb`;
+- DESIGN = neutral technical runtime material + edge overlay;
+- RENDER = original GLB materials/textures + warm runtime lighting;
+- camera, mesh, transforms and scale remain identical between modes.
+
+A conversion is not automatically a verification. Promotion requires visual QA plus DWG/SKP origin/alignment review.
