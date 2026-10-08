@@ -85,8 +85,24 @@ The converter records:
 - X/Y/Z extent in metres;
 - a venue-bounds plausibility gate.
 
-Default promotion limits:
-- horizontal X/Z extent: 500 m;
-- vertical Y extent: 150 m.
+Default public-web promotion limits:
+- horizontal X/Z extent: 120 m;
+- vertical Y extent: 40 m;
+- maximum GLB size: 95 MiB;
+- maximum geometry count: 20,000.
 
-Exceeding these values blocks promotion and normally indicates terrain, geolocation, remote components or stray geometry that must be isolated before public use.
+These are **web-delivery gates**, not claims about the physical venue envelope. Exceeding them blocks promotion and indicates that the candidate still needs spatial cleanup, merging, instancing, simplification or other optimization.
+
+## Candidate geometry analysis
+
+Run:
+
+```powershell
+.\tools\sound-club\ANALYZE_GLB_CANDIDATE.ps1
+```
+
+This creates two local/gitignored files:
+- `venue-master.analysis.json`
+- `venue-master.top-geometry.csv`
+
+The report identifies the largest meshes and the densest X/Z spatial cells so terrain, remote objects, site context and other outliers can be identified before destructive cleanup.

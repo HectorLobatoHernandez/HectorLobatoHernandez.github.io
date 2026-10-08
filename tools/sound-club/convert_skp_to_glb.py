@@ -41,10 +41,14 @@ def main() -> int:
                     help="Compatibility flag: keep textures disabled")
     ap.add_argument("--with-textures", action="store_true",
                     help="Attempt to embed textures. Not recommended for large SKP masters.")
-    ap.add_argument("--max-extent-m", type=float, default=500.0,
+    ap.add_argument("--max-extent-m", type=float, default=120.0,
                     help="Maximum accepted X/Z venue extent before promotion is blocked")
-    ap.add_argument("--max-height-m", type=float, default=150.0,
+    ap.add_argument("--max-height-m", type=float, default=40.0,
                     help="Maximum accepted Y venue extent before promotion is blocked")
+    ap.add_argument("--max-web-geometries", type=int, default=20000,
+                    help="Maximum accepted geometry count for public web promotion")
+    ap.add_argument("--max-web-mib", type=float, default=95.0,
+                    help="Hard maximum GLB size in MiB for public promotion")
     args = ap.parse_args()
 
     skp_path = args.skp.resolve()
@@ -147,6 +151,10 @@ def main() -> int:
             and extent_m[1] <= args.max_height_m
         )
 
+    web_size_ok = output_bytes <= args.max_web_mib * 1024 * 1024
+    web_geometry_ok = geometry_count <= args.max_web_geometries
+    web_ready = bool(bounds_plausible and web_size_ok and web_geometry_ok)
+
     report = {
         "schemaVersion": 1,
         "projectId": PROJECT_ID,
@@ -180,7 +188,14 @@ def main() -> int:
                 "maxHeightM": args.max_height_m,
                 "plausibleVenueBounds": bounds_plausible,
             },
-            "classification": "CANDIDATE_VERIFIED_GEOMETRY" if bounds_plausible else "CANDIDATE_REQUIRES_GEOMETRY_CLEANUP",
+            "webGate": {
+                "maxMiB": args.max_web_mib,
+                "sizeOk": web_size_ok,
+                "maxGeometries": args.max_web_geometries,
+                "geometryCountOk": web_geometry_ok,
+                "webReady": web_ready
+            },
+            "classification": "CANDIDATE_WEB_READY" if web_ready else "CANDIDATE_REQUIRES_WEB_OPTIMIZATION",
         },
         "qa": {
             "rawSkpPublished": False,
@@ -188,7 +203,10 @@ def main() -> int:
             "dwgOriginAlignmentRequired": True,
             "registeredMasterCheck": source_match,
             "boundsPlausible": bounds_plausible,
-            "publicPromotion": bool(args.promote_manifest and bounds_plausible),
+            "webSizeOk": web_size_ok,
+            "webGeometryCountOk": web_geometry_ok,
+            "webReady": web_ready,
+            "publicPromotion": bool(args.promote_manifest and web_ready),
         },
     }
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -212,6 +230,16 @@ def main() -> int:
                 "PROMOTION BLOCKED: GLB bounds are implausible for the venue. "
                 f"Extent (m) = {extent_m}. Remove/isolate geolocation, terrain or remote geometry "
                 "and regenerate the candidate before promotion."
+            )
+        if not web_size_ok:
+            raise SystemExit(
+                f"PROMOTION BLOCKED: GLB is {output_bytes / (1024*1024):.1f} MiB; "
+                f"public maximum is {args.max_web_mib:.1f} MiB."
+            )
+        if not web_geometry_ok:
+            raise SystemExit(
+                f"PROMOTION BLOCKED: GLB has {geometry_count} geometries; "
+                f"public maximum is {args.max_web_geometries}."
             )
         manifest_path = args.manifest.resolve()
         public_output = args.public_output.resolve()
