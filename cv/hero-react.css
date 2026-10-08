@@ -687,3 +687,5 @@ body.rb-system-theme .final h2.rb-doc-tech{
   .rb-tech-selection{transition:none!important}
   .rb-tech-char{transition:none!important}
 }
+
+.rb-tech-line{white-space:pre}.rb-tech-char.is-space{min-width:.28em}
