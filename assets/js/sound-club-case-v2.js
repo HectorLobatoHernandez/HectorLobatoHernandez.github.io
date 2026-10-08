@@ -6,7 +6,8 @@
   const MOTION_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json';
   const MODEL_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json';
   const SOURCE_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json';
-  const SECTIONS=['overview','spatial','audio','lighting','structure','dj','gallery','story','docs'];
+  const LOCAL_CANDIDATE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')&&new URLSearchParams(location.search).get('candidate')==='1';
+  const SECTIONS=['overview','spatial','phases','systems','audio','lighting','structure','dj','story','docs'];
   const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits','Three.js'];
 
   function useScrollProgress(){
@@ -138,6 +139,7 @@
 
     const model=models.find(x=>x.id===active)||models[0];
     const ready=Boolean(model?.status==='APPROVED'&&model?.src);
+    const candidate=Boolean(model?.classification==='LOCAL_CANDIDATE_NOT_VERIFIED');
     const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview.svg';
 
     useEffect(()=>{
@@ -273,7 +275,7 @@
           E('span',null,'SKP '+(source?.skp?.version||'24.0.594')),
           E('span',null,'UNIT '+(source?.skp?.unit||'Meter')),
           E('span',null,(source?.skp?.materials||499)+' MATERIALS'),
-          E('span',null,'DWG '+(source?.dwg?.dwgVersion||'AC1032'))
+          E('span',null,'DWG '+(source?.dwg?.dwgVersion||'AC1032')),candidate?E('span',{className:'ms-candidate-chip'},'LOCAL CANDIDATE · NOT VERIFIED'):null
         )
       ),
       E('div',{className:'ms-spatial-layout'},
@@ -287,7 +289,7 @@
                 E('small',null,'El SKP real está ingerido. Falta convertir y validar el GLB; no se sustituye por geometría ficticia.')
               )
             ),
-          E('div',{className:'ms-spatial-hud'},E('b',null,'ORBIT / PAN / ZOOM'),E('span',null,ready?(view==='design'?'Technical material + edges':'Original materials + warm light'):'Source preview · no fake geometry'))
+          E('div',{className:'ms-spatial-hud'},E('b',null,candidate?'LOCAL QA · ORBIT / PAN / ZOOM':'ORBIT / PAN / ZOOM'),E('span',null,ready?(candidate?'Candidate geometry · do not promote yet':(view==='design'?'Technical material + edges':'Original materials + warm light')):'Source preview · no fake geometry'))
         ),
         E('aside',{className:'ms-spatial-side'},
           E('p',{className:'ms-kicker'},'MODEL MAP'),
@@ -297,6 +299,49 @@
       ),
       E('div',{className:'ms-model-list ms-model-list-spatial'},...models.map(x=>E('button',{type:'button',key:x.id,className:'ms-model-option '+(x.id===model?.id?'active':''),onClick:()=>{setActive(x.id);setView('design')}},
         E('small',null,x.role),E('b',null,x.title),E('span',null,x.status)
+      )))
+    );
+  }
+
+  function DevelopmentPhases(){
+    const phases=[
+      ['P01','EXISTING SPACE / SURVEY','Existing architecture, ceiling, circulation, access, services and physical constraints.'],
+      ['P02','SPATIAL ZONING','Restaurant, bars, DJ, dance floor, VIP, exterior and technical positions.'],
+      ['P03','ACOUSTIC + AUDIO STRATEGY','Coverage, LF strategy, zoning, vibration paths and isolation constraints.'],
+      ['P04','LIGHTING + ATMOSPHERE','Decorative light, track spots, scene logic, dimming and night operation.'],
+      ['P05','CONTROL ARCHITECTURE','DSP, KNX, DALI, Gira X1, presets, feedback and user interaction.'],
+      ['P06','FABRICATION + INTEGRATION','DJ booth, technical furniture, suspended structure, cable routes and custom details.'],
+      ['P07','PROGRAMMING + COMMISSIONING','DSP routing, presets, scenes, dimming, control verification and troubleshooting.'],
+      ['P08','AS-BUILT + HANDOVER','Installed configuration, evidence, maintenance logic and future roadmap.']
+    ];
+    return E('section',{className:'ms-shell ms-section ms-phases',id:'phases'},
+      E('div',{className:'ms-decon-head','data-ms-reveal':''},
+        E('div',null,E('p',{className:'ms-kicker'},'03 / DEVELOPMENT PHASES'),E('h2',{className:'ms-title'},'From existing space to commissioned system.')),
+        E('p',{className:'ms-subtitle'},'El proyecto se presenta como una secuencia de decisiones verificables: analizar, zonificar, diseñar, coordinar, fabricar, programar y entregar.')
+      ),
+      E('div',{className:'ms-phase-grid'},...phases.map((p,i)=>E('article',{className:'ms-phase',key:p[0],'data-ms-reveal':''},
+        E('span',null,p[0]),E('small',null,String(i+1).padStart(2,'0')+' / 08'),E('h3',null,p[1]),E('p',null,p[2])
+      )))
+    );
+  }
+
+  function DisciplineMatrix(){
+    const disciplines=[
+      ['ARCH','Architecture / interior','Spatial organization, circulation, geometry and visual integration.'],
+      ['AUD','Audio / electroacoustics','DSP matrix, amplification, loudspeaker zoning, presets and limit strategy.'],
+      ['LGT','Lighting','Decorative DALI, track lighting, DJ strip, scene hierarchy and future DMX path.'],
+      ['CTL','Automation / control','KNX, DALI, Gira X1, user interfaces, states, feedback and commissioning.'],
+      ['ACO','Acoustic control','Isolation boundaries, vibration paths, suspension decoupling and treatment where documented.'],
+      ['FAB','Fabrication','DJ booth, custom furniture, wood / metal work, structural supports and service access.'],
+      ['NET','Serviceability','IP control, diagnostics, maintainability and expansion where documented.']
+    ];
+    return E('section',{className:'ms-shell ms-section ms-systems',id:'systems'},
+      E('div',{className:'ms-decon-head','data-ms-reveal':''},
+        E('div',null,E('p',{className:'ms-kicker'},'04 / SYSTEMS DECONSTRUCTION'),E('h2',{className:'ms-title'},'One space. Multiple coordinated layers.')),
+        E('p',{className:'ms-subtitle'},'La lectura técnica no separa oficios: muestra cómo arquitectura, audio, iluminación, control, acústica y fabricación se afectan mutuamente.')
+      ),
+      E('div',{className:'ms-discipline-grid'},...disciplines.map((d,i)=>E('article',{className:'ms-discipline',key:d[0],'data-ms-reveal':''},
+        E('span',{className:'ms-discipline-code'},d[0]),E('b',null,d[1]),E('p',null,d[2]),E('i',null,'LAYER '+String(i+1).padStart(2,'0'))
       )))
     );
   }
@@ -362,7 +407,23 @@
       fetch(MOTION_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch(MODEL_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
       fetch(SOURCE_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
-    ]).then(([m,s,mo,md,src])=>{setMedia(m);setStory(s);setMotion(mo);setModels(md);setSource(src)}).catch(e=>setError(String(e)))},[]);
+    ]).then(([m,s,mo,md,src])=>{
+      if(LOCAL_CANDIDATE&&md){
+        md=JSON.parse(JSON.stringify(md));
+        const master=(md.models||[]).find(x=>x.role==='ARCHITECTURE_MASTER');
+        if(master){
+          master.status='APPROVED';
+          master.src='../assets/models/sound-club/_candidate/venue-master.glb';
+          master.classification='LOCAL_CANDIDATE_NOT_VERIFIED';
+          if(master.views){
+            for(const key of ['design','render']){
+              if(master.views[key]){master.views[key].status='READY';master.views[key].src=master.src;}
+            }
+          }
+        }
+      }
+      setMedia(m);setStory(s);setMotion(mo);setModels(md);setSource(src)
+    }).catch(e=>setError(String(e)))},[]);
     useMotion(Boolean(media&&story));
 
     const mediaMap=useMemo(()=>new Map((media?.items||[]).filter(x=>x.publicSafe).map(x=>[x.id,x])),[media]);
@@ -373,7 +434,7 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__SOUND_CLUB_CASE__={version:'2.4',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
+    window.__SOUND_CLUB_CASE__={version:'3.0',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
@@ -389,17 +450,17 @@
           E('div',{className:'ms-hero-media','data-ms-parallax':''},hero?.src?E('img',{src:hero.src,alt:'SOUND CLUB and restaurant architectural concept board'}):null),
           E('div',{className:'ms-hero-shade'}),
           E('div',{className:'ms-shell ms-hero-copy','data-ms-reveal':''},
-            E('p',{className:'ms-kicker'},'AUDIO · LIGHTING · KNX/DALI · AS-BUILT'),
+            E('p',{className:'ms-kicker'},'ARCHITECTURE · AUDIO · LIGHTING · CONTROL · ACOUSTICS · FABRICATION'),
             E('h1',null,'SOUND CLUB and restaurant',E('span',null,'(CLUB del MAR) Palma de Mallorca')),
-            E('p',{className:'ms-lead'},'Integración multidisciplinar de audio profesional, iluminación, automatización, fabricación técnica y control vibratorio para un espacio hospitality / club de operación día-noche.'),
+            E('p',{className:'ms-lead'},'Deconstruction of space, systems and execution. Del plano CAD a la geometría 3D, de las capas técnicas a la programación y del detalle constructivo a la experiencia final.'),
             E('div',{className:'ms-hero-meta'},...['Ecler MIMO88','Lynx GTX DSP','KNX + DALI','Gira X1','Custom fabrication','Commissioning'].map(x=>E(Pill,{key:x},x)))
           ),
           E('aside',{className:'ms-proof'},E('b',null,'PUBLIC EVIDENCE MODEL'),'Solo se muestran activos publicSafe. Fotos y vídeos originales permanecen como PRIVATE_REFERENCE_ONLY.')
         ),
 
         E('section',{className:'ms-shell ms-section',id:'overview'},
-          E('div',{className:'ms-overview-head','data-ms-reveal':''},E('div',null,E('p',{className:'ms-kicker'},'01 / PROJECT OVERVIEW'),E('h2',{className:'ms-title'},'Space, function and atmosphere.')),
-            E('p',{className:'ms-subtitle'},'Restaurante, lounge, DJ, pista y terraza coordinados como una única arquitectura de sistemas. El objetivo: que audio, iluminación, automatización y documentación funcionen como una instalación mantenible y legible.')),
+          E('div',{className:'ms-overview-head','data-ms-reveal':''},E('div',null,E('p',{className:'ms-kicker'},'01 / EXISTING SPACE · CAD DEPTH'),E('h2',{className:'ms-title'},'Read the space before adding systems.')),
+            E('p',{className:'ms-subtitle'},'El dossier empieza por la geometría, las restricciones y la zonificación. Sobre esa base se superponen acústica, audio, iluminación, control, fabricación y commissioning como capas coordinadas.')),
           E('div',{className:'ms-grid ms-metrics'},
             E(Metric,{value:'326.23 m²',label:'Superficie interior aproximada',note:'documentado'}),
             E(Metric,{value:'137.08 m²',label:'Superficie exterior aproximada',note:'documentado'}),
@@ -408,6 +469,10 @@
           ),
           E('div',{className:'ms-evidence','data-ms-reveal':''},E('b',null,'MASTER PIPELINE'),'DWG + SKP → geometría verificada → planos → modelo web → exploded components → iluminación 2300 K → secuencias XXXIA → GitHub.')
         ),
+
+        E(SpatialExplorer,{manifest:models,source}),
+        E(DevelopmentPhases),
+        E(DisciplineMatrix),
 
         E('section',{className:'ms-shell ms-section',id:'audio'},
           E('div',{className:'ms-split'},
@@ -473,7 +538,6 @@
           )
         ),
 
-        E(SpatialExplorer,{manifest:models,source}),
         E(BounceGallery,{items:bounceItems}),
         E(Story,{story,mediaMap,motion}),
 
@@ -490,7 +554,7 @@
             E(Card,{label:'NEXT',title:'Verified geometry promotion',body:'DWG + SKP → alignment / units / origin QA → verified master → web model / exploded / frame-locked sequence.'})
           )
         ),
-        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'SOUND CLUB and restaurant · (CLUB del MAR) Palma de Mallorca · CASE V2.4 · PUBLIC CASE'))
+        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'SOUND CLUB and restaurant · (CLUB del MAR) Palma de Mallorca · CASE V3.0 · TECHNICAL DECONSTRUCTION'))
       )
     );
   }
