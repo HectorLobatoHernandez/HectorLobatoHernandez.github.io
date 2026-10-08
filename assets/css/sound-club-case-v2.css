@@ -93,9 +93,9 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
 
 
 /* CAD master background + dimension cursor */
-:root{--cad-x:50vw;--cad-y:50vh}
+:root{--cad-x:50vw;--cad-y:50vh;--cad-pan-x:0px;--cad-pan-y:0px}
 .ms-cad-layer{position:fixed;inset:64px 0 0;z-index:0;pointer-events:none;overflow:hidden;opacity:.95}
-.ms-cad-plan{position:absolute;inset:-5%;background:url("../visuals/sound-club-cad-blueprint.svg") center 38%/cover no-repeat;opacity:.18;filter:saturate(.42) contrast(1.08);transform:scale(1.04)}
+.ms-cad-plan{position:absolute;inset:-5%;background:url("../visuals/sound-club-cad-blueprint.svg") center 38%/cover no-repeat;opacity:.18;filter:saturate(.42) contrast(1.08);transform:translate(var(--cad-pan-x),var(--cad-pan-y)) scale(1.05);transition:transform .18s ease-out}
 .ms-cad-layer:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--cad-x) var(--cad-y),rgba(89,217,221,.055),transparent 18vw),linear-gradient(90deg,rgba(7,16,14,.92),rgba(7,16,14,.55) 36%,rgba(7,16,14,.62) 70%,rgba(7,16,14,.92))}
 .ms-cad-axis{position:fixed;z-index:2;display:block;background:rgba(144,166,173,.19)}
 .ms-cad-axis-x{left:0;right:0;top:var(--cad-y);height:1px}
