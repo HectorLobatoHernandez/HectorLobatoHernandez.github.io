@@ -4,9 +4,19 @@ This tool converts the private SketchUp master locally. The raw `.skp` is never 
 
 ## Candidate conversion
 
+The default web candidate exports **geometry + material colours without embedded texture images**. This is deliberate: the interactive GLB stays lightweight while V-Ray/material-lighting appearance remains in the matched-camera render pipeline.
+
 ```powershell
 .\tools\sound-club\CONVERT_SKP_TO_GLB.ps1 -SkpPath "C:\path\to\master.skp"
 ```
+
+For diagnostics only on smaller models:
+
+```powershell
+.\tools\sound-club\CONVERT_SKP_TO_GLB.ps1 -SkpPath "C:\path\to\master.skp" -WithTextures
+```
+
+If a textured export exhausts memory, the Python exporter retries automatically without embedded textures.
 
 Output:
 - `assets/models/sound-club/_candidate/venue-master.glb`
@@ -31,7 +41,7 @@ Promotion:
 One verified GLB is authoritative.
 
 - **DESIGN**: Three.js applies neutral technical materials + edge overlay.
-- **RENDER**: Three.js restores the original GLB materials/textures and uses warm presentation lighting.
+- **RENDER**: Three.js uses the verified GLB geometry with presentation lighting; photorealistic V-Ray appearance is shown through matched-camera render stills.
 - Camera, transforms and geometry are identical in both modes.
 
 Blender remains optional for later material authoring/baking. It must not change authoritative geometry.
@@ -40,7 +50,7 @@ Blender remains optional for later material authoring/baking. It must not change
 
 Pinned conversion engine: `openskp==1.3.0`.
 
-OpenSKP reads modern SketchUp VFF files and exports GLB. The exporter uses glTF Y-up and numeric millimetres. Textures are embedded by default in this project pipeline.
+OpenSKP reads modern SketchUp VFF files and exports GLB. The exporter uses glTF Y-up and numeric millimetres. Textures are **not embedded by default** in this project pipeline. V-Ray/material appearance belongs to the matched-camera render pipeline; GLB is the interactive geometry source.
 
 
 ## Local candidate inspection
