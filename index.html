@@ -38,7 +38,7 @@ body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Ari
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
 @media print{.dos-nav,.progress,.hero-actions,.project-links{display:none!important}body.dossier{background:white;color:#111}.dos-shell{width:94%}.hero{min-height:auto;grid-template-columns:1fr 250px;padding:20px 0}.hero h1{font-size:70px}.section,.project-chapter,.final{padding:28px 0}.project-chapter{grid-template-columns:280px 1fr;break-inside:avoid}.project-visual{position:relative;top:auto}.cap-grid{grid-template-columns:repeat(3,1fr)}.method{grid-template-columns:repeat(5,1fr)}.archive{grid-template-columns:repeat(2,1fr)}}
 </style>
-<link rel="stylesheet" href="hero-react.css?v=6">
+<link rel="stylesheet" href="hero-react.css?v=7">
 </head>
 <body class="dossier rb-system-theme">
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -155,7 +155,7 @@ body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Ari
 <footer class="footer dos-shell"><span>© 2026 Héctor Lobato · Systems Integration & Automation</span><span>Atelier × Swiss Grid × Technical Monograph × Scroll narrative</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-<script src="hero-react.js?v=6"></script>
+<script src="hero-react.js?v=7"></script>
 <script>
 const p=document.getElementById('progress');
 const update=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;p.style.width=(m>0?Math.min(100,scrollY/m*100):0)+'%'};
