@@ -29,7 +29,13 @@ CAD/SKP master
   -> GitHub public release
 ```
 
-Original source photos/videos are private references. Do not commit, link or publish them.
+Original source photos/videos and raw CAD/SKP are private references. Do not commit, link or publish them.
+
+### Current master-source ingest
+- DWG: AC1032, ingested as private master; public background uses only a derived preview. DWG units are not asserted from the binary preview.
+- SKP: SketchUp 24.0.594, unit = Meter, ingested as private master.
+- SKP archive inspection: 499 materials, 83 component thumbnails, 110 texture assets; browser geometry remains pending verified GLB export.
+- DESIGN and RENDER web variants must derive from the same verified geometry and origin.
 
 ## Confirmed / documented project facts
 
@@ -99,16 +105,20 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 - Case: `projects/sound-club-palma.html`
 - Legacy case redirect: `projects/sound-club-palma.html`
 - React visual explorer: `projects/sound-club-visuals.html`
-- React case runtime: `assets/js/sound-club-palma-case.js`
-- React case styling: `assets/css/sound-club-palma-case.css`
-- Page-specific skill: `skills/sound-club-palma-react-scroll/SKILL.md`
+- React case runtime: `assets/js/sound-club-case-v2.js`
+- React case styling: `assets/css/sound-club-case-v2.css`
+- Page-specific skill: `skills/sound-club-react-scroll/SKILL.md`
+- Source ingest metadata: `xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json`
+- Model manifest: `xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json`
+- Derived CAD background: `assets/visuals/sound-club-cad-blueprint.svg`
+- Derived SKP preview: `assets/visuals/sound-club-skp-line-preview.svg`
 - Media registry: `xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json`
 - Story: `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
 - XXXIA archive: `xxxia-studio/projects/sound-club-palma/`
 
 ## Rules for agents
 
-1. Read this skill plus `skills/sound-club-palma-react-scroll/SKILL.md` before changing the public case.
+1. Read this skill plus `skills/sound-club-react-scroll/SKILL.md` before changing the public case.
 2. Understand existing code/data before modifying it.
 3. Keep React as the page component/runtime layer.
 4. Preserve evidence/provenance labels.
@@ -117,3 +127,5 @@ Generated diagrams remain diagrammatic. A CAD/PDF drawing becomes `VERIFIED_DRAW
 7. Resolve technical contradictions explicitly instead of silently choosing whichever value looks convenient.
 8. Do not start paid XXXIA/Scroll World motion rendering without explicit user approval.
 9. Run the Sound Club and restaurant QA checklist after every media/story promotion.
+10. Never present viewport cursor coordinates as real CAD dimensions before vector calibration.
+11. Preserve one camera/origin across DESIGN and RENDER model variants.

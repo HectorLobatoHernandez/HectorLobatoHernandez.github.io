@@ -5,8 +5,9 @@
   const STORY_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json';
   const MOTION_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json';
   const MODEL_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json';
-  const SECTIONS=['overview','audio','lighting','structure','dj','models','gallery','story','docs'];
-  const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits'];
+  const SOURCE_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json';
+  const SECTIONS=['overview','spatial','audio','lighting','structure','dj','gallery','story','docs'];
+  const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits','Three.js'];
 
   function useScrollProgress(){
     const [p,setP]=useState(0);
@@ -100,31 +101,149 @@
     );
   }
 
-  function ModelViewerSection({manifest,mediaMap}){
+  function CADBlueprintLayer(){
+    const labelRef=useRef(null);
+    useEffect(()=>{
+      const root=document.documentElement;
+      let raf=0,x=.5,y=.5;
+      const paint=()=>{
+        raf=0;
+        root.style.setProperty('--cad-x',(x*100).toFixed(3)+'vw');
+        root.style.setProperty('--cad-y',(y*100).toFixed(3)+'vh');
+        root.style.setProperty('--cad-pan-x',((.5-x)*18).toFixed(2)+'px');
+        root.style.setProperty('--cad-pan-y',((.5-y)*12).toFixed(2)+'px');
+        if(labelRef.current)labelRef.current.textContent='REF X '+(x*100).toFixed(1)+' / Y '+(y*100).toFixed(1);
+      };
+      const move=e=>{x=Math.min(1,Math.max(0,e.clientX/Math.max(1,innerWidth)));y=Math.min(1,Math.max(0,e.clientY/Math.max(1,innerHeight)));if(!raf)raf=requestAnimationFrame(paint)};
+      paint();addEventListener('pointermove',move,{passive:true});
+      return()=>{removeEventListener('pointermove',move);if(raf)cancelAnimationFrame(raf)}
+    },[]);
+    return E('div',{className:'ms-cad-layer','aria-hidden':'true'},
+      E('div',{className:'ms-cad-plan'}),
+      E('i',{className:'ms-cad-axis ms-cad-axis-x'}),
+      E('i',{className:'ms-cad-axis ms-cad-axis-y'}),
+      E('i',{className:'ms-cad-cross'}),
+      E('span',{className:'ms-cad-readout',ref:labelRef},'REF X 50.0 / Y 50.0'),
+      E('span',{className:'ms-cad-source'},'DWG DERIVED PREVIEW · REFERENCE ONLY')
+    );
+  }
+
+  function SpatialExplorer({manifest,source}){
     const models=manifest?.models||[];
     const [active,setActive]=useState(models.find(x=>x.default)?.id||models[0]?.id||null);
+    const [view,setView]=useState('design');
+    const stageRef=useRef(null);
+    const runtimeRef=useRef(null);
     useEffect(()=>{if(!active&&models[0])setActive(models[0].id)},[models.length,active]);
     const model=models.find(x=>x.id===active)||models[0];
-    const poster=model?mediaMap.get(model.posterMediaId):null;
-    const ready=Boolean(model?.status==='APPROVED'&&model?.src);
+    const design=model?.views?.design||{status:model?.status,src:model?.src};
+    const render=model?.views?.render||{status:'PENDING_GLB',src:null};
+    const designReady=Boolean(design?.status==='APPROVED'&&design?.src);
+    const renderReady=Boolean(render?.status==='APPROVED'&&render?.src);
+    const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview.svg';
+
     useEffect(()=>{
-      if(!ready||customElements.get('model-viewer'))return;
-      import('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').catch(()=>{});
-    },[ready]);
-    return E('section',{className:'ms-shell ms-section',id:'models'},
-      E('div',{className:'ms-model-head','data-ms-reveal':''},
-        E('div',null,E('p',{className:'ms-kicker'},'06 / INTERACTIVE MODELS'),E('h2',{className:'ms-title'},'SketchUp → verified GLB → web.')),
-        E('p',{className:'ms-subtitle'},'El navegador no sirve los .SKP/.DWG originales. El visor se activa cuando la geometría verificada se exporta a GLB/glTF; hasta entonces muestra el poster técnico correspondiente.')
+      const host=stageRef.current;
+      if(!host||( !designReady && !renderReady))return;
+      let disposed=false,raf=0,renderer=null,controls=null;
+      host.innerHTML='';
+      Promise.all([
+        import('three'),
+        import('three/addons/loaders/GLTFLoader.js'),
+        import('three/addons/controls/OrbitControls.js')
+      ]).then(async([THREE,{GLTFLoader},{OrbitControls}])=>{
+        if(disposed)return;
+        const scene=new THREE.Scene();
+        scene.background=new THREE.Color(0x08100e);
+        const camera=new THREE.PerspectiveCamera(42,1,.01,2000);
+        camera.position.set(6,4.2,7.5);
+        renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
+        renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.7));
+        renderer.outputColorSpace=THREE.SRGBColorSpace;
+        renderer.toneMapping=THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure=1.0;
+        host.appendChild(renderer.domElement);
+        controls=new OrbitControls(camera,renderer.domElement);
+        controls.enableDamping=true;
+        controls.dampingFactor=.07;
+        controls.target.set(0,1.2,0);
+        scene.add(new THREE.HemisphereLight(0xdde7e4,0x26302b,1.65));
+        const key=new THREE.DirectionalLight(0xffe1b6,2.0);key.position.set(6,10,8);scene.add(key);
+        const fill=new THREE.DirectionalLight(0x8db9c2,.9);fill.position.set(-7,4,-5);scene.add(fill);
+        const loader=new GLTFLoader();
+        const load=src=>src?new Promise((resolve,reject)=>loader.load(src,g=>resolve(g.scene),undefined,reject)):Promise.resolve(null);
+        const [designGroup,renderGroup]=await Promise.all([load(design?.src),load(render?.src)]);
+        if(disposed)return;
+        if(designGroup){designGroup.name='DESIGN';scene.add(designGroup)}
+        if(renderGroup){renderGroup.name='RENDER';scene.add(renderGroup)}
+        const fitTarget=designGroup||renderGroup;
+        if(fitTarget){
+          const box=new THREE.Box3().setFromObject(fitTarget),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+          fitTarget.position.sub(center);
+          if(renderGroup&&renderGroup!==fitTarget)renderGroup.position.sub(center);
+          const radius=Math.max(size.x,size.y,size.z)*.72||5;
+          camera.position.set(radius*1.15,radius*.78,radius*1.35);
+          controls.target.set(0,0,0);
+          camera.near=Math.max(.01,radius/1000);camera.far=Math.max(100,radius*20);camera.updateProjectionMatrix();
+        }
+        runtimeRef.current={designGroup,renderGroup,scene,camera,THREE};
+        const resize=()=>{const w=host.clientWidth||1,h=host.clientHeight||1;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};
+        const ro=new ResizeObserver(resize);ro.observe(host);resize();
+        const loop=()=>{if(disposed)return;controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(loop)};loop();
+        runtimeRef.current.cleanup=()=>ro.disconnect();
+        runtimeRef.current.view=view;
+        if(designGroup)designGroup.visible=view==='design';
+        if(renderGroup)renderGroup.visible=view==='render';
+      }).catch(err=>{console.error('SpatialExplorer',err);host.dataset.error='three-load'});
+      return()=>{disposed=true;cancelAnimationFrame(raf);runtimeRef.current?.cleanup?.();controls?.dispose?.();renderer?.dispose?.();if(host)host.innerHTML='';runtimeRef.current=null}
+    },[model?.id,design?.src,render?.src,designReady,renderReady]);
+
+    useEffect(()=>{
+      const rt=runtimeRef.current;if(!rt)return;
+      if(rt.designGroup)rt.designGroup.visible=view==='design';
+      if(rt.renderGroup)rt.renderGroup.visible=view==='render';
+      rt.view=view;
+    },[view]);
+
+    const zones=model?.zones||[];
+    const activeReady=view==='design'?designReady:renderReady;
+    const anyReady=designReady||renderReady;
+    return E('section',{className:'ms-shell ms-section',id:'spatial'},
+      E('div',{className:'ms-spatial-head','data-ms-reveal':''},
+        E('div',null,E('p',{className:'ms-kicker'},'02 / SPATIAL MODEL EXPLORER'),E('h2',{className:'ms-title'},'Design ↔ Render. Same geometry, same camera.')),
+        E('p',{className:'ms-subtitle'},'El SKP privado ya está ingerido. El runtime público usa Three.js y sólo cargará GLB verificados. DESIGN mostrará geometría técnica; RENDER, los mismos objetos con materiales e iluminación terminada.')
       ),
-      E('div',{className:'ms-model-layout'},
-        E('div',{className:'ms-model-stage','data-model-status':model?.status||'NONE'},
-          ready?E('model-viewer',{src:model.src,poster:poster?.src||'',alt:model.title,'camera-controls':'','auto-rotate':'','shadow-intensity':'1','environment-image':'neutral'}):
-            E(React.Fragment,null,poster?.src?E('img',{src:poster.src,alt:poster.title}):null,E('div',{className:'ms-model-pending'},E('strong',null,'MODEL PENDING VERIFIED GLB'),E('span',null,model?.title||'Geometry pending'),E('small',null,model?.sourceIntent||'')))
+      E('div',{className:'ms-spatial-toolbar'},
+        E('div',{className:'ms-view-toggle'},
+          E('button',{type:'button',className:view==='design'?'active':'',onClick:()=>setView('design'),'aria-pressed':view==='design'},'DESIGN',E('small',null,designReady?'READY':'GLB PENDING')),
+          E('button',{type:'button',className:view==='render'?'active':'',onClick:()=>setView('render'),'aria-pressed':view==='render'},'RENDER',E('small',null,renderReady?'READY':'GLB PENDING'))
         ),
-        E('div',{className:'ms-model-list'},...models.map(x=>E('button',{type:'button',key:x.id,className:'ms-model-option '+(x.id===model?.id?'active':''),onClick:()=>setActive(x.id)},
-          E('small',null,x.role),E('b',null,x.title),E('span',null,x.status)
-        )))
-      )
+        E('div',{className:'ms-source-strip'},
+          E('span',null,'SKP '+(source?.skp?.version||'24.0.594')),
+          E('span',null,'UNIT '+(source?.skp?.unit||'Meter')),
+          E('span',null,(source?.skp?.materials||499)+' MATERIALS'),
+          E('span',null,'DWG '+(source?.dwg?.dwgVersion||'AC1032'))
+        )
+      ),
+      E('div',{className:'ms-spatial-layout'},
+        E('div',{className:'ms-spatial-stage','data-view':view,'data-ready':activeReady?'true':'false'},
+          anyReady?E('div',{className:'ms-three-host',ref:stageRef}):E('img',{className:'ms-skp-preview',src:preview,alt:'Derived line preview of the private SketchUp master model'}),
+          !activeReady?E('div',{className:'ms-spatial-pending'},
+            E('strong',null,view.toUpperCase()+' · VERIFIED GLB PENDING'),
+            E('span',null,model?.title||'Venue / Master Architecture'),
+            E('small',null,view==='design'?'El preview procede del SKP real; todavía no se presenta como geometría web verificable.':'El render final no se simula: se activará cuando Blender/GLB comparta exactamente la geometría verificada del modo DESIGN.')
+          ):null,
+          E('div',{className:'ms-spatial-hud'},E('b',null,'ORBIT / PAN / ZOOM'),E('span',null,activeReady?'Interactive Three.js scene':(anyReady?'Camera retained · selected view pending':'Source preview · no fake geometry')))
+        ),
+        E('aside',{className:'ms-spatial-side'},
+          E('p',{className:'ms-kicker'},'MODEL MAP'),
+          ...zones.map(z=>E('button',{type:'button',key:z.id,disabled:z.status!=='READY',className:'ms-zone-link'},E('b',null,z.label),E('span',null,z.status==='READY'?'FOCUS':'COORDS PENDING'))),
+          E('div',{className:'ms-spatial-rule'},E('b',null,'Geometry rule'),E('p',null,'DESIGN y RENDER no pueden divergir. Blender es etapa de authoring; Three.js es el runtime público.'))
+        )
+      ),
+      E('div',{className:'ms-model-list ms-model-list-spatial'},...models.map(x=>E('button',{type:'button',key:x.id,className:'ms-model-option '+(x.id===model?.id?'active':''),onClick:()=>{setActive(x.id);setView('design')}},
+        E('small',null,x.role),E('b',null,x.title),E('span',null,x.status)
+      )))
     );
   }
 
@@ -181,14 +300,15 @@
   }
 
   function App(){
-    const [media,setMedia]=useState(null),[story,setStory]=useState(null),[motion,setMotion]=useState(null),[models,setModels]=useState(null),[error,setError]=useState('');
+    const [media,setMedia]=useState(null),[story,setStory]=useState(null),[motion,setMotion]=useState(null),[models,setModels]=useState(null),[source,setSource]=useState(null),[error,setError]=useState('');
     const progress=useScrollProgress();const active=useActiveSection(Boolean(media&&story));
     useEffect(()=>{Promise.all([
       fetch(MEDIA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('media '+r.status);return r.json()}),
       fetch(STORY_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('story '+r.status);return r.json()}),
       fetch(MOTION_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch(MODEL_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
-    ]).then(([m,s,mo,md])=>{setMedia(m);setStory(s);setMotion(mo);setModels(md)}).catch(e=>setError(String(e)))},[]);
+      fetch(MODEL_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch(SOURCE_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+    ]).then(([m,s,mo,md,src])=>{setMedia(m);setStory(s);setMotion(mo);setModels(md);setSource(src)}).catch(e=>setError(String(e)))},[]);
     useMotion(Boolean(media&&story));
 
     const mediaMap=useMemo(()=>new Map((media?.items||[]).filter(x=>x.publicSafe).map(x=>[x.id,x])),[media]);
@@ -199,14 +319,15 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__SOUND_CLUB_CASE__={version:'2.3',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
+    window.__SOUND_CLUB_CASE__={version:'2.4',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
+      E(CADBlueprintLayer),
       E('header',{className:'ms-topbar'},E('div',{className:'ms-topbar-in'},
         E('a',{className:'ms-brand',href:'../index.html#projects'},'HL',E('small',null,'Systems / Architecture portfolio')),
         E('div',{className:'ms-stack'},...STACK.map(x=>E('span',{key:x},x))),
-        E('nav',{className:'ms-toplinks'},E('a',{href:'#models'},'Models'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
+        E('nav',{className:'ms-toplinks'},E('a',{href:'#spatial'},'Spatial'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
       )),
       E(ChapterRail,{active}),
       E('main',{className:'ms-page'},
@@ -236,7 +357,7 @@
 
         E('section',{className:'ms-shell ms-section',id:'audio'},
           E('div',{className:'ms-split'},
-            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'02 / AUDIO ARCHITECTURE'),E('h2',{className:'ms-title'},'Power, clarity and control.'),
+            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'03 / AUDIO ARCHITECTURE'),E('h2',{className:'ms-title'},'Power, clarity and control.'),
               E('p',{className:'ms-subtitle'},'Matriz DSP central, amplificación dedicada y separación operacional Interior / Exterior, con presets Restaurante / Club y arquitectura preparada para limitación homologada por zona.'),
               E('div',{className:'ms-zone-row'},...['Interior','Exterior','Restaurant preset','Club preset'].map(x=>E('span',{className:'ms-zone',key:x},x)))
             ),
@@ -255,7 +376,7 @@
         ),
 
         E('section',{className:'ms-shell ms-section',id:'lighting'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'03 / LIGHTING & CONTROL'),E('h2',{className:'ms-title'},'Atmosphere in every moment.'),E('p',{className:'ms-subtitle'},'Control central Gira X1, KNX + DALI, escenas hospitality/club, colgantes decorativos, spots de pista y previsión de ampliación DMX.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'04 / LIGHTING & CONTROL'),E('h2',{className:'ms-title'},'Atmosphere in every moment.'),E('p',{className:'ms-subtitle'},'Control central Gira X1, KNX + DALI, escenas hospitality/club, colgantes decorativos, spots de pista y previsión de ampliación DMX.')),
           E('div',{className:'ms-control-layout'},
             E('div',{className:'ms-control-list'},
               E(Card,{label:'SUPERVISION',title:'Gira X1',body:'Visualización y control centralizado.'}),
@@ -289,7 +410,7 @@
         ),
 
         E('section',{className:'ms-shell ms-section',id:'dj'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'05 / DJ BOOTH · TECHNICAL FURNITURE'),E('h2',{className:'ms-title'},'A central technical object.'),E('p',{className:'ms-subtitle'},'La cabina circular combina estructura, encimera, aislamiento vibratorio, acometidas, iluminación y servicio técnico. La geometría generada permanece separada de las cotas documentadas.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'06 / DJ BOOTH · TECHNICAL FURNITURE'),E('h2',{className:'ms-title'},'A central technical object.'),E('p',{className:'ms-subtitle'},'La cabina circular combina estructura, encimera, aislamiento vibratorio, acometidas, iluminación y servicio técnico. La geometría generada permanece separada de las cotas documentadas.')),
           E('div',{className:'ms-dj-grid'},
             E(Figure,{item:dj,caption:'GENERATED CONCEPT · not authoritative geometry',depth:true}),
             E('div',{className:'ms-dj-stack'},E(Figure,{item:djPlan,contain:true,caption:'DOCUMENTED DIMENSIONS · diagrammatic geometry'}),
@@ -298,7 +419,7 @@
           )
         ),
 
-        E(ModelViewerSection,{manifest:models,mediaMap}),
+        E(SpatialExplorer,{manifest:models,source}),
         E(BounceGallery,{items:bounceItems}),
         E(Story,{story,mediaMap,motion}),
 
@@ -307,6 +428,7 @@
           E('div',{className:'ms-doc-grid'},
             E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
             E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
+            E('a',{className:'ms-doc',href:'../xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json'},E('i',null,'SOURCE INGEST'),E('b',null,'DWG + SKP master metadata'),E('span',null,'Version, units, hashes and GLB promotion gate →')),
             E('a',{className:'ms-doc',href:'../index.html#projects'},E('i',null,'PORTFOLIO'),E('b',null,'Selected projects'),E('span',null,'Return to the public portfolio →'))
           ),
           E('div',{className:'ms-motion'},
@@ -314,7 +436,7 @@
             E(Card,{label:'NEXT',title:'Verified geometry promotion',body:'DWG + SKP → alignment / units / origin QA → verified master → web model / exploded / frame-locked sequence.'})
           )
         ),
-        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'SOUND CLUB and restaurant · (CLUB del MAR) Palma de Mallorca · CASE V2.3 · PUBLIC CASE'))
+        E('footer',{className:'ms-shell ms-foot'},E('span',null,'© 2026 Héctor Lobato'),E('span',null,'SOUND CLUB and restaurant · (CLUB del MAR) Palma de Mallorca · CASE V2.4 · PUBLIC CASE'))
       )
     );
   }
