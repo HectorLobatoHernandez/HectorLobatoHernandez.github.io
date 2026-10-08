@@ -81,7 +81,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      if(state.dossier?.schemaVersion!==3||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossier?.schemaVersion!==4||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
       if(state.dossierProjects!==3||state.dossierArchive!==8||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
       const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
       if(state.hero?.schemaVersion!==2||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
@@ -126,9 +126,10 @@ await rootPage.waitForTimeout(650);
 const rootState=await rootPage.evaluate(()=>({
   path:location.pathname,
   hero:!!document.querySelector('[data-reactbits-hero="true"]'),
-  title:document.title
+  title:document.title,
+  oldPortfolioNav:[...document.querySelectorAll('a')].some(a=>/Portfolio actual|Portfolio clásico|Portfolio ↗/.test(a.textContent||''))
 }));
-if(rootState.path!=='/cv/dossier.html'||!rootState.hero||!rootState.title.includes('Dossier'))failures.push('Public root must resolve to canonical dossier: '+JSON.stringify(rootState));
+if(rootState.path!=='/'||!rootState.hero||!rootState.title.includes('Dossier')||rootState.oldPortfolioNav)failures.push('Public root must serve canonical dossier directly without old portfolio links: '+JSON.stringify(rootState));
 await rootPage.close();
 
 const other=await browser.newPage();

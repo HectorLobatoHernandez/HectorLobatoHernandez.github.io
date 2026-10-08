@@ -42,4 +42,4 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 ## 9. Dirección visual canónica
 
-El dossier usa fondo negro real y una escala fría de grises inspirada en Pantone Cool Gray. El nombre **Héctor Lobato** con TechText es la identidad visual dominante de la primera pantalla. No usar el portfolio clásico como entrada principal; se conserva únicamente como archivo histórico interno del repositorio.
+El dossier usa fondo negro real y una escala fría de grises inspirada en Pantone Cool Gray. El nombre **Héctor Lobato** con TechText es la identidad visual dominante de la primera pantalla. El portfolio clásico ya no forma parte de la entrada pública ni se conserva como página HTML activa. La raíz sirve directamente el dossier.

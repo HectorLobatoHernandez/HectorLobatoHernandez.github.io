@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root{
-  --rb-bg:#050706;
-  --rb-bg-2:#080b09;
-  --rb-panel:rgba(20,29,24,.76);
-  --rb-panel-solid:#151e18;
-  --rb-ink:#f2efe6;
-  --rb-soft:#a8b2a9;
-  --rb-muted:#748078;
-  --rb-sage:#b8c99f;
-  --rb-gold:#c59a67;
-  --rb-line:rgba(242,239,230,.14);
-  --rb-line-strong:rgba(242,239,230,.28);
+  --rb-bg:#000000;
+  --rb-bg-2:#050505;
+  --rb-panel:rgba(83,86,90,.18);
+  --rb-panel-solid:#0a0a0a;
+  --rb-ink:#d9d9d6;
+  --rb-soft:#b1b3b3;
+  --rb-muted:#75787b;
+  --rb-sage:#c8c9c7;
+  --rb-gold:#97999b;
+  --rb-line:rgba(217,217,214,.13);
+  --rb-line-strong:rgba(217,217,214,.28);
 }
 
 /* ---------- full-page React Bits system ---------- */
@@ -26,18 +26,18 @@ body.dossier.rb-system-theme{
   --cream:var(--rb-panel-solid);
   margin:0;
   background:
-    radial-gradient(circle at 77% 11%,rgba(184,201,159,.055),transparent 30%),
-    linear-gradient(180deg,#050706 0%,#070a08 34%,#050706 100%)!important;
+    radial-gradient(circle at 77% 11%,rgba(217,217,214,.035),transparent 30%),
+    linear-gradient(180deg,#000000 0%,#030303 34%,#000000 100%)!important;
   color:var(--rb-ink)!important;
   font-family:"Space Grotesk",Arial,sans-serif!important;
 }
 body.dossier.rb-system-theme main,
 body.dossier.rb-system-theme footer{position:relative;z-index:3}
-body.dossier.rb-system-theme main{background:linear-gradient(180deg,rgba(5,7,6,.08),rgba(5,7,6,.42) 13%,rgba(5,7,6,.72) 46%,rgba(5,7,6,.88))}
+body.dossier.rb-system-theme main{background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.20) 13%,rgba(0,0,0,.42) 46%,rgba(0,0,0,.64))}
 .rb-global-effects{position:fixed;z-index:0;inset:0;pointer-events:none;overflow:hidden}
 .rb-global-effects .rb-canvas{position:absolute;inset:0;width:100%;height:100%}
-.rb-global-effects .rb-waves{opacity:.075;mix-blend-mode:screen}
-.rb-global-effects .rb-particles{opacity:.72}
+.rb-global-effects .rb-waves{opacity:.055;mix-blend-mode:screen;filter:grayscale(1)}
+.rb-global-effects .rb-particles{opacity:.84;filter:grayscale(1)}
 .rb-page-vignette{position:absolute;inset:0;background:
   radial-gradient(circle at 72% 16%,transparent 0 20%,rgba(5,7,6,.08) 40%,rgba(5,7,6,.34) 78%),
   linear-gradient(90deg,rgba(5,7,6,.44),rgba(5,7,6,.08) 60%,rgba(5,7,6,.30));}

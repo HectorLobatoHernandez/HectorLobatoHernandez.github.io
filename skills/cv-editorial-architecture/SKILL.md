@@ -15,7 +15,7 @@ Reuse the existing portfolio and case studies for factual content. Do not invent
 
 ## Canonical dossier composition
 
-The professional default is `cv/dossier.html`, and the public site root must resolve to that dossier rather than a separate principal portfolio. **Atelier** supplies identity and editorial tone, **Swiss Grid** supplies information architecture, **Technical Monograph** supplies evidence/technical metadata, and Scroll World remains an optional narrative layer. Compose the interactive layer with `../reactbits-portfolio-components/SKILL.md`. Do not turn the four studies into four competing canonical CVs.
+The professional default is `cv/dossier.html`, and the public site root must **serve that dossier directly** rather than redirecting to or retaining a separate principal portfolio. **Atelier** supplies identity and editorial tone, **Swiss Grid** supplies information architecture, **Technical Monograph** supplies evidence/technical metadata, and Scroll World remains an optional narrative layer. Compose the interactive layer with `../reactbits-portfolio-components/SKILL.md`. Do not turn the four studies into four competing canonical CVs.
 
 The dossier must preserve the seven documented project routes, distinguish executed / active-development / demonstrator / confidential states, reuse only documented visuals, remain printable, and expose a small QA contract in `window.__CV_DOSSIER__`.
 
@@ -58,7 +58,7 @@ Use vendored `../scroll-world/SKILL.md` for full video generation **only after v
 1. Design 3+ materially distinct directions, not just colour variants.
 2. Typography first, no stock-looking templates, no gratuitous microanimations.
 3. Responsive and keyboard usable, accessible focus states, logical heading order, contrast, reduced motion.
-4. An easy selector page and no dead-end links. Preserve classic CV and the archived React experiment.
+4. An easy selector page and no dead-end links. Preserve the editorial CV variants as studies, but do not restore the old principal portfolio.
 5. Lighthouse/performance constraints: fonts can fail gracefully, lazy-load large images where appropriate, avoid React build/dependency unless a feature requires it.
 6. Print-friendly or exportable CV is a separate deliverable; do not pretend a marketing webpage is an ATS CV.
 7. Always capture screenshots and Chromium checks on desktop and mobile before merging.

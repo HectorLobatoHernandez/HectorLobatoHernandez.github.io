@@ -34,7 +34,7 @@ const root=await browser.newPage({viewport:{width:1440,height:960}});
 await root.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
 await root.waitForTimeout(500);
 const rootOk=await root.evaluate(()=>({path:location.pathname,title:document.title,dossier:!!document.querySelector('[data-reactbits-hero="true"]')}));
-if(rootOk.path!=='/cv/dossier.html'||!rootOk.dossier||!rootOk.title.includes('Dossier'))errors.push('root must resolve to canonical dossier: '+JSON.stringify(rootOk));
+if(rootOk.path!=='/'||!rootOk.dossier||!rootOk.title.includes('Dossier'))errors.push('root must serve canonical dossier directly: '+JSON.stringify(rootOk));
 await root.close();
 
 const gaza=await browser.newPage({viewport:{width:1440,height:960}});

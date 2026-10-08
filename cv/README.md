@@ -1,6 +1,6 @@
 # CV / Dossier profesional · Héctor Lobato
 
-`dossier.html` es la entrada profesional canónica y usa React Bits de forma controlada. El antiguo portfolio principal ya no es la portada pública; la raíz del sitio redirige al dossier.
+`dossier.html` es la entrada profesional canónica y usa React Bits de forma controlada. El antiguo portfolio principal se ha retirado; la raíz del sitio sirve directamente el mismo dossier canónico, sin redirección.
 
 - `atelier.html`: editorial de arquitectura; serif Instrument, proporciones y fotografía.
 - `swiss.html`: retícula suiza, Archivo, jerarquía precisa y proyectos indexados.
