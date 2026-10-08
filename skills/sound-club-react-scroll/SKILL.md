@@ -1,4 +1,4 @@
-# Sound Club React Scroll Case — Project Page Skill v2.3
+# Sound Club React Scroll Case — Project Page Skill v2.4
 
 ## Mission
 
@@ -124,11 +124,11 @@ Rules:
 
 The web runtime is Three.js. Blender may be used as an authoring / material / lighting stage, but it is not the browser runtime.
 
-The primary model must support two public variants from the **same verified geometry and origin**:
-- `DESIGN`: technical / neutral material treatment;
-- `RENDER`: finished materials + lighting.
+The primary model uses **one authoritative verified GLB**. The browser never swaps geometry between visual modes:
+- `DESIGN`: Three.js applies neutral technical materials plus an edge overlay at runtime;
+- `RENDER`: Three.js restores the GLB's original materials/textures and applies warm presentation lighting.
 
-Both modes must share the same camera state so comparison is immediate. Never publish a fake 3D placeholder as verified geometry. Until GLB exists, use the SKP-derived line preview with `GLB PENDING`.
+Both modes therefore share the exact same mesh, transforms, scale and camera state. Never publish a fake 3D placeholder as verified geometry. Until GLB exists, use the SKP-derived line preview with `GLB PENDING`.
 
 ## Model Viewer and gallery
 
@@ -141,7 +141,8 @@ Model runtime contract:
 - `PENDING_GLB` renders a poster/fallback, never a fake 3D object;
 - viewer is React-controlled;
 - `source-ingest.json` records source hash/version/unit facts without publishing raw files;
-- `model-manifest.json` controls DESIGN/RENDER GLB promotion;
+- `model-manifest.json` promotes one authoritative GLB;
+- `tools/sound-club/CONVERT_SKP_TO_GLB.ps1` creates a candidate locally and only promotes with an explicit `-Promote` flag;
 - Three.js OrbitControls preserve one camera across mode changes.
 
 Gallery contract:
@@ -241,5 +242,5 @@ Do not launch paid render merely because the page supports it. Render only when 
 11. Pending motion exposes no public video element.
 12. Canonical page title remains **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**.
 13. CAD cursor readout is explicitly reference-only until vector calibration.
-14. DESIGN/RENDER variants share geometry/origin and do not diverge.
+14. DESIGN/RENDER are runtime treatments of one GLB and cannot diverge.
 15. Raw DWG/SKP paths or binaries are absent from public assets.

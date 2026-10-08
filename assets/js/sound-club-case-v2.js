@@ -135,88 +135,139 @@
     const stageRef=useRef(null);
     const runtimeRef=useRef(null);
     useEffect(()=>{if(!active&&models[0])setActive(models[0].id)},[models.length,active]);
+
     const model=models.find(x=>x.id===active)||models[0];
-    const design=model?.views?.design||{status:model?.status,src:model?.src};
-    const render=model?.views?.render||{status:'PENDING_GLB',src:null};
-    const designReady=Boolean(design?.status==='APPROVED'&&design?.src);
-    const renderReady=Boolean(render?.status==='APPROVED'&&render?.src);
+    const ready=Boolean(model?.status==='APPROVED'&&model?.src);
     const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview.svg';
 
     useEffect(()=>{
       const host=stageRef.current;
-      if(!host||( !designReady && !renderReady))return;
-      let disposed=false,raf=0,renderer=null,controls=null;
+      if(!host||!ready||!model?.src)return;
+      let disposed=false,raf=0,renderer=null,controls=null,ro=null;
       host.innerHTML='';
+
       Promise.all([
         import('three'),
         import('three/addons/loaders/GLTFLoader.js'),
         import('three/addons/controls/OrbitControls.js')
-      ]).then(async([THREE,{GLTFLoader},{OrbitControls}])=>{
+      ]).then(([THREE,{GLTFLoader},{OrbitControls}])=>{
         if(disposed)return;
+
         const scene=new THREE.Scene();
-        scene.background=new THREE.Color(0x08100e);
-        const camera=new THREE.PerspectiveCamera(42,1,.01,2000);
-        camera.position.set(6,4.2,7.5);
+        scene.background=new THREE.Color(0x07100e);
+        const camera=new THREE.PerspectiveCamera(42,1,.01,500000);
         renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
         renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.7));
         renderer.outputColorSpace=THREE.SRGBColorSpace;
         renderer.toneMapping=THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure=1.0;
         host.appendChild(renderer.domElement);
+
         controls=new OrbitControls(camera,renderer.domElement);
-        controls.enableDamping=true;
-        controls.dampingFactor=.07;
-        controls.target.set(0,1.2,0);
-        scene.add(new THREE.HemisphereLight(0xdde7e4,0x26302b,1.65));
-        const key=new THREE.DirectionalLight(0xffe1b6,2.0);key.position.set(6,10,8);scene.add(key);
-        const fill=new THREE.DirectionalLight(0x8db9c2,.9);fill.position.set(-7,4,-5);scene.add(fill);
+        controls.enableDamping=true;controls.dampingFactor=.07;
+
+        const hemi=new THREE.HemisphereLight(0xdce8e5,0x24302c,1.4);scene.add(hemi);
+        const key=new THREE.DirectionalLight(0xffd39a,2.2);key.position.set(1,2,1);scene.add(key);
+        const fill=new THREE.DirectionalLight(0x8fb9c2,1.0);fill.position.set(-1,.7,-1);scene.add(fill);
+        const rim=new THREE.DirectionalLight(0xffbd75,.7);rim.position.set(-.5,1.2,1);scene.add(rim);
+
         const loader=new GLTFLoader();
-        const load=src=>src?new Promise((resolve,reject)=>loader.load(src,g=>resolve(g.scene),undefined,reject)):Promise.resolve(null);
-        const [designGroup,renderGroup]=await Promise.all([load(design?.src),load(render?.src)]);
-        if(disposed)return;
-        if(designGroup){designGroup.name='DESIGN';scene.add(designGroup)}
-        if(renderGroup){renderGroup.name='RENDER';scene.add(renderGroup)}
-        const fitTarget=designGroup||renderGroup;
-        if(fitTarget){
-          const box=new THREE.Box3().setFromObject(fitTarget),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
-          fitTarget.position.sub(center);
-          if(renderGroup&&renderGroup!==fitTarget)renderGroup.position.sub(center);
-          const radius=Math.max(size.x,size.y,size.z)*.72||5;
-          camera.position.set(radius*1.15,radius*.78,radius*1.35);
+        loader.load(model.src,gltf=>{
+          if(disposed)return;
+          const group=gltf.scene;
+          group.name='SOUND_CLUB_MASTER';
+          scene.add(group);
+
+          const originalMaterials=new Map();
+          const designMaterials=new Map();
+          const edgeObjects=[];
+
+          group.traverse(obj=>{
+            if(!obj.isMesh)return;
+            originalMaterials.set(obj.uuid,obj.material);
+            const designMat=new THREE.MeshStandardMaterial({
+              color:0x9ba7a1,
+              roughness:.93,
+              metalness:.03,
+              side:THREE.DoubleSide
+            });
+            designMaterials.set(obj.uuid,designMat);
+            const edges=new THREE.LineSegments(
+              new THREE.EdgesGeometry(obj.geometry,28),
+              new THREE.LineBasicMaterial({color:0xd6a467,transparent:true,opacity:.34})
+            );
+            edges.name='__DESIGN_EDGES__';
+            edges.renderOrder=4;
+            obj.add(edges);
+            edgeObjects.push(edges);
+          });
+
+          const box=new THREE.Box3().setFromObject(group);
+          const size=box.getSize(new THREE.Vector3());
+          const center=box.getCenter(new THREE.Vector3());
+          group.position.sub(center);
+          const radius=Math.max(size.x,size.y,size.z)*.68||5000;
+          camera.position.set(radius*1.15,radius*.76,radius*1.35);
+          camera.near=Math.max(.1,radius/5000);
+          camera.far=Math.max(10000,radius*30);
+          camera.updateProjectionMatrix();
           controls.target.set(0,0,0);
-          camera.near=Math.max(.01,radius/1000);camera.far=Math.max(100,radius*20);camera.updateProjectionMatrix();
-        }
-        runtimeRef.current={designGroup,renderGroup,scene,camera,THREE};
-        const resize=()=>{const w=host.clientWidth||1,h=host.clientHeight||1;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};
-        const ro=new ResizeObserver(resize);ro.observe(host);resize();
-        const loop=()=>{if(disposed)return;controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(loop)};loop();
-        runtimeRef.current.cleanup=()=>ro.disconnect();
-        runtimeRef.current.view=view;
-        if(designGroup)designGroup.visible=view==='design';
-        if(renderGroup)renderGroup.visible=view==='render';
+
+          const applyView=mode=>{
+            const isDesign=mode==='design';
+            group.traverse(obj=>{
+              if(!obj.isMesh)return;
+              obj.material=isDesign?designMaterials.get(obj.uuid):originalMaterials.get(obj.uuid);
+            });
+            edgeObjects.forEach(e=>e.visible=isDesign);
+            scene.background.setHex(isDesign?0x07100e:0x0b0b09);
+            hemi.intensity=isDesign?1.7:.95;
+            key.intensity=isDesign?1.25:2.75;
+            fill.intensity=isDesign?.9:.55;
+            rim.intensity=isDesign?.35:1.05;
+            renderer.toneMappingExposure=isDesign?.82:1.12;
+          };
+
+          runtimeRef.current={scene,camera,group,applyView,view};
+          applyView(view);
+        },undefined,err=>{
+          console.error('SpatialExplorer GLB',err);
+          host.dataset.error='glb-load';
+        });
+
+        const resize=()=>{
+          const w=host.clientWidth||1,h=host.clientHeight||1;
+          renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+        };
+        ro=new ResizeObserver(resize);ro.observe(host);resize();
+
+        const loop=()=>{
+          if(disposed)return;
+          controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(loop);
+        };
+        loop();
       }).catch(err=>{console.error('SpatialExplorer',err);host.dataset.error='three-load'});
-      return()=>{disposed=true;cancelAnimationFrame(raf);runtimeRef.current?.cleanup?.();controls?.dispose?.();renderer?.dispose?.();if(host)host.innerHTML='';runtimeRef.current=null}
-    },[model?.id,design?.src,render?.src,designReady,renderReady]);
+
+      return()=>{
+        disposed=true;cancelAnimationFrame(raf);ro?.disconnect();controls?.dispose?.();renderer?.dispose?.();
+        if(host)host.innerHTML='';runtimeRef.current=null;
+      };
+    },[model?.id,model?.src,ready]);
 
     useEffect(()=>{
-      const rt=runtimeRef.current;if(!rt)return;
-      if(rt.designGroup)rt.designGroup.visible=view==='design';
-      if(rt.renderGroup)rt.renderGroup.visible=view==='render';
-      rt.view=view;
+      const rt=runtimeRef.current;if(!rt?.applyView)return;
+      rt.applyView(view);rt.view=view;
     },[view]);
 
     const zones=model?.zones||[];
-    const activeReady=view==='design'?designReady:renderReady;
-    const anyReady=designReady||renderReady;
     return E('section',{className:'ms-shell ms-section',id:'spatial'},
       E('div',{className:'ms-spatial-head','data-ms-reveal':''},
-        E('div',null,E('p',{className:'ms-kicker'},'02 / SPATIAL MODEL EXPLORER'),E('h2',{className:'ms-title'},'Design ↔ Render. Same geometry, same camera.')),
-        E('p',{className:'ms-subtitle'},'El SKP privado ya está ingerido. El runtime público usa Three.js y sólo cargará GLB verificados. DESIGN mostrará geometría técnica; RENDER, los mismos objetos con materiales e iluminación terminada.')
+        E('div',null,E('p',{className:'ms-kicker'},'02 / SPATIAL MODEL EXPLORER'),E('h2',{className:'ms-title'},'Design ↔ Render. One verified model.')),
+        E('p',{className:'ms-subtitle'},'Un único GLB es la geometría autoritativa. DESIGN aplica un material técnico y líneas de arista; RENDER restaura materiales/texturas del SKP y activa iluminación cálida. Cámara, escala y geometría permanecen idénticas.')
       ),
       E('div',{className:'ms-spatial-toolbar'},
         E('div',{className:'ms-view-toggle'},
-          E('button',{type:'button',className:view==='design'?'active':'',onClick:()=>setView('design'),'aria-pressed':view==='design'},'DESIGN',E('small',null,designReady?'READY':'GLB PENDING')),
-          E('button',{type:'button',className:view==='render'?'active':'',onClick:()=>setView('render'),'aria-pressed':view==='render'},'RENDER',E('small',null,renderReady?'READY':'GLB PENDING'))
+          E('button',{type:'button',className:view==='design'?'active':'',onClick:()=>setView('design'),'aria-pressed':view==='design'},'DESIGN',E('small',null,ready?'SAME GLB':'GLB PENDING')),
+          E('button',{type:'button',className:view==='render'?'active':'',onClick:()=>setView('render'),'aria-pressed':view==='render'},'RENDER',E('small',null,ready?'SAME GLB':'GLB PENDING'))
         ),
         E('div',{className:'ms-source-strip'},
           E('span',null,'SKP '+(source?.skp?.version||'24.0.594')),
@@ -226,19 +277,22 @@
         )
       ),
       E('div',{className:'ms-spatial-layout'},
-        E('div',{className:'ms-spatial-stage','data-view':view,'data-ready':activeReady?'true':'false'},
-          anyReady?E('div',{className:'ms-three-host',ref:stageRef}):E('img',{className:'ms-skp-preview',src:preview,alt:'Derived line preview of the private SketchUp master model'}),
-          !activeReady?E('div',{className:'ms-spatial-pending'},
-            E('strong',null,view.toUpperCase()+' · VERIFIED GLB PENDING'),
-            E('span',null,model?.title||'Venue / Master Architecture'),
-            E('small',null,view==='design'?'El preview procede del SKP real; todavía no se presenta como geometría web verificable.':'El render final no se simula: se activará cuando Blender/GLB comparta exactamente la geometría verificada del modo DESIGN.')
-          ):null,
-          E('div',{className:'ms-spatial-hud'},E('b',null,'ORBIT / PAN / ZOOM'),E('span',null,activeReady?'Interactive Three.js scene':(anyReady?'Camera retained · selected view pending':'Source preview · no fake geometry')))
+        E('div',{className:'ms-spatial-stage','data-view':view,'data-ready':ready?'true':'false'},
+          ready?E('div',{className:'ms-three-host',ref:stageRef}):
+            E(React.Fragment,null,
+              E('img',{className:'ms-skp-preview',src:preview,alt:'Derived line preview of the private SketchUp master model'}),
+              E('div',{className:'ms-spatial-pending'},
+                E('strong',null,'VERIFIED GLB PENDING'),
+                E('span',null,model?.title||'Venue / Master Architecture'),
+                E('small',null,'El SKP real está ingerido. Falta convertir y validar el GLB; no se sustituye por geometría ficticia.')
+              )
+            ),
+          E('div',{className:'ms-spatial-hud'},E('b',null,'ORBIT / PAN / ZOOM'),E('span',null,ready?(view==='design'?'Technical material + edges':'Original materials + warm light'):'Source preview · no fake geometry'))
         ),
         E('aside',{className:'ms-spatial-side'},
           E('p',{className:'ms-kicker'},'MODEL MAP'),
           ...zones.map(z=>E('button',{type:'button',key:z.id,disabled:z.status!=='READY',className:'ms-zone-link'},E('b',null,z.label),E('span',null,z.status==='READY'?'FOCUS':'COORDS PENDING'))),
-          E('div',{className:'ms-spatial-rule'},E('b',null,'Geometry rule'),E('p',null,'DESIGN y RENDER no pueden divergir. Blender es etapa de authoring; Three.js es el runtime público.'))
+          E('div',{className:'ms-spatial-rule'},E('b',null,'Geometry rule'),E('p',null,'Un único GLB manda. Blender puede mejorar materiales/luces, pero no cambiar la geometría autoritativa.'))
         )
       ),
       E('div',{className:'ms-model-list ms-model-list-spatial'},...models.map(x=>E('button',{type:'button',key:x.id,className:'ms-model-option '+(x.id===model?.id?'active':''),onClick:()=>{setActive(x.id);setView('design')}},

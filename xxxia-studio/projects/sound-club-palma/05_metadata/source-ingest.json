@@ -30,14 +30,16 @@
     "materials": 499,
     "componentThumbnails": 83,
     "textures": 110,
-    "status": "INGESTED_PENDING_GLB",
-    "derivedPreview": "/assets/visuals/sound-club-skp-line-preview.svg"
+    "status": "INGESTED_PENDING_SINGLE_GLB",
+    "derivedPreview": "/assets/visuals/sound-club-skp-line-preview.svg",
+    "conversionTool": "tools/sound-club/CONVERT_SKP_TO_GLB.ps1"
   },
   "nextGate": [
-    "Export authoritative DWG geometry to DXF/SVG or equivalent vector representation",
-    "Align DWG and SKP origin / axes",
-    "Export same verified SKP geometry to optimized GLB",
-    "Create DESIGN and RENDER variants from the same geometry",
-    "Validate camera, scale, materials and public evidence classification"
+    "Run tools/sound-club/CONVERT_SKP_TO_GLB.ps1 locally against the private SKP master",
+    "Inspect candidate GLB and QA report",
+    "Check DWG/SKP origin and axes",
+    "Promote one authoritative GLB only after human QA",
+    "Validate DESIGN technical treatment and RENDER original-material/warm-light treatment in the same Three.js camera",
+    "Enable zone hotspots only after verified model coordinates exist"
   ]
 }
