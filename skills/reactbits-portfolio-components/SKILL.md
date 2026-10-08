@@ -20,6 +20,7 @@ Requested component references:
 - Logo Loop — https://reactbits.dev/animations/logo-loop
 - Waves — https://reactbits.dev/backgrounds/waves
 - Pixel Trail — https://reactbits.dev/animations/pixel-trail
+- Threads — https://reactbits.dev/backgrounds/threads
 
 This is a **curated portfolio integration skill**, not a wholesale vendor copy. In the personal dossier, React Bits is intentionally used as a visible front-end capability demonstration while preserving readability and evidence boundaries.
 
@@ -120,6 +121,22 @@ Rules:
 - no trail in print;
 - if the exact upstream Three/Fiber/Drei runtime is disproportionate for a static GitHub Pages page, a lightweight 2D adaptation may be used, but document this in the page runtime contract.
 
+### Threads
+
+Approved as the primary full-viewport background for the **5-minute Presentation Route**.
+
+Use the current React Bits Threads visual model:
+- WebGL/shader-generated layered thread field;
+- ice blue `#BCD0D1` as the principal thread colour;
+- amplitude around `1.15`;
+- distance around `0.34`;
+- pointer/mouse interaction enabled;
+- fixed full-viewport background behind semantic content;
+- capped internal render resolution;
+- static/frozen fallback under reduced motion.
+
+For GitHub Pages, a direct WebGL adaptation of the upstream shader is allowed to avoid adding an OGL build/runtime dependency. Preserve the upstream visual behavior and document the source in `window.__CV_PRESENT_REACT__`.
+
 ### Logo Loop
 
 Use as a restrained rail for technologies/vendors **where context supports them**.
@@ -133,6 +150,18 @@ Prefer real SVG/image marks when a project-owned/licensed asset exists. Otherwis
 Never imply sponsorship, certification or partnership merely by showing a technology logo.
 
 ## Project-specific composition
+
+### 5-minute Presentation Route
+
+Compose with `skills/cv-presentation-route/SKILL.md`.
+
+Required:
+- same IVORY ATLAS palette as the dossier;
+- Instrument Serif / DM Sans / IBM Plex Mono hierarchy;
+- Threads across the full viewport;
+- no duplicate Dossier navigation item;
+- palette accents in header, route rows, timing labels, CTAs and final evidence cards;
+- Threads remains decorative and pointer-transparent.
 
 ### ATS / PDF browser surface
 
