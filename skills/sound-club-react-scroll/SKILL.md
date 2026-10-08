@@ -91,6 +91,20 @@ The hero copy should communicate multidisciplinary coordination:
 
 Avoid generic marketing language.
 
+## Registered SketchUp master
+
+Current private master selected for this case:
+- `CLUB_DEL_MAR_12_02_2026_3.skp`
+- SketchUp 24.0.594
+- unit = Meter
+- SHA-256 = `ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665`
+- 251,178,212 bytes
+- 6,928 archive entries
+- 2,488 material definitions
+- V-Ray-named material families detected; renderer/light settings remain unverified until explicit export.
+
+This selection replaces the previous SKP master. Raw source remains private.
+
 ## Spatial Model / SketchUp
 
 Immediately after the CAD/existing-space chapter, show the 3D model.
@@ -204,6 +218,14 @@ Where supported by evidence: IP control, maintainability, diagnostics and expans
 Systems must be shown as related layers, not unrelated cards.
 
 ## Render-build sequence
+
+The page includes a dedicated BEFORE / AFTER render-development block immediately after the spatial model.
+
+Interim rule:
+- BEFORE = CAD / technical source;
+- AFTER = existing 2300 K atmosphere study, clearly labelled as a study;
+- do not call it a matched geometric before/after until a V-Ray still is exported from the registered master using an equivalent camera;
+- once matched-camera V-Ray stills exist, swap them into the same component without changing page architecture.
 
 The visual sequence should communicate **construction of the design**:
 
