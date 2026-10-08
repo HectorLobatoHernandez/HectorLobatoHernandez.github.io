@@ -84,8 +84,10 @@ p{margin:5px 0}
   .page-break-before{break-before:page}
 }
 </style>
+<link rel="stylesheet" href="ats-react.css?v=1">
 </head>
 <body>
+<div id="ats-react-root" aria-hidden="true"></div>
 <div class="toolbar">
   <a href="present.html">Presentar 5 min</a>
   <a href="dossier.html">Dossier interactivo</a>
@@ -264,7 +266,7 @@ p{margin:5px 0}
 </main>
 <script>
 window.__CV_ATS__={
-  schemaVersion:2,
+  schemaVersion:3,
   format:'EXPANDED_PROFESSIONAL_PDF_ATS',
   print:true,
   employmentChronology:true,
@@ -273,8 +275,14 @@ window.__CV_ATS__={
   featuredProjects:5,
   mastersInProgress:1,
   certificationsAndTraining:8,
-  duplicateDossierButton:false
+  duplicateDossierButton:false,
+  screenReact:true,
+  screenPalette:'IVORY_ATLAS',
+  screenComponents:['Waves','PixelTrail']
 };
 </script>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="ats-react.js?v=1"></script>
 </body>
 </html>
