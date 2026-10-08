@@ -689,3 +689,9 @@ body.rb-system-theme .final h2.rb-doc-tech{
 }
 
 .rb-tech-line{white-space:pre}.rb-tech-char.is-space{min-width:.28em}
+
+html,body{max-width:100%;overflow-x:clip!important}
+.rb-tech-shell,.rb-tech-word,.rb-tech-line,.rb-doc-tech{max-width:100%}
+.rb-tech-selection-label{max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.rb-tech-shell.is-compact .rb-tech-selection-label,
+.rb-tech-shell.is-compact .rb-tech-connector{display:none}
