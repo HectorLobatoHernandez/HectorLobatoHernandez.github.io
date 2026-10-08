@@ -1,0 +1,65 @@
+name: RHB STUDIO Functional Demo QA
+on:
+  pull_request:
+    paths:
+      - 'apps/rhb/**'
+      - 'projects/rhb-studio.html'
+      - 'assets/js/rhb-studio-case.js'
+      - 'assets/css/rhb-studio-case.css'
+      - 'start/rhb.html'
+      - 'cv/dossier.html'
+      - 'index.html'
+      - 'docs/MANUAL_RHB_STUDIO.md'
+      - 'skills/rhb-studio-project/**'
+      - 'rhb-studio/tests/rhb-functional-demo-qa.mjs'
+      - '.github/workflows/rhb-functional-demo-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  rhb-functional-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate source and demo contract
+        run: |
+          node --check apps/rhb/app.js
+          node --check rhb-studio/tests/rhb-functional-demo-qa.mjs
+          python3 - <<'PY'
+          import json
+          d=json.load(open('apps/rhb/demo-data.json',encoding='utf-8'))
+          assert d['demoId']=='RHB_STUDIO_PUBLIC_DEMO'
+          assert d['mode']=='BROWSER_ONLY'
+          assert len(d['stages'])==10
+          assert len(d['agents'])==6
+          assert len(d['seedProjects'])==2
+          assert all('bom' in p and 'qa' in p for p in d['seedProjects'])
+          print('RHB demo data contract OK')
+          PY
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start preview
+        run: |
+          python3 -m http.server 4198 --directory . > /tmp/rhb-demo-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4198/apps/rhb/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/rhb-demo-http.log
+          exit 1
+      - name: Run functional browser QA
+        run: node rhb-studio/tests/rhb-functional-demo-qa.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rhb-functional-demo-qa
+          path: .qa/rhb-functional-demo/
+          if-no-files-found: ignore
+          retention-days: 15
