@@ -129,3 +129,33 @@ The planner does **not** modify the SKP master or the current candidate GLB. It 
 - `REVIEW_MANUALLY`
 
 Any actual geometry mutation must occur later in a separate derived file (planned name: `venue-web-v1.glb`). Never overwrite `venue-master.glb` during optimization experiments.
+
+
+## Streaming web derivative — safe trim stage
+
+Once the dry-run optimization plan exists, estimate a first safe reduction without loading full vertex buffers into RAM:
+
+```powershell
+.\tools\sound-club\PREPARE_WEB_DERIVATIVE.ps1
+```
+
+Default mode is **DRY-RUN**. It does not write a GLB. It reads the existing GLB JSON, the optimization plan, and unique referenced `bufferView` ranges to estimate the size retained after dropping only high-confidence groups.
+
+Current automatic drop set is intentionally narrow:
+- `PROXY_OR_REMOVE_DECOR`
+- `REMOVE_OR_PROXY_MINOR_HARDWARE`
+- `REMOVE_WEB_DECOR`
+
+Architecture, acoustics, lighting-system geometry, DJ geometry, furniture proxies and all manual-review groups remain untouched in this stage.
+
+If the dry-run projection is acceptable, build a separate derivative:
+
+```powershell
+.\tools\sound-club\PREPARE_WEB_DERIVATIVE.ps1 -Build
+```
+
+Output:
+- `assets/models/sound-club/_candidate/venue-web-v1.glb`
+- `assets/models/sound-club/_candidate/venue-web-v1.trim-report.json`
+
+The script repacks only referenced binary ranges by streaming them from the source GLB. It never overwrites `venue-master.glb` and never modifies the private SKP.
