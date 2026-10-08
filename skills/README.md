@@ -32,3 +32,7 @@ For the public curriculum, prefer `skills/cv-editorial-architecture/SKILL.md` ov
 `oso95/scroll-world` is vendored intact under `skills/scroll-world/` at upstream commit `71cc36d3bb150248ae36a2c552f9cbf88802a79c`, preserving MIT LICENSE. It is an **agent skill** plus a portable vanilla-JS scroll-scrub engine; **not** a React component pack. The current `/cv/world.html` uses SVG storyboard images without commercial video clips. Generating the real frame-locked film requires Monid/Higgsfield or an alternative qualified backend, associated spending and separate user approval.
 
 React Bits remains in `apps/presentation-lab/` as an experiment, not the default CV design.
+
+## CV ATS / PDF skill (2026-10-08)
+
+The printable professional CV is governed by `skills/cv-ats-pdf/SKILL.md`. It is intentionally separate from the interactive React dossier: the ATS/PDF version prioritizes employment chronology, compact project evidence, education, ongoing master's study, certifications, manufacturer training, semantic text and A4 print output. `cv/ats.html` and `cv/ats.txt` must remain substantively aligned.

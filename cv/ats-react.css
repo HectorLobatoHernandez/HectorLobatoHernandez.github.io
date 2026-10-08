@@ -1,0 +1,315 @@
+/* CV ATS / PDF · IVORY ATLAS × React Bits screen layer
+   Print remains semantic/high-contrast and animation-free. */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --ats-black:#000000;
+  --ats-burgundy:#370001;
+  --ats-ivory:#e2dfcf;
+  --ats-ice:#bcd0d1;
+  --ats-olive:#93884b;
+  --ats-sage:#a5a999;
+  --ats-panel:rgba(3,5,4,.78);
+  --ats-panel-2:rgba(18,20,17,.72);
+  --ats-line:rgba(226,223,207,.16);
+}
+
+#ats-react-root{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  background:#000;
+}
+.ats-waves,
+.ats-pixel-trail{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+.ats-waves{opacity:.82}
+.ats-pixel-trail{opacity:.94;mix-blend-mode:screen}
+.ats-react-vignette{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 78% 10%,rgba(188,208,209,.085),transparent 27%),
+    radial-gradient(circle at 9% 63%,rgba(147,136,75,.055),transparent 30%),
+    linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.28) 78%,rgba(0,0,0,.52));
+}
+.ats-react-grid{
+  position:absolute;
+  inset:0;
+  opacity:.18;
+  background-image:
+    linear-gradient(rgba(188,208,209,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(188,208,209,.06) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.45),transparent 72%);
+}
+
+body.ats-react-theme{
+  background:#000!important;
+  color:var(--ats-ivory);
+  font-family:"DM Sans",Arial,Helvetica,sans-serif;
+}
+body.ats-react-theme .toolbar,
+body.ats-react-theme .cv{
+  position:relative;
+  z-index:3;
+}
+body.ats-react-theme .toolbar{
+  position:sticky;
+  top:10px;
+  width:min(980px,96vw);
+  padding:8px;
+  margin:12px auto 0;
+  border:1px solid rgba(188,208,209,.22);
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(16px);
+  box-shadow:0 14px 48px rgba(0,0,0,.38);
+}
+body.ats-react-theme .toolbar::after{
+  content:"";
+  position:absolute;
+  left:8px;right:8px;bottom:-1px;height:2px;
+  background:linear-gradient(90deg,var(--ats-burgundy) 0 25%,var(--ats-ivory) 25% 50%,var(--ats-ice) 50% 75%,var(--ats-olive) 75% 100%);
+}
+body.ats-react-theme .toolbar a,
+body.ats-react-theme .toolbar button{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(226,223,207,.22);
+  background:rgba(7,9,8,.74);
+  color:var(--ats-ivory);
+  font:600 10px/1 "IBM Plex Mono",monospace;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  transition:border-color .18s ease,background .18s ease,color .18s ease,transform .18s ease;
+}
+body.ats-react-theme .toolbar a::before,
+body.ats-react-theme .toolbar button::before{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:2px;
+  background:var(--ats-olive);
+  transform:scaleX(.18);
+  transform-origin:left;
+  transition:transform .18s ease;
+}
+body.ats-react-theme .toolbar a:hover,
+body.ats-react-theme .toolbar button:hover{
+  border-color:var(--ats-ice);
+  background:rgba(188,208,209,.08);
+  transform:translateY(-1px);
+}
+body.ats-react-theme .toolbar a:hover::before,
+body.ats-react-theme .toolbar button:hover::before{transform:scaleX(1)}
+body.ats-react-theme .toolbar .primary{
+  background:var(--ats-ivory);
+  color:var(--ats-burgundy);
+  border-color:var(--ats-ivory);
+}
+
+body.ats-react-theme .cv{
+  background:linear-gradient(150deg,rgba(5,7,6,.88),rgba(0,0,0,.78));
+  color:var(--ats-ivory);
+  border:1px solid rgba(226,223,207,.12);
+  box-shadow:0 24px 90px rgba(0,0,0,.46);
+  backdrop-filter:blur(5px);
+}
+body.ats-react-theme header{
+  position:relative;
+  border-bottom:1px solid rgba(188,208,209,.30);
+}
+body.ats-react-theme header::before{
+  content:"";
+  position:absolute;
+  left:0;top:-42px;width:7px;height:92px;
+  background:linear-gradient(180deg,var(--ats-burgundy) 0 25%,var(--ats-ivory) 25% 50%,var(--ats-ice) 50% 75%,var(--ats-olive) 75%);
+}
+body.ats-react-theme h1{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-weight:400;
+  font-size:46px;
+  letter-spacing:-.045em;
+  color:var(--ats-ivory);
+}
+body.ats-react-theme .subtitle{
+  color:var(--ats-ice);
+  font-weight:600;
+}
+body.ats-react-theme .meta,
+body.ats-react-theme .small,
+body.ats-react-theme .role,
+body.ats-react-theme .item-head .date,
+body.ats-react-theme .note{
+  color:var(--ats-sage);
+}
+body.ats-react-theme .contact a{
+  color:var(--ats-ivory);
+  text-decoration-color:var(--ats-olive);
+}
+
+body.ats-react-theme h2{
+  position:relative;
+  margin-top:26px;
+  border-bottom:0;
+  color:var(--ats-ivory);
+  font:400 27px/1 "Instrument Serif",Georgia,serif;
+  text-transform:none;
+  letter-spacing:-.02em;
+  padding:0 0 9px 17px;
+}
+body.ats-react-theme h2::before{
+  content:"";
+  position:absolute;
+  left:0;top:.12em;width:5px;height:.72em;
+  background:var(--ats-olive);
+  box-shadow:0 0 18px rgba(147,136,75,.20);
+}
+body.ats-react-theme h2::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,var(--ats-olive),var(--ats-ice) 34%,rgba(226,223,207,.15) 72%,transparent);
+}
+body.ats-react-theme h3{
+  color:var(--ats-ivory);
+  font-family:"DM Sans",Arial,sans-serif;
+}
+body.ats-react-theme strong{color:#f0eddf}
+body.ats-react-theme .lead{color:#d3d6cc}
+body.ats-react-theme .tag{
+  background:rgba(147,136,75,.10);
+  border:1px solid rgba(147,136,75,.32);
+  color:var(--ats-ivory);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:9px;
+  letter-spacing:.03em;
+}
+body.ats-react-theme .item{
+  position:relative;
+  padding:10px 12px 11px;
+  border-left:1px solid rgba(188,208,209,.19);
+  background:linear-gradient(90deg,rgba(188,208,209,.025),transparent 65%);
+}
+body.ats-react-theme .item::before{
+  content:"";
+  position:absolute;
+  left:-2px;top:10px;width:3px;height:36px;
+  background:var(--ats-ice);
+}
+body.ats-react-theme .project{
+  padding:10px 12px 12px;
+  border:1px solid rgba(226,223,207,.12);
+  background:rgba(8,10,9,.56);
+}
+body.ats-react-theme .project:nth-child(4n+1){border-top:3px solid var(--ats-burgundy)}
+body.ats-react-theme .project:nth-child(4n+2){border-top:3px solid var(--ats-ivory)}
+body.ats-react-theme .project:nth-child(4n+3){border-top:3px solid var(--ats-ice)}
+body.ats-react-theme .project:nth-child(4n){border-top:3px solid var(--ats-olive)}
+body.ats-react-theme .status{
+  color:var(--ats-ivory);
+  background:var(--ats-burgundy);
+  border-color:rgba(226,223,207,.26);
+}
+body.ats-react-theme .cert{
+  border-bottom-color:rgba(226,223,207,.15);
+}
+body.ats-react-theme .cert strong{color:var(--ats-olive)}
+body.ats-react-theme .stack p,
+body.ats-react-theme .skills p,
+body.ats-react-theme .project p,
+body.ats-react-theme .timeline .detail{color:#cfd3c9}
+
+body.ats-react-theme .cv::after{
+  content:"REACT BITS / WAVES + PIXEL TRAIL";
+  display:block;
+  margin-top:20px;
+  padding-top:8px;
+  border-top:1px solid rgba(226,223,207,.10);
+  color:var(--ats-olive);
+  font:600 8px/1 "IBM Plex Mono",monospace;
+  letter-spacing:.14em;
+  text-align:right;
+}
+
+@media(max-width:720px){
+  body.ats-react-theme h1{font-size:42px}
+  body.ats-react-theme h2{font-size:25px}
+  body.ats-react-theme .toolbar{top:5px}
+  .ats-waves{opacity:.68}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ats-waves,.ats-pixel-trail{opacity:.42}
+}
+
+@media print{
+  #ats-react-root{display:none!important}
+  body.ats-react-theme{
+    background:#fff!important;
+    color:#111!important;
+    font-family:Arial,Helvetica,sans-serif!important;
+  }
+  body.ats-react-theme .cv{
+    background:#fff!important;
+    color:#111!important;
+    border:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+  }
+  body.ats-react-theme header{border-bottom:2px solid #111!important}
+  body.ats-react-theme header::before,
+  body.ats-react-theme .cv::after,
+  body.ats-react-theme h2::before{display:none!important}
+  body.ats-react-theme h1,
+  body.ats-react-theme h2,
+  body.ats-react-theme h3{
+    color:#111!important;
+    font-family:Arial,Helvetica,sans-serif!important;
+  }
+  body.ats-react-theme h1{font-size:22pt!important;font-weight:700!important;letter-spacing:0!important}
+  body.ats-react-theme h2{
+    font-size:9.2pt!important;
+    font-weight:700!important;
+    text-transform:uppercase!important;
+    letter-spacing:.08em!important;
+    padding:0 0 3px!important;
+  }
+  body.ats-react-theme h2::after{background:#cfcfcf!important}
+  body.ats-react-theme .subtitle,
+  body.ats-react-theme .meta,
+  body.ats-react-theme .small,
+  body.ats-react-theme .role,
+  body.ats-react-theme .item-head .date,
+  body.ats-react-theme .note,
+  body.ats-react-theme .stack p,
+  body.ats-react-theme .skills p,
+  body.ats-react-theme .project p,
+  body.ats-react-theme .timeline .detail{color:#444!important}
+  body.ats-react-theme strong,
+  body.ats-react-theme .contact a{color:#111!important}
+  body.ats-react-theme .tag{
+    color:#111!important;background:#fff!important;border-color:#ccc!important;
+    font-family:Arial,Helvetica,sans-serif!important;
+  }
+  body.ats-react-theme .item{
+    background:none!important;border-left:0!important;padding:0!important;
+  }
+  body.ats-react-theme .item::before{display:none!important}
+  body.ats-react-theme .project{
+    background:#fff!important;border:0!important;border-top:2px solid #111!important;padding:4px 0 0!important;
+  }
+  body.ats-react-theme .status{
+    color:#111!important;background:#fff!important;border-color:#aaa!important;
+  }
+  body.ats-react-theme .cert{border-bottom-color:#ddd!important}
+  body.ats-react-theme .cert strong{color:#111!important}
+}

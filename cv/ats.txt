@@ -1,55 +1,106 @@
 HÉCTOR LOBATO
-Systems Integration & Automation · IT/OT · AV · Applied AI
+Systems Integration · Automation · Acoustics · AV · IT/OT · Applied AI
 Zamora, España
 Email: lobatohernandezhector@gmail.com
 GitHub: github.com/HectorLobatoHernandez
-Portfolio: hectorlobatohernandez.github.io
+Web: hectorlobatohernandez.github.io
 
 PERFIL PROFESIONAL
-Perfil técnico orientado a diseñar, integrar, poner en marcha y documentar sistemas multidisciplinares que combinan automatización, audiovisual, redes IT/OT, ingeniería de proyecto y software aplicado. Enfoque: survey, arquitectura, integración, commissioning, troubleshooting, documentación y mejora continua.
+Ingeniero de audio y especialista en integración de sistemas con más de 8 años de experiencia en dirección, diseño, ejecución y puesta en marcha de proyectos multidisciplinares. Experiencia en acústica y electroacústica, automatización KNX/DALI/Crestron, sistemas audiovisuales, redes IT/OT, telecomunicaciones, CAD, documentación técnica, presupuestos y software aplicado. Trayectoria en high-end residential, hospitality, music & entertainment y proyectos especiales. Desarrollo actual de herramientas locales de automatización e IA para proyectos, operaciones, CAD, documentación y apoyo a decisión.
 
-COMPETENCIAS
-Automation & Control: KNX, ETS6, DALI, Gira, Crestron, escenas, estados, interoperabilidad.
-Audio & AV: DSP, matrices, amplificación, routing, zonas, limitación, conceptos Dante.
-IT/OT & Networks: TCP/IP, VLAN, UniFi, VPN, PoE, cableado estructurado, diagnóstico.
-Engineering Delivery: AutoCAD, BOM, presupuestos, proveedores, QA, documentación, change control.
-Software & Applied AI: Python, JavaScript, APIs, Git/GitHub, GIS, agentes IA, automatización.
-Technical Operations: troubleshooting, incidencias, soporte, observabilidad, procesos, mejora continua.
+COMPETENCIAS PRINCIPALES
+Acústica & electroacústica: aislamiento, acondicionamiento, medición, sistemas de sonido profesional, DSP, matrices, amplificación, limitadores, zoning y commissioning.
+Automation & Control: KNX / ETS6, DALI, Gira X1, Crestron, lógica de control, escenas, estados, interfaces e interoperabilidad.
+AV & signal systems: routing, matrices, DSP, sistemas multizona, audio de red, vídeo, control de fuentes, racks y documentación de señal.
+IT/OT & Networks: TCP/IP, VLAN, Wi-Fi, UniFi, VPN, PoE, cableado estructurado, servicios locales, observabilidad y ciberseguridad básica IT/OT.
+Engineering & CAD: AutoCAD, Revit, SolidWorks, SketchUp, levantamientos, planos, mediciones, BOM/BOQ, presupuestos, comparativas, QA y change control.
+Software & Applied AI: Python, JavaScript, Java, APIs, Git/GitHub, Three.js, agentes IA, OpenClaw, OmniRoute, automatización de procesos y herramientas local-first.
+Technical Operations: planificación, coordinación de recursos, proveedores, compras, control de costes, incidencias, commissioning, troubleshooting y mejora continua.
 
-EXPERIENCIA TÉCNICA SELECCIONADA
-2026 — Club Mar Salada · Club del Mar
-Rol: Diseño técnico · integración · coordinación · commissioning
-- Integración de audio profesional, DSP, KNX/DALI, iluminación y red.
-- Routing, zonas, escenas, grupos, interfaces, rack y documentación.
-- Coordinación de electricidad, cableado, herrería, iluminación, acústica y puesta en marcha.
+EXPERIENCIA PROFESIONAL
+2021 – Actualidad — Technical Director / Project Engineer · Studio Ingenia · Ibiza / Baleares / proyectos nacionales
+- Dirección end-to-end de proyectos técnicos: requisitos, arquitectura, planificación, mediciones, BOM, compras, coordinación de industriales, seguimiento de obra, pruebas, commissioning y cierre documental.
+- Integración de automatización y control, redes/IT, iluminación, audio profesional, DSP, AV, telecomunicaciones y sistemas de seguridad.
+- Gestión diaria de incidencias, cambios de alcance, materiales, proveedores, costes, plazos y dependencias; interlocución con propiedad, ingeniería, instaladores y fabricantes.
+- Presupuestos, memorias, comparativas técnicas, planos CAD, documentación de montaje, QA y troubleshooting.
+- Proyectos high-end residential, estates multi-edificio, clubs musicales, hospitality, restauración y proyectos especiales.
+- Desarrollo de automatización, IA y agentes para documentación, presupuestos, CAD, project management y soporte a decisión.
+
+2018 – 2021 — Director de Departamento · Estudio Áureo · Ibiza
+- Dirección y elaboración de proyectos de domótica, IT, electricidad, audiovisuales, telecomunicaciones/redes y videoseguridad.
+- Diseño y programación KNX; cuadros de control, SAI y regulación; matrices/procesadores AV; cableado estructurado, VPN/DNS y analítica de vídeo.
+- Presupuestos, mediciones, cálculos, documentación y planos con AutoCAD, Revit y SolidWorks.
+- Soporte comercial/técnico, coordinación con obra/cliente y desarrollo del equipo.
+
+2026 — I+D · Engineering & AI Operations Platforms
+RHB STUDIO · GAZA Operations Intelligence · herramientas propias
+- Arquitectura local-first para proyectos, CAD, BOM, presupuestos, documentación, QA y agentes especializados.
+- OmniRoute, OpenClaw, health/boot scripts, model routing y agentes core, PM, CAD, research y business.
+- Digital Twin, GIS, event stream, KPIs, clima, simulación de incidencias y separación PUBLIC / INFERRED / SIMULATED.
+- JavaScript, Three.js, APIs, GitHub Actions y QA automatizado.
+
+PROYECTOS TÉCNICOS SELECCIONADOS
+2026 — Sound Club, Palma · Puerto Deportivo de Palma
+Rol: diseño técnico, integración, coordinación y commissioning.
+Audio profesional, DSP, iluminación, KNX/DALI, Gira X1, Ecler MIMO88, amplificación Lynx DSP, zonas/presets, mobiliario técnico, desacoplos, documentación, coordinación de obra y puesta en marcha.
+
+Las Dalias / Club Akasha · Ibiza
+Rol: dirección técnica e integración.
+Sistemas AV/electroacústicos, coordinación técnica, commissioning y troubleshooting en entorno music & entertainment.
+
+Casa NOAH · Ibiza
+Rol: integración tecnológica multidisciplinar.
+Proyecto residencial high-end con coordinación técnica, documentación y puesta en marcha.
+
+Residencia tecnológica privada · cliente internacional
+Rol: integración multi-sistema.
+Identidad y detalles sensibles omitidos por confidencialidad.
+
+Restauración · Formentera
+Rol: diseño de audio y documentación técnica.
+Sistema multizona, rack central, matriz Ecler HUB, amplificación Lynx, routing y memoria técnica para licencia/limitación.
 
 2026 — GAZA Operations Intelligence
-Rol: Arquitectura funcional · UX operativa · modelo de información
-- Mission Control público para operaciones, logística, GIS, clima e IT/OT.
-- Plant 3D, Territory, GIS y Systems con separación PUBLIC / INFERRED / SIMULATED.
-- Gateway read-only y contratos de integración.
-- GitHub, JavaScript, Three.js, Open-Meteo, AEMET bridge y QA automatizado.
+Rol: arquitectura funcional, UX operativa y modelo de información.
+Mission Control para operaciones, logística, GIS, clima, entorno e IT/OT; Plant 3D, Territory, Systems, gateway read-only y QA automatizado.
 
 2026 — RHB STUDIO
-Rol: Arquitectura funcional · producto interno · automatización
-- Plataforma local-first para proyectos, CAD, BOM, presupuestos, documentación y agentes IA.
-- Pipeline Survey → CAD → diseño → BOM → aprobación → fabricación → montaje → QA → entrega.
-- OmniRoute, OpenClaw y NEXO.
+Rol: arquitectura de producto y automatización.
+Survey → CAD → Design → BOM → Approval → Fabrication → Install → Commissioning → Handover con agentes, documentación y control de versiones.
 
-OTROS PROYECTOS
-Casa NOAH · Las Dalias / Akasha · Residencia tecnológica privada · XXXIA Studio.
+2026 — XXXIA Studio
+Rol: dirección creativa y sistemas de presentación.
+Flujos generativos, visualización de proyectos, narrativa técnica y automatización para documentación/presentación.
 
-FORMACIÓN
+FORMACIÓN SUPERIOR Y MÁSTER
 2013–2016 — Bachelor's Degree — Audio Engineering & Audio Production · Middlesex University, London
+2020–Actualidad — Máster en Inteligencia Artificial · VIU — CURSANDO ACTUALMENTE
 
-CERTIFICACIONES
+CERTIFICACIONES, FORMACIÓN DE FABRICANTE Y CURSOS
 2018 — KNX Advanced · Grupo Conitec Ingeniería y Domótica
 2019 — Crestron CTI-P101 · Foundations of Crestron Programming · Crestron Technical Institute
 2019 — Crestron NVX · Design and Application · Crestron Technical Institute
-2021 — AXIS · Network Audio / System Design / Camera Station / Analytics · Axis Communications
+2020 — JAVA IFCD033PO · formación técnica
+2021 — AXIS · Network Audio / System Design / Camera Station / Analytics
+Fabricante — Ecler · certificación / formación técnica en audio profesional, matrices DSP y control
+Fabricante — Void Acoustics · certificación / formación técnica en sistemas electroacústicos profesionales
+Fabricante — Lynx Pro Audio · certificación / formación técnica en amplificación, DSP y sistemas profesionales
 
-MÉTODO
-Survey · Architecture · Integration · Commissioning · Troubleshooting · Documentation · Operations · Continuous Improvement
+TECNOLOGÍAS Y HERRAMIENTAS
+Automation: KNX, ETS6, DALI, Gira X1, Crestron.
+Audio / AV: Ecler, Lynx Pro Audio, Void Acoustics, DSP, matrices, amplificación, zoning, limitadores, audio de red.
+CAD / Engineering: AutoCAD, Revit, SolidWorks, SketchUp, BOM/BOQ, mediciones.
+Networks / IT: TCP/IP, VLAN, Wi-Fi, UniFi, VPN, PoE, DNS, cableado estructurado.
+Software: Python, JavaScript, Java, APIs, Git/GitHub, Three.js, PowerShell.
+AI / Automation: OpenClaw, OmniRoute, agentes IA, model routing, workflows y automatización local-first.
+
+IDIOMAS
+Español: nativo
+Inglés: B1
+Italiano: A2
+
+MÉTODO DE TRABAJO
+Survey y levantamiento → requisitos → arquitectura funcional → cálculo / diseño → presupuestos / BOM → coordinación de proveedores e industriales → integración y programación → commissioning → troubleshooting → documentación / handover → operación, observabilidad y mejora continua.
 
 TRAZABILIDAD
-Versión project-based construida únicamente con información ya documentada. La cronología laboral completa por empresa/cargo no se publica hasta contrastar fechas y responsabilidades.
+CV ampliado a partir de la trayectoria profesional y proyectos ya documentados. Los proyectos confidenciales se describen sin revelar identidades sensibles. El Máster en Inteligencia Artificial se presenta explícitamente como cursando actualmente. Las credenciales de fabricante Ecler, Void Acoustics y Lynx Pro Audio se incluyen sin inventar fechas o denominaciones de curso no documentadas.

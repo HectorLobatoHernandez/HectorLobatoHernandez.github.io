@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07.6",
+  "version": "2026-10-08.2",
   "orchestrator": "skills/gaza-strategy-digital-twin/SKILL.md",
   "policy": "curated-vendored",
   "skills": [
@@ -77,6 +77,13 @@
       "focus": "architecture/editorial typography, responsive technical CV, no React"
     },
     {
+      "name": "cv-ats-pdf",
+      "source": "local Hector portfolio",
+      "path": "skills/cv-ats-pdf/SKILL.md",
+      "license": "project-internal",
+      "focus": "expanded ATS/PDF CV + IVORY ATLAS browser layer with React Bits Waves and PixelTrail, print-safe A4 QA"
+    },
+    {
       "name": "scroll-world",
       "source": "oso95/scroll-world",
       "path": "skills/scroll-world/SKILL.md",
@@ -118,7 +125,7 @@
       "source": "DavidHDev/react-bits + local integration policy",
       "path": "skills/reactbits-portfolio-components/SKILL.md",
       "license": "MIT + Commons Clause v1.0 upstream / project-internal integration",
-      "focus": "Model Viewer, Bounce Cards, Tech Text, Particles and Logo Loop for technical portfolio surfaces",
+      "focus": "Model Viewer, Bounce Cards, Tech Text, Particles, Waves, PixelTrail and Logo Loop for technical portfolio/CV surfaces",
       "upstream_sha": "63a008de65732d73010bd219d25d15c47739bb31"
     },
     {
