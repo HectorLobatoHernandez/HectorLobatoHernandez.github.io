@@ -42,8 +42,8 @@ Si el movimiento molesta, activar la opción del sistema **reducir animaciones**
 
 ## 9. Dirección visual canónica
 
-El dossier usa fondo negro real y una escala gris verdosa inspirada en Pantone. El nombre **Héctor Lobato** y los títulos principales usan TechText como demostración visible de interacción React. El portfolio clásico ya no forma parte de la entrada pública ni se conserva como página HTML activa. La raíz sirve directamente el dossier.
+El dossier usa fondo negro real con la dirección **IVORY ATLAS × React Tech**: borgoña `#370001`, marfil `#E2DFCF`, azul hielo `#BCD0D1`, oliva `#93884B` y gris/salvia `#A5A999`. **Instrument Serif** domina el nombre y los títulos; DM Sans queda para lectura y IBM Plex Mono para metadatos técnicos. El nombre **Héctor Lobato** y los títulos principales usan TechText como demostración visible de interacción React. El portfolio clásico ya no forma parte de la entrada pública ni se conserva como página HTML activa. La raíz sirve directamente el dossier.
 
 ### React TechText
 
-El nombre y los títulos principales deben mostrar interacción de letra, outline, selección técnica, labels, specks, sweep automático y drag controlado. Particles/Waves permanecen visibles en toda la página como capa demostrativa, con fallback de movimiento reducido.
+El nombre y los títulos principales deben mostrar interacción de letra, outline visible incluso en reposo, selección técnica, labels, specks, sweep automático, revelado por proximidad y drag controlado. Particles/Waves permanecen visibles en toda la página como capa demostrativa, con fallback de movimiento reducido.
