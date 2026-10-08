@@ -1,4 +1,4 @@
-# Sound Club React Scroll Case — Project Page Skill v2.2
+# Sound Club React Scroll Case — Project Page Skill v2.3
 
 ## Mission
 
@@ -15,6 +15,9 @@ Use this skill before changing:
 - `xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json`
 - `xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json`
+- `xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json`
+- `assets/visuals/sound-club-cad-blueprint.svg`
+- `assets/visuals/sound-club-skp-line-preview.svg`
 
 ## Canonical identity
 
@@ -49,6 +52,8 @@ The page must keep these conceptual components:
 - `Metric`
 - `Card`
 - `Figure`
+- `CADBlueprintLayer`
+- `SpatialExplorer`
 - `Story`
 - `MotionStage`
 - project `App`
@@ -83,13 +88,13 @@ Required chapters:
 
 1. Hero / identity
 2. Project overview
-3. Audio architecture
-4. Lighting + KNX/DALI
-5. Suspended structure / as-built
-6. DJ booth / technical furniture
-7. Scroll World visual story
-8. Interactive models / GLB promotion
-9. Curated Bounce Cards gallery
+3. Spatial model explorer / CAD background
+4. Audio architecture
+5. Lighting + KNX/DALI
+6. Suspended structure / as-built
+7. DJ booth / technical furniture
+8. Curated Bounce Cards gallery
+9. Scroll World visual story
 10. Dossier / public evidence
 
 ## Visual language
@@ -104,6 +109,27 @@ Required chapters:
 - restrained cyan / teal contrast
 - dense information, but generous rhythm and hierarchy
 
+## CAD background + CAD cursor
+
+The public case may use a **derived** visual preview from the private DWG as a fixed React background layer.
+
+Rules:
+- raw DWG is never committed;
+- raster/derived preview is visual navigation only until authoritative vector geometry is exported;
+- crosshair/cursor may show viewport reference coordinates, but must not label them as metres or fabrication dimensions;
+- real dimensions require calibrated vector geometry;
+- keep the CAD layer behind content and reduce it on mobile / coarse pointer devices.
+
+## Spatial Explorer / Three.js
+
+The web runtime is Three.js. Blender may be used as an authoring / material / lighting stage, but it is not the browser runtime.
+
+The primary model must support two public variants from the **same verified geometry and origin**:
+- `DESIGN`: technical / neutral material treatment;
+- `RENDER`: finished materials + lighting.
+
+Both modes must share the same camera state so comparison is immediate. Never publish a fake 3D placeholder as verified geometry. Until GLB exists, use the SKP-derived line preview with `GLB PENDING`.
+
 ## Model Viewer and gallery
 
 The project page must be ready to display verified geometry without publishing raw CAD.
@@ -113,7 +139,10 @@ Model runtime contract:
 - browser assets are optimized GLB/glTF;
 - `model-manifest.json` controls model status and public source;
 - `PENDING_GLB` renders a poster/fallback, never a fake 3D object;
-- viewer is React-controlled.
+- viewer is React-controlled;
+- `source-ingest.json` records source hash/version/unit facts without publishing raw files;
+- `model-manifest.json` controls DESIGN/RENDER GLB promotion;
+- Three.js OrbitControls preserve one camera across mode changes.
 
 Gallery contract:
 - Bounce Cards consume only `publicSafe: true` project media;
@@ -211,3 +240,6 @@ Do not launch paid render merely because the page supports it. Render only when 
 10. `motion-manifest.json` parses and its `projectId` is `SOUND_CLUB_CDM`.
 11. Pending motion exposes no public video element.
 12. Canonical page title remains **SOUND CLUB and restaurant (CLUB del MAR) Palma de Mallorca**.
+13. CAD cursor readout is explicitly reference-only until vector calibration.
+14. DESIGN/RENDER variants share geometry/origin and do not diverge.
+15. Raw DWG/SKP paths or binaries are absent from public assets.
