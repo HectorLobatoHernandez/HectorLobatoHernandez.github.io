@@ -8,9 +8,9 @@
 <meta name="description" content="Dossier profesional de Héctor Lobato: integración de sistemas, automatización, IT/OT, AV, ingeniería y software aplicado.">
 <link rel="canonical" href="https://hectorlobatohernandez.github.io/">
 <title>Héctor Lobato — Dossier profesional</title>
-<link rel="stylesheet" href="variants.css?v=6">
+<link rel="stylesheet" href="variants.css?v=8">
 <style>
-:root{--paper:#000000;--ink:#d2ddd3;--soft:#afc0b1;--line:#3e4c43;--accent:#788b7d;--deep:#c2d0c4;--cream:#070a08}
+:root{--paper:#000000;--ink:#e2dfcf;--soft:#c3c8bb;--line:#4b4b43;--accent:#93884b;--deep:#bcd0d1;--cream:#090a09}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:#000}
 body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Arial,sans-serif}
@@ -38,7 +38,7 @@ body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Ari
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
 @media print{.dos-nav,.progress,.hero-actions,.project-links{display:none!important}body.dossier{background:white;color:#111}.dos-shell{width:94%}.hero{min-height:auto;grid-template-columns:1fr 250px;padding:20px 0}.hero h1{font-size:70px}.section,.project-chapter,.final{padding:28px 0}.project-chapter{grid-template-columns:280px 1fr;break-inside:avoid}.project-visual{position:relative;top:auto}.cap-grid{grid-template-columns:repeat(3,1fr)}.method{grid-template-columns:repeat(5,1fr)}.archive{grid-template-columns:repeat(2,1fr)}}
 </style>
-<link rel="stylesheet" href="hero-react.css?v=7">
+<link rel="stylesheet" href="hero-react.css?v=8">
 </head>
 <body class="dossier rb-system-theme">
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -155,12 +155,12 @@ body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Ari
 <footer class="footer dos-shell"><span>© 2026 Héctor Lobato · Systems Integration & Automation</span><span>Atelier × Swiss Grid × Technical Monograph × Scroll narrative</span></footer>
 <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-<script src="hero-react.js?v=7"></script>
+<script src="hero-react.js?v=8"></script>
 <script>
 const p=document.getElementById('progress');
 const update=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;p.style.width=(m>0?Math.min(100,scrollY/m*100):0)+'%'};
 addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.08,rootMargin:'0px 0px -4%'});document.querySelectorAll('.reveal').forEach(el=>io.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('on'));
-window.__CV_DOSSIER__={schemaVersion:5,design:'ATELIER_SWISS_MONOGRAPH_REACTBITS',projects:7,featured:3,visualEvidence:3,evidenceCards:4,presentationRoute:true,ats:false,print:true,reactBits:['TechText','Particles','DitherVeil','LogoLoop']};
+window.__CV_DOSSIER__={schemaVersion:6,design:'ATELIER_SWISS_MONOGRAPH_REACTBITS',projects:7,featured:3,visualEvidence:3,evidenceCards:4,presentationRoute:true,ats:false,print:true,reactBits:['TechText','Particles','DitherVeil','LogoLoop']};
 </script>
 </body></html>
