@@ -95,3 +95,31 @@ See:
 `docs/projects/sound-club-palma/cad-source-manifest.json`
 
 The manifest contains SHA-256 values for source identity while keeping the actual DWG files private.
+
+## 2026-10-08 master-source ingest
+
+### DWG master
+- Format signature: `AC1032`.
+- File size: 1,713,143 bytes.
+- SHA-256: `7adaa5d4540075b58d9134dbb1bce91caaea624891706d4429ca11ea3bb6cd06`.
+- Saved by metadata: AutoCAD 2027; timestamp 2026-04-12T20:59:23.
+- Current public use: derived blueprint preview only.
+- Measurement gate: **units/origin are not asserted from the raster preview**. Export authoritative vector geometry before metric cursor/dimension features are enabled.
+
+### SketchUp master
+- SketchUp version: `24.0.594`.
+- Model unit metadata: `Meter`.
+- File size: 51,471,031 bytes.
+- SHA-256: `8729f3a98812c71933586a921c18dd661a8451f041bb86122ad333a0215fb21a`.
+- Internal `model.dat`: 104,699,785 bytes uncompressed.
+- Archive inspection: 1,120 entries; 499 materials; 83 component thumbnails; 110 texture assets.
+- Current public use: derived line preview only; GLB remains pending.
+
+### Web promotion contract
+1. DWG/SKP origin and axes aligned.
+2. Authoritative geometry promoted.
+3. Same geometry exported to DESIGN and RENDER GLB variants.
+4. Blender may prepare materials/lighting; it must not alter authoritative geometry.
+5. Three.js keeps one camera/orbit state while switching DESIGN ↔ RENDER.
+6. Zone hotspots are enabled only after verified model coordinates exist.
+7. Raw DWG/SKP remain private and are never served by GitHub Pages.
