@@ -33,6 +33,7 @@ def main() -> int:
     ap.add_argument("--output", type=Path, required=True, help="Candidate GLB output")
     ap.add_argument("--report", type=Path, required=True, help="QA report JSON")
     ap.add_argument("--manifest", type=Path, help="model-manifest.json")
+    ap.add_argument("--source-ingest", type=Path, help="source-ingest.json with registered master hash")
     ap.add_argument("--public-output", type=Path, help="Promoted public GLB path")
     ap.add_argument("--promote-manifest", action="store_true",
                     help="Explicitly promote candidate after human QA")
@@ -57,6 +58,25 @@ def main() -> int:
 
     source_sha = sha256_file(skp_path)
     source_bytes = skp_path.stat().st_size
+
+    registered_source = None
+    source_match = None
+    if args.source_ingest:
+        source_ingest_path = args.source_ingest.resolve()
+        if not source_ingest_path.exists():
+            raise SystemExit(f"Source ingest manifest not found: {source_ingest_path}")
+        source_ingest = json.loads(source_ingest_path.read_text(encoding="utf-8"))
+        registered_source = source_ingest.get("skp") or {}
+        expected_sha = (registered_source.get("sha256") or "").lower()
+        expected_size = registered_source.get("sizeBytes")
+        source_match = {
+            "expectedSha256": expected_sha or None,
+            "actualSha256": source_sha,
+            "sha256Match": bool(expected_sha and source_sha.lower() == expected_sha),
+            "expectedSizeBytes": expected_size,
+            "actualSizeBytes": source_bytes,
+            "sizeMatch": (expected_size == source_bytes) if expected_size is not None else None,
+        }
 
     skp = SkpFile.open(skp_path)
     model = skp.parse()
@@ -117,6 +137,7 @@ def main() -> int:
             "rawSkpPublished": False,
             "humanVisualReviewRequired": True,
             "dwgOriginAlignmentRequired": True,
+            "registeredMasterCheck": source_match,
             "publicPromotion": bool(args.promote_manifest),
         },
     }
@@ -128,8 +149,14 @@ def main() -> int:
         print("WARNING: candidate exceeds 25 MiB; web optimization is recommended.", file=sys.stderr)
 
     if args.promote_manifest:
-        if not args.manifest or not args.public_output:
-            raise SystemExit("--promote-manifest requires --manifest and --public-output")
+        if not args.manifest or not args.public_output or not args.source_ingest:
+            raise SystemExit("--promote-manifest requires --manifest, --source-ingest and --public-output")
+        if source_match and not source_match.get("sha256Match"):
+            raise SystemExit(
+                "PROMOTION BLOCKED: selected SKP does not match the registered private master. "
+                f"Expected SHA256 {source_match.get('expectedSha256')}, got {source_sha}. "
+                "Review the candidate and choose the correct SKP before changing the registered master."
+            )
         manifest_path = args.manifest.resolve()
         public_output = args.public_output.resolve()
         if not manifest_path.exists():
@@ -162,6 +189,12 @@ def main() -> int:
         print(f"MANIFEST: {manifest_path}")
     else:
         print("Candidate created. Visual/DWG-origin QA is still required before public promotion.")
+        if source_match and not source_match.get("sha256Match"):
+            print(
+                "WARNING: selected SKP does NOT match the registered master "
+                f"({source_match.get('expectedSha256')}). Candidate kept for comparison only.",
+                file=sys.stderr,
+            )
 
     print(f"GLB: {args.output}")
     print(f"REPORT: {args.report}")
