@@ -134,14 +134,14 @@
     if(!project)return E('div',{className:'rhb-boot'},'Loading RHB STUDIO…');
 
     const readyModels=(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length;
-    window.__RHB_STUDIO_CASE__={schemaVersion:1,projectId:project.projectId,modules:project.modules.length,models:(models?.models||[]).length,modelReady:readyModels,referenceProjects:project.referenceProjects.length,publicShowcase:project.classification==='PUBLIC_SHOWCASE'};
+    window.__RHB_STUDIO_CASE__={schemaVersion:2,projectId:project.projectId,modules:project.modules.length,models:(models?.models||[]).length,modelReady:readyModels,referenceProjects:project.referenceProjects.length,publicShowcase:project.classification==='PUBLIC_SHOWCASE'};
 
     return E(React.Fragment,null,
       E('div',{className:'rhb-progress',style:{transform:'scaleX('+progress+')'}}),
       E('header',{className:'rhb-topbar'},E('div',{className:'rhb-topbar-in'},
         E('a',{href:'../index.html#projects',className:'rhb-mini-brand'},E('img',{src:'../assets/visuals/rhb-monogram.svg',alt:''}),E('span',null,'RHB STUDIO')),
         E('div',{className:'rhb-top-status'},E('i',null),'PUBLIC SHOWCASE · LOCAL RUNTIME'),
-        E('a',{className:'rhb-back',href:'../index.html#projects'},'Portfolio ↗')
+        E('a',{className:'rhb-demo-link',href:'../apps/rhb/'},'Open demo ↗'),E('a',{className:'rhb-back',href:'../index.html#projects'},'Portfolio ↗')
       )),
       E(Rail,{active}),
       E('main',{className:'rhb-page'},
@@ -153,7 +153,7 @@
               E('h1',null,'RHB',E('span',null,'STUDIO')),
               E('p',{className:'rhb-hero-lead'},'Una plataforma local-first para convertir proyectos técnicos en un flujo trazable: levantamiento, CAD, diseño, BOM, presupuesto, fabricación, montaje, QA y entrega.'),
               E('div',{className:'rhb-badges'},...['PROJECT CORE','PHOTO → CAD','FABRICATION','AGENT ROUTING','DOCUMENTATION','HEALTH / OPS'].map(x=>E(Badge,{key:x},x))),
-              E('p',{className:'rhb-boundary'},'La web muestra arquitectura y resultados publicables. Credenciales, rutas locales, secretos y datos privados permanecen fuera del showcase.')
+              E('div',{className:'rhb-hero-actions'},E('a',{href:'../apps/rhb/',className:'rhb-primary-link'},'Open functional demo ↗'),E('a',{href:'#workflow'},'Explore architecture ↓')),E('p',{className:'rhb-boundary'},'La demo pública funciona íntegramente en el navegador con persistencia local. Credenciales, rutas locales, secretos y datos privados permanecen fuera del showcase.')
             )
           )
         ),

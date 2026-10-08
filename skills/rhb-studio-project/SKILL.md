@@ -1,4 +1,4 @@
-# RHB STUDIO — Project Skill v1.1
+# RHB STUDIO — Project Skill v1.2
 
 ## Mission
 
@@ -25,7 +25,9 @@ Current public case stack:
 - `prefers-reduced-motion` compatible behaviour
 - dedicated Playwright QA in `rhb-studio/tests/rhb-studio-qa.mjs`
 
-Public runtime contract is exposed as `window.__RHB_STUDIO_CASE__` for QA only.
+Public case runtime contract is exposed as `window.__RHB_STUDIO_CASE__` for QA only.
+
+The functional CV demo lives at `apps/rhb/` and exposes `window.__RHB_STUDIO_DEMO__`. It is browser-only and must never claim a connection to the private local runtime.
 
 ## Current architecture
 
@@ -78,6 +80,21 @@ Clearly separate:
 - VERIFIED_PROJECT_OUTPUT
 
 Do not present a conceptual UI or generated render as a deployed production module.
+
+## Functional public demo contract
+
+The GitHub Pages demo may implement real browser-side behaviour:
+- project creation and stage changes;
+- localStorage persistence;
+- survey image preview with no upload;
+- parametric schematic SVG geometry;
+- editable BOM + arithmetic;
+- deterministic routing simulation;
+- Markdown/JSON generation;
+- QA checklist and handover gate;
+- import/export of demo state.
+
+It must explicitly keep `backendConnected: false` and must not expose local ports, credentials, filesystem paths or client data. It may demonstrate product logic, but not fabricate a live OmniRoute/OpenClaw/NEXO/CAD connection.
 
 ## Model promotion rule
 

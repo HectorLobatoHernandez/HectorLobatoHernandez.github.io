@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "demoId": "RHB_STUDIO_PUBLIC_DEMO",
+  "mode": "BROWSER_ONLY",
+  "updatedAt": "2026-10-08",
+  "disclaimer": "Functional front-end demonstrator. Data is stored in this browser only. No connection to the private RHB STUDIO runtime, OmniRoute, OpenClaw, NEXO, CAD software or client files.",
+  "stages": [
+    "INTAKE",
+    "SURVEY",
+    "CAD",
+    "DESIGN",
+    "BOM",
+    "APPROVAL",
+    "FABRICATION",
+    "INSTALL",
+    "COMMISSION",
+    "HANDOVER"
+  ],
+  "agents": [
+    {
+      "id": "cad",
+      "name": "CAD Agent",
+      "tags": [
+        "cad",
+        "dwg",
+        "dxf",
+        "sketch",
+        "geometry",
+        "measure",
+        "plano",
+        "cota"
+      ]
+    },
+    {
+      "id": "fabrication",
+      "name": "Fabrication Agent",
+      "tags": [
+        "fabrication",
+        "weld",
+        "steel",
+        "tube",
+        "metal",
+        "soldadura",
+        "tubo",
+        "hierro",
+        "fabricar"
+      ]
+    },
+    {
+      "id": "budget",
+      "name": "Budget Agent",
+      "tags": [
+        "budget",
+        "price",
+        "cost",
+        "bom",
+        "presupuesto",
+        "precio",
+        "coste",
+        "material"
+      ]
+    },
+    {
+      "id": "pm",
+      "name": "Project Manager Agent",
+      "tags": [
+        "schedule",
+        "client",
+        "approval",
+        "task",
+        "deadline",
+        "cliente",
+        "aprobacion",
+        "tarea",
+        "plazo"
+      ]
+    },
+    {
+      "id": "docs",
+      "name": "Documentation Agent",
+      "tags": [
+        "report",
+        "manual",
+        "spec",
+        "document",
+        "informe",
+        "manual",
+        "memoria",
+        "documentacion"
+      ]
+    },
+    {
+      "id": "qa",
+      "name": "QA / Commissioning Agent",
+      "tags": [
+        "qa",
+        "test",
+        "commission",
+        "check",
+        "inspection",
+        "prueba",
+        "commissioning",
+        "verificar"
+      ]
+    }
+  ],
+  "seedProjects": [
+    {
+      "id": "RHB-ACC-001",
+      "name": "Puerta Finca Encomienda",
+      "type": "Sliding gate",
+      "status": "DESIGN",
+      "client": "Portfolio demo",
+      "location": "Zamora",
+      "description": "Puerta corredera con peatonal integrada, automatización, seguridad y opciones de iluminación.",
+      "dimensions": {
+        "width": 3200,
+        "height": 2500,
+        "pedestrian": 900
+      },
+      "bom": [
+        {
+          "id": "b1",
+          "item": "Tubo estructural",
+          "qty": 18,
+          "unit": "m",
+          "unitCost": 7.8
+        },
+        {
+          "id": "b2",
+          "item": "Chapa / revestimiento",
+          "qty": 8,
+          "unit": "m²",
+          "unitCost": 32
+        },
+        {
+          "id": "b3",
+          "item": "Kit motor corredera",
+          "qty": 1,
+          "unit": "ud",
+          "unitCost": 420
+        },
+        {
+          "id": "b4",
+          "item": "Fotocélulas",
+          "qty": 1,
+          "unit": "par",
+          "unitCost": 65
+        }
+      ],
+      "qa": [
+        {
+          "id": "q1",
+          "label": "Dimensiones verificadas",
+          "done": false
+        },
+        {
+          "id": "q2",
+          "label": "Sentido de apertura confirmado",
+          "done": true
+        },
+        {
+          "id": "q3",
+          "label": "Herrajes / motor definidos",
+          "done": true
+        },
+        {
+          "id": "q4",
+          "label": "Plano fabricación aprobado",
+          "done": false
+        },
+        {
+          "id": "q5",
+          "label": "Checklist montaje creado",
+          "done": false
+        }
+      ]
+    },
+    {
+      "id": "RHB-TBL-001",
+      "name": "Base Mesa Cristal",
+      "type": "Steel table base",
+      "status": "CAD",
+      "client": "Portfolio demo",
+      "location": "Zamora",
+      "description": "Base metálica para cristal 1400 × 800 mm y altura objetivo 750 mm.",
+      "dimensions": {
+        "width": 1400,
+        "depth": 800,
+        "height": 750
+      },
+      "bom": [
+        {
+          "id": "tb1",
+          "item": "Tubo estructural",
+          "qty": 6.2,
+          "unit": "m",
+          "unitCost": 8.6
+        },
+        {
+          "id": "tb2",
+          "item": "Pletina apoyo",
+          "qty": 4,
+          "unit": "ud",
+          "unitCost": 4.2
+        },
+        {
+          "id": "tb3",
+          "item": "Consumibles soldadura",
+          "qty": 1,
+          "unit": "lot",
+          "unitCost": 18
+        }
+      ],
+      "qa": [
+        {
+          "id": "tq1",
+          "label": "Cristal medido",
+          "done": true
+        },
+        {
+          "id": "tq2",
+          "label": "Altura objetivo validada",
+          "done": true
+        },
+        {
+          "id": "tq3",
+          "label": "Secuencia de plegado revisada",
+          "done": false
+        },
+        {
+          "id": "tq4",
+          "label": "Plano fabricación final",
+          "done": false
+        }
+      ]
+    }
+  ]
+}

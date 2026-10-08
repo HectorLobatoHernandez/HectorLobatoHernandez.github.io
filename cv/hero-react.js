@@ -236,6 +236,7 @@
   function DitherVeil(){
     const canvasRef=useRef(null);
     const frameRef=useRef(null);
+    const [plain,setPlain]=useState(false);
     const reduced=useReducedMotion();
 
     useEffect(()=>{
@@ -346,13 +347,19 @@
 
     return h('div',{className:'rb-portrait-zone'},
       h('div',{className:'rb-dither-axis','aria-hidden':'true'}),
-      h('div',{className:'rb-dither-frame',ref:frameRef,'data-dither-veil':'true'},
+      h('div',{className:'rb-dither-frame'+(plain?' is-plain':''),ref:frameRef,'data-dither-veil':'true','data-portrait-view':plain?'plain':'interactive'},
         h('img',{className:'rb-dither-photo',src:PHOTO,alt:'Retrato profesional de Héctor Lobato'}),
         h('canvas',{className:'rb-dither-canvas',ref:canvasRef,'aria-label':'Retrato interactivo con efecto dither'}),
         h('div',{className:'rb-dither-overlay','aria-hidden':'true'}),
-        h('div',{className:'rb-dither-hint'},'mueve el cursor / revelar'),
-        h('div',{className:'rb-dither-meta'},h('span',null,'Portrait / 2026'),h('span',null,'Dither Veil / interactive'))
+        h('div',{className:'rb-dither-hint'},plain?'foto original':'mueve el cursor / revelar'),
+        h('div',{className:'rb-dither-meta'},h('span',null,'Portrait / 2026'),h('span',null,plain?'Original / clean':'Dither Veil / interactive'))
       ),
+      h('button',{
+        className:'rb-portrait-toggle',
+        type:'button',
+        onClick:()=>setPlain(v=>!v),
+        'aria-pressed':plain?'true':'false'
+      },plain?'Activar visor React':'Ver foto normal'),
       h('div',{className:'rb-portrait-code'},h('strong',null,'01 / HUMAN LAYER'),'field + digital',h('br'),'systems / engineering')
     );
   }
@@ -402,20 +409,11 @@
           h('div',{className:'rb-copy'},
             h('div',{className:'rb-kicker'},'Systems Integration / Automation / IT/OT / AV / AI'),
             h(TechText),
-            h('p',{className:'rb-deck'},'Ingeniería entre el espacio físico, los sistemas de control y el software.'),
-            h('p',{className:'rb-lead'},'Perfil multidisciplinar orientado a diseñar, integrar, poner en marcha y documentar sistemas técnicos completos. Trabajo desde la arquitectura funcional y el levantamiento hasta el commissioning, el diagnóstico y las herramientas digitales que hacen la operación más comprensible.'),
-            h('div',{className:'rb-actions'},
-              h('a',{className:'rb-btn primary',href:'present.html'},'Presentar en 5 min →'),
-              h('a',{className:'rb-btn',href:'#proyectos'},'Ver dossier'),
+            h('p',{className:'rb-deck'},'Ingeniería e integración de sistemas: automatización, AV, IT/OT, CAD y software aplicado.'),
+            h('div',{className:'rb-actions rb-actions-compact'},
+              h('a',{className:'rb-btn primary',href:'#proyectos'},'Explorar proyectos ↓'),
               h('a',{className:'rb-btn',href:'ats.html'},'CV ATS / PDF'),
-              h('a',{className:'rb-btn',href:'../'},'Portfolio técnico'),
-              h('a',{className:'rb-btn',href:'mailto:lobatohernandezhector@gmail.com'},'Contacto')
-            ),
-            h('div',{className:'rb-index'},
-              h('div',{className:'rb-index-item'},h('strong',null,'2018 → 2026'),h('span',null,'trayectoria técnica pública')),
-              h('div',{className:'rb-index-item'},h('strong',null,'Field + Digital'),h('span',null,'obra, sistemas y software')),
-              h('div',{className:'rb-index-item'},h('strong',null,'Architecture + Commissioning'),h('span',null,'ciclo completo')),
-              h('div',{className:'rb-index-item'},h('strong',null,'Zamora'),h('span',null,'base profesional'))
+              h('a',{className:'rb-btn',href:'present.html'},'Presentación 5 min')
             )
           ),
           h(DitherVeil)
