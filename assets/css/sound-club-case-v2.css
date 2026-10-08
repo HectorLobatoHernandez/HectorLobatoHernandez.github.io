@@ -90,3 +90,44 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
   .ms-logo-track{animation:none}
   .ms-bounce-card{transition:none}
 }
+
+
+/* CAD master background + dimension cursor */
+:root{--cad-x:50vw;--cad-y:50vh}
+.ms-cad-layer{position:fixed;inset:64px 0 0;z-index:0;pointer-events:none;overflow:hidden;opacity:.95}
+.ms-cad-plan{position:absolute;inset:-5%;background:url("../visuals/sound-club-cad-blueprint.svg") center 38%/cover no-repeat;opacity:.18;filter:saturate(.42) contrast(1.08);transform:scale(1.04)}
+.ms-cad-layer:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--cad-x) var(--cad-y),rgba(89,217,221,.055),transparent 18vw),linear-gradient(90deg,rgba(7,16,14,.92),rgba(7,16,14,.55) 36%,rgba(7,16,14,.62) 70%,rgba(7,16,14,.92))}
+.ms-cad-axis{position:fixed;z-index:2;display:block;background:rgba(144,166,173,.19)}
+.ms-cad-axis-x{left:0;right:0;top:var(--cad-y);height:1px}
+.ms-cad-axis-y{top:64px;bottom:0;left:var(--cad-x);width:1px}
+.ms-cad-cross{position:fixed;z-index:3;left:var(--cad-x);top:var(--cad-y);width:18px;height:18px;transform:translate(-50%,-50%)}
+.ms-cad-cross:before,.ms-cad-cross:after{content:"";position:absolute;background:var(--gold2)}
+.ms-cad-cross:before{left:0;right:0;top:8px;height:1px}.ms-cad-cross:after{top:0;bottom:0;left:8px;width:1px}
+.ms-cad-readout{position:fixed;z-index:3;left:calc(var(--cad-x) + 14px);top:calc(var(--cad-y) + 13px);padding:5px 7px;border:1px solid rgba(214,164,103,.25);background:rgba(7,16,14,.72);color:#c7b695;font:700 7px var(--mono);letter-spacing:.09em;white-space:nowrap;backdrop-filter:blur(6px)}
+.ms-cad-source{position:fixed;right:18px;bottom:14px;z-index:3;color:#60716b;font:700 7px var(--mono);letter-spacing:.10em}
+.ms-page{position:relative;z-index:2}
+@media(pointer:fine){body,a,button{cursor:none!important}}
+@media(max-width:1050px),(pointer:coarse){.ms-cad-axis,.ms-cad-cross,.ms-cad-readout{display:none}.ms-cad-plan{opacity:.11}}
+
+/* Spatial model explorer: same geometry / shared camera */
+.ms-spatial-head{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:end}
+.ms-spatial-toolbar{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-top:30px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ms-view-toggle{display:flex;border:1px solid var(--line)}
+.ms-view-toggle button{appearance:none;border:0;border-right:1px solid var(--line);background:rgba(255,255,255,.012);color:#76827b;padding:11px 14px;text-align:left;font:700 9px var(--mono);letter-spacing:.10em;transition:.2s}
+.ms-view-toggle button:last-child{border-right:0}.ms-view-toggle button.active{background:var(--ink);color:#07100e}.ms-view-toggle button small{display:block;margin-top:4px;font-size:6px;letter-spacing:.06em;opacity:.65}
+.ms-source-strip{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}.ms-source-strip span{padding:6px 8px;border:1px solid var(--line);color:#7d8b83;font:700 7px var(--mono);letter-spacing:.08em}
+.ms-spatial-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(230px,.5fr);gap:18px;margin-top:18px}
+.ms-spatial-stage{position:relative;min-height:680px;border:1px solid var(--line);overflow:hidden;background:radial-gradient(circle at 48% 42%,rgba(89,217,221,.055),transparent 28%),linear-gradient(180deg,#09110f,#050a08)}
+.ms-three-host{position:absolute;inset:0}.ms-three-host canvas{display:block;width:100%;height:100%}
+.ms-skp-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:7%;opacity:.68;filter:contrast(1.08) saturate(.72)}
+.ms-spatial-stage[data-view="render"] .ms-skp-preview{filter:sepia(.22) saturate(.78) brightness(.78);opacity:.36}
+.ms-spatial-pending{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;background:radial-gradient(circle at 50% 50%,transparent 0 22%,rgba(7,16,14,.32) 52%,rgba(7,16,14,.78) 94%)}
+.ms-spatial-pending strong{font:700 8px var(--mono);letter-spacing:.14em;color:var(--gold)}.ms-spatial-pending span{font:400 clamp(30px,4vw,58px)/1 var(--display);max-width:12ch;margin:15px 0 10px}.ms-spatial-pending small{max-width:54ch;color:#829088;font-size:10px;line-height:1.7}
+.ms-spatial-hud{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:space-between;gap:20px;padding:10px 12px;border-top:1px solid rgba(238,233,222,.12);background:rgba(7,16,14,.52);backdrop-filter:blur(8px);font:700 7px var(--mono);letter-spacing:.09em}.ms-spatial-hud b{color:var(--gold)}.ms-spatial-hud span{color:#75827a}
+.ms-spatial-side{border:1px solid var(--line);padding:18px;background:rgba(8,15,13,.66);backdrop-filter:blur(8px)}
+.ms-zone-link{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);text-align:left}.ms-zone-link:disabled{opacity:.58}.ms-zone-link b{font:500 18px var(--display)}.ms-zone-link span{color:#65736b;font:700 7px var(--mono);letter-spacing:.07em}
+.ms-spatial-rule{margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}.ms-spatial-rule b{font:700 8px var(--mono);letter-spacing:.10em;color:var(--gold)}.ms-spatial-rule p{font-size:11px;line-height:1.65;color:#7f8c84}
+.ms-model-list-spatial{grid-template-columns:repeat(4,1fr);margin-top:18px}
+@media(max-width:1050px){.ms-spatial-head,.ms-spatial-layout{grid-template-columns:1fr}.ms-spatial-stage{min-height:560px}.ms-source-strip{justify-content:flex-start}.ms-model-list-spatial{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.ms-spatial-toolbar{align-items:flex-start;flex-direction:column}.ms-spatial-stage{min-height:430px}.ms-spatial-pending{padding:24px}.ms-model-list-spatial{grid-template-columns:1fr}.ms-spatial-hud{display:none}}
+@media(prefers-reduced-motion:reduce){.ms-cad-plan{transform:none}.ms-view-toggle button{transition:none}}
