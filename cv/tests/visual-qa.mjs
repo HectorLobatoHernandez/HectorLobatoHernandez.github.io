@@ -91,7 +91,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));
       if(!menu.open||menu.links!==7)failures.push('Staggered menu did not open correctly');
       await page.click('.rb-menu-close');await page.waitForTimeout(120);
-      await page.click('.rb-portrait-toggle');await page.waitForTimeout(120);
+      await page.click('.rb-portrait-toggle');await page.waitForTimeout(360);
       const portrait=await page.evaluate(()=>({view:document.querySelector('[data-dither-veil="true"]')?.getAttribute('data-portrait-view'),pressed:document.querySelector('.rb-portrait-toggle')?.getAttribute('aria-pressed'),canvasOpacity:getComputedStyle(document.querySelector('.rb-dither-canvas')).opacity}));
       if(portrait.view!=='plain'||portrait.pressed!=='true'||Number(portrait.canvasOpacity)>.05)failures.push('Dossier portrait normal-photo toggle failed');
     }
