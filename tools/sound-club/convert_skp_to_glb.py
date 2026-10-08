@@ -38,6 +38,10 @@ def main() -> int:
     ap.add_argument("--promote-manifest", action="store_true",
                     help="Explicitly promote candidate after human QA")
     ap.add_argument("--no-textures", action="store_true")
+    ap.add_argument("--max-extent-m", type=float, default=500.0,
+                    help="Maximum accepted X/Z venue extent before promotion is blocked")
+    ap.add_argument("--max-height-m", type=float, default=150.0,
+                    help="Maximum accepted Y venue extent before promotion is blocked")
     args = ap.parse_args()
 
     skp_path = args.skp.resolve()
@@ -105,6 +109,17 @@ def main() -> int:
     geometry_count = len(getattr(loaded, "geometry", {}) or {})
     bounds = getattr(loaded, "bounds", None)
     bounds_list = bounds.tolist() if bounds is not None else None
+    extent_mm = None
+    extent_m = None
+    bounds_plausible = False
+    if bounds is not None:
+        extent_mm = (bounds[1] - bounds[0]).tolist()
+        extent_m = [float(v) / 1000.0 for v in extent_mm]
+        bounds_plausible = (
+            extent_m[0] <= args.max_extent_m
+            and extent_m[2] <= args.max_extent_m
+            and extent_m[1] <= args.max_height_m
+        )
 
     report = {
         "schemaVersion": 1,
@@ -131,14 +146,22 @@ def main() -> int:
             "texturesEmbedded": not args.no_textures,
             "geometryCount": geometry_count,
             "bounds": bounds_list,
-            "classification": "CANDIDATE_VERIFIED_GEOMETRY",
+            "extentMm": extent_mm,
+            "extentM": extent_m,
+            "boundsGate": {
+                "maxHorizontalExtentM": args.max_extent_m,
+                "maxHeightM": args.max_height_m,
+                "plausibleVenueBounds": bounds_plausible,
+            },
+            "classification": "CANDIDATE_VERIFIED_GEOMETRY" if bounds_plausible else "CANDIDATE_REQUIRES_GEOMETRY_CLEANUP",
         },
         "qa": {
             "rawSkpPublished": False,
             "humanVisualReviewRequired": True,
             "dwgOriginAlignmentRequired": True,
             "registeredMasterCheck": source_match,
-            "publicPromotion": bool(args.promote_manifest),
+            "boundsPlausible": bounds_plausible,
+            "publicPromotion": bool(args.promote_manifest and bounds_plausible),
         },
     }
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -156,6 +179,12 @@ def main() -> int:
                 "PROMOTION BLOCKED: selected SKP does not match the registered private master. "
                 f"Expected SHA256 {source_match.get('expectedSha256')}, got {source_sha}. "
                 "Review the candidate and choose the correct SKP before changing the registered master."
+            )
+        if not bounds_plausible:
+            raise SystemExit(
+                "PROMOTION BLOCKED: GLB bounds are implausible for the venue. "
+                f"Extent (m) = {extent_m}. Remove/isolate geolocation, terrain or remote geometry "
+                "and regenerate the candidate before promotion."
             )
         manifest_path = args.manifest.resolve()
         public_output = args.public_output.resolve()
@@ -193,6 +222,12 @@ def main() -> int:
             print(
                 "WARNING: selected SKP does NOT match the registered master "
                 f"({source_match.get('expectedSha256')}). Candidate kept for comparison only.",
+                file=sys.stderr,
+            )
+        if not bounds_plausible:
+            print(
+                "WARNING: GLB bounds are implausible for this venue. "
+                f"Extent (m) = {extent_m}. Candidate requires geometry cleanup before promotion.",
                 file=sys.stderr,
             )
 
