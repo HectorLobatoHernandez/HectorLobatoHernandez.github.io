@@ -32,8 +32,9 @@ for(const [path,titlePart,needles] of pages){
 
 const root=await browser.newPage({viewport:{width:1440,height:960}});
 await root.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
-const rootOk=await root.evaluate(()=>document.body.textContent.includes('START HERE')&&!!document.querySelector('a[href="start/"]'));
-if(!rootOk)errors.push('root START HERE entry missing');
+await root.waitForTimeout(500);
+const rootOk=await root.evaluate(()=>({path:location.pathname,title:document.title,dossier:!!document.querySelector('[data-reactbits-hero="true"]')}));
+if(rootOk.path!=='/cv/dossier.html'||!rootOk.dossier||!rootOk.title.includes('Dossier'))errors.push('root must resolve to canonical dossier: '+JSON.stringify(rootOk));
 await root.close();
 
 const gaza=await browser.newPage({viewport:{width:1440,height:960}});
