@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {initialOperations,transition,checkInvariants} from '../runtime/operations-thread.js';
+let s=initialOperations();
+assert.equal(s.provenance,'SIMULATED');
+for(let i=0;i<4;i++)s=transition(s,{type:'NEXT'});
+assert.equal(s.stage,4);
+s=transition(s,{type:'NEXT'});assert.equal(s.stage,4,'Cannot proceed before testing');
+for(const test of ['FISICOQUÍMICA','MICROBIOLOGÍA','INHIBIDORES'])s=transition(s,{type:'TEST',test,pass:true});
+s=transition(s,{type:'NEXT'});assert.equal(s.stage,5);
+s=transition(s,{type:'NEXT'});assert.equal(s.stage,5,'Cannot proceed without review');
+s=transition(s,{type:'QUALITY_APPROVAL'});assert.equal(s.quality,'SIMULATED_APPROVAL');
+for(let i=0;i<4;i++)s=transition(s,{type:'NEXT'});
+assert.equal(s.stage,9);assert(s.inventory.dispatchedPallets>0);
+assert(checkInvariants(s));s=transition(s,{type:'NEXT'});assert.equal(s.status,'COMPLETE');
+let fail=initialOperations();for(let i=0;i<4;i++)fail=transition(fail,{type:'NEXT'});
+fail=transition(fail,{type:'TEST',test:'MICROBIOLOGÍA',pass:false});assert.equal(fail.status,'HOLD');
+const prev=fail.stage;fail=transition(fail,{type:'NEXT'});assert.equal(fail.stage,prev);
+console.log('OPERATIONS-THREAD QA PASS: quality gate, mass balance, packing, dispatch, hold');
