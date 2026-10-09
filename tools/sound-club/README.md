@@ -300,3 +300,29 @@ The replacement is a technical spatial proxy, not a claim of fabrication-level g
 The adaptive clustering targets at most 6,000 proxy nodes. V2 then repacks only retained source bufferViews plus one reusable proxy cube. The report records source-node replacement counts, proxy counts, file/BIN/mesh/node reductions, world bounds and the web gate.
 
 Even if V2 meets the ≤95 MiB / ≤20,000-mesh gate, public promotion remains blocked until visual QA against the private SketchUp master.
+
+
+## V2 bounds isolation
+
+V2 now meets the hard web payload and mesh-count gates but still carries remote/site-context geometry that keeps the world bounds far beyond the venue envelope.
+
+Run:
+
+```powershell
+.\tools\sound-club\ANALYZE_V2_BOUNDS.ps1
+```
+
+Output:
+
+- `assets/models/sound-club/_candidate/venue-web-v2.bounds-analysis.json`
+
+This focused pass does not alter V2. It reports:
+
+- the exact mesh node/group responsible for min/max X, Y and Z;
+- the densest 25 m XZ cells and 10 m Y bands;
+- a diagnostic 100 m × 36 m × 100 m core envelope centered on the densest contiguous venue cluster;
+- outlier groups by node count;
+- farthest mesh nodes;
+- meshes whose own bounds already violate the 120 m horizontal / 40 m vertical web gate.
+
+This is the final isolation gate before building a separate venue-only V3. Do not promote V2.
