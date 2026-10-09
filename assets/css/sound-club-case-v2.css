@@ -243,3 +243,22 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
   .ms-mold-arrow{transform:rotate(90deg)}
   .ms-mold-tech{flex-direction:column}
 }
+
+
+/* V4.1 · React media carousels */
+.ms-project-media{position:relative}
+.ms-media-carousel{margin-top:34px}
+.ms-media-carousel+.ms-media-carousel{margin-top:54px}
+.ms-media-carousel-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:16px}
+.ms-media-carousel-head h3{font:400 clamp(30px,3.4vw,54px)/.96 var(--display);letter-spacing:-.035em;margin:0}
+.ms-media-carousel-controls{display:flex;align-items:center;gap:8px}
+.ms-media-carousel-controls button{width:40px;height:40px;border:1px solid var(--line);background:#09110f;color:var(--ink);cursor:pointer;font-size:17px}
+.ms-media-carousel-controls button:disabled{opacity:.3;cursor:default}
+.ms-media-carousel-controls span{min-width:66px;text-align:center;color:#76837b;font:600 8px var(--mono);letter-spacing:.05em}
+.ms-media-carousel-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(520px,72%);gap:14px;overflow-x:auto;scroll-snap-type:inline mandatory;overscroll-behavior-inline:contain;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:#39443e transparent}
+.ms-media-carousel-card{scroll-snap-align:start;margin:0;position:relative;aspect-ratio:16/9;border:1px solid var(--line);background:#070c0a;overflow:hidden}
+.ms-media-carousel-card img{width:100%;height:100%;display:block;object-fit:cover}
+.ms-media-carousel-card figcaption{position:absolute;left:0;right:0;bottom:0;padding:13px 14px;display:flex;justify-content:space-between;gap:18px;background:linear-gradient(0deg,rgba(4,9,7,.96),rgba(4,9,7,.04));font:600 8px var(--mono);letter-spacing:.05em}
+.ms-media-carousel-card figcaption span{color:#87938c;text-align:right}
+@media(max-width:900px){.ms-media-carousel-track{grid-auto-columns:88%}}
+@media(max-width:680px){.ms-media-carousel-head{align-items:flex-start;flex-direction:column}.ms-media-carousel-controls{align-self:flex-end}.ms-media-carousel-track{grid-auto-columns:94%}}
