@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-09",
+  "title": "Héctor Lobato · Project System",
+  "architecture": {
+    "cases": "projects/",
+    "apps": "apps/",
+    "media": "assets/projects/ + xxxia-studio/projects/",
+    "skills": "skills/",
+    "docs": "docs/projects/"
+  },
+  "projects": [
+    {
+      "id": "sound-club",
+      "title": "SOUND CLUB and restaurant",
+      "subtitle": "CLUB del MAR · Palma de Mallorca",
+      "type": "Hospitality / systems integration",
+      "status": "Case study active",
+      "featured": true,
+      "cover": "../assets/visuals/sound-club-master-2026-02-12-preview.svg",
+      "summary": "Arquitectura, audio profesional, KNX/DALI, iluminación, acústica, fabricación y commissioning presentados como un sistema espacial coordinado.",
+      "tags": [
+        "AV",
+        "DSP",
+        "KNX",
+        "DALI",
+        "Acoustics",
+        "Fabrication"
+      ],
+      "caseHref": "sound-club-palma.html",
+      "appHref": null
+    },
+    {
+      "id": "gaza-operations",
+      "title": "GAZA Operations",
+      "subtitle": "Industrial operations intelligence",
+      "type": "Operational software / digital twin",
+      "status": "Live demonstrator",
+      "featured": true,
+      "cover": "../assets/visuals/gaza-operations-system.svg",
+      "summary": "Mission Control, Plant 3D, GIS, territory, farms, routes and operational systems in one public demonstrator with provenance controls.",
+      "tags": [
+        "React",
+        "Three.js",
+        "GIS",
+        "Operations",
+        "Simulation"
+      ],
+      "caseHref": "gaza-logistics-ia.html",
+      "appHref": "../apps/gaza/mission-control.html?guide=1"
+    },
+    {
+      "id": "rhb-studio",
+      "title": "RHB STUDIO",
+      "subtitle": "Local-first engineering platform",
+      "type": "Engineering platform",
+      "status": "Live demonstrator",
+      "featured": true,
+      "cover": "../assets/visuals/rhb-studio-system.svg",
+      "summary": "Project core, Survey/CAD, BOM, fabrication, documentation, routing and AI-agent workflows for technical delivery.",
+      "tags": [
+        "CAD",
+        "Agents",
+        "Project Ops",
+        "Fabrication",
+        "AI"
+      ],
+      "caseHref": "rhb-studio.html",
+      "appHref": "../apps/rhb/"
+    },
+    {
+      "id": "casa-noah",
+      "title": "Casa NOAH",
+      "subtitle": "High-end residential",
+      "type": "Systems integration",
+      "status": "Archive expanding",
+      "featured": false,
+      "cover": "../assets/visuals/sound-club-cad-blueprint.svg",
+      "summary": "Residential systems integration case prepared for deeper visual and technical documentation.",
+      "tags": [
+        "Residential",
+        "Integration",
+        "Documentation"
+      ],
+      "caseHref": "casa-noah.html",
+      "appHref": null
+    },
+    {
+      "id": "las-dalias",
+      "title": "Las Dalias / Akasha",
+      "subtitle": "Entertainment / technical systems",
+      "type": "Entertainment systems",
+      "status": "Documentation recovery",
+      "featured": false,
+      "cover": "../assets/visuals/sound-club-control-plan.svg",
+      "summary": "Technical direction and systems integration with public scope kept conservative while source material is recovered.",
+      "tags": [
+        "Entertainment",
+        "AV",
+        "Control"
+      ],
+      "caseHref": "las-dalias-akasha.html",
+      "appHref": null
+    },
+    {
+      "id": "private-residence",
+      "title": "Private technology residence",
+      "subtitle": "Confidential residential project",
+      "type": "High-end residential",
+      "status": "Public scope limited",
+      "featured": false,
+      "cover": "../assets/visuals/sound-club-system.svg",
+      "summary": "Confidential technology integration case with identity and sensitive project details intentionally omitted.",
+      "tags": [
+        "Residential",
+        "Technology",
+        "Confidential"
+      ],
+      "caseHref": "private-tech-residence.html",
+      "appHref": null
+    },
+    {
+      "id": "xxxia",
+      "title": "XXXIA STUDIO",
+      "subtitle": "Visual production / project storytelling",
+      "type": "Creative tooling",
+      "status": "Active",
+      "featured": false,
+      "cover": "../assets/visuals/xxxia-production-flow.svg",
+      "summary": "Visual production pipeline for project boards, exploded views, motion, render sequences and evidence-controlled storytelling.",
+      "tags": [
+        "Visuals",
+        "Motion",
+        "AI",
+        "Pipeline"
+      ],
+      "caseHref": "xxxia-studio.html",
+      "appHref": null
+    }
+  ]
+}
