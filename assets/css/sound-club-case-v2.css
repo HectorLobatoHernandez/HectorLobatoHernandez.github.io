@@ -194,3 +194,52 @@ a{color:inherit}.ms-boot,.ms-error{min-height:100vh;display:grid;place-items:cen
 .ms-render-foot p{margin:0;color:#7f8c84;font-size:11px;line-height:1.65}
 @media(max-width:1050px){.ms-render-toolbar{align-items:flex-start;flex-direction:column}.ms-render-stage{min-height:520px}}
 @media(max-width:680px){.ms-render-stage{min-height:400px}.ms-render-foot{grid-template-columns:1fr}.ms-render-stamp{flex-direction:column;align-items:flex-start}.ms-render-stamp span{text-align:left}}
+
+
+/* V4 — lightweight build molds / image-first project deconstruction */
+.ms-molds{position:relative}
+.ms-mold-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:34px 0 18px}
+.ms-mold-tabs button{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.012);color:var(--ink);padding:13px 12px;text-align:left;cursor:pointer;min-height:72px;transition:.2s}
+.ms-mold-tabs button:hover,.ms-mold-tabs button.active{border-color:rgba(214,164,103,.5);background:rgba(214,164,103,.07)}
+.ms-mold-tabs span{display:block;color:var(--gold);font:700 7px var(--mono);letter-spacing:.12em;margin-bottom:8px}
+.ms-mold-tabs b{display:block;font:600 9px/1.25 var(--mono);letter-spacing:.06em}
+.ms-mold-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.65fr);gap:18px;align-items:stretch}
+.ms-mold-stage{position:relative;min-height:600px;border:1px solid var(--line);background:#060b09;overflow:hidden}
+.ms-mold-stage img{width:100%;height:100%;min-height:600px;display:block;object-fit:cover}
+.ms-mold-stamp{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:18px;padding:13px 15px;background:linear-gradient(0deg,rgba(5,9,8,.96),rgba(5,9,8,.16));font:600 8px var(--mono);letter-spacing:.05em}
+.ms-mold-stamp b{color:var(--gold2)}.ms-mold-stamp span{color:#8b978f;text-align:right}
+.ms-mold-side{border:1px solid var(--line);padding:22px;background:rgba(5,11,9,.56)}
+.ms-mold-side h3{font:400 34px/1 var(--display);letter-spacing:-.03em;margin:0 0 14px}
+.ms-mold-side>p{color:#87948c;font-size:12px;margin:0 0 22px}
+.ms-mold-steps{display:grid;border-top:1px solid var(--line)}
+.ms-mold-steps button{appearance:none;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);display:grid;grid-template-columns:34px 1fr;gap:10px;text-align:left;padding:14px 4px;cursor:pointer}
+.ms-mold-steps button>span{color:#5f6c65;font:700 8px var(--mono);padding-top:3px}
+.ms-mold-steps button b{display:block;font:600 9px var(--mono);letter-spacing:.05em}
+.ms-mold-steps button small{display:block;color:#6f7d75;font-size:10px;line-height:1.45;margin-top:5px}
+.ms-mold-steps button.active{background:linear-gradient(90deg,rgba(214,164,103,.09),transparent)}
+.ms-mold-steps button.active>span,.ms-mold-steps button.active b{color:var(--gold2)}
+.ms-mold-compare{display:grid;grid-template-columns:1fr 54px 1fr;align-items:center;gap:12px;margin-top:18px}
+.ms-mold-compare figure{margin:0;border:1px solid var(--line);background:#07100e;position:relative;overflow:hidden;aspect-ratio:16/9}
+.ms-mold-compare img{width:100%;height:100%;display:block;object-fit:cover}
+.ms-mold-compare figcaption{position:absolute;left:0;right:0;bottom:0;padding:11px 12px;background:linear-gradient(0deg,rgba(5,9,8,.96),transparent);display:flex;justify-content:space-between;gap:10px;font:600 8px var(--mono)}
+.ms-mold-compare figcaption b{color:var(--gold2)}.ms-mold-compare figcaption span{color:#87948c}
+.ms-mold-arrow{display:grid;place-items:center;color:var(--gold);font:300 34px var(--display)}
+.ms-mold-tech{margin-top:12px;border:1px solid rgba(214,164,103,.25);padding:12px 14px;display:flex;justify-content:space-between;gap:18px;background:rgba(214,164,103,.04);font:600 8px var(--mono);letter-spacing:.05em}
+.ms-mold-tech b{color:var(--gold2)}.ms-mold-tech span{color:#8d9a92;text-align:right}
+.ms-load-3d{position:relative;z-index:3;appearance:none;border:1px solid rgba(214,164,103,.5);background:rgba(7,16,14,.88);color:var(--gold2);padding:12px 16px;margin:8px 0 12px;cursor:pointer;font:700 9px var(--mono);letter-spacing:.09em}
+.ms-load-3d:hover{background:rgba(214,164,103,.12)}
+.ms-spatial-pending button+small{display:block;max-width:46ch;color:#7f8b84}
+.ms-spatial-stage[data-ready="true"] .ms-skp-preview{filter:saturate(.25) brightness(.48) contrast(1.1)}
+
+@media(max-width:1180px){
+  .ms-mold-tabs{grid-template-columns:repeat(3,1fr)}
+  .ms-mold-layout{grid-template-columns:1fr}
+  .ms-mold-stage,.ms-mold-stage img{min-height:520px}
+}
+@media(max-width:680px){
+  .ms-mold-tabs{grid-template-columns:1fr 1fr}
+  .ms-mold-stage,.ms-mold-stage img{min-height:360px}
+  .ms-mold-compare{grid-template-columns:1fr}
+  .ms-mold-arrow{transform:rotate(90deg)}
+  .ms-mold-tech{flex-direction:column}
+}
