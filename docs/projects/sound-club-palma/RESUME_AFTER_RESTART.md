@@ -110,3 +110,22 @@ Continue with:
 ```
 
 Do not rebuild V1 and do not use `-Force` unless intentionally replacing a reviewed derivative.
+
+
+## V2 result
+
+`venue-web-v2.glb` is now built locally.
+
+- size: ~76.03 MiB — **PASS**
+- meshes: 17,636 — **PASS**
+- BIN: ~63.73 MiB
+- proxy nodes: 881
+- bounds: 381.69 × 94.55 × 245.18 m — **FAIL**
+
+The remaining problem is spatial context only. Continue with:
+
+```powershell
+.\tools\sound-club\ANALYZE_V2_BOUNDS.ps1
+```
+
+Do not rebuild V1/V2 and do not promote.
