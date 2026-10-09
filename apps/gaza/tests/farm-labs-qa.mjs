@@ -10,7 +10,7 @@ try{
    page.on('pageerror',e=>failures.push(mode+': '+e.message));
    const res=await page.goto(base+'/farm-labs.html?mode='+mode+'&qa=1&freeze=1',{waitUntil:'domcontentloaded'});
    assert.equal(res.status(),200,mode+' HTTP');
-   await page.waitForFunction(()=>window.__GAZA_TWIN_STATE__?.surface==='${mode}',{timeout:15000});
+   await page.waitForFunction(()=>window.__GAZA_TWIN_STATE__?.surface===mode,{timeout:15000});
    const state=await page.evaluate(()=>window.__GAZA_TWIN_STATE__);
    assert.equal(state.provenance.simulated,true);
    assert.equal(state.simulation.lotId,'SIM-LOT-001');
