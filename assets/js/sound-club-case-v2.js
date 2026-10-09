@@ -38,57 +38,57 @@
       id:'complete',code:'M01',label:'TODO COMPLETO',title:'Del volumen base al local terminado',
       summary:'Lectura general del proyecto sin cargar el GLB pesado: envolvente, planta, interior y fachada final.',
       stages:[
-        ['01','MASSING / BASE','overall-massing .svg','Volumen arquitectónico y envolvente general.'],
-        ['02','PLAN / LAYOUT','overall-plan .svg','Distribución, recorridos y organización espacial desde arriba.'],
-        ['03','INTERIOR / FINAL','overall-interior-final .svg','Atmósfera interior con mobiliario, iluminación y cerramientos.'],
-        ['04','EXTERIOR / FINAL','overall-exterior-final .svg','Fachada acristalada, terraza y relación interior/exterior.']
+        ['01','MASSING / BASE','overall-massing.webp','Volumen arquitectónico y envolvente general.'],
+        ['02','PLAN / LAYOUT','overall-plan.webp','Distribución, recorridos y organización espacial desde arriba.'],
+        ['03','INTERIOR / FINAL','overall-interior-final.webp','Atmósfera interior con mobiliario, iluminación y cerramientos.'],
+        ['04','EXTERIOR / FINAL','overall-exterior-final.webp','Fachada acristalada, terraza y relación interior/exterior.']
       ]
     },
     {
       id:'dj',code:'M02',label:'MESA DJ INTERIOR',title:'Estructura → integración → equipo → resultado',
       summary:'La cabina se presenta como objeto técnico fabricable, no como una sola imagen decorativa.',
       stages:[
-        ['01','ESTRUCTURA / SERVICIOS','dj-structure-side .svg','Sección lateral con capas, fijaciones y pasos de servicio visibles.'],
-        ['02','INTEGRACIÓN TÉCNICA','dj-structure-back .svg','Despiece posterior y lógica constructiva del mueble.'],
-        ['03','EQUIPAMIENTO','dj-final-detail .svg','Platos, reproductores, mixer, lámparas de tarea y superficie de trabajo.'],
-        ['04','RESULTADO','dj-final-overview .svg','Cabina completa integrada en el espacio y en la escena de iluminación.']
+        ['01','ESTRUCTURA / SERVICIOS','dj-structure-side.webp','Sección lateral con capas, fijaciones y pasos de servicio visibles.'],
+        ['02','INTEGRACIÓN TÉCNICA','dj-structure-back.webp','Despiece posterior y lógica constructiva del mueble.'],
+        ['03','EQUIPAMIENTO','dj-final-detail.webp','Platos, reproductores, mixer, lámparas de tarea y superficie de trabajo.'],
+        ['04','RESULTADO','dj-final-overview.webp','Cabina completa integrada en el espacio y en la escena de iluminación.']
       ]
     },
     {
       id:'lighting',code:'M03',label:'ILUMINACIÓN',title:'Infraestructura → focos → escenas → atmósfera',
       summary:'Separar el sistema de iluminación del render general permite explicar carriles, luminarias, orientación y escena.',
       stages:[
-        ['01','TECHO / CARRILES','lighting-ceiling .svg','Carriles, luminarias suspendidas y focos vistos como sistema.'],
-        ['02','ESCENA / FINAL','lighting-final .svg','Resultado de la escena cálida con focos y colgantes encendidos.'],
-        ['03','HOSPITALITY','overall-interior-final .svg','Relación entre luz ambiental, mobiliario y fachada acristalada.']
+        ['01','TECHO / CARRILES','lighting-ceiling.webp','Carriles, luminarias suspendidas y focos vistos como sistema.'],
+        ['02','ESCENA / FINAL','lighting-final.webp','Resultado de la escena cálida con focos y colgantes encendidos.'],
+        ['03','HOSPITALITY','overall-interior-final.webp','Relación entre luz ambiental, mobiliario y fachada acristalada.']
       ]
     },
     {
       id:'glass',code:'M04',label:'CRISTALES / ENVOLVENTE',title:'Cerramiento opaco ↔ vidrio activo',
       summary:'Este molde resuelve lo que el visor técnico no estaba mostrando: transparencia, reflexión y lectura del cerramiento.',
       stages:[
-        ['01','CERRAMIENTO / OPACO','glass-closed .svg','Lectura con paneles/cortinas cerrados y menor transparencia.'],
-        ['02','VIDRIO / ACTIVO','glass-open .svg','Cristal visible con transparencia y relación con el corredor exterior.'],
-        ['03','FACHADA / REFLEJOS','exterior-glass-final .svg','Lectura exterior del vidrio con reflejos, interior y vegetación.']
+        ['01','CERRAMIENTO / OPACO','glass-closed.webp','Lectura con paneles/cortinas cerrados y menor transparencia.'],
+        ['02','VIDRIO / ACTIVO','glass-open.webp','Cristal visible con transparencia y relación con el corredor exterior.'],
+        ['03','FACHADA / REFLEJOS','exterior-glass-final.webp','Lectura exterior del vidrio con reflejos, interior y vegetación.']
       ]
     },
     {
       id:'lounge',code:'M05',label:'RESTAURANTE / LOUNGE',title:'Zonificación → mobiliario → ambiente final',
       summary:'La zona hospitality se entiende por capas: circulación, mesas/sofás, luminarias y ambiente nocturno.',
       stages:[
-        ['01','ZONIFICACIÓN','overall-plan .svg','Posición relativa de lounge, barras, cabina y circulación.'],
-        ['02','MOBILIARIO','lounge-final .svg','Sofás, mesas bajas, sillas y relaciones de escala.'],
-        ['03','ATMÓSFERA','overall-interior-final .svg','Resultado conjunto de materiales, iluminación y vegetación exterior.']
+        ['01','ZONIFICACIÓN','overall-plan.webp','Posición relativa de lounge, barras, cabina y circulación.'],
+        ['02','MOBILIARIO','lounge-final.webp','Sofás, mesas bajas, sillas y relaciones de escala.'],
+        ['03','ATMÓSFERA','overall-interior-final.webp','Resultado conjunto de materiales, iluminación y vegetación exterior.']
       ]
     },
     {
       id:'exterior',code:'M06',label:'TERRAZA / EXTERIOR',title:'Envolvente → vegetación → vidrio → resultado',
       summary:'La terraza se presenta como una pieza propia: arquitectura, jardinería, cerramiento y luz exterior.',
       stages:[
-        ['01','BASE / EDIFICIO','overall-massing .svg','Volumen y perímetro antes de leer la atmósfera final.'],
-        ['02','PLANTACIÓN','exterior-planting-detail .svg','Jardineras y vegetación como filtro entre terraza y fachada.'],
-        ['03','VIDRIO / INTERIOR','exterior-glass-final .svg','Fachada transparente con interior iluminado al fondo.'],
-        ['04','RESULTADO EXTERIOR','overall-exterior-final .svg','Vista global final de la envolvente y terraza.']
+        ['01','BASE / EDIFICIO','overall-massing.webp','Volumen y perímetro antes de leer la atmósfera final.'],
+        ['02','PLANTACIÓN','exterior-planting-detail.webp','Jardineras y vegetación como filtro entre terraza y fachada.'],
+        ['03','VIDRIO / INTERIOR','exterior-glass-final.webp','Fachada transparente con interior iluminado al fondo.'],
+        ['04','RESULTADO EXTERIOR','overall-exterior-final.webp','Vista global final de la envolvente y terraza.']
       ]
     }
   ];
@@ -282,7 +282,7 @@
     const candidate=Boolean(model?.classification==='LOCAL_CANDIDATE_NOT_VERIFIED');
     const candidateLabel=model?.candidateLabel||'LOCAL CANDIDATE · NOT VERIFIED';
     const candidateMode=model?.candidateMode||null;
-    const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview .svg';
+    const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview.svg';
 
     useEffect(()=>{
       const host=stageRef.current;
@@ -450,8 +450,8 @@
 
   function RenderComparison({afterItem,source}){
     const [mode,setMode]=useState('before');
-    const beforeSrc=RENDER_MOLD_BASE+'overall-massing .svg';
-    const afterSrc=RENDER_MOLD_BASE+'overall-interior-final .svg';
+    const beforeSrc=RENDER_MOLD_BASE+'overall-massing.webp';
+    const afterSrc=RENDER_MOLD_BASE+'overall-interior-final.webp';
     const currentSrc=mode==='before'?beforeSrc:afterSrc;
     return E('section',{className:'ms-shell ms-section ms-render-compare',id:'render'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
