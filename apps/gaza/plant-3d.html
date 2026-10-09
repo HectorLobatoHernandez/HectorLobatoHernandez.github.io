@@ -116,6 +116,10 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
+      <div style="position:absolute;left:13px;top:46%;z-index:14;display:grid;gap:7px;max-width:220px" aria-label="Nodos del gemelo digital">
+        <button type="button" id="openFarmNode" style="padding:10px 12px;border-radius:10px;background:#10291fdc;color:#c6f7dc;border:1px solid #44805b;text-align:left;font:800 11px system-ui;cursor:pointer">▣ GRANJA MAESTRA VIRTUAL ↗ <small style="display:block;font-weight:400;color:#afd3bf">Red de captación agregada · Zamora</small></button>
+        <button type="button" id="openLabNode" style="padding:10px 12px;border-radius:10px;background:#0d2035dc;color:#d1e6ff;border:1px solid #426d95;text-align:left;font:800 11px system-ui;cursor:pointer">▣ LABORATORIO DE PLANTA ↗ <small style="display:block;font-weight:400;color:#b4cfe9">Entrar al laboratorio · propuesta interior</small></button>
+      </div>
       <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles · Esnova + StorFast</span><span class="hudchip">AGUA · 380.390 m³/a · BOE 2025</span><span class="hudchip">TETRA PAK · proveedor equipo ref. pública</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span><span class="hudchip">EVIDENCIA · PÚBLICO / INFERIDO / SIMULADO</span><span class="hudchip" id="assetChip">GLB · leyendo manifiesto…</span><span class="hudchip" id="perfChip" hidden>GPU · midiendo…</span></div>
     </div>
     <aside class="twin-side">
@@ -666,6 +670,8 @@ if(canvas){
   else location.href='mission-control.html?view='+encodeURIComponent(area);
  }
  document.getElementById('enterMasterFarm')?.addEventListener('click',()=>openGazaArea('farm'));
+ document.getElementById('openFarmNode')?.addEventListener('click',()=>openGazaArea('farm'));
+ document.getElementById('openLabNode')?.addEventListener('click',()=>openGazaArea('labs'));
  document.getElementById('enterQualityLab')?.addEventListener('click',()=>openGazaArea('labs'));
  const speed=document.getElementById('simSpeed');
  const sel=document.getElementById('twinSelection');
