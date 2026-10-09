@@ -11,6 +11,10 @@
 
 Enlace para abrir directamente Matrix: `/apps/gaza/mission-control.html?view=matrix&guide=1`.
 
+## 1.1 Farm y Labs (expansión experimental)
+
+En Mission Control, **6 · Farm 3D** y **7 · Labs 3D** abren `farm-labs.html?mode=farm` y `farm-labs.html?mode=labs`. Los accesos directos son `?view=farm` y `?view=labs`. El escenario WebGL se carga desde CDN; si WebGL/red falla, los procesos y registros quedan accesibles. Sus modelos y escenarios son `SIMULATED`, sin integración OT ni autorización de liberación de lotes. La antigua parcela de Zamora es una propuesta de reconversión, no una granja real ni un levantamiento verificado.
+
 ## 2. Demostración de la Control Tower
 
 Abrir [Control Tower](https://hectorlobatohernandez.github.io/apps/gaza/?demo=1). El botón demo o la tecla **D** inicia la secuencia guiada; **Espacio** pausa/reanuda; **1/2/3** cambian capas y **R** reinicia. Esta interfaz muestra **expediciones, incidentes, KPIs y decisiones simulados** y no órdenes reales de almacén.
