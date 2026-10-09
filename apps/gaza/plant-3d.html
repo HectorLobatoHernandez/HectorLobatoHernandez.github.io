@@ -378,6 +378,14 @@ if(canvas){
 
  // Buildings: conceptual geometry totals ~11,800 m² footprint.
  const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
+ // An explicit quality-lab subvolume attached to receiving in the Plant 3D master.
+ // Interior location is PROPOSED and must not be represented as an as-built survey.
+ const labVolume=addBox(groups.plant,'Laboratorio de calidad · acceder',16,13.5,13,-98,-49,0x86b0cb,{
+  kind:'SIMULATED_QUALITY_LAB',info:'Ubicación funcional orientativa junto a recepción. Abrir la vista interna en LABS 3D.'
+ });
+ labVolume.material.transparent=true;labVolume.material.opacity=.76;
+ addLabel(groups.plant,'LABORATORIO → ENTRAR',-98,16,-49,'#ddf6ff',38);
+
  const process=addBox(groups.plant,'Proceso + envasado',110,18,65,-12,-18,0x315d86,{kind:'SIMULADO',info:'Volumen conceptual para proceso, CIP y envasado.'});
  const warehouse=addBox(groups.warehouse,'Almacén automático · 9 niveles',70,28,45,88,-25,0x455b74,{kind:'PÚBLICO + RECONSTRUCCIÓN',info:'9 niveles es dato público; envolvente y posición son reconstrucción funcional, no as-built.'});warehouse.material.transparent=true;warehouse.material.opacity=.17;warehouse.material.depthWrite=false;
  const staging=addBox(groups.plant,'Staging + muelles',58,10,25,91,38,0x875e37,{kind:'SIMULADO',info:'Preparación y expedición. Número/posición de muelles no confirmado.'});
