@@ -62,7 +62,10 @@ The new registered master has now been converted successfully using the memory-s
 - **V1 BUILD COMPLETED LOCALLY:** `venue-web-v1.glb` and `venue-web-v1.build-report.json` exist. Re-running `BUILD_WEB_V1.ps1` is now idempotent: it reports the existing V1 status instead of treating the protected existing output as an error.
 - V1 measured locally: 715.61 MiB, 609.48 MiB BIN, 191,817 nodes and 159,114 meshes; 14.19% file reduction and 17.12% mesh-definition reduction from the master-derived candidate.
 - **CURRENT PRODUCTION STEP:** `tools/sound-club/BUILD_WEB_V2.ps1` builds `venue-web-v2.glb` from V1. It replaces only classified heavy P1 groups with clustered world-space technical proxies while preserving all unclassified geometry, then measures the ≤95 MiB / ≤20,000 mesh / venue-bounds gate.
-- Even if V2 passes numerical gates, visual QA against the private SketchUp master is mandatory before any public promotion.
+- V2 built successfully: 76.03 MiB total, 63.73 MiB BIN, 21,063 nodes, 17,636 meshes and 881 proxy nodes. Size and mesh-count gates pass.
+- V2 still fails only the world-bounds gate: 381.69 × 94.55 × 245.18 m. This indicates retained remote/site-context geometry, not a payload problem.
+- **CURRENT STEP:** run `tools/sound-club/ANALYZE_V2_BOUNDS.ps1` to identify the exact extrema contributors/outlier groups, then build a separate venue-only V3. No further P1 simplification is needed unless V3 validation exposes it.
+- Visual QA against the private SketchUp master remains mandatory before any public promotion.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
