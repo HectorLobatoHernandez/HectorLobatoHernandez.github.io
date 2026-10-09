@@ -65,10 +65,11 @@ The new registered master has now been converted successfully using the memory-s
 - V2 built successfully: 76.03 MiB total, 63.73 MiB BIN, 21,063 nodes, 17,636 meshes and 881 proxy nodes. Size and mesh-count gates pass.
 - V2 still fails only the world-bounds gate: 381.69 × 94.55 × 245.18 m. This indicates retained remote/site-context geometry, not a payload problem.
 - V2 bounds analysis confirmed two independent context problems: remote small mesh clusters hundreds of metres from the venue plus very large `ROOT` meshes crossing the dense venue core and remote context. Large `ROOT` meshes therefore cannot be removed wholesale.
-- **CURRENT PRODUCTION STEP:** `tools/sound-club/BUILD_WEB_V3.ps1` builds a separate venue-only V3. It keeps fully-inside meshes untouched, removes fully-outside mesh nodes, and triangle-crops only partial meshes so large ROOT/context surfaces are trimmed without blindly discarding venue geometry.
-- If V3 passes ≤95 MiB / ≤20,000 meshes / ≤120 m horizontal / ≤40 m height, stop optimization and move directly to visual QA + Spatial Explorer.
+- **V3 BUILD COMPLETED LOCALLY:** `venue-web-v3.glb` passes all numeric gates: 69.62 MiB, 15,465 meshes, 18,757 nodes and 64.08 × 13.09 × 45.53 m extent. Seven partial meshes were triangle-cropped; 3,376 triangles were retained and 1,519 removed. Public promotion remains blocked.
+- **CURRENT STEP:** visual QA. `tools/sound-club/START_V3_VISUAL_QA.ps1` verifies the V3 SHA/report, starts/reuses localhost:8000 and opens `projects/sound-club-palma.html?candidate=v3`. The React Spatial Explorer now routes local V3 explicitly and shows a V3 QA checklist.
+- If V3 visually matches the private SketchUp master for venue envelope, architecture, acoustics, DJ, lighting, suspended structure, scale and clipping, then connect V3 as the approved interactive geometry candidate and continue to verified zones + matched-camera V-Ray stills.
 - Visual QA against the private SketchUp master remains mandatory before any public promotion.
-- Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
+- Next visual check: localhost V3 viewer (`?candidate=v3`); do not load the 874 MB master unless a source-level comparison is specifically required.
 
 The candidate directory remains gitignored. Restarting Windows does not remove these local files.
 
@@ -154,16 +155,15 @@ python -m http.server 8000
 Open:
 
 ```text
-http://localhost:8000/projects/sound-club-palma.html?candidate=1
+http://localhost:8000/projects/sound-club-palma.html?candidate=v3
 ```
 
 ## Next decision gates
 
-1. Build the first **derived optimized** `venue-web-v1.glb` from the verified source candidate. No more diagnostic-only loops before this build.
-2. Validate the derived GLB: geometry/bounds, size, mesh count and visual comparison against the private SketchUp master.
-3. Continue optimization until ≤95 MiB / ≤20,000 geometries (prefer 25–50 MiB).
+1. Run V3 visual QA locally with `START_V3_VISUAL_QA.ps1`.
+2. Compare venue envelope, principal architecture, acoustics, DJ, lighting/suspended structure, scale and clipping against the private SketchUp master.
+3. If QA passes, register V3 as the approved interactive geometry candidate and connect verified zone/system views.
 4. Verify DWG/SKP alignment.
-5. Connect the optimized GLB to the Spatial Explorer and add verified zone/system views.
-6. Export matched-camera V-Ray stills for BEFORE/AFTER render evidence.
-7. Only after visual + origin QA, run the public promotion gate.
-8. Continue the architect / engineer / designer-facing dossier.
+5. Export matched-camera V-Ray stills for BEFORE/AFTER render evidence.
+6. Only after visual + origin QA, run the public promotion gate.
+7. Continue the architect / engineer / designer-facing dossier.
