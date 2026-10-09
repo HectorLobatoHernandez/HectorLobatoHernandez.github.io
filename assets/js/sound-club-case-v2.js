@@ -300,7 +300,7 @@
       ),
       E('div',{className:'ms-media-carousel-track',ref:trackRef,tabIndex:0},
         ...cards.map(item=>E('figure',{className:'ms-media-carousel-card',key:item.id},
-          E('img',{src:item.src,alt:item.title,loading:'lazy',decoding:'async'}),
+          E('img',{src:item.src,alt:item.title,loading:'lazy',decoding:'async',onError:e=>{const im=e.currentTarget;if(im.dataset.fallbackDone)return;im.dataset.fallbackDone='1';if(item.fallbackSrc)im.src=item.fallbackSrc;}}),
           E('figcaption',null,E('b',null,item.title),E('span',null,item.classification||item.kind))
         ))
       )
@@ -308,17 +308,30 @@
   }
 
   function ProjectMediaCarousels({mediaMap}){
+    const values=[...mediaMap.values()];
     const byIds=ids=>ids.map(id=>mediaMap.get(id)).filter(Boolean);
-    const renderRefs=[...mediaMap.values()].filter(x=>x.kind==='RENDER'||String(x.id).startsWith('SC-RENDER-'));
+    const byRenderGroup=group=>values.filter(item=>{
+      if(item.kind!=='RENDER'&&!String(item.id).startsWith('SC-RENDER-'))return false;
+      const groups=Array.isArray(item.renderGroups)?item.renderGroups:[item.renderGroup].filter(Boolean);
+      return groups.includes(group);
+    });
+    const renderGroups=[
+      ['general','GENERAL / FULL VENUE','A / RENDERS'],
+      ['dj','DJ BOOTH','B / RENDERS'],
+      ['lighting','LIGHTING','C / RENDERS'],
+      ['glass','GLASS / ENVELOPE','D / RENDERS'],
+      ['lounge','RESTAURANT / LOUNGE','E / RENDERS'],
+      ['exterior','EXTERIOR / TERRACE','F / RENDERS']
+    ];
+    const technicalRenders=byRenderGroup('technical');
     return E('section',{className:'ms-shell ms-section ms-project-media',id:'media'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
-        E('div',null,E('p',{className:'ms-kicker'},'02 / PROJECT MEDIA · REACT CAROUSELS'),E('h2',{className:'ms-title'},'Renders, systems and details — separated.')),
-        E('p',{className:'ms-subtitle'},'Cada familia visual vive en su carrusel. Así el proyecto carga rápido, se entiende por capas y puede crecer desde el manifest del repositorio sin rehacer la página.')
+        E('div',null,E('p',{className:'ms-kicker'},'02 / CLUB DEL MAR · REACT MEDIA CAROUSELS'),E('h2',{className:'ms-title'},'Una parte del proyecto cada vez.')),
+        E('p',{className:'ms-subtitle'},'Los renders se separan por disciplina para que el case study cargue rápido y se lea como un proyecto técnico: general, cabina DJ, iluminación, vidrio, lounge y exterior. El GLB queda debajo como herramienta de geometría bajo demanda.')
       ),
-      E(MediaCarousel,{title:'Finished render references',kicker:'A / RENDERS',items:renderRefs}),
-      E(MediaCarousel,{title:'Architecture & atmosphere',kicker:'B / OVERVIEW',items:byIds(['SC-BOARD-01','SC-BOARD-02','SC-BOARD-05'])}),
-      E(MediaCarousel,{title:'DJ booth & fabrication',kicker:'C / OBJECTS',items:byIds(['SC-BOARD-04','SC-DETAIL-04','SC-DETAIL-07'])}),
-      E(MediaCarousel,{title:'Systems, plans & control',kicker:'D / TECHNICAL',items:byIds(['SC-PLAN-01','SC-PLAN-02','SC-PLAN-03','SC-SYS-01'])})
+      ...renderGroups.map(([group,title,kicker])=>E(MediaCarousel,{key:group,title,kicker,items:byRenderGroup(group)})),
+      E(MediaCarousel,{title:'Technical render details',kicker:'G / CONSTRUCTION',items:technicalRenders}),
+      E(MediaCarousel,{title:'Plans, systems & control',kicker:'H / TECHNICAL DOCUMENTS',items:byIds(['SC-PLAN-01','SC-PLAN-02','SC-PLAN-03','SC-SYS-01','SC-DETAIL-04','SC-DETAIL-07'])})
     );
   }
 
@@ -677,7 +690,7 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__SOUND_CLUB_CASE__={version:'4.1',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
+    window.__SOUND_CLUB_CASE__={version:'4.2',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
