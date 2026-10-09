@@ -38,57 +38,57 @@
       id:'complete',code:'M01',label:'TODO COMPLETO',title:'Del volumen base al local terminado',
       summary:'Lectura general del proyecto sin cargar el GLB pesado: envolvente, planta, interior y fachada final.',
       stages:[
-        ['01','MASSING / BASE','overall-massing.svg','Volumen arquitectónico y envolvente general.'],
-        ['02','PLAN / LAYOUT','overall-plan.svg','Distribución, recorridos y organización espacial desde arriba.'],
-        ['03','INTERIOR / FINAL','overall-interior-final.svg','Atmósfera interior con mobiliario, iluminación y cerramientos.'],
-        ['04','EXTERIOR / FINAL','overall-exterior-final.svg','Fachada acristalada, terraza y relación interior/exterior.']
+        ['01','MASSING / BASE','overall-massing .svg','Volumen arquitectónico y envolvente general.'],
+        ['02','PLAN / LAYOUT','overall-plan .svg','Distribución, recorridos y organización espacial desde arriba.'],
+        ['03','INTERIOR / FINAL','overall-interior-final .svg','Atmósfera interior con mobiliario, iluminación y cerramientos.'],
+        ['04','EXTERIOR / FINAL','overall-exterior-final .svg','Fachada acristalada, terraza y relación interior/exterior.']
       ]
     },
     {
       id:'dj',code:'M02',label:'MESA DJ INTERIOR',title:'Estructura → integración → equipo → resultado',
       summary:'La cabina se presenta como objeto técnico fabricable, no como una sola imagen decorativa.',
       stages:[
-        ['01','ESTRUCTURA / SERVICIOS','dj-structure-side.svg','Sección lateral con capas, fijaciones y pasos de servicio visibles.'],
-        ['02','INTEGRACIÓN TÉCNICA','dj-structure-back.svg','Despiece posterior y lógica constructiva del mueble.'],
-        ['03','EQUIPAMIENTO','dj-final-detail.svg','Platos, reproductores, mixer, lámparas de tarea y superficie de trabajo.'],
-        ['04','RESULTADO','dj-final-overview.svg','Cabina completa integrada en el espacio y en la escena de iluminación.']
+        ['01','ESTRUCTURA / SERVICIOS','dj-structure-side .svg','Sección lateral con capas, fijaciones y pasos de servicio visibles.'],
+        ['02','INTEGRACIÓN TÉCNICA','dj-structure-back .svg','Despiece posterior y lógica constructiva del mueble.'],
+        ['03','EQUIPAMIENTO','dj-final-detail .svg','Platos, reproductores, mixer, lámparas de tarea y superficie de trabajo.'],
+        ['04','RESULTADO','dj-final-overview .svg','Cabina completa integrada en el espacio y en la escena de iluminación.']
       ]
     },
     {
       id:'lighting',code:'M03',label:'ILUMINACIÓN',title:'Infraestructura → focos → escenas → atmósfera',
       summary:'Separar el sistema de iluminación del render general permite explicar carriles, luminarias, orientación y escena.',
       stages:[
-        ['01','TECHO / CARRILES','lighting-ceiling.svg','Carriles, luminarias suspendidas y focos vistos como sistema.'],
-        ['02','ESCENA / FINAL','lighting-final.svg','Resultado de la escena cálida con focos y colgantes encendidos.'],
-        ['03','HOSPITALITY','overall-interior-final.svg','Relación entre luz ambiental, mobiliario y fachada acristalada.']
+        ['01','TECHO / CARRILES','lighting-ceiling .svg','Carriles, luminarias suspendidas y focos vistos como sistema.'],
+        ['02','ESCENA / FINAL','lighting-final .svg','Resultado de la escena cálida con focos y colgantes encendidos.'],
+        ['03','HOSPITALITY','overall-interior-final .svg','Relación entre luz ambiental, mobiliario y fachada acristalada.']
       ]
     },
     {
       id:'glass',code:'M04',label:'CRISTALES / ENVOLVENTE',title:'Cerramiento opaco ↔ vidrio activo',
       summary:'Este molde resuelve lo que el visor técnico no estaba mostrando: transparencia, reflexión y lectura del cerramiento.',
       stages:[
-        ['01','CERRAMIENTO / OPACO','glass-closed.svg','Lectura con paneles/cortinas cerrados y menor transparencia.'],
-        ['02','VIDRIO / ACTIVO','glass-open.svg','Cristal visible con transparencia y relación con el corredor exterior.'],
-        ['03','FACHADA / REFLEJOS','exterior-glass-final.svg','Lectura exterior del vidrio con reflejos, interior y vegetación.']
+        ['01','CERRAMIENTO / OPACO','glass-closed .svg','Lectura con paneles/cortinas cerrados y menor transparencia.'],
+        ['02','VIDRIO / ACTIVO','glass-open .svg','Cristal visible con transparencia y relación con el corredor exterior.'],
+        ['03','FACHADA / REFLEJOS','exterior-glass-final .svg','Lectura exterior del vidrio con reflejos, interior y vegetación.']
       ]
     },
     {
       id:'lounge',code:'M05',label:'RESTAURANTE / LOUNGE',title:'Zonificación → mobiliario → ambiente final',
       summary:'La zona hospitality se entiende por capas: circulación, mesas/sofás, luminarias y ambiente nocturno.',
       stages:[
-        ['01','ZONIFICACIÓN','overall-plan.svg','Posición relativa de lounge, barras, cabina y circulación.'],
-        ['02','MOBILIARIO','lounge-final.svg','Sofás, mesas bajas, sillas y relaciones de escala.'],
-        ['03','ATMÓSFERA','overall-interior-final.svg','Resultado conjunto de materiales, iluminación y vegetación exterior.']
+        ['01','ZONIFICACIÓN','overall-plan .svg','Posición relativa de lounge, barras, cabina y circulación.'],
+        ['02','MOBILIARIO','lounge-final .svg','Sofás, mesas bajas, sillas y relaciones de escala.'],
+        ['03','ATMÓSFERA','overall-interior-final .svg','Resultado conjunto de materiales, iluminación y vegetación exterior.']
       ]
     },
     {
       id:'exterior',code:'M06',label:'TERRAZA / EXTERIOR',title:'Envolvente → vegetación → vidrio → resultado',
       summary:'La terraza se presenta como una pieza propia: arquitectura, jardinería, cerramiento y luz exterior.',
       stages:[
-        ['01','BASE / EDIFICIO','overall-massing.svg','Volumen y perímetro antes de leer la atmósfera final.'],
-        ['02','PLANTACIÓN','exterior-planting-detail.svg','Jardineras y vegetación como filtro entre terraza y fachada.'],
-        ['03','VIDRIO / INTERIOR','exterior-glass-final.svg','Fachada transparente con interior iluminado al fondo.'],
-        ['04','RESULTADO EXTERIOR','overall-exterior-final.svg','Vista global final de la envolvente y terraza.']
+        ['01','BASE / EDIFICIO','overall-massing .svg','Volumen y perímetro antes de leer la atmósfera final.'],
+        ['02','PLANTACIÓN','exterior-planting-detail .svg','Jardineras y vegetación como filtro entre terraza y fachada.'],
+        ['03','VIDRIO / INTERIOR','exterior-glass-final .svg','Fachada transparente con interior iluminado al fondo.'],
+        ['04','RESULTADO EXTERIOR','overall-exterior-final .svg','Vista global final de la envolvente y terraza.']
       ]
     }
   ];
@@ -213,7 +213,7 @@
   }
 
 
-  function BuildMolds(){
+  function BuildMolds({mediaMap}){
     const [activeId,setActiveId]=useState(BUILD_MOLDS[0].id);
     const [stageIndex,setStageIndex]=useState(0);
     const mold=BUILD_MOLDS.find(x=>x.id===activeId)||BUILD_MOLDS[0];
@@ -221,6 +221,19 @@
     const first=mold.stages[0],last=mold.stages[mold.stages.length-1];
     const choose=id=>{setActiveId(id);setStageIndex(0)};
     const src=name=>RENDER_MOLD_BASE+name;
+    const fallbackFor=(moldId,index)=>{
+      const ids={
+        complete:['SC-BOARD-01','SC-PLAN-01','SC-BOARD-05','SC-BOARD-01'],
+        dj:['SC-BOARD-04','SC-DETAIL-04','SC-BOARD-04','SC-BOARD-04'],
+        lighting:['SC-DETAIL-07','SC-BOARD-05','SC-BOARD-05'],
+        glass:['SC-BOARD-01','SC-BOARD-01','SC-BOARD-01'],
+        lounge:['SC-PLAN-01','SC-BOARD-05','SC-BOARD-05'],
+        exterior:['SC-BOARD-01','SC-BOARD-01','SC-BOARD-01','SC-BOARD-01']
+      };
+      const id=(ids[moldId]||[])[index]||'SC-BOARD-01';
+      return mediaMap?.get(id)?.src||'../assets/visuals/sound-club-cad-blueprint.svg';
+    };
+    const imgProps=(name,alt,fallback)=>({src:src(name),alt,loading:'lazy',decoding:'async',onError:e=>{const im=e.currentTarget;if(im.dataset.fallbackDone)return;im.dataset.fallbackDone='1';im.src=fallback;}});
     return E('section',{className:'ms-shell ms-section ms-molds',id:'molds'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
         E('div',null,
@@ -234,7 +247,7 @@
       ))),
       E('div',{className:'ms-mold-layout'},
         E('div',{className:'ms-mold-stage'},
-          E('img',{key:activeId+'-'+stageIndex,src:src(stage[2]),alt:mold.label+' · '+stage[1],loading:'eager',decoding:'async'}),
+          E('img',{key:activeId+'-'+stageIndex,...imgProps(stage[2],mold.label+' · '+stage[1],fallbackFor(activeId,stageIndex)),loading:'eager'}),
           E('div',{className:'ms-mold-stamp'},E('b',null,mold.code+' · '+stage[0]+' / '+String(mold.stages.length).padStart(2,'0')),E('span',null,'USER-SUPPLIED RENDER · REFERENCE · NOT AS-BUILT'))
         ),
         E('aside',{className:'ms-mold-side'},
@@ -247,9 +260,9 @@
         )
       ),
       E('div',{className:'ms-mold-compare'},
-        E('figure',null,E('img',{src:src(first[2]),alt:mold.label+' antes',loading:'lazy',decoding:'async'}),E('figcaption',null,E('b',null,'ANTES / BASE'),E('span',null,first[1]))),
+        E('figure',null,E('img',imgProps(first[2],mold.label+' antes',fallbackFor(activeId,0))),E('figcaption',null,E('b',null,'ANTES / BASE'),E('span',null,first[1]))),
         E('div',{className:'ms-mold-arrow','aria-hidden':'true'},'→'),
-        E('figure',null,E('img',{src:src(last[2]),alt:mold.label+' después',loading:'lazy',decoding:'async'}),E('figcaption',null,E('b',null,'DESPUÉS / RESULTADO'),E('span',null,last[1])))
+        E('figure',null,E('img',imgProps(last[2],mold.label+' después',fallbackFor(activeId,mold.stages.length-1))),E('figcaption',null,E('b',null,'DESPUÉS / RESULTADO'),E('span',null,last[1])))
       ),
       activeId==='exterior'?E('div',{className:'ms-mold-tech'},E('b',null,'TERRAZA · DATOS DEL DOSSIER'),E('span',null,'2 líneas en catenaria · 6 colgantes IP65 · 12 spots TW 48V · 2200–2300 K · regulación DMX')):null
     );
@@ -269,7 +282,7 @@
     const candidate=Boolean(model?.classification==='LOCAL_CANDIDATE_NOT_VERIFIED');
     const candidateLabel=model?.candidateLabel||'LOCAL CANDIDATE · NOT VERIFIED';
     const candidateMode=model?.candidateMode||null;
-    const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview.svg';
+    const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview .svg';
 
     useEffect(()=>{
       const host=stageRef.current;
@@ -437,8 +450,8 @@
 
   function RenderComparison({afterItem,source}){
     const [mode,setMode]=useState('before');
-    const beforeSrc=RENDER_MOLD_BASE+'overall-massing.svg';
-    const afterSrc=RENDER_MOLD_BASE+'overall-interior-final.svg';
+    const beforeSrc=RENDER_MOLD_BASE+'overall-massing .svg';
+    const afterSrc=RENDER_MOLD_BASE+'overall-interior-final .svg';
     const currentSrc=mode==='before'?beforeSrc:afterSrc;
     return E('section',{className:'ms-shell ms-section ms-render-compare',id:'render'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
@@ -460,7 +473,7 @@
         )
       ),
       E('div',{className:'ms-render-stage','data-mode':mode},
-        currentSrc?E('img',{src:currentSrc,alt:mode==='before'?'CAD technical source for Sound Club project':'Warm lighting atmosphere study for Sound Club project',loading:'lazy',decoding:'async'}):null,
+        currentSrc?E('img',{src:currentSrc,alt:mode==='before'?'Base render state for Sound Club project':'User-supplied final render reference for Sound Club project',loading:'lazy',decoding:'async',onError:e=>{const im=e.currentTarget;if(im.dataset.fallbackDone)return;im.dataset.fallbackDone='1';im.src=mode==='before'?'../assets/visuals/sound-club-cad-blueprint.svg':(afterItem?.src||'../assets/visuals/sound-club-cad-blueprint.svg');}}):null,
         !afterSrc&&mode==='after'?E('div',{className:'ms-render-empty'},'V-Ray export pending'):null,
         E('div',{className:'ms-render-stamp'},
           E('b',null,mode==='before'?'BEFORE · TECHNICAL SOURCE':'AFTER · USER-SUPPLIED RENDER'),
@@ -646,7 +659,7 @@
           E('div',{className:'ms-evidence','data-ms-reveal':''},E('b',null,'MASTER PIPELINE'),'DWG + SKP → geometría verificada → planos → modelo web → exploded components → iluminación 2300 K → secuencias XXXIA → GitHub.')
         ),
 
-        E(BuildMolds),
+        E(BuildMolds,{mediaMap}),
         E(SpatialExplorer,{manifest:models,source}),
         E(RenderComparison,{afterItem:light,source}),
         E(DevelopmentPhases),
