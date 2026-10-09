@@ -142,3 +142,23 @@ Build the venue-only derivative with:
 ```
 
 V3 performs a conservative triangle crop around the dense venue core. If all numeric gates pass, the next step is visual QA against the private SketchUp master and then Spatial Explorer integration.
+
+
+## V3 passed — visual QA is now the next gate
+
+Local V3 result:
+
+- 69.62 MiB;
+- 18,757 nodes;
+- 15,465 meshes;
+- 64.08 × 13.09 × 45.53 m extent;
+- all numeric web gates passed;
+- public promotion still blocked.
+
+Resume directly with:
+
+```powershell
+.\tools\sound-club\START_V3_VISUAL_QA.ps1
+```
+
+This opens the React Spatial Explorer in local V3 mode. Do not rerun V1/V2/V3 unless a visual QA defect requires a rebuild.

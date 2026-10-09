@@ -6,7 +6,30 @@
   const MOTION_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json';
   const MODEL_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json';
   const SOURCE_URL='../xxxia-studio/projects/sound-club-palma/05_metadata/source-ingest.json';
-  const LOCAL_CANDIDATE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')&&new URLSearchParams(location.search).get('candidate')==='1';
+  const LOCAL_HOST=(location.hostname==='localhost'||location.hostname==='127.0.0.1');
+  const LOCAL_CANDIDATE_RAW=LOCAL_HOST?new URLSearchParams(location.search).get('candidate'):null;
+  const LOCAL_CANDIDATE_MODE=LOCAL_CANDIDATE_RAW==='1'?'v3':LOCAL_CANDIDATE_RAW;
+  const LOCAL_CANDIDATE_CONFIG={
+    v3:{
+      src:'../assets/models/sound-club/_candidate/venue-web-v3.glb',
+      report:'../assets/models/sound-club/_candidate/venue-web-v3.build-report.json',
+      label:'LOCAL V3 · NUMERIC GATES PASSED · VISUAL QA',
+      short:'V3'
+    },
+    v2:{
+      src:'../assets/models/sound-club/_candidate/venue-web-v2.glb',
+      report:'../assets/models/sound-club/_candidate/venue-web-v2.build-report.json',
+      label:'LOCAL V2 · BOUNDS FAILED · REFERENCE ONLY',
+      short:'V2'
+    },
+    master:{
+      src:'../assets/models/sound-club/_candidate/venue-master.glb',
+      report:'../assets/models/sound-club/_candidate/venue-master.qa.json',
+      label:'LOCAL MASTER · 874 MB · SOURCE QA ONLY',
+      short:'MASTER'
+    }
+  };
+  const LOCAL_CANDIDATE=Boolean(LOCAL_HOST&&LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]);
   const SECTIONS=['overview','spatial','render','phases','systems','audio','lighting','structure','dj','story','docs'];
   const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits','Three.js'];
 
@@ -140,6 +163,8 @@
     const model=models.find(x=>x.id===active)||models[0];
     const ready=Boolean(model?.status==='APPROVED'&&model?.src);
     const candidate=Boolean(model?.classification==='LOCAL_CANDIDATE_NOT_VERIFIED');
+    const candidateLabel=model?.candidateLabel||'LOCAL CANDIDATE · NOT VERIFIED';
+    const candidateMode=model?.candidateMode||null;
     const preview=model?.previewSrc||source?.skp?.derivedPreview||'../assets/visuals/sound-club-skp-line-preview.svg';
 
     useEffect(()=>{
@@ -275,7 +300,7 @@
           E('span',null,'SKP '+(source?.skp?.version||'24.0.594')),
           E('span',null,'UNIT '+(source?.skp?.unit||'Meter')),
           E('span',null,(source?.skp?.materials||499)+' MATERIALS'),
-          E('span',null,'DWG '+(source?.dwg?.dwgVersion||'AC1032')),candidate?E('span',{className:'ms-candidate-chip'},'LOCAL CANDIDATE · NOT VERIFIED'):null
+          E('span',null,'DWG '+(source?.dwg?.dwgVersion||'AC1032')),candidate?E('span',{className:'ms-candidate-chip'},candidateLabel):null
         )
       ),
       E('div',{className:'ms-spatial-layout'},
@@ -289,11 +314,12 @@
                 E('small',null,'El SKP real está ingerido. Falta convertir y validar el GLB; no se sustituye por geometría ficticia.')
               )
             ),
-          E('div',{className:'ms-spatial-hud'},E('b',null,candidate?'LOCAL QA · ORBIT / PAN / ZOOM':'ORBIT / PAN / ZOOM'),E('span',null,ready?(candidate?'Candidate geometry · do not promote yet':(view==='design'?'Technical material + edges':'Original materials + warm light')):'Source preview · no fake geometry'))
+          E('div',{className:'ms-spatial-hud'},E('b',null,candidate?('LOCAL '+String(candidateMode||'QA').toUpperCase()+' QA · ORBIT / PAN / ZOOM'):'ORBIT / PAN / ZOOM'),E('span',null,ready?(candidate?(candidateLabel+' · do not promote yet'):(view==='design'?'Technical material + edges':'Original materials + warm light')):'Source preview · no fake geometry'))
         ),
         E('aside',{className:'ms-spatial-side'},
           E('p',{className:'ms-kicker'},'MODEL MAP'),
           ...zones.map(z=>E('button',{type:'button',key:z.id,disabled:z.status!=='READY',className:'ms-zone-link'},E('b',null,z.label),E('span',null,z.status==='READY'?'FOCUS':'COORDS PENDING'))),
+          candidateMode==='v3'?E('div',{className:'ms-spatial-rule'},E('b',null,'V3 visual QA checklist'),E('p',null,'Revisar envolvente del local, techo, cortinas/acústica, DJ, luminarias, estructura suspendida, escala, clipping y ausencia de contexto remoto. Si todo coincide con el master privado, V3 pasa a integración.')):null,
           E('div',{className:'ms-spatial-rule'},E('b',null,'Geometry rule'),E('p',null,'Un único GLB manda. Blender puede mejorar materiales/luces, pero no cambiar la geometría autoritativa.'))
         )
       ),
@@ -450,10 +476,15 @@
       if(LOCAL_CANDIDATE&&md){
         md=JSON.parse(JSON.stringify(md));
         const master=(md.models||[]).find(x=>x.role==='ARCHITECTURE_MASTER');
-        if(master){
+        const cfg=LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE];
+        if(master&&cfg){
           master.status='APPROVED';
-          master.src='../assets/models/sound-club/_candidate/venue-master.glb';
+          master.src=cfg.src;
           master.classification='LOCAL_CANDIDATE_NOT_VERIFIED';
+          master.candidateMode=LOCAL_CANDIDATE_MODE;
+          master.candidateLabel=cfg.label;
+          master.candidateReport=cfg.report;
+          master.title=(master.title||'Venue / Master Architecture')+' · LOCAL '+cfg.short;
           if(master.views){
             for(const key of ['design','render']){
               if(master.views[key]){master.views[key].status='READY';master.views[key].src=master.src;}
@@ -473,7 +504,7 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__SOUND_CLUB_CASE__={version:'3.1',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length};
+    window.__SOUND_CLUB_CASE__={version:'3.2',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),

@@ -355,3 +355,27 @@ Outputs:
 The script verifies V2 against its build-report SHA before building and never modifies V2, V1, the master GLB or the private SketchUp source.
 
 If V3 passes size, mesh-count and bounds gates, the next step is **visual QA**, not another optimization pass. Public promotion remains blocked until that QA is approved.
+
+
+## V3 visual QA
+
+V3 has passed all numeric gates. Start the local QA session with:
+
+```powershell
+.\tools\sound-club\START_V3_VISUAL_QA.ps1
+```
+
+The launcher:
+- verifies the local V3 SHA against `venue-web-v3.build-report.json`;
+- refuses to proceed unless all numeric gates passed;
+- starts or reuses a local HTTP server on port 8000;
+- opens `projects/sound-club-palma.html?candidate=v3`;
+- prints the visual QA checklist.
+
+Local candidate routing now supports:
+- `?candidate=v3` — current QA target;
+- `?candidate=v2` — previous optimized reference;
+- `?candidate=master` — source GLB comparison only, very large;
+- `?candidate=1` — backwards-compatible alias for V3.
+
+V3 must be checked visually for venue envelope, principal architecture, acoustic treatments, DJ booth/technical furniture, lighting and suspended structure, scale, clipping and absence of remote context. Passing the numeric gate does not authorize public promotion by itself.
