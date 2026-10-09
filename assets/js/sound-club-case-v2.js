@@ -30,8 +30,68 @@
     }
   };
   const LOCAL_CANDIDATE=Boolean(LOCAL_HOST&&LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]);
-  const SECTIONS=['overview','spatial','render','phases','systems','audio','lighting','structure','dj','story','docs'];
+  const SECTIONS=['overview','molds','spatial','render','phases','systems','audio','lighting','structure','dj','story','docs'];
   const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits','Three.js'];
+  const RENDER_MOLD_BASE='../assets/visuals/sound-club-renders/';
+  const BUILD_MOLDS=[
+    {
+      id:'complete',code:'M01',label:'TODO COMPLETO',title:'Del volumen base al local terminado',
+      summary:'Lectura general del proyecto sin cargar el GLB pesado: envolvente, planta, interior y fachada final.',
+      stages:[
+        ['01','MASSING / BASE','overall-massing.svg','Volumen arquitectónico y envolvente general.'],
+        ['02','PLAN / LAYOUT','overall-plan.svg','Distribución, recorridos y organización espacial desde arriba.'],
+        ['03','INTERIOR / FINAL','overall-interior-final.svg','Atmósfera interior con mobiliario, iluminación y cerramientos.'],
+        ['04','EXTERIOR / FINAL','overall-exterior-final.svg','Fachada acristalada, terraza y relación interior/exterior.']
+      ]
+    },
+    {
+      id:'dj',code:'M02',label:'MESA DJ INTERIOR',title:'Estructura → integración → equipo → resultado',
+      summary:'La cabina se presenta como objeto técnico fabricable, no como una sola imagen decorativa.',
+      stages:[
+        ['01','ESTRUCTURA / SERVICIOS','dj-structure-side.svg','Sección lateral con capas, fijaciones y pasos de servicio visibles.'],
+        ['02','INTEGRACIÓN TÉCNICA','dj-structure-back.svg','Despiece posterior y lógica constructiva del mueble.'],
+        ['03','EQUIPAMIENTO','dj-final-detail.svg','Platos, reproductores, mixer, lámparas de tarea y superficie de trabajo.'],
+        ['04','RESULTADO','dj-final-overview.svg','Cabina completa integrada en el espacio y en la escena de iluminación.']
+      ]
+    },
+    {
+      id:'lighting',code:'M03',label:'ILUMINACIÓN',title:'Infraestructura → focos → escenas → atmósfera',
+      summary:'Separar el sistema de iluminación del render general permite explicar carriles, luminarias, orientación y escena.',
+      stages:[
+        ['01','TECHO / CARRILES','lighting-ceiling.svg','Carriles, luminarias suspendidas y focos vistos como sistema.'],
+        ['02','ESCENA / FINAL','lighting-final.svg','Resultado de la escena cálida con focos y colgantes encendidos.'],
+        ['03','HOSPITALITY','overall-interior-final.svg','Relación entre luz ambiental, mobiliario y fachada acristalada.']
+      ]
+    },
+    {
+      id:'glass',code:'M04',label:'CRISTALES / ENVOLVENTE',title:'Cerramiento opaco ↔ vidrio activo',
+      summary:'Este molde resuelve lo que el visor técnico no estaba mostrando: transparencia, reflexión y lectura del cerramiento.',
+      stages:[
+        ['01','CERRAMIENTO / OPACO','glass-closed.svg','Lectura con paneles/cortinas cerrados y menor transparencia.'],
+        ['02','VIDRIO / ACTIVO','glass-open.svg','Cristal visible con transparencia y relación con el corredor exterior.'],
+        ['03','FACHADA / REFLEJOS','exterior-glass-final.svg','Lectura exterior del vidrio con reflejos, interior y vegetación.']
+      ]
+    },
+    {
+      id:'lounge',code:'M05',label:'RESTAURANTE / LOUNGE',title:'Zonificación → mobiliario → ambiente final',
+      summary:'La zona hospitality se entiende por capas: circulación, mesas/sofás, luminarias y ambiente nocturno.',
+      stages:[
+        ['01','ZONIFICACIÓN','overall-plan.svg','Posición relativa de lounge, barras, cabina y circulación.'],
+        ['02','MOBILIARIO','lounge-final.svg','Sofás, mesas bajas, sillas y relaciones de escala.'],
+        ['03','ATMÓSFERA','overall-interior-final.svg','Resultado conjunto de materiales, iluminación y vegetación exterior.']
+      ]
+    },
+    {
+      id:'exterior',code:'M06',label:'TERRAZA / EXTERIOR',title:'Envolvente → vegetación → vidrio → resultado',
+      summary:'La terraza se presenta como una pieza propia: arquitectura, jardinería, cerramiento y luz exterior.',
+      stages:[
+        ['01','BASE / EDIFICIO','overall-massing.svg','Volumen y perímetro antes de leer la atmósfera final.'],
+        ['02','PLANTACIÓN','exterior-planting-detail.svg','Jardineras y vegetación como filtro entre terraza y fachada.'],
+        ['03','VIDRIO / INTERIOR','exterior-glass-final.svg','Fachada transparente con interior iluminado al fondo.'],
+        ['04','RESULTADO EXTERIOR','overall-exterior-final.svg','Vista global final de la envolvente y terraza.']
+      ]
+    }
+  ];
 
   function useScrollProgress(){
     const [p,setP]=useState(0);
@@ -152,10 +212,54 @@
     );
   }
 
+
+  function BuildMolds(){
+    const [activeId,setActiveId]=useState(BUILD_MOLDS[0].id);
+    const [stageIndex,setStageIndex]=useState(0);
+    const mold=BUILD_MOLDS.find(x=>x.id===activeId)||BUILD_MOLDS[0];
+    const stage=mold.stages[stageIndex]||mold.stages[0];
+    const first=mold.stages[0],last=mold.stages[mold.stages.length-1];
+    const choose=id=>{setActiveId(id);setStageIndex(0)};
+    const src=name=>RENDER_MOLD_BASE+name;
+    return E('section',{className:'ms-shell ms-section ms-molds',id:'molds'},
+      E('div',{className:'ms-decon-head','data-ms-reveal':''},
+        E('div',null,
+          E('p',{className:'ms-kicker'},'02 / BUILD MOLDS · PARTS OF THE PROJECT'),
+          E('h2',{className:'ms-title'},'Construir el proyecto por piezas.')
+        ),
+        E('p',{className:'ms-subtitle'},'En lugar de pedir al navegador que renderice todo el SketchUp a la vez, cada molde cuenta una parte del proyecto con imágenes de referencia ligeras: base, construcción, sistemas y resultado. El 3D queda como herramienta técnica bajo demanda.')
+      ),
+      E('div',{className:'ms-mold-tabs'},...BUILD_MOLDS.map(x=>E('button',{type:'button',key:x.id,className:x.id===activeId?'active':'',onClick:()=>choose(x.id)},
+        E('span',null,x.code),E('b',null,x.label)
+      ))),
+      E('div',{className:'ms-mold-layout'},
+        E('div',{className:'ms-mold-stage'},
+          E('img',{key:activeId+'-'+stageIndex,src:src(stage[2]),alt:mold.label+' · '+stage[1],loading:'eager',decoding:'async'}),
+          E('div',{className:'ms-mold-stamp'},E('b',null,mold.code+' · '+stage[0]+' / '+String(mold.stages.length).padStart(2,'0')),E('span',null,'USER-SUPPLIED RENDER · REFERENCE · NOT AS-BUILT'))
+        ),
+        E('aside',{className:'ms-mold-side'},
+          E('p',{className:'ms-kicker'},mold.label),
+          E('h3',null,mold.title),
+          E('p',null,mold.summary),
+          E('div',{className:'ms-mold-steps'},...mold.stages.map((s,i)=>E('button',{type:'button',key:s[0],className:i===stageIndex?'active':'',onClick:()=>setStageIndex(i)},
+            E('span',null,s[0]),E('div',null,E('b',null,s[1]),E('small',null,s[3]))
+          )))
+        )
+      ),
+      E('div',{className:'ms-mold-compare'},
+        E('figure',null,E('img',{src:src(first[2]),alt:mold.label+' antes',loading:'lazy',decoding:'async'}),E('figcaption',null,E('b',null,'ANTES / BASE'),E('span',null,first[1]))),
+        E('div',{className:'ms-mold-arrow','aria-hidden':'true'},'→'),
+        E('figure',null,E('img',{src:src(last[2]),alt:mold.label+' después',loading:'lazy',decoding:'async'}),E('figcaption',null,E('b',null,'DESPUÉS / RESULTADO'),E('span',null,last[1])))
+      ),
+      activeId==='exterior'?E('div',{className:'ms-mold-tech'},E('b',null,'TERRAZA · DATOS DEL DOSSIER'),E('span',null,'2 líneas en catenaria · 6 colgantes IP65 · 12 spots TW 48V · 2200–2300 K · regulación DMX')):null
+    );
+  }
+
   function SpatialExplorer({manifest,source}){
     const models=manifest?.models||[];
     const [active,setActive]=useState(models.find(x=>x.default)?.id||models[0]?.id||null);
     const [view,setView]=useState('design');
+    const [load3D,setLoad3D]=useState(false);
     const stageRef=useRef(null);
     const runtimeRef=useRef(null);
     useEffect(()=>{if(!active&&models[0])setActive(models[0].id)},[models.length,active]);
@@ -169,7 +273,7 @@
 
     useEffect(()=>{
       const host=stageRef.current;
-      if(!host||!ready||!model?.src)return;
+      if(!host||!ready||!model?.src||!load3D)return;
       let disposed=false,raf=0,renderer=null,controls=null,ro=null;
       host.innerHTML='';
 
@@ -278,7 +382,7 @@
         disposed=true;cancelAnimationFrame(raf);ro?.disconnect();controls?.dispose?.();renderer?.dispose?.();
         if(host)host.innerHTML='';runtimeRef.current=null;
       };
-    },[model?.id,model?.src,ready]);
+    },[model?.id,model?.src,ready,load3D]);
 
     useEffect(()=>{
       const rt=runtimeRef.current;if(!rt?.applyView)return;
@@ -288,8 +392,8 @@
     const zones=model?.zones||[];
     return E('section',{className:'ms-shell ms-section',id:'spatial'},
       E('div',{className:'ms-spatial-head','data-ms-reveal':''},
-        E('div',null,E('p',{className:'ms-kicker'},'02 / SPATIAL MODEL EXPLORER'),E('h2',{className:'ms-title'},'Design ↔ Render. One verified model.')),
-        E('p',{className:'ms-subtitle'},'Un único GLB es la geometría autoritativa. DESIGN aplica un material técnico y líneas de arista; RENDER restaura materiales/texturas del SKP y activa iluminación cálida. Cámara, escala y geometría permanecen idénticas.')
+        E('div',null,E('p',{className:'ms-kicker'},'03 / TECHNICAL 3D · ON DEMAND'),E('h2',{className:'ms-title'},'3D técnico, no render final.')),
+        E('p',{className:'ms-subtitle'},'El GLB se conserva para inspección geométrica, escala y órbita. Ya no se carga automáticamente: los renders aportados mandan en materiales, vidrio e iluminación; el 3D se abre solo cuando hace falta comprobar geometría.')
       ),
       E('div',{className:'ms-spatial-toolbar'},
         E('div',{className:'ms-view-toggle'},
@@ -305,13 +409,15 @@
       ),
       E('div',{className:'ms-spatial-layout'},
         E('div',{className:'ms-spatial-stage','data-view':view,'data-ready':ready?'true':'false'},
-          ready?E('div',{className:'ms-three-host',ref:stageRef}):
+          ready&&load3D?E('div',{className:'ms-three-host',ref:stageRef}):
             E(React.Fragment,null,
-              E('img',{className:'ms-skp-preview',src:preview,alt:'Derived line preview of the private SketchUp master model'}),
+              E('img',{className:'ms-skp-preview',src:preview,alt:'Technical preview of the private SketchUp-derived model'}),
               E('div',{className:'ms-spatial-pending'},
-                E('strong',null,'VERIFIED GLB PENDING'),
+                E('strong',null,ready?'3D TECHNICAL MODEL · MANUAL LOAD':'VERIFIED GLB PENDING'),
                 E('span',null,model?.title||'Venue / Master Architecture'),
-                E('small',null,'El SKP real está ingerido. Falta convertir y validar el GLB; no se sustituye por geometría ficticia.')
+                ready?E('button',{type:'button',className:'ms-load-3d',onClick:()=>setLoad3D(true)},'CARGAR 3D TÉCNICO · ~70 MiB'):
+                  E('small',null,'El SKP real está ingerido. Falta convertir y validar el GLB; no se sustituye por geometría ficticia.'),
+                ready?E('small',null,'Para vidrio, materiales e iluminación usa los BUILD MOLDS de arriba; este visor queda para geometría y QA.'):null
               )
             ),
           E('div',{className:'ms-spatial-hud'},E('b',null,candidate?('LOCAL '+String(candidateMode||'QA').toUpperCase()+' QA · ORBIT / PAN / ZOOM'):'ORBIT / PAN / ZOOM'),E('span',null,ready?(candidate?(candidateLabel+' · do not promote yet'):(view==='design'?'Technical material + edges':'Original materials + warm light')):'Source preview · no fake geometry'))
@@ -331,34 +437,34 @@
 
   function RenderComparison({afterItem,source}){
     const [mode,setMode]=useState('before');
-    const beforeSrc='../assets/visuals/sound-club-cad-blueprint.svg';
-    const afterSrc=afterItem?.src||null;
+    const beforeSrc=RENDER_MOLD_BASE+'overall-massing.svg';
+    const afterSrc=RENDER_MOLD_BASE+'overall-interior-final.svg';
     const currentSrc=mode==='before'?beforeSrc:afterSrc;
     return E('section',{className:'ms-shell ms-section ms-render-compare',id:'render'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
         E('div',null,
-          E('p',{className:'ms-kicker'},'03 / BEFORE ↔ AFTER · RENDER DEVELOPMENT'),
-          E('h2',{className:'ms-title'},'Technical drawing → atmosphere.')
+          E('p',{className:'ms-kicker'},'04 / BEFORE ↔ AFTER · RENDER EVIDENCE'),
+          E('h2',{className:'ms-title'},'Build state → final render reference.')
         ),
-        E('p',{className:'ms-subtitle'},'Comparador preparado para mostrar la misma vista desde el plano/modelo técnico hasta el render final. Mientras exportamos una cámara V-Ray equivalente del nuevo master, AFTER usa el estudio de iluminación 2300 K existente y queda explícitamente marcado como estudio, no como render final verificado.')
+        E('p',{className:'ms-subtitle'},'Comparador ligero basado en renders aportados. No intenta sustituir una comparación matched-camera: sirve para explicar el salto desde el volumen/base de proyecto hasta la atmósfera final sin cargar el modelo 3D completo.')
       ),
       E('div',{className:'ms-render-toolbar'},
         E('div',{className:'ms-view-toggle'},
-          E('button',{type:'button',className:mode==='before'?'active':'',onClick:()=>setMode('before'),'aria-pressed':mode==='before'},'BEFORE',E('small',null,'CAD / TECHNICAL BASE')),
-          E('button',{type:'button',className:mode==='after'?'active':'',onClick:()=>setMode('after'),'aria-pressed':mode==='after'},'AFTER',E('small',null,'LIGHTING STUDY'))
+          E('button',{type:'button',className:mode==='before'?'active':'',onClick:()=>setMode('before'),'aria-pressed':mode==='before'},'BEFORE',E('small',null,'BASE / MASSING')),
+          E('button',{type:'button',className:mode==='after'?'active':'',onClick:()=>setMode('after'),'aria-pressed':mode==='after'},'AFTER',E('small',null,'USER RENDER'))
         ),
         E('div',{className:'ms-source-strip'},
           E('span',null,'MASTER '+(source?.skp?.masterFilename||'SKP PENDING')),
           E('span',null,'V-RAY '+(source?.skp?.vrayStatus==='MATERIAL_NAMING_DETECTED_RENDER_SETTINGS_NOT_YET_VERIFIED'?'MATERIALS DETECTED':'PENDING')),
-          E('span',{className:'ms-candidate-chip'},'MATCHED CAMERA EXPORT PENDING')
+          E('span',{className:'ms-candidate-chip'},'MATCHED CAMERA · OPTIONAL LATER')
         )
       ),
       E('div',{className:'ms-render-stage','data-mode':mode},
         currentSrc?E('img',{src:currentSrc,alt:mode==='before'?'CAD technical source for Sound Club project':'Warm lighting atmosphere study for Sound Club project',loading:'lazy',decoding:'async'}):null,
         !afterSrc&&mode==='after'?E('div',{className:'ms-render-empty'},'V-Ray export pending'):null,
         E('div',{className:'ms-render-stamp'},
-          E('b',null,mode==='before'?'BEFORE · TECHNICAL SOURCE':'AFTER · ATMOSPHERE STUDY'),
-          E('span',null,mode==='before'?'Derived CAD / reference only':'Generated 2300 K study · replace with matched-camera V-Ray still')
+          E('b',null,mode==='before'?'BEFORE · TECHNICAL SOURCE':'AFTER · USER-SUPPLIED RENDER'),
+          E('span',null,mode==='before'?'Derived CAD / reference only':'Render de referencia aportado · no se etiqueta como as-built')
         )
       ),
       E('div',{className:'ms-render-foot'},
@@ -504,7 +610,7 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__SOUND_CLUB_CASE__={version:'3.2',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
+    window.__SOUND_CLUB_CASE__={version:'4.0',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
@@ -512,7 +618,7 @@
       E('header',{className:'ms-topbar'},E('div',{className:'ms-topbar-in'},
         E('a',{className:'ms-brand',href:'../index.html#projects'},'HL',E('small',null,'Systems / Architecture portfolio')),
         E('div',{className:'ms-stack'},...STACK.map(x=>E('span',{key:x},x))),
-        E('nav',{className:'ms-toplinks'},E('a',{href:'#spatial'},'Spatial'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
+        E('nav',{className:'ms-toplinks'},E('a',{href:'#molds'},'Molds'),E('a',{href:'#spatial'},'3D'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
       )),
       E(ChapterRail,{active}),
       E('main',{className:'ms-page'},
@@ -540,6 +646,7 @@
           E('div',{className:'ms-evidence','data-ms-reveal':''},E('b',null,'MASTER PIPELINE'),'DWG + SKP → geometría verificada → planos → modelo web → exploded components → iluminación 2300 K → secuencias XXXIA → GitHub.')
         ),
 
+        E(BuildMolds),
         E(SpatialExplorer,{manifest:models,source}),
         E(RenderComparison,{afterItem:light,source}),
         E(DevelopmentPhases),
