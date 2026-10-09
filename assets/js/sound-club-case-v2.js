@@ -30,7 +30,7 @@
     }
   };
   const LOCAL_CANDIDATE=Boolean(LOCAL_HOST&&LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]);
-  const SECTIONS=['overview','molds','spatial','render','phases','systems','audio','lighting','structure','dj','gallery','story','docs'];
+  const SECTIONS=['overview','media','spatial','render','phases','systems','audio','lighting','structure','dj','gallery','story','docs'];
   const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits','Three.js'];
   const RENDER_MOLD_BASE='../assets/visuals/sound-club-renders/';
   const BUILD_MOLDS=[
@@ -265,6 +265,60 @@
         E('figure',null,E('img',imgProps(last[2],mold.label+' después',fallbackFor(activeId,mold.stages.length-1))),E('figcaption',null,E('b',null,'DESPUÉS / RESULTADO'),E('span',null,last[1])))
       ),
       activeId==='exterior'?E('div',{className:'ms-mold-tech'},E('b',null,'TERRAZA · DATOS DEL DOSSIER'),E('span',null,'2 líneas en catenaria · 6 colgantes IP65 · 12 spots TW 48V · 2200–2300 K · regulación DMX')):null
+    );
+  }
+
+  function MediaCarousel({title,kicker,items=[]}){
+    const trackRef=useRef(null);
+    const [index,setIndex]=useState(0);
+    const cards=items.filter(Boolean);
+    const go=delta=>{
+      const track=trackRef.current;if(!track||!cards.length)return;
+      const next=Math.max(0,Math.min(cards.length-1,index+delta));setIndex(next);
+      track.children[next]?.scrollIntoView({behavior:'smooth',inline:'start',block:'nearest'});
+    };
+    useEffect(()=>{
+      const track=trackRef.current;if(!track)return;
+      const onScroll=()=>{
+        const children=[...track.children];if(!children.length)return;
+        let best=0,dist=Infinity;
+        children.forEach((el,i)=>{const d=Math.abs(el.offsetLeft-track.scrollLeft);if(d<dist){dist=d;best=i}});
+        setIndex(best);
+      };
+      track.addEventListener('scroll',onScroll,{passive:true});
+      return()=>track.removeEventListener('scroll',onScroll);
+    },[cards.length]);
+    if(!cards.length)return null;
+    return E('section',{className:'ms-media-carousel'},
+      E('header',{className:'ms-media-carousel-head'},
+        E('div',null,E('p',{className:'ms-kicker'},kicker),E('h3',null,title)),
+        E('div',{className:'ms-media-carousel-controls'},
+          E('button',{type:'button',onClick:()=>go(-1),disabled:index===0,'aria-label':'Anterior'},'←'),
+          E('span',null,String(index+1).padStart(2,'0')+' / '+String(cards.length).padStart(2,'0')),
+          E('button',{type:'button',onClick:()=>go(1),disabled:index===cards.length-1,'aria-label':'Siguiente'},'→')
+        )
+      ),
+      E('div',{className:'ms-media-carousel-track',ref:trackRef,tabIndex:0},
+        ...cards.map(item=>E('figure',{className:'ms-media-carousel-card',key:item.id},
+          E('img',{src:item.src,alt:item.title,loading:'lazy',decoding:'async'}),
+          E('figcaption',null,E('b',null,item.title),E('span',null,item.classification||item.kind))
+        ))
+      )
+    );
+  }
+
+  function ProjectMediaCarousels({mediaMap}){
+    const byIds=ids=>ids.map(id=>mediaMap.get(id)).filter(Boolean);
+    const renderRefs=[...mediaMap.values()].filter(x=>x.kind==='RENDER'||String(x.id).startsWith('SC-RENDER-'));
+    return E('section',{className:'ms-shell ms-section ms-project-media',id:'media'},
+      E('div',{className:'ms-decon-head','data-ms-reveal':''},
+        E('div',null,E('p',{className:'ms-kicker'},'02 / PROJECT MEDIA · REACT CAROUSELS'),E('h2',{className:'ms-title'},'Renders, systems and details — separated.')),
+        E('p',{className:'ms-subtitle'},'Cada familia visual vive en su carrusel. Así el proyecto carga rápido, se entiende por capas y puede crecer desde el manifest del repositorio sin rehacer la página.')
+      ),
+      E(MediaCarousel,{title:'Finished render references',kicker:'A / RENDERS',items:renderRefs}),
+      E(MediaCarousel,{title:'Architecture & atmosphere',kicker:'B / OVERVIEW',items:byIds(['SC-BOARD-01','SC-BOARD-02','SC-BOARD-05'])}),
+      E(MediaCarousel,{title:'DJ booth & fabrication',kicker:'C / OBJECTS',items:byIds(['SC-BOARD-04','SC-DETAIL-04','SC-DETAIL-07'])}),
+      E(MediaCarousel,{title:'Systems, plans & control',kicker:'D / TECHNICAL',items:byIds(['SC-PLAN-01','SC-PLAN-02','SC-PLAN-03','SC-SYS-01'])})
     );
   }
 
@@ -623,7 +677,7 @@
       suspension=mediaMap.get('SC-DETAIL-07'), dj=mediaMap.get('SC-BOARD-04'), djPlan=mediaMap.get('SC-DETAIL-04'), system=mediaMap.get('SC-SYS-01');
 
     const bounceItems=['SC-BOARD-01','SC-BOARD-02','SC-BOARD-04','SC-BOARD-05','SC-DETAIL-07'].map(id=>mediaMap.get(id)).filter(Boolean);
-    window.__SOUND_CLUB_CASE__={version:'4.0',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
+    window.__SOUND_CLUB_CASE__={version:'4.1',projectId:'SOUND_CLUB_CDM',publicAssets:mediaMap.size,storyScenes:story.scenes.length,activeSection:active,stack:STACK,motionStatus:motion?.master?.status||'NONE',motionId:motion?.motionId||null,models:models?.models?.length||0,modelReady:(models?.models||[]).filter(x=>x.status==='APPROVED'&&x.src).length,bounceCards:bounceItems.length,localCandidateMode:LOCAL_CANDIDATE_MODE||null,localCandidateSrc:LOCAL_CANDIDATE?LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]?.src||null:null};
 
     return E(React.Fragment,null,
       E('div',{className:'ms-progress',style:{transform:'scaleX('+progress+')'}}),
@@ -631,7 +685,7 @@
       E('header',{className:'ms-topbar'},E('div',{className:'ms-topbar-in'},
         E('a',{className:'ms-brand',href:'../index.html#projects'},'HL',E('small',null,'Systems / Architecture portfolio')),
         E('div',{className:'ms-stack'},...STACK.map(x=>E('span',{key:x},x))),
-        E('nav',{className:'ms-toplinks'},E('a',{href:'#molds'},'Molds'),E('a',{href:'#spatial'},'3D'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
+        E('nav',{className:'ms-toplinks'},E('a',{href:'#media'},'Media'),E('a',{href:'#spatial'},'3D'),E('a',{href:'#gallery'},'Gallery'),E('a',{href:'#docs'},'Docs'))
       )),
       E(ChapterRail,{active}),
       E('main',{className:'ms-page'},
@@ -659,7 +713,7 @@
           E('div',{className:'ms-evidence','data-ms-reveal':''},E('b',null,'MASTER PIPELINE'),'DWG + SKP → geometría verificada → planos → modelo web → exploded components → iluminación 2300 K → secuencias XXXIA → GitHub.')
         ),
 
-        E(BuildMolds,{mediaMap}),
+        E(ProjectMediaCarousels,{mediaMap}),
         E(SpatialExplorer,{manifest:models,source}),
         E(RenderComparison,{afterItem:light,source}),
         E(DevelopmentPhases),
