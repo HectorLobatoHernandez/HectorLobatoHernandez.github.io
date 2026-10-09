@@ -183,3 +183,25 @@ Visual QA showed that the 69.62 MiB V3 GLB is still too slow for primary storyte
 - Installer: `tools/sound-club/INSTALL_RENDER_MOLDS.ps1`.
 
 Current priority: install the optimized render asset pack locally, review the molds, then refine each mold with more specific before/construction/final frames. Do not spend more time making the browser GLB imitate V-Ray.
+
+
+## React render library / Club del Mar only (2026-10-09)
+
+Scope is explicitly limited to the Club del Mar / SOUND CLUB case study. The public dossier, CV, 5-minute presentation, GAZA and RHB STUDIO remain unchanged.
+
+The case study now reads render references from `project-media.json` and separates them into React carousels:
+
+- GENERAL / FULL VENUE
+- DJ BOOTH
+- LIGHTING
+- GLASS / ENVELOPE
+- RESTAURANT / LOUNGE
+- EXTERIOR / TERRACE
+- TECHNICAL / CONSTRUCTION
+- PLANS / SYSTEMS / CONTROL
+
+15 user-supplied render references are registered as `DOCUMENTED_REFERENCE`, never as verified as-built photography. Their canonical web paths are under:
+
+`/assets/visuals/sound-club-renders/`
+
+The technical V3 GLB remains manual-load only. It is used for geometry/scale/orbit QA, not as the main visual renderer.
