@@ -62,6 +62,7 @@ function qaUrl(u){if(!qa)return u;const x=new URL(u,location.href);x.searchParam
 function loadFrame(f){if(!f.src&&f.dataset.src)f.src=qaUrl(f.dataset.src)}
 function show(name){matrix.classList.remove('on');matrixBtn.classList.remove('on');panes.forEach(p=>{const on=p.dataset.pane===name;p.classList.toggle('on',on);if(on)loadFrame(p.querySelector('iframe'))});buttons.forEach(b=>b.classList.toggle('on',b.dataset.view===name))}
 buttons.forEach(b=>b.onclick=()=>show(b.dataset.view));
+window.addEventListener('message',e=>{if(e.origin!==location.origin)return;if(e.data?.type!=='GAZA_NAVIGATE_V1')return;if(!['farm','labs','plant'].includes(e.data.target))return;show(e.data.target)});
 document.getElementById('qualityOpenFarm').onclick=()=>show('farm');
 document.getElementById('qualityOpenLabs').onclick=()=>show('labs');
 const qualityBridgeState=document.getElementById('qualityBridgeState');
