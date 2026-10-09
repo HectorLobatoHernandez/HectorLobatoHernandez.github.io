@@ -24,6 +24,14 @@ try{
  for(let i=0;i<4;i++)await farm.locator('#advance').click();
  assert.match(await farm.locator('#status').textContent(),/ON HOLD/);
  assert.match(await labs.locator('#shared').textContent(),/ON_HOLD/);
+ const mission=await context.newPage();
+ const missionResponse=await mission.goto(base+'/mission-control.html?view=farm&qa=1',{waitUntil:'domcontentloaded'});
+ assert.equal(missionResponse.status(),200,'Mission Control HTTP');
+ assert.equal(await mission.locator('[data-view="farm"]').count(),1);
+ assert.equal(await mission.locator('[data-view="labs"]').count(),1);
+ await mission.waitForFunction(()=>document.getElementById('qualityBridgeState')?.textContent.includes('SIM-LOT-001'));
+ await mission.locator('[data-view="labs"]').click();
+ assert.equal(await mission.locator('[data-pane="labs"].on').count(),1);
  assert.deepEqual(failures,[],'browser errors');
  console.log('GAZA FARM LABS QA PASS: navigation, telemetry, cross-tab sync, cold hold');
 }finally{await browser.close();}
