@@ -25,5 +25,12 @@ try{
  await labs.locator('#steps button').nth(2).click();
  assert.match(await labs.locator('#stationProcedure').textContent(),/aséptica/);
  assert.equal((await labs.locator('#farmAggregate').isVisible()),false);
- console.log('GAZA spatial navigation and virtual aggregation QA passed');
+ await page.locator('[data-view="workflow"]').click();
+ await page.locator('[data-pane="workflow"].on').waitFor({timeout:10000});
+ const flow=page.frameLocator('iframe[title="GAZA End-to-End Workflow"]');
+ await flow.locator('#flow .step').first().waitFor({timeout:15000});
+ assert.equal(await flow.locator('#flow .step').count(),10);
+ await flow.locator('#next').click();
+ assert.match(await flow.locator('#state').textContent(),/FASE 2\/10/);
+ console.log('GAZA spatial navigation, virtual aggregation and workflow QA passed');
 }finally{await browser.close();}
