@@ -36,6 +36,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rep
   <div class="matrixCell"><span class="label">GIS 3D</span><iframe data-src="gis-3d-overlay.html"></iframe></div>
   <div class="matrixCell"><span class="label">TERRITORY</span><iframe data-src="territory.html"></iframe></div>
 </section>
+<div id="qualityBridge" style="position:absolute;left:12px;bottom:12px;z-index:21;border:1px solid #33516b;background:#071321e9;border-radius:10px;padding:10px 13px;max-width:430px;font:700 10px ui-monospace,monospace;color:#bed7ec"><span style="color:#84a8df">QUALITY TRAINING · SIMULATED</span><div id="qualityBridgeState" style="margin-top:5px">Sin eventos todavía · abrir Farm o Labs</div><div style="display:flex;gap:7px;margin-top:8px"><button id="qualityOpenFarm" style="background:#15253b;color:#dbe8f7;border:1px solid #314c69;border-radius:6px;padding:6px;cursor:pointer">Ver granja</button><button id="qualityOpenLabs" style="background:#15253b;color:#dbe8f7;border:1px solid #314c69;border-radius:6px;padding:6px;cursor:pointer">Ver laboratorio</button></div></div>
 <div class="hud">
   <div class="card"><h3>ENVIRONMENT · PUBLIC GRID</h3><div class="weather"><div><b id="temp">-- °C</b><span>temperature</span></div><div><b id="wind">-- km/h</b><span>wind 10 m</span></div><div><b id="dir">-- °</b><span>direction FROM</span></div><div><b id="gust">-- km/h</b><span>gust</span></div></div></div>
   <div class="card"><h3>OPERATIONAL ADVISORY</h3><div class="risk" id="risk">SYNCING</div><div class="boundary">Public weather + demo operational state. No automatic process, safety or PLC control. GIS/public layers remain contextual until authorised plant geometry exists.</div></div>
@@ -61,6 +62,13 @@ function qaUrl(u){if(!qa)return u;const x=new URL(u,location.href);x.searchParam
 function loadFrame(f){if(!f.src&&f.dataset.src)f.src=qaUrl(f.dataset.src)}
 function show(name){matrix.classList.remove('on');matrixBtn.classList.remove('on');panes.forEach(p=>{const on=p.dataset.pane===name;p.classList.toggle('on',on);if(on)loadFrame(p.querySelector('iframe'))});buttons.forEach(b=>b.classList.toggle('on',b.dataset.view===name))}
 buttons.forEach(b=>b.onclick=()=>show(b.dataset.view));
+document.getElementById('qualityOpenFarm').onclick=()=>show('farm');
+document.getElementById('qualityOpenLabs').onclick=()=>show('labs');
+const qualityBridgeState=document.getElementById('qualityBridgeState');
+function renderQualityBridge(){try{const x=JSON.parse(localStorage.getItem('gaza:quality-training:v1')||'null');qualityBridgeState.textContent=x?.provenance==='SIMULATED'&&x.lotId==='SIM-LOT-001'?('SIM-LOT-001 · '+x.lotStatus+' · Farm '+x.farmStage+'/6 · Labs '+x.labsStage+'/6'):'Sin eventos todavía · abrir Farm o Labs'}catch{qualityBridgeState.textContent='Estado de simulación no disponible'}}
+window.addEventListener('storage',e=>{if(e.key==='gaza:quality-training:v1')renderQualityBridge()});
+window.addEventListener('message',e=>{if(e.origin!==location.origin)return;if(e.data?.type==='GAZA_QUALITY_STATE_V1'&&e.data?.provenance==='SIMULATED'&&e.data?.lotId==='SIM-LOT-001')renderQualityBridge()});
+renderQualityBridge();
 matrixBtn.onclick=()=>{const on=!matrix.classList.contains('on');panes.forEach(p=>p.classList.remove('on'));buttons.forEach(b=>b.classList.remove('on'));matrix.classList.toggle('on',on);matrixBtn.classList.toggle('on',on);if(on)[...matrix.querySelectorAll('iframe')].forEach(loadFrame);else show('plant')};
 addEventListener('keydown',e=>{if(['1','2','3','4','5','6','7'].includes(e.key))show(['plant','tower','gis','territory','systems','farm','labs'][Number(e.key)-1]);if(e.key.toLowerCase()==='m')matrixBtn.click()});
 setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-ES'),1000);
