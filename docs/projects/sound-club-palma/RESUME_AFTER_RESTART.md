@@ -129,3 +129,16 @@ The remaining problem is spatial context only. Continue with:
 ```
 
 Do not rebuild V1/V2 and do not promote.
+
+
+## V3 continuation
+
+Bounds analysis shows both remote object clusters and oversized ROOT/context meshes. Do not delete ROOT meshes manually.
+
+Build the venue-only derivative with:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V3.ps1
+```
+
+V3 performs a conservative triangle crop around the dense venue core. If all numeric gates pass, the next step is visual QA against the private SketchUp master and then Spatial Explorer integration.

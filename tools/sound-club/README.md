@@ -326,3 +326,32 @@ This focused pass does not alter V2. It reports:
 - meshes whose own bounds already violate the 120 m horizontal / 40 m vertical web gate.
 
 This is the final isolation gate before building a separate venue-only V3. Do not promote V2.
+
+
+## Production build: venue-web-v3 — venue-only crop
+
+V2 already meets the payload and mesh-count gates. V3 solves the remaining world-bounds problem without deleting large `ROOT` meshes blindly.
+
+Run:
+
+```powershell
+.\tools\sound-club\BUILD_WEB_V3.ps1
+```
+
+V3 derives a metric venue core from the densest contiguous V2 mesh-node cluster, then uses a conservative 100 m × 36 m × 100 m envelope:
+
+- mesh nodes fully inside the envelope are retained byte-for-byte;
+- mesh nodes fully outside are removed;
+- partial TRIANGLES meshes are decoded only where necessary;
+- for partial meshes, only triangles whose three world-space vertices are inside the venue envelope are retained;
+- all retained vertex attributes are copied and indices are rebuilt;
+- hierarchy, transforms and materials are compacted into a separate derived GLB.
+
+Outputs:
+
+- `assets/models/sound-club/_candidate/venue-web-v3.glb`
+- `assets/models/sound-club/_candidate/venue-web-v3.build-report.json`
+
+The script verifies V2 against its build-report SHA before building and never modifies V2, V1, the master GLB or the private SketchUp source.
+
+If V3 passes size, mesh-count and bounds gates, the next step is **visual QA**, not another optimization pass. Public promotion remains blocked until that QA is approved.

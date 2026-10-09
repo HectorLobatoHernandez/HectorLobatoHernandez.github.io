@@ -64,7 +64,9 @@ The new registered master has now been converted successfully using the memory-s
 - **CURRENT PRODUCTION STEP:** `tools/sound-club/BUILD_WEB_V2.ps1` builds `venue-web-v2.glb` from V1. It replaces only classified heavy P1 groups with clustered world-space technical proxies while preserving all unclassified geometry, then measures the ≤95 MiB / ≤20,000 mesh / venue-bounds gate.
 - V2 built successfully: 76.03 MiB total, 63.73 MiB BIN, 21,063 nodes, 17,636 meshes and 881 proxy nodes. Size and mesh-count gates pass.
 - V2 still fails only the world-bounds gate: 381.69 × 94.55 × 245.18 m. This indicates retained remote/site-context geometry, not a payload problem.
-- **CURRENT STEP:** run `tools/sound-club/ANALYZE_V2_BOUNDS.ps1` to identify the exact extrema contributors/outlier groups, then build a separate venue-only V3. No further P1 simplification is needed unless V3 validation exposes it.
+- V2 bounds analysis confirmed two independent context problems: remote small mesh clusters hundreds of metres from the venue plus very large `ROOT` meshes crossing the dense venue core and remote context. Large `ROOT` meshes therefore cannot be removed wholesale.
+- **CURRENT PRODUCTION STEP:** `tools/sound-club/BUILD_WEB_V3.ps1` builds a separate venue-only V3. It keeps fully-inside meshes untouched, removes fully-outside mesh nodes, and triangle-crops only partial meshes so large ROOT/context surfaces are trimmed without blindly discarding venue geometry.
+- If V3 passes ≤95 MiB / ≤20,000 meshes / ≤120 m horizontal / ≤40 m height, stop optimization and move directly to visual QA + Spatial Explorer.
 - Visual QA against the private SketchUp master remains mandatory before any public promotion.
 - Next visual check: localhost candidate viewer only if the browser can handle the current 874 MB file.
 
