@@ -120,6 +120,10 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+<button type="button" id="enterMasterFarm" style="padding:11px;border-radius:9px;background:#193c27;border:1px solid #4d9563;color:#fff;font-weight:800;cursor:pointer">↗ ENTRAR GRANJA ZAMORA</button>
+<button type="button" id="enterQualityLab" style="padding:11px;border-radius:9px;background:#163657;border:1px solid #497cb8;color:#fff;font-weight:800;cursor:pointer">↗ ENTRAR LABORATORIO</button></div>
+<div style="font-size:11px;color:#a5bdce;margin-bottom:10px">La granja del campus es un nodo virtual de la red ganadera; el laboratorio pertenece a la planta. Los interiores son propuestas 3D, no planos verificados.</div>
         <div class="layer-list">
           <label><input type="checkbox" data-layer="farm"> Granja legacy (oculta)</label>
           <label><input type="checkbox" data-layer="plant" checked> Planta</label>
@@ -656,10 +660,17 @@ if(canvas){
    rainPts.visible=!!(weatherLive&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));const cloud=Math.max(0,Math.min(100,Number(w.cloudCover||0)));scene.fog.color.set(rainPts.visible?0x111b26:cloud>70?0x0d1620:0x07101a);scene.background.set(rainPts.visible?0x111b26:cloud>70?0x0d1620:0x07101a);sun.intensity=rainPts.visible?1.55:Math.max(1.65,2.8-cloud*.009);updateEnvironmentField(w,weatherLive);
  }
  window.addEventListener('storage',e=>{if(e.key===ENV_KEY)applyEnvironment()});window.addEventListener('gaza-environment',e=>applyEnvironment(e.detail));
+ // Spatial navigation stays inside Mission Control when embedded, with standalone fallback.
+ function openGazaArea(area){
+  if(window.parent!==window)window.parent.postMessage({type:'GAZA_NAVIGATE_V1',target:area},location.origin);
+  else location.href='mission-control.html?view='+encodeURIComponent(area);
+ }
+ document.getElementById('enterMasterFarm')?.addEventListener('click',()=>openGazaArea('farm'));
+ document.getElementById('enterQualityLab')?.addEventListener('click',()=>openGazaArea('labs'));
  const speed=document.getElementById('simSpeed');
  const sel=document.getElementById('twinSelection');
  const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
- renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
+ renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;if(o.userData?.kind?.toLowerCase?.().includes('farm')||o.name?.toLowerCase?.().includes('granja')){openGazaArea('farm');return}if(o.name?.toLowerCase?.().includes('laboratorio')){openGazaArea('labs');return}sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
  document.querySelectorAll('[data-layer]').forEach(x=>x.addEventListener('change',()=>{groups[x.dataset.layer].visible=x.checked}));
  document.getElementById('twinPlay').onclick=()=>{running=!running;document.getElementById('twinPlay').textContent=running?'Pausar':'Reanudar'};
  const cameraViews={exterior:{p:[210,125,230],t:[-15,4,8]},plant:{p:[120,85,150],t:[-10,6,-12]},process:{p:[82,54,92],t:[-22,8,-8]},asrs:{p:[158,72,74],t:[88,12,-25]},roads:{p:[-205,70,185],t:[-95,2,92]},hgv:{p:[-175,62,145],t:[-118,0,96]},environment:{p:[175,155,205],t:[0,2,0]},farm:{p:[-120,80,-5],t:[-210,3,-78]},docks:{p:[170,65,120],t:[92,4,40]}};
