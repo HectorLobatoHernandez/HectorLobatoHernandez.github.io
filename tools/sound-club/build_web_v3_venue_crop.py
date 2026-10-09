@@ -626,8 +626,8 @@ def build_cropped_meshes(
             if new_primitives:
                 cropped_mesh_by_node[node_id] = {
                     "name": (
-                        f"{mesh.get('name', f'mesh_{info['meshId']}')}"
-                        f"__V3_CROPPED_NODE_{node_id}"
+                        (mesh.get("name") or f"mesh_{info['meshId']}")
+                        + f"__V3_CROPPED_NODE_{node_id}"
                     ),
                     "primitives": new_primitives,
                 }
