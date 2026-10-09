@@ -30,7 +30,7 @@
     }
   };
   const LOCAL_CANDIDATE=Boolean(LOCAL_HOST&&LOCAL_CANDIDATE_CONFIG[LOCAL_CANDIDATE_MODE]);
-  const SECTIONS=['overview','molds','spatial','render','phases','systems','audio','lighting','structure','dj','story','docs'];
+  const SECTIONS=['overview','molds','spatial','render','phases','systems','audio','lighting','structure','dj','gallery','story','docs'];
   const STACK=['React 18','GSAP','ScrollTrigger','Scroll World','React Bits','Three.js'];
   const RENDER_MOLD_BASE='../assets/visuals/sound-club-renders/';
   const BUILD_MOLDS=[
@@ -177,7 +177,7 @@
       return()=>tween.kill();
     },[cards.length]);
     return E('section',{className:'ms-shell ms-section',id:'gallery'},
-      E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / CURATED GALLERY'),E('h2',{className:'ms-title'},'Boards, plans and details.'),E('p',{className:'ms-subtitle'},'Galería React inspirada en Bounce Cards. Cada pieza conserva su clasificación de evidencia y solo usa activos publicSafe.')),
+      E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'11 / CURATED GALLERY'),E('h2',{className:'ms-title'},'Boards, plans and details.'),E('p',{className:'ms-subtitle'},'Galería React inspirada en Bounce Cards. Cada pieza conserva su clasificación de evidencia y solo usa activos publicSafe.')),
       E('div',{className:'ms-bounce-wrap',ref},...cards.map((item,i)=>{const c=(cards.length-1)/2;return E('figure',{className:'ms-bounce-card',key:item.id,style:{'--offset':((i-c)*78)+'px','--rot':((i-c)*4.5)+'deg'},tabIndex:0},
         E('img',{src:item.src,alt:item.title,loading:'lazy'}),
         E('figcaption',null,E('b',null,item.title),E('span',null,item.classification))
@@ -500,7 +500,7 @@
     ];
     return E('section',{className:'ms-shell ms-section ms-phases',id:'phases'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
-        E('div',null,E('p',{className:'ms-kicker'},'04 / DEVELOPMENT PHASES'),E('h2',{className:'ms-title'},'From existing space to commissioned system.')),
+        E('div',null,E('p',{className:'ms-kicker'},'05 / DEVELOPMENT PHASES'),E('h2',{className:'ms-title'},'From existing space to commissioned system.')),
         E('p',{className:'ms-subtitle'},'El proyecto se presenta como una secuencia de decisiones verificables: analizar, zonificar, diseñar, coordinar, fabricar, programar y entregar.')
       ),
       E('div',{className:'ms-phase-grid'},...phases.map((p,i)=>E('article',{className:'ms-phase',key:p[0],'data-ms-reveal':''},
@@ -521,7 +521,7 @@
     ];
     return E('section',{className:'ms-shell ms-section ms-systems',id:'systems'},
       E('div',{className:'ms-decon-head','data-ms-reveal':''},
-        E('div',null,E('p',{className:'ms-kicker'},'05 / SYSTEMS DECONSTRUCTION'),E('h2',{className:'ms-title'},'One space. Multiple coordinated layers.')),
+        E('div',null,E('p',{className:'ms-kicker'},'06 / SYSTEMS DECONSTRUCTION'),E('h2',{className:'ms-title'},'One space. Multiple coordinated layers.')),
         E('p',{className:'ms-subtitle'},'La lectura técnica no separa oficios: muestra cómo arquitectura, audio, iluminación, control, acústica y fabricación se afectan mutuamente.')
       ),
       E('div',{className:'ms-discipline-grid'},...disciplines.map((d,i)=>E('article',{className:'ms-discipline',key:d[0],'data-ms-reveal':''},
@@ -564,7 +564,7 @@
     return E('section',{className:'ms-section ms-story-wrap',id:'story'},
       E('div',{className:'ms-shell ms-story-shell'},
         E('div',{className:'ms-story-copy'},
-          E('div',{className:'ms-story-intro','data-ms-reveal':''},E('p',{className:'ms-kicker'},'10 / SCROLL WORLD STORY'),E('h2',{className:'ms-title'},'Architecture → systems → as-built.'),E('p',{className:'ms-subtitle'},'Narrativa modular preparada para evolucionar a vídeo frame-locked de XXXIA sin cambiar la arquitectura React de la página.')),
+          E('div',{className:'ms-story-intro','data-ms-reveal':''},E('p',{className:'ms-kicker'},'12 / SCROLL WORLD STORY'),E('h2',{className:'ms-title'},'Architecture → systems → as-built.'),E('p',{className:'ms-subtitle'},'Narrativa modular preparada para evolucionar a vídeo frame-locked de XXXIA sin cambiar la arquitectura React de la página.')),
           ...scenes.map((s,i)=>E('article',{key:s.mediaId+'-'+i,className:'ms-story-step '+(i===active?'active':''),'data-ms-story-step':i},
             E('span',{className:'ms-kicker'},s.kicker),E('h3',null,s.title),E('p',null,s.body),
             E('div',{className:'ms-story-tags'},...(s.tags||[]).map(t=>E('span',{key:t},t)))
@@ -667,7 +667,7 @@
 
         E('section',{className:'ms-shell ms-section',id:'audio'},
           E('div',{className:'ms-split'},
-            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'06 / AUDIO ARCHITECTURE'),E('h2',{className:'ms-title'},'Power, clarity and control.'),
+            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / AUDIO ARCHITECTURE'),E('h2',{className:'ms-title'},'Power, clarity and control.'),
               E('p',{className:'ms-subtitle'},'Matriz DSP central, amplificación dedicada y separación operacional Interior / Exterior, con presets Restaurante / Club y arquitectura preparada para limitación homologada por zona.'),
               E('div',{className:'ms-zone-row'},...['Interior','Exterior','Restaurant preset','Club preset'].map(x=>E('span',{className:'ms-zone',key:x},x)))
             ),
@@ -686,7 +686,7 @@
         ),
 
         E('section',{className:'ms-shell ms-section',id:'lighting'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'07 / LIGHTING & CONTROL'),E('h2',{className:'ms-title'},'Atmosphere in every moment.'),E('p',{className:'ms-subtitle'},'Control central Gira X1, KNX + DALI, escenas hospitality/club, colgantes decorativos, spots de pista y previsión de ampliación DMX.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'08 / LIGHTING & CONTROL'),E('h2',{className:'ms-title'},'Atmosphere in every moment.'),E('p',{className:'ms-subtitle'},'Control central Gira X1, KNX + DALI, escenas hospitality/club, colgantes decorativos, spots de pista y previsión de ampliación DMX.')),
           E('div',{className:'ms-control-layout'},
             E('div',{className:'ms-control-list'},
               E(Card,{label:'SUPERVISION',title:'Gira X1',body:'Visualización y control centralizado.'}),
@@ -702,7 +702,7 @@
 
         E('section',{className:'ms-shell ms-section ms-structure',id:'structure'},
           E('div',{className:'ms-split'},
-            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'08 / SUSPENDED STRUCTURE · AS-BUILT'),E('h2',{className:'ms-title'},'Engineered for performance.'),
+            E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'09 / SUSPENDED STRUCTURE · AS-BUILT'),E('h2',{className:'ms-title'},'Engineered for performance.'),
               E('p',{className:'ms-subtitle'},'La ejecución documentada utiliza suspensión elástica entre techo y estructura tubular. Se prioriza Ø48.3 mm frente al valor preliminar Ø63 mm; el CAD maestro cerrará la validación geométrica definitiva.'),
               E('div',{className:'ms-status'},E('i',null),'Ø48.3 mm · DOCUMENTED AS-BUILT PRIORITY')
             ),
@@ -720,7 +720,7 @@
         ),
 
         E('section',{className:'ms-shell ms-section',id:'dj'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'09 / DJ BOOTH · TECHNICAL FURNITURE'),E('h2',{className:'ms-title'},'A central technical object.'),E('p',{className:'ms-subtitle'},'La cabina circular combina estructura, encimera, aislamiento vibratorio, acometidas, iluminación y servicio técnico. La geometría generada permanece separada de las cotas documentadas.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'10 / DJ BOOTH · TECHNICAL FURNITURE'),E('h2',{className:'ms-title'},'A central technical object.'),E('p',{className:'ms-subtitle'},'La cabina circular combina estructura, encimera, aislamiento vibratorio, acometidas, iluminación y servicio técnico. La geometría generada permanece separada de las cotas documentadas.')),
           E('div',{className:'ms-dj-grid'},
             E(Figure,{item:dj,caption:'GENERATED CONCEPT · not authoritative geometry',depth:true}),
             E('div',{className:'ms-dj-stack'},E(Figure,{item:djPlan,contain:true,caption:'DOCUMENTED DIMENSIONS · diagrammatic geometry'}),
@@ -733,7 +733,7 @@
         E(Story,{story,mediaMap,motion}),
 
         E('section',{className:'ms-shell ms-section',id:'docs'},
-          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'11 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
+          E('div',{'data-ms-reveal':''},E('p',{className:'ms-kicker'},'13 / DOSSIER · SOURCE OF TRUTH'),E('h2',{className:'ms-title'},'Project documentation.'),E('p',{className:'ms-subtitle'},'La página pública consume metadatos versionados y mantiene separados los activos privados, la evidencia documental, los diagramas generados y la futura geometría verificada.')),
           E('div',{className:'ms-doc-grid'},
             E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/README.md'},E('i',null,'DOSSIER'),E('b',null,'Technical dossier'),E('span',null,'Consolidated technical summary →')),
             E('a',{className:'ms-doc',href:'../docs/projects/sound-club-palma/CAD_INGEST_AUDIT.md'},E('i',null,'CAD QA'),E('b',null,'Geometry audit'),E('span',null,'Source identity, duplicates and master-promotion gate →')),
