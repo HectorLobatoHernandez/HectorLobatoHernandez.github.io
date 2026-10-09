@@ -379,3 +379,27 @@ Local candidate routing now supports:
 - `?candidate=1` — backwards-compatible alias for V3.
 
 V3 must be checked visually for venue envelope, principal architecture, acoustic treatments, DJ booth/technical furniture, lighting and suspended structure, scale, clipping and absence of remote context. Passing the numeric gate does not authorize public promotion by itself.
+
+
+## Image-first build molds
+
+The interactive V3 GLB is no longer the primary presentation layer. It is retained for technical geometry QA and loads only after explicit user action.
+
+The portfolio now uses staged **build molds** for:
+- whole venue;
+- interior DJ booth;
+- lighting;
+- glazing/envelope;
+- restaurant/lounge;
+- terrace/exterior.
+
+Expected optimized WebP files are registered in:
+`xxxia-studio/projects/sound-club-palma/05_metadata/render-molds.json`
+
+Install a downloaded render pack with:
+
+```powershell
+.\tools\sound-club\INSTALL_RENDER_MOLDS.ps1 -Source "C:\path\to\SOUND_CLUB_RENDER_MOLDS_V1.zip"
+```
+
+If the asset pack is absent, the page falls back to the already-approved public concept boards/technical diagrams instead of rendering broken image slots.

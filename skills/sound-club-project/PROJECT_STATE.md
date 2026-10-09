@@ -167,3 +167,19 @@ http://localhost:8000/projects/sound-club-palma.html?candidate=v3
 5. Export matched-camera V-Ray stills for BEFORE/AFTER render evidence.
 6. Only after visual + origin QA, run the public promotion gate.
 7. Continue the architect / engineer / designer-facing dossier.
+
+
+## Render molds / image-first decomposition (2026-10-09)
+
+Visual QA showed that the 69.62 MiB V3 GLB is still too slow for primary storytelling and does not reproduce the supplied glazing/transparency or lighting quality well enough. The project presentation therefore changes priority:
+
+- **Primary visual layer:** lightweight render molds built from user-supplied finished renders.
+- **Technical 3D:** V3 remains available, but is now **manual-load only** for geometry/orbit/scale QA.
+- New mold chapters: whole venue, interior DJ booth, lighting, glazing/envelope, restaurant/lounge, terrace/exterior.
+- Each mold exposes staged states (base → integration → systems → result) and a before/after comparison.
+- Supplied renders are classified as render/reference evidence, **not verified as-built photography**.
+- Expected optimized assets live under `assets/visuals/sound-club-renders/`.
+- Asset manifest: `xxxia-studio/projects/sound-club-palma/05_metadata/render-molds.json`.
+- Installer: `tools/sound-club/INSTALL_RENDER_MOLDS.ps1`.
+
+Current priority: install the optimized render asset pack locally, review the molds, then refine each mold with more specific before/construction/final frames. Do not spend more time making the browser GLB imitate V-Ray.

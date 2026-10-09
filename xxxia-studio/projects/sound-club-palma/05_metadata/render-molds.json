@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "projectId": "SOUND_CLUB_CDM",
+  "status": "USER_RENDER_REFERENCE_SET",
+  "classification": "DOCUMENTED_REFERENCE_RENDER",
+  "publicClaim": "NOT_AS_BUILT",
+  "assetBase": "/assets/visuals/sound-club-renders/",
+  "webOptimization": {
+    "format": "webp",
+    "maxWidth": 1600,
+    "target": "image-first storytelling; technical GLB loaded on demand"
+  },
+  "molds": [
+    {
+      "id": "complete",
+      "label": "TODO COMPLETO",
+      "stages": [
+        "overall-massing.webp",
+        "overall-plan.webp",
+        "overall-interior-final.webp",
+        "overall-exterior-final.webp"
+      ]
+    },
+    {
+      "id": "dj",
+      "label": "MESA DJ INTERIOR",
+      "stages": [
+        "dj-structure-side.webp",
+        "dj-structure-back.webp",
+        "dj-final-detail.webp",
+        "dj-final-overview.webp"
+      ]
+    },
+    {
+      "id": "lighting",
+      "label": "ILUMINACION",
+      "stages": [
+        "lighting-ceiling.webp",
+        "lighting-final.webp",
+        "overall-interior-final.webp"
+      ]
+    },
+    {
+      "id": "glass",
+      "label": "CRISTALES / ENVOLVENTE",
+      "stages": [
+        "glass-closed.webp",
+        "glass-open.webp",
+        "exterior-glass-final.webp"
+      ]
+    },
+    {
+      "id": "lounge",
+      "label": "RESTAURANTE / LOUNGE",
+      "stages": [
+        "overall-plan.webp",
+        "lounge-final.webp",
+        "overall-interior-final.webp"
+      ]
+    },
+    {
+      "id": "exterior",
+      "label": "TERRAZA / EXTERIOR",
+      "stages": [
+        "overall-massing.webp",
+        "exterior-planting-detail.webp",
+        "exterior-glass-final.webp",
+        "overall-exterior-final.webp"
+      ]
+    }
+  ],
+  "exteriorDossierReference": {
+    "lighting": "2 catenary lines; 6 pendant luminaires IP65; 12 TW 48V spots; 2200-2300K; DMX regulation",
+    "audioFurniture": "2 subwoofers integrated in central volume; 2 lateral tops L/R; external DSP; remote amplification"
+  },
+  "note": "The renders supplied in chat are design/render evidence. They must not be labelled as verified as-built photography."
+}
