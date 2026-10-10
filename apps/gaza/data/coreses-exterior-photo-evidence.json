@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "site": "GAZA COReSES - LOS PINARES",
+  "evidenceClass": "USER_PROVIDED_PUBLIC_STREETVIEW_SCREENSHOTS",
+  "photoPeriod": "March 2025 (visible where labelled)",
+  "geometryConfidence": "EXTERIOR_VISUAL_ONLY",
+  "anchor": {"lat": 41.52355, "lon": -5.59993, "precision": "APPROXIMATE_UNSURVEYED"},
+  "facade": {
+    "mainWall": "grey horizontal metal cladding",
+    "upperVolume": "large red cuboid above grey longitudinal hall",
+    "officeAnnex": "low grey projecting office block with dark continuous window band",
+    "auxiliaryAnnex": "low red single-storey facade block",
+    "perimeter": "white vertical bar fence on concrete base",
+    "lighting": "streetlights, utility poles and visible overhead wiring",
+    "status": "INFERRED_RECONSTRUCTION",
+    "dimensions": null
+  },
+  "accesses": [
+    {"id": "ACCESS_1", "purpose": ["MUELLES CARGA","OFICINAS","AULA LACTEA"], "source":"photographed exterior orientation board","coordinates":null, "status":"PHOTO_CONFIRMED_FUNCTION_POSITION_UNSURVEYED"},
+    {"id": "ACCESS_2", "purpose": ["RECEPCION DE LECHE","BASCULA","SERVICIOS AUXILIARES"], "source":"photographed exterior orientation board","coordinates":null, "status":"PHOTO_CONFIRMED_FUNCTION_POSITION_UNSURVEYED"}
+  ],
+  "visibleSignage": [
+    {"type":"STOP","position":"access gate visible","coordinate":null},
+    {"type":"orientation_map","position":"street-side entrance information board","coordinate":null},
+    {"type":"site_speed_limit","value":20,"position":"near campus access shown in photo","coordinate":null}
+  ],
+  "surroundings": ["Los Pinares street", "neighboring industrial shed", "roadside trees", "open green verges", "street intersections"],
+  "materialPolicy":"use physically based procedural PBR approximations; do not embed Google Street View screenshots as runtime textures",
+  "doNotAssume":["exact access geocoordinates","all road markings are current","interior laboratory room coordinates","dock count","roof elevations","geodetic site boundary"],
+  "review": "Model geometry only after comparing OSM/PNOA/Catastro and user-approved camera references."
+}
