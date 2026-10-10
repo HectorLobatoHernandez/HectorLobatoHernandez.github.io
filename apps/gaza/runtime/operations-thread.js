@@ -12,7 +12,7 @@ export function transition(current,action){
  if(action.type==='RESET')return initialOperations(current.config);
  const s=structuredClone(current);s.revision++;
  if(action.type==='INCIDENT'){s.status='HOLD';s.quality='ON_HOLD';append(s,'INCIDENT',action.reason||'Incidencia simulada');return s}
- if(action.type==='RESOLVE'){if(s.status==='HOLD'){s.status='RUNNING';s.quality='PENDING';append(s,'INVESTIGATION_CLOSED','Cierre ficticio: requiere verificación humana real')}return s}
+ if(action.type==='RESOLVE'){if(s.status==='HOLD'){s.status='RUNNING';s.quality='PENDING';if(s.stage>5){s.stage=5;s.departments=s.departments.map((d,i)=>({...d,status:i<5?'DONE':i===5?'ACTIVE':'PENDING'}));s.inventory.processedL=0;s.inventory.packedL=0;s.inventory.pallets=0;s.inventory.dispatchedPallets=0;append(s,'SIMULATION_ROLLBACK','Escenario retrocedido a calidad para revisión; volúmenes calculados reiniciados')}append(s,'INVESTIGATION_CLOSED','Cierre ficticio: requiere verificación humana real')}return s}
  if(action.type==='TEST'){
   if(s.stage!==4||s.status!=='RUNNING')return s;
   if(!['FISICOQUÍMICA','MICROBIOLOGÍA','INHIBIDORES'].includes(action.test))return s;
@@ -37,4 +37,4 @@ export function transition(current,action){
  if(s.stage===9)s.inventory.dispatchedPallets=s.inventory.pallets;
  append(s,'STAGE_ENTER',departments[s.stage]);return s;
 }
-export function checkInvariants(s){return s.provenance==='SIMULATED'&&s.inventory.processedL<=s.inventory.rawMilkL&&s.inventory.packedL<=s.inventory.processedL&&s.inventory.dispatchedPallets<=s.inventory.pallets&&!(s.stage>5&&s.quality!=='SIMULATED_APPROVAL')}
+export function checkInvariants(s){return s.provenance==='SIMULATED'&&s.inventory.processedL<=s.inventory.rawMilkL&&s.inventory.packedL<=s.inventory.processedL&&s.inventory.dispatchedPallets<=s.inventory.pallets&&!(s.stage>5&&s.status!=='HOLD'&&s.quality!=='SIMULATED_APPROVAL')}
