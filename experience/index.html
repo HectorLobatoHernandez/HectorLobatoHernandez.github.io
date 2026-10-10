@@ -7,7 +7,7 @@
   <meta name="description" content="HL Portfolio World · prototype interactive journey through RHB STUDIO, GAZA Operations and Club del Mar.">
   <title>HL Portfolio World · Prototype</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./world.css?v=2">
+  <link rel="stylesheet" href="./world.css?v=3">
 </head>
 <body>
   <canvas id="worldCanvas" aria-hidden="true"></canvas>
@@ -16,7 +16,7 @@
     <header class="world-topbar">
       <a class="world-brand" href="../index.html">
         HL
-        <small>PORTFOLIO WORLD · V0.2</small>
+        <small>PORTFOLIO WORLD · V0.3</small>
       </a>
       <div class="world-top-meta">
         <span id="worldChapterLabel">ENTRY</span>
@@ -39,7 +39,12 @@
       </section>
 
       <section class="world-section" data-chapter="rhb"></section>
-      <section class="world-section" data-chapter="gaza"></section>
+      <section class="world-section world-section--gaza" data-chapter="gaza-arrival"></section>
+      <section class="world-section world-section--gaza" data-chapter="gaza-zamora"></section>
+      <section class="world-section world-section--gaza" data-chapter="gaza-duero"></section>
+      <section class="world-section world-section--gaza" data-chapter="gaza-territory"></section>
+      <section class="world-section world-section--gaza" data-chapter="gaza-plant"></section>
+      <section class="world-section world-section--gaza" data-chapter="gaza-farm"></section>
       <section class="world-section world-section--club" data-chapter="club-del-mar"></section>
     </main>
 
@@ -76,6 +81,6 @@
     }
   }
   </script>
-  <script type="module" src="./world.js?v=3"></script>
+  <script type="module" src="./world.js?v=4"></script>
 </body>
 </html>
