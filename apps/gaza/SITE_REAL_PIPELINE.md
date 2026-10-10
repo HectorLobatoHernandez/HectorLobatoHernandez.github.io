@@ -53,3 +53,13 @@ DYNAMIC_AGENT_ROUTES
 - Catastro: https://www.sedecatastro.gob.es/Accesos/SECAccDescargaDatos.aspx
 - IGN PNOA ortofotos: https://pnoa.ign.es/web/portal/pnoa-imagen/productos-a-descarga
 - IGN PNOA LiDAR: https://pnoa.ign.es/web/portal/pnoa-lidar/productos-a-descarga
+
+
+## Referencia visual aportada (Coreses, 2025)
+
+El archivo `data/coreses-exterior-photo-evidence.json` recoge la observación manual de las capturas aportadas por el usuario: nave longitudinal con panel metálico horizontal gris, coronación prismática roja, volumen anexo de oficinas acristaladas, bloque bajo rojo, vallado blanco, accesos diferenciados y mapa de orientación. **No contiene coordenadas de puertas ni cotas inventadas**.
+
+**Próxima ejecución Blender / WebGL:** construir bloques separados de cubierta roja y nave gris, vidrio del anexo, perfil de valla y elementos viales con escala definida por parcela vectorial. Modelar dos accesos identificados funcionalmente según cartel, pero dejar sus coordenadas pendientes de georreferenciación. La simulación utilizará acceso 1 para expediciones/oficinas y acceso 2 para entrada de leche/báscula como escenario hasta validación operativa. Revisar geometría, señalética y giros HGV con ortofoto antes de publicar la escena.
+
+### QA actual
+El importador OSM pasó cuatro pruebas Python. El workflow visual falla más adelante, durante la ejecución del QA navegador. Este fallo **no demuestra que el importador esté mal**, y bloquea la promoción a `main` hasta diagnóstico de la suite visual.
