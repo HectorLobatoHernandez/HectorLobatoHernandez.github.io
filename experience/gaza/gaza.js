@@ -141,10 +141,14 @@ function animate(){
     if(raw>=1)tween=null;
   }
 
-  world.userData.update?.(time);
+  try{
+    world.userData.update?.(time);
+  }catch(err){
+    console.error('GAZA world animation update',err);
+  }
   controls.update();
   renderer.render(scene,camera);
 }
-animate();
 
-setTimeout(()=>loading.classList.add('hide'),450);
+loading.classList.add('hide');
+animate();
