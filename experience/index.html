@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050706">
+  <meta name="description" content="HL Portfolio World · prototype interactive journey through RHB STUDIO, GAZA Operations and Club del Mar.">
+  <title>HL Portfolio World · Prototype</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./world.css?v=1">
+</head>
+<body>
+  <canvas id="worldCanvas" aria-hidden="true"></canvas>
+
+  <div class="world-ui">
+    <header class="world-topbar">
+      <a class="world-brand" href="../index.html">
+        HL
+        <small>PORTFOLIO WORLD · V0.1</small>
+      </a>
+      <div class="world-top-meta">
+        <span id="worldChapterLabel">ENTRY</span>
+        <span id="worldProgressLabel">000%</span>
+      </div>
+    </header>
+
+    <div class="world-progress" aria-hidden="true"><i id="worldProgressBar"></i></div>
+
+    <aside class="world-index" id="worldIndex" aria-label="Chapters"></aside>
+
+    <main id="worldScroll" class="world-scroll" aria-live="polite">
+      <section class="world-section world-section--intro" data-chapter="origin">
+        <div class="world-copy">
+          <p class="world-kicker">00 / ENTRY</p>
+          <h1>Build systems.<br><em>Enter the world.</em></h1>
+          <p class="world-lead">Un portfolio recorrido como un espacio. Scroll para avanzar. En cada estación puedes abrir el proyecto real sin perder la narrativa.</p>
+          <div class="world-hint"><span>SCROLL TO MOVE</span><i>↓</i></div>
+        </div>
+      </section>
+
+      <section class="world-section" data-chapter="rhb"></section>
+      <section class="world-section" data-chapter="gaza"></section>
+      <section class="world-section world-section--club" data-chapter="club-del-mar"></section>
+    </main>
+
+    <section class="project-panel" id="projectPanel" aria-live="polite">
+      <div class="project-panel__media">
+        <img id="projectPanelImage" alt="">
+        <div class="project-panel__shade"></div>
+      </div>
+      <div class="project-panel__copy">
+        <p class="world-kicker" id="projectPanelKicker"></p>
+        <h2 id="projectPanelTitle"></h2>
+        <p class="project-panel__subtitle" id="projectPanelSubtitle"></p>
+        <p class="project-panel__body" id="projectPanelBody"></p>
+        <div class="project-panel__actions" id="projectPanelActions"></div>
+      </div>
+    </section>
+
+    <div class="world-mode">
+      <span>MODE</span>
+      <b>CINEMATIC SCROLL</b>
+      <small>interactive islands load only when opened</small>
+    </div>
+  </div>
+
+  <div class="world-loading" id="worldLoading">
+    <span>HL / WORLD</span>
+    <b>Assembling scene…</b>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="./world.js?v=1"></script>
+</body>
+</html>
