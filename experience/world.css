@@ -70,3 +70,15 @@ a{color:inherit}
   .world-hint i{animation:none}
   .project-panel,.project-panel__media img{transition:none}
 }
+
+
+/* V0.3 · immersive GAZA journey */
+.world-section--gaza{min-height:108vh}
+.project-panel--gaza{width:min(390px,30vw);background:rgba(11,18,12,.58);border-color:rgba(214,164,103,.18)}
+.project-panel--gaza .project-panel__media{display:none}
+.project-panel--gaza .project-panel__body{color:#aab4ac}
+.project-panel--gaza .project-panel__subtitle{color:#9bc08b}
+.project-panel--gaza .world-kicker{color:#d9b37f}
+@media(max-width:980px){
+  .project-panel--gaza{width:min(520px,88vw)}
+}
