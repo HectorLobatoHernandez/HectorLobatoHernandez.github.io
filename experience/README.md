@@ -86,3 +86,30 @@ Open:
 ```text
 http://localhost:8000/experience/
 ```
+
+
+## V0.2 — GAZA / Zamora spatial world
+
+The GAZA chapter now contains a procedural Three.js set-piece instead of a flat project card.
+
+Narrative layers:
+
+- historic Zamora entrance / fortified stone walls;
+- Romanesque-inspired church silhouettes and old urban fabric;
+- Duero river + bridge;
+- green plains and vineyards;
+- GAZA plant as a conceptual 3D industrial volume;
+- traditional farm complex;
+- free-grazing cows and sheep;
+- tractor and workers;
+- direct transition into `/experience/gaza/`.
+
+The dedicated GAZA island provides free orbit / zoom / pan and hotspot camera views for:
+
+- Zamora historic core;
+- Duero;
+- GAZA plant;
+- GAZA farm;
+- fields / vineyards.
+
+Important provenance rule: the current plant/farm placement and historic-city composition are **conceptual world design**, not georeferenced or as-built geometry. Later versions should replace or align these volumes with verified GIS / plant geometry where available.
