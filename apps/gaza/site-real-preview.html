@@ -1,0 +1,30 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GAZA · Site Real OSM Preview</title><style>body{margin:0;background:#070d16;color:#e8effa;font:13px system-ui}header{padding:12px 18px;background:#101f30;display:flex;justify-content:space-between;align-items:center;gap:12px}a{color:#95bfff}#viewport{height:calc(100vh - 94px);min-height:450px;position:relative}#ui{position:absolute;left:15px;top:15px;max-width:330px;background:#0b1726e8;border:1px solid #36516d;border-radius:12px;padding:13px;z-index:2}button{background:#234b76;color:white;border:1px solid #4876a1;border-radius:6px;padding:8px;cursor:pointer}p{line-height:1.55;color:#a9bfd4}footer{padding:10px 18px;font-size:11px;color:#9caec2}</style><header><strong>GAZA OPS / SITE REAL — CONTEXTO GEOESPACIAL</strong><a href="mission-control.html?view=plant">Volver a Plant 3D</a></header><div id="viewport"><div id="ui"><b>Viales y edificios OSM · Coreses</b><p>Geometría pública dinámica. No muestra los viales internos ni la entrada como verificados. El punto central de referencia es aproximado.</p><button id="load">CARGAR CONTEXTO REAL OSM</button><p id="status">Pendiente de carga. Fuentes externas no consultadas todavía.</p><p>Origen: OpenStreetMap contributors / Overpass · mapa contextual, no levantamiento as-built.</p></div></div><footer>Sin suscripción · sin claves · geometría 3D procedural sobre datos públicos · atribución OSM / ODbL</footer><script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
+const origin={lat:41.52355,lon:-5.59993},R=6378137,local=([lon,lat])=>[(lon-origin.lon)*Math.PI/180*R*Math.cos(origin.lat*Math.PI/180),(lat-origin.lat)*Math.PI/180*R];
+const scene=new THREE.Scene();scene.background=new THREE.Color('#112333');const camera=new THREE.PerspectiveCamera(42,1,1,10000);camera.position.set(600,470,640);const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));const viewport=document.querySelector('#viewport');viewport.append(renderer.domElement);const ctrl=new OrbitControls(camera,renderer.domElement);ctrl.target.set(0,0,0);ctrl.enableDamping=true;const ambient=new THREE.HemisphereLight('#e5efff','#334526',2);scene.add(ambient);const sun=new THREE.DirectionalLight('#fff4dc',2);sun.position.set(-180,320,90);scene.add(sun);const ground=new THREE.Mesh(new THREE.PlaneGeometry(2300,2300),new THREE.MeshStandardMaterial({color:'#344b3a'}));ground.rotation.x=-Math.PI/2;scene.add(ground);
+const geoGroup=new THREE.Group();scene.add(geoGroup);const roadmat=new THREE.MeshStandardMaterial({color:'#55616a',roughness:1});const bmat=new THREE.MeshStandardMaterial({color:'#b1b8b7',roughness:.86});
+function resize(){const w=viewport.clientWidth,h=viewport.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)}new ResizeObserver(resize).observe(viewport);resize();function frame(){ctrl.update();renderer.render(scene,camera);requestAnimationFrame(frame)}frame();
+const status=document.querySelector('#status');document.querySelector('#load').onclick=async()=>{
+ const btn=document.querySelector('#load');btn.disabled=true;status.textContent='Consultando Overpass…';
+ const south=41.5163635,west=-5.6095288,north=41.5307365,east=-5.5903312;
+ const query='[out:json][timeout:25];(way["highway"]('+south+','+west+','+north+','+east+');way["building"]('+south+','+west+','+north+','+east+'););out geom;';
+ try{
+ const res=await fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query),{signal:AbortSignal.timeout(35000)});if(!res.ok)throw Error('HTTP '+res.status);
+ const data=await res.json();if(!Array.isArray(data.elements))throw Error('Invalid OSM response');
+ geoGroup.clear();let roadCount=0,buildingCount=0;
+ for(const item of data.elements){
+  if(item.type!=='way'||!Array.isArray(item.geometry)||item.geometry.length<2)continue;
+  const coords=item.geometry.map(p=>local([p.lon,p.lat]));if(coords.some(p=>Math.hypot(...p)>2000))continue;
+  if(item.tags?.highway){
+   const points=coords.map(([x,z])=>new THREE.Vector3(x,.55,-z));const curve=new THREE.CatmullRomCurve3(points,false,'centripetal',.2);const m=new THREE.Mesh(new THREE.TubeGeometry(curve,Math.max(4,points.length*2),item.tags.highway==='residential'?3:5,5,false),roadmat);geoGroup.add(m);roadCount++;
+  }else if(item.tags?.building&&coords.length>3){
+   const shape=new THREE.Shape(coords.map(([x,z])=>new THREE.Vector2(x,-z)));const h=Number.parseFloat(item.tags.height)||Math.max(3,(Number(item.tags['building:levels'])||1)*3);
+   const geom=new THREE.ExtrudeGeometry(shape,{depth:Math.min(40,h),bevelEnabled:false});geom.rotateX(-Math.PI/2);const m=new THREE.Mesh(geom,bmat);m.position.y=.7;geoGroup.add(m);buildingCount++;
+  }
+ }
+ status.textContent='OSM cargado: '+roadCount+' viales y '+buildingCount+' edificios. Alturas faltantes: extrusion SIMULADA 3 m por planta. Ninguna puerta o vial interior confirmado.';
+ window.__GAZA_SITE_REAL__={schemaVersion:1,source:'OVERPASS_LIVE',roads:roadCount,buildings:buildingCount,provenance:'PUBLIC_REFERENCE_AND_INFERRED_HEIGHTS',anchorAccuracy:'APPROXIMATE'};
+ }catch(e){status.textContent='OSM no disponible: '+e.message+'. Reintenta; no se sustituye con datos ficticios.'}finally{btn.disabled=false}
+};
+</script>
