@@ -15,4 +15,11 @@ assert(checkInvariants(s));s=transition(s,{type:'NEXT'});assert.equal(s.status,'
 let fail=initialOperations();for(let i=0;i<4;i++)fail=transition(fail,{type:'NEXT'});
 fail=transition(fail,{type:'TEST',test:'MICROBIOLOGÍA',pass:false});assert.equal(fail.status,'HOLD');
 const prev=fail.stage;fail=transition(fail,{type:'NEXT'});assert.equal(fail.stage,prev);
+let post=initialOperations();for(let i=0;i<4;i++)post=transition(post,{type:'NEXT'});for(const test of ['FISICOQUÍMICA','MICROBIOLOGÍA','INHIBIDORES'])post=transition(post,{type:'TEST',test,pass:true});post=transition(post,{type:'NEXT'});post=transition(post,{type:'QUALITY_APPROVAL'});post=transition(post,{type:'NEXT'});post=transition(post,{type:'NEXT'});assert.equal(post.stage,7);
+post=transition(post,{type:'INCIDENT',reason:'Envasadora fuera de parámetros'});
+assert.equal(post.status,'HOLD');assert(checkInvariants(post));
+post=transition(post,{type:'NEXT'});assert.equal(post.stage,7);
+post=transition(post,{type:'RESOLVE'});assert.equal(post.stage,5);assert.equal(post.quality,'PENDING');
+post=transition(post,{type:'NEXT'});assert.equal(post.stage,5);
+post=transition(post,{type:'QUALITY_APPROVAL'});post=transition(post,{type:'NEXT'});assert.equal(post.stage,6);assert(checkInvariants(post));
 console.log('OPERATIONS-THREAD QA PASS: quality gate, mass balance, packing, dispatch, hold');
