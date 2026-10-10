@@ -46,7 +46,8 @@ function createWorld(data){
   const camera=new THREE.PerspectiveCamera(44,1,.1,180);
   const clock=new THREE.Clock();
 
-  scene.add(new THREE.HemisphereLight(0xaebcb4,0x101511,1.25));
+  const hemi=new THREE.HemisphereLight(0xaebcb4,0x101511,1.25);
+  scene.add(hemi);
   const key=new THREE.DirectionalLight(0xffd39c,2.2);
   key.position.set(8,16,8);
   scene.add(key);
@@ -133,7 +134,7 @@ function createWorld(data){
   const textureLoader=new THREE.TextureLoader();
   const portals=[];
   for(const [idx,ch] of chapters.entries()){
-    if(idx===0)continue;
+    if(idx===0||ch.portal===false)continue;
     const group=new THREE.Group();
     const x=ch.world?.lookX||0;
     const z=(ch.world?.lookZ||-10)+1.5;
@@ -199,7 +200,11 @@ function createWorld(data){
   gazaSet.scale.setScalar(.48);
   gazaSet.position.set(4.3,.02,-26.4);
   gazaSet.rotation.y=-.11;
-  gazaSet.userData.worldChapterIndex=chapters.findIndex(ch=>ch.id==='gaza');
+  const gazaIndices=chapters
+    .map((ch,index)=>ch.environment==='gaza'?index:-1)
+    .filter(index=>index>=0);
+  gazaSet.userData.worldChapterStart=gazaIndices.length?Math.min(...gazaIndices):-1;
+  gazaSet.userData.worldChapterEnd=gazaIndices.length?Math.max(...gazaIndices):-1;
   scene.add(gazaSet);
 
   const scaleFigure=new THREE.Group();
@@ -220,7 +225,7 @@ function createWorld(data){
   chapters.forEach((ch,i)=>{
     const b=document.createElement('button');
     b.type='button';
-    b.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><b>'+ch.id.toUpperCase().replaceAll('-',' ')+'</b>';
+    b.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><b>'+String(ch.navLabel||ch.id).toUpperCase().replaceAll('-',' ')+'</b>';
     b.addEventListener('click',()=>{
       const target=document.querySelector('[data-chapter="'+ch.id+'"]');
       target?.scrollIntoView({behavior:'smooth'});
@@ -238,7 +243,7 @@ function createWorld(data){
     const ch=chapters[index];
     activeIndex=index;
     indexButtons.forEach((b,i)=>b.classList.toggle('active',i===index));
-    chapterLabel.textContent=(ch?.id||'ENTRY').toUpperCase().replaceAll('-',' ');
+    chapterLabel.textContent=String(ch?.navLabel||ch?.id||'ENTRY').toUpperCase().replaceAll('-',' ');
 
     if(!ch||index===0){
       panel.classList.remove('visible');
@@ -353,13 +358,30 @@ function createWorld(data){
     ambientPoints.rotation.y=time*.004;
 
     const chapterFloat=renderProgress*(chapters.length-1);
-    const gazaDistance=Math.abs((gazaSet.userData.worldChapterIndex??2)-chapterFloat);
-    gazaSet.visible=gazaDistance<1.35;
+    const gazaStart=gazaSet.userData.worldChapterStart;
+    const gazaEnd=gazaSet.userData.worldChapterEnd;
+    const distanceToGaza=chapterFloat<gazaStart
+      ? gazaStart-chapterFloat
+      : chapterFloat>gazaEnd
+        ? chapterFloat-gazaEnd
+        : 0;
+    const gazaBlend=clamp(1-distanceToGaza/.85,0,1);
+    gazaSet.visible=gazaBlend>.001;
+
     if(gazaSet.visible){
-      gazaSet.userData.update?.(time);
-      const s=.48*(1+Math.max(0,1-gazaDistance)*.025);
-      gazaSet.scale.setScalar(s);
+      try{gazaSet.userData.update?.(time)}catch(err){console.error('GAZA set update',err)}
+      gazaSet.scale.setScalar(.48*(1+gazaBlend*.025));
     }
+
+    const baseBg=new THREE.Color(0x050706);
+    const gazaBg=new THREE.Color(0x172116);
+    scene.background.copy(baseBg).lerp(gazaBg,gazaBlend);
+    scene.fog.color.copy(baseBg).lerp(gazaBg,gazaBlend);
+    scene.fog.density=lerp(.028,.012,gazaBlend);
+    hemi.intensity=lerp(1.25,2.0,gazaBlend);
+    key.intensity=lerp(2.2,4.0,gazaBlend);
+    cool.intensity=lerp(1.0,.55,gazaBlend);
+    renderer.toneMappingExposure=lerp(.82,1.02,gazaBlend);
 
     portals.forEach(portal=>{
       const idx=portal.userData.chapterIndex;
