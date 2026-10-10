@@ -116,10 +116,18 @@ body.gaza3d{background:radial-gradient(circle at 20% 0,rgba(20,60,143,.24),trans
   <div class="webgl-layout">
     <div class="webgl-shell">
       <canvas id="twin3d"></canvas>
+      <div style="position:absolute;left:13px;top:46%;z-index:14;display:grid;gap:7px;max-width:220px" aria-label="Nodos del gemelo digital">
+        <button type="button" id="openFarmNode" style="padding:10px 12px;border-radius:10px;background:#10291fdc;color:#c6f7dc;border:1px solid #44805b;text-align:left;font:800 11px system-ui;cursor:pointer">▣ GRANJA MAESTRA VIRTUAL ↗ <small style="display:block;font-weight:400;color:#afd3bf">Red de captación agregada · Zamora</small></button>
+        <button type="button" id="openLabNode" style="padding:10px 12px;border-radius:10px;background:#0d2035dc;color:#d1e6ff;border:1px solid #426d95;text-align:left;font:800 11px system-ui;cursor:pointer">▣ LABORATORIO DE PLANTA ↗ <small style="display:block;font-weight:400;color:#b4cfe9">Entrar al laboratorio · propuesta interior</small></button>
+      </div>
       <div class="webgl-hud"><span class="hudchip live">● SIMULACIÓN ACTIVA</span><span class="hudchip" id="envCouplingChip">ENTORNO · sincronizando…</span><span class="hudchip">60.000 m² parcela · referencia pública</span><span class="hudchip">≈12.000 m² instalaciones · referencia pública</span><span class="hudchip">ASRS · 9 niveles · Esnova + StorFast</span><span class="hudchip">AGUA · 380.390 m³/a · BOE 2025</span><span class="hudchip">TETRA PAK · proveedor equipo ref. pública</span><span class="hudchip">EXTERIOR · RECONSTRUCCIÓN INFERIDA</span><span class="hudchip">BRANDING · CANVAS HD DESDE SVG LOCAL</span><span class="hudchip">EVIDENCIA · PÚBLICO / INFERIDO / SIMULADO</span><span class="hudchip" id="assetChip">GLB · leyendo manifiesto…</span><span class="hudchip" id="perfChip" hidden>GPU · midiendo…</span></div>
     </div>
     <aside class="twin-side">
       <div class="twin-card"><h3>Capas 3D</h3><p>Activa y aísla subsistemas. Arrastra para orbitar, rueda para zoom y pulsa sobre edificios.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+<button type="button" id="enterMasterFarm" style="padding:11px;border-radius:9px;background:#193c27;border:1px solid #4d9563;color:#fff;font-weight:800;cursor:pointer">↗ ENTRAR GRANJA ZAMORA</button>
+<button type="button" id="enterQualityLab" style="padding:11px;border-radius:9px;background:#163657;border:1px solid #497cb8;color:#fff;font-weight:800;cursor:pointer">↗ ENTRAR LABORATORIO</button></div>
+<div style="font-size:11px;color:#a5bdce;margin-bottom:10px">La granja del campus es un nodo virtual de la red ganadera; el laboratorio pertenece a la planta. Los interiores son propuestas 3D, no planos verificados.</div>
         <div class="layer-list">
           <label><input type="checkbox" data-layer="farm"> Granja legacy (oculta)</label>
           <label><input type="checkbox" data-layer="plant" checked> Planta</label>
@@ -370,6 +378,14 @@ if(canvas){
 
  // Buildings: conceptual geometry totals ~11,800 m² footprint.
  const reception=addBox(groups.plant,'Recepción + calidad',45,12,20,-82,-50,0x2b6aa3,{kind:'SIMULADO',info:'Recepción de cisternas, muestreo y control de calidad.'});
+ // An explicit quality-lab subvolume attached to receiving in the Plant 3D master.
+ // Interior location is PROPOSED and must not be represented as an as-built survey.
+ const labVolume=addBox(groups.plant,'Laboratorio de calidad · acceder',16,13.5,13,-98,-49,0x86b0cb,{
+  kind:'SIMULATED_QUALITY_LAB',info:'Ubicación funcional orientativa junto a recepción. Abrir la vista interna en LABS 3D.'
+ });
+ labVolume.material.transparent=true;labVolume.material.opacity=.76;
+ addLabel(groups.plant,'LABORATORIO → ENTRAR',-98,16,-49,'#ddf6ff',38);
+
  const process=addBox(groups.plant,'Proceso + envasado',110,18,65,-12,-18,0x315d86,{kind:'SIMULADO',info:'Volumen conceptual para proceso, CIP y envasado.'});
  const warehouse=addBox(groups.warehouse,'Almacén automático · 9 niveles',70,28,45,88,-25,0x455b74,{kind:'PÚBLICO + RECONSTRUCCIÓN',info:'9 niveles es dato público; envolvente y posición son reconstrucción funcional, no as-built.'});warehouse.material.transparent=true;warehouse.material.opacity=.17;warehouse.material.depthWrite=false;
  const staging=addBox(groups.plant,'Staging + muelles',58,10,25,91,38,0x875e37,{kind:'SIMULADO',info:'Preparación y expedición. Número/posición de muelles no confirmado.'});
@@ -656,10 +672,19 @@ if(canvas){
    rainPts.visible=!!(weatherLive&&(weatherCodeRain(w.code)||Number(w.precipitation||0)>0));const cloud=Math.max(0,Math.min(100,Number(w.cloudCover||0)));scene.fog.color.set(rainPts.visible?0x111b26:cloud>70?0x0d1620:0x07101a);scene.background.set(rainPts.visible?0x111b26:cloud>70?0x0d1620:0x07101a);sun.intensity=rainPts.visible?1.55:Math.max(1.65,2.8-cloud*.009);updateEnvironmentField(w,weatherLive);
  }
  window.addEventListener('storage',e=>{if(e.key===ENV_KEY)applyEnvironment()});window.addEventListener('gaza-environment',e=>applyEnvironment(e.detail));
+ // Spatial navigation stays inside Mission Control when embedded, with standalone fallback.
+ function openGazaArea(area){
+  if(window.parent!==window)window.parent.postMessage({type:'GAZA_NAVIGATE_V1',target:area},location.origin);
+  else location.href='mission-control.html?view='+encodeURIComponent(area);
+ }
+ document.getElementById('enterMasterFarm')?.addEventListener('click',()=>openGazaArea('farm'));
+ document.getElementById('openFarmNode')?.addEventListener('click',()=>openGazaArea('farm'));
+ document.getElementById('openLabNode')?.addEventListener('click',()=>openGazaArea('labs'));
+ document.getElementById('enterQualityLab')?.addEventListener('click',()=>openGazaArea('labs'));
  const speed=document.getElementById('simSpeed');
  const sel=document.getElementById('twinSelection');
  const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
- renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
+ renderer.domElement.addEventListener('pointerdown',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(clickable,false)[0];if(hit){const o=hit.object;if(o.userData?.kind?.toLowerCase?.().includes('farm')||o.name?.toLowerCase?.().includes('granja')){openGazaArea('farm');return}if(o.name?.toLowerCase?.().includes('laboratorio')){openGazaArea('labs');return}sel.innerHTML='<b>'+o.name+'</b><br><span style="color:#8db2ff">'+(o.userData.kind||'CAPA 3D')+'</span><br>'+(o.userData.info||'Elemento del modelo funcional.')}});
  document.querySelectorAll('[data-layer]').forEach(x=>x.addEventListener('change',()=>{groups[x.dataset.layer].visible=x.checked}));
  document.getElementById('twinPlay').onclick=()=>{running=!running;document.getElementById('twinPlay').textContent=running?'Pausar':'Reanudar'};
  const cameraViews={exterior:{p:[210,125,230],t:[-15,4,8]},plant:{p:[120,85,150],t:[-10,6,-12]},process:{p:[82,54,92],t:[-22,8,-8]},asrs:{p:[158,72,74],t:[88,12,-25]},roads:{p:[-205,70,185],t:[-95,2,92]},hgv:{p:[-175,62,145],t:[-118,0,96]},environment:{p:[175,155,205],t:[0,2,0]},farm:{p:[-120,80,-5],t:[-210,3,-78]},docks:{p:[170,65,120],t:[92,4,40]}};

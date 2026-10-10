@@ -41,3 +41,15 @@ Writes remain disabled until a separately authorized, audited control project ex
 ## Visual acceptance
 Required cameras: exterior, roads/access, process, ASRS, docks, farm-network/territory.
 Check road-following headings, labels, provenance legend, mobile UI, render budget and deterministic QA.
+
+
+## Farm master scene + in-plant laboratory (2026-10-09)
+
+- Campus 3D `apps/gaza/plant-3d.html` is the canonical entry point. Virtual farm node expands to `mission-control.html?view=farm` and the laboratory (physically in the plant campus **only as a proposed location until validated**) expands to `?view=labs`. Never relocate the laboratory to the Zamora virtual farm.
+- The Zamora farm is a **fictional consolidation of the dairy procurement network**. The old site, Zamora castle, cathedral and historical buildings are reference context, not confirmation of a current farm. Treat facade/photo impressions as inferred without surveying their dimensions or orientation.
+- Use `runtime/master-farm-contract.js` for aggregate training parameters. No real GAZA production throughput, number of active farms per period or raw volumes are available; require scenario inputs and label outputs `SIMULATED`.
+- One canonical lot lifecycle: animal/welfare → milking → bulk cold tank → collection → tanker → plant reception → quality lab → production → warehouse → dispatch. Only allow simulated decisions; never infer an authorization to release a real batch.
+- Visual targets: station-level cutaway, named equipment, staff avatars as fictional roles, animals with non-identifying states, tankers following valid route geometry, quality incidents, weather sourced separately, castle/cathedral silhouette with geometry provenance and explicit conceptual status.
+- Scene asset gates: source and license; glTF validation; performant LOD/instancing; procedural fallback; deterministic camera + screenshots; trainable interaction smoke QA. Avoid expensive generative-video services by default.
+- Public weather must not be labelled as on-site instrumentation; synthetic traffic must remain distinct from DGT road events.
+- Do not merge a new feature PR before browser QA is green, including original Plant 3D and Mission Control regressions.
