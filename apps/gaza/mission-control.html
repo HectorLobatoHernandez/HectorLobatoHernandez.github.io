@@ -70,6 +70,22 @@ function renderQualityBridge(){try{const x=JSON.parse(localStorage.getItem('gaza
 window.addEventListener('storage',e=>{if(e.key==='gaza:quality-training:v1')renderQualityBridge()});
 window.addEventListener('message',e=>{if(e.origin!==location.origin)return;if(e.data?.type==='GAZA_QUALITY_STATE_V1'&&e.data?.provenance==='SIMULATED'&&e.data?.lotId==='SIM-LOT-001')renderQualityBridge()});
 renderQualityBridge();
+const opsEl=document.createElement('div');
+opsEl.id='operationsLedgerHUD';
+opsEl.style.cssText='border-top:1px solid #314b66;margin-top:7px;padding-top:7px;cursor:pointer;color:#b7ddff';
+opsEl.title='Abrir Workflow';
+document.getElementById('qualityBridge').appendChild(opsEl);
+opsEl.addEventListener('click',()=>show('workflow'));
+function renderOperationsLedger(){
+ try{
+  const x=JSON.parse(localStorage.getItem('gaza:operations-thread:v1')||'null');
+  if(x?.schemaVersion!==1||x?.provenance!=='SIMULATED'||!Array.isArray(x.departments)){opsEl.textContent='WORKFLOW · iniciar demo interdepartamental ↗';return}
+  opsEl.textContent='WORKFLOW · '+(x.departments[x.stage]?.name||'FINAL')+' · '+x.status+' · '+x.inventory.dispatchedPallets+' palés demo expedidos ↗';
+ }catch{opsEl.textContent='WORKFLOW · registro no disponible'}
+}
+window.addEventListener('storage',e=>{if(e.key==='gaza:operations-thread:v1')renderOperationsLedger()});
+window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data?.type==='GAZA_OPERATIONS_STATE_V1'&&e.data?.provenance==='SIMULATED')renderOperationsLedger()});
+renderOperationsLedger();
 matrixBtn.onclick=()=>{const on=!matrix.classList.contains('on');panes.forEach(p=>p.classList.remove('on'));buttons.forEach(b=>b.classList.remove('on'));matrix.classList.toggle('on',on);matrixBtn.classList.toggle('on',on);if(on)[...matrix.querySelectorAll('iframe')].forEach(loadFrame);else show('plant')};
 addEventListener('keydown',e=>{if(['1','2','3','4','5','6','7','8'].includes(e.key))show(['plant','tower','gis','territory','systems','farm','labs','workflow'][Number(e.key)-1]);if(e.key.toLowerCase()==='m')matrixBtn.click()});
 setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-ES'),1000);
