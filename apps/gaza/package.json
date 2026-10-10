@@ -9,12 +9,15 @@
     "qa:headed": "node ./tests/visual-qa.mjs --headed",
     "qa:ci": "node ./tests/visual-qa.mjs",
     "qa:manifest": "node ./tests/manifest-qa.mjs",
-    "qa:all": "npm run qa:manifest && npm run qa:domain && npm run qa",
-    "qa:domain": "node ./tests/domain-qa.mjs"
+    "qa:all": "npm run qa:manifest && npm run qa:domain && npm run qa && npm run qa:site",
+    "qa:domain": "node ./tests/domain-qa.mjs",
+    "qa:site:core": "node --test ./tests/site-real-core.test.mjs",
+    "qa:site": "npm run qa:site:core && node ./tests/site-real-browser-qa.mjs"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
-    "playwright": "^1.55.0"
+    "playwright": "^1.55.0",
+    "three": "0.180.0"
   },
   "engines": {
     "node": ">=22"
