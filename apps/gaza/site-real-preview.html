@@ -3,7 +3,22 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.m
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
 const origin={lat:41.52355,lon:-5.59993},R=6378137,local=([lon,lat])=>[(lon-origin.lon)*Math.PI/180*R*Math.cos(origin.lat*Math.PI/180),(lat-origin.lat)*Math.PI/180*R];
 const scene=new THREE.Scene();scene.background=new THREE.Color('#112333');const camera=new THREE.PerspectiveCamera(42,1,1,10000);camera.position.set(600,470,640);const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));const viewport=document.querySelector('#viewport');viewport.append(renderer.domElement);const ctrl=new OrbitControls(camera,renderer.domElement);ctrl.target.set(0,0,0);ctrl.enableDamping=true;const ambient=new THREE.HemisphereLight('#e5efff','#334526',2);scene.add(ambient);const sun=new THREE.DirectionalLight('#fff4dc',2);sun.position.set(-180,320,90);scene.add(sun);const ground=new THREE.Mesh(new THREE.PlaneGeometry(2300,2300),new THREE.MeshStandardMaterial({color:'#344b3a'}));ground.rotation.x=-Math.PI/2;scene.add(ground);
-const geoGroup=new THREE.Group();scene.add(geoGroup);const roadmat=new THREE.MeshStandardMaterial({color:'#55616a',roughness:1});const bmat=new THREE.MeshStandardMaterial({color:'#b1b8b7',roughness:.86});
+const geoGroup=new THREE.Group();scene.add(geoGroup);const referenceGroup=new THREE.Group();scene.add(referenceGroup);
+const material=c=>new THREE.MeshStandardMaterial({color:c,roughness:.78,metalness:.12});
+const grey=material('#828e96'),red=material('#bd4149'),white=material('#e4e7e5'),dark=material('#39444c'),glass=new THREE.MeshStandardMaterial({color:'#60869a',transparent:true,opacity:.73});
+function volume(w,h,d,x,y,z,m){const obj=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);obj.position.set(x,y+h/2,z);obj.castShadow=true;obj.receiveShadow=true;referenceGroup.add(obj);return obj}
+function stageFactory(){
+ // Deliberately dimensionless visual study: approximate reference volumes, not surveyed positions.
+ volume(80,15,170,125,0,20,grey);volume(80,12,49,125,15,-40,red);
+ volume(17,7,42,83,0,22,dark);volume(18,3,39,83,3,22,glass);
+ volume(28,5,38,99,0,87,red);
+ for(let i=0;i<42;i++){const z=-70+i*4.1;volume(.13,2.1,.13,64,0,z,white);volume(.13,2.1,.13,170,0,z,white)}
+ for(let i=0;i<4;i++){const x=74+i*30;volume(.13,2.1,.13,x,0,-73,white);volume(.13,2.1,.13,x,0,109,white)}
+ for(const x of [81,103]){const gate=volume(10,.12,.25,x,0,111,white);gate.name='ACCESO PROPUESTO - POSICIÓN NO VALIDADA'}
+}
+stageFactory();
+const evidenceWarning=document.createElement('div');evidenceWarning.style.cssText='position:absolute;right:12px;bottom:12px;padding:10px;background:#081726dc;color:#ffe1a4;border:1px solid #886f3b;border-radius:8px;max-width:390px;font-size:11px';evidenceWarning.textContent='NAVE GRIS/ROJA: reconstrucción visual conceptual sin escala ni posición verificada. OSM: georreferenciado respecto al ancla aproximada. No usar como plano de obra.';viewport.appendChild(evidenceWarning);
+const roadmat=new THREE.MeshStandardMaterial({color:'#55616a',roughness:1});const bmat=new THREE.MeshStandardMaterial({color:'#b1b8b7',roughness:.86});
 function resize(){const w=viewport.clientWidth,h=viewport.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)}new ResizeObserver(resize).observe(viewport);resize();function frame(){ctrl.update();renderer.render(scene,camera);requestAnimationFrame(frame)}frame();
 const status=document.querySelector('#status');document.querySelector('#load').onclick=async()=>{
  const btn=document.querySelector('#load');btn.disabled=true;status.textContent='Consultando Overpass…';
