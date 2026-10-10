@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b120e">
+  <meta name="description" content="GAZA World · Zamora, Duero, plant, fields and farm interactive 3D concept environment.">
+  <title>GAZA World · Interactive 3D</title>
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./gaza.css?v=1">
+</head>
+<body>
+  <canvas id="gazaCanvas" aria-hidden="true"></canvas>
+
+  <header class="gz-top">
+    <a href="../" class="gz-back">← HL WORLD</a>
+    <div class="gz-title">
+      <b>GAZA WORLD</b>
+      <span>ZAMORA · CONCEPTUAL SPATIAL EXPERIENCE</span>
+    </div>
+    <a href="../../apps/gaza/mission-control.html?guide=1" class="gz-live">OPEN OPERATIONS ↗</a>
+  </header>
+
+  <aside class="gz-legend">
+    <p>03 / GAZA</p>
+    <h1>Zamora.<br>Territory.<br>Operations.</h1>
+    <small>Conceptual 3D world. Plant/farm placement is not yet georeferenced or as-built.</small>
+  </aside>
+
+  <nav class="gz-hotspots" id="gazaHotspots" aria-label="GAZA world locations"></nav>
+
+  <div class="gz-mode">
+    <b>DRAG</b><span>orbit</span>
+    <b>WHEEL</b><span>zoom</span>
+    <b>RIGHT DRAG</b><span>pan</span>
+  </div>
+
+  <div class="gz-loading" id="gazaLoading">
+    <span>GAZA / ZAMORA</span>
+    <b>Building 3D territory…</b>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="./gaza.js?v=1"></script>
+</body>
+</html>
