@@ -55,6 +55,9 @@ function createWorld(data){
   cool.position.set(-10,7,-12);
   scene.add(cool);
 
+  const baseBgColor=new THREE.Color(0x050706);
+  const gazaBgColor=new THREE.Color(0x172116);
+
   const terrainGeom=new THREE.PlaneGeometry(110,110,64,64);
   const pos=terrainGeom.attributes.position;
   for(let i=0;i<pos.count;i++){
@@ -250,6 +253,7 @@ function createWorld(data){
       return;
     }
 
+    panel.classList.toggle('project-panel--gaza',ch.environment==='gaza');
     panelKicker.textContent=ch.kicker||'';
     panelTitle.textContent=ch.title||'';
     panelSubtitle.textContent=ch.subtitle||'';
@@ -373,10 +377,8 @@ function createWorld(data){
       gazaSet.scale.setScalar(.48*(1+gazaBlend*.025));
     }
 
-    const baseBg=new THREE.Color(0x050706);
-    const gazaBg=new THREE.Color(0x172116);
-    scene.background.copy(baseBg).lerp(gazaBg,gazaBlend);
-    scene.fog.color.copy(baseBg).lerp(gazaBg,gazaBlend);
+    scene.background.copy(baseBgColor).lerp(gazaBgColor,gazaBlend);
+    scene.fog.color.copy(baseBgColor).lerp(gazaBgColor,gazaBlend);
     scene.fog.density=lerp(.028,.012,gazaBlend);
     hemi.intensity=lerp(1.25,2.0,gazaBlend);
     key.intensity=lerp(2.2,4.0,gazaBlend);
