@@ -258,7 +258,7 @@ export function createGazaWorld(THREE,{detail='world'}={}){
         a.obj.position.y=Math.abs(Math.sin(time*1.3+a.phase))*.008;
       }
     }
-    water.material.opacity=.78+Math.sin(time*.45)*.035;
+    river.material.opacity=.78+Math.sin(time*.45)*.035;
   };
 
   root.userData.hotspots=hotspots;
