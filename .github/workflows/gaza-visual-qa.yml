@@ -54,7 +54,7 @@ jobs:
           node ./tests/operations-thread-qa.mjs
           node --check ./runtime/public-gis-overlay.js
           python -m py_compile ../../tools/blender/GAZA_BUILD_WORKER_GLBS.py
-          python -m unittest discover -s tests -p 'site-real-test.py'
+          python -m unittest discover -s tests -p 'test_site_real.py'
           npm run qa:manifest
           npm run qa:domain
       - name: Install Chromium
