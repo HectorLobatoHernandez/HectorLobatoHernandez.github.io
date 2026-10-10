@@ -8,7 +8,7 @@ import {initialOperations,transition,departments,checkInvariants} from './runtim
 const KEY='gaza:operations-thread:v1';
 let state=initialOperations();
 try{const cached=JSON.parse(localStorage.getItem(KEY)||'null');if(cached?.schemaVersion===1&&cached?.provenance==='SIMULATED'&&checkInvariants(cached))state=cached}catch{}
-const dispatch=a=>{const next=transition(state,a);if(!checkInvariants(next)){console.error('Invariante del lote incumplida');return}state=next;render();try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}};
+const dispatch=a=>{const next=transition(state,a);if(!checkInvariants(next)){console.error('Invariante del lote incumplida');return}state=next;render();try{localStorage.setItem(KEY,JSON.stringify(state))}catch{};window.parent!==window&&window.parent.postMessage({type:'GAZA_OPERATIONS_STATE_V1',provenance:'SIMULATED',revision:state.revision},location.origin)};
 const doc=id=>document.getElementById(id);
 function render(){
  doc('flow').replaceChildren(...departments.map((name,i)=>{const d=document.createElement('div');d.className='step '+(state.departments[i].status==='DONE'?'done':state.stage===i?(state.status==='HOLD'?'hold':'active'):'');d.innerHTML='<strong>'+String(i+1).padStart(2,'0')+'</strong><p>'+name+'</p><small>'+state.departments[i].status+'</small>';return d}));
