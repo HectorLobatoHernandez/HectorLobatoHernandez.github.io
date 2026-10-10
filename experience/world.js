@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { createGazaWorld } from './gaza/gaza-scene.js';
 
 const DATA_URL='./data/world.json';
 const canvas=document.getElementById('worldCanvas');
@@ -192,6 +193,15 @@ function createWorld(data){
     portals.push(group);
   }
 
+  // GAZA / Zamora procedural world set-piece.
+  // Conceptual spatial composition only: not georeferenced and not as-built.
+  const gazaSet=createGazaWorld(THREE,{detail:'world'});
+  gazaSet.scale.setScalar(.48);
+  gazaSet.position.set(4.3,.02,-26.4);
+  gazaSet.rotation.y=-.11;
+  gazaSet.userData.worldChapterIndex=chapters.findIndex(ch=>ch.id==='gaza');
+  scene.add(gazaSet);
+
   const scaleFigure=new THREE.Group();
   const figureMat=new THREE.MeshStandardMaterial({
     color:0xd8ddd8,
@@ -251,10 +261,17 @@ function createWorld(data){
     }
 
     panelActions.innerHTML='';
+    if(ch.islandHref){
+      const a=document.createElement('a');
+      a.href=ch.islandHref;
+      a.className='world-btn primary';
+      a.textContent='ENTER GAZA WORLD ↗';
+      panelActions.appendChild(a);
+    }
     if(ch.caseHref){
       const a=document.createElement('a');
       a.href=ch.caseHref;
-      a.className='world-btn primary';
+      a.className='world-btn'+(ch.islandHref?'':' primary');
       a.textContent='OPEN CASE STUDY ↗';
       panelActions.appendChild(a);
     }
@@ -334,6 +351,15 @@ function createWorld(data){
     scaleFigure.rotation.y=Math.sin(time*.3)*.08;
 
     ambientPoints.rotation.y=time*.004;
+
+    const chapterFloat=renderProgress*(chapters.length-1);
+    const gazaDistance=Math.abs((gazaSet.userData.worldChapterIndex??2)-chapterFloat);
+    gazaSet.visible=gazaDistance<1.35;
+    if(gazaSet.visible){
+      gazaSet.userData.update?.(time);
+      const s=.48*(1+Math.max(0,1-gazaDistance)*.025);
+      gazaSet.scale.setScalar(s);
+    }
 
     portals.forEach(portal=>{
       const idx=portal.userData.chapterIndex;
