@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "title": "HL Portfolio World",
-  "status": "PROTOTYPE_V0_1",
+  "status": "PROTOTYPE_V0_2_GAZA_WORLD",
   "note": "Isolated experience prototype. The stable dossier at /index.html is not modified.",
   "chapters": [
     {
@@ -47,19 +47,20 @@
       "order": 2,
       "kicker": "02 / OPERATIONS INTELLIGENCE",
       "title": "GAZA OPERATIONS",
-      "subtitle": "Plant · GIS · Logistics · Simulation",
-      "body": "Un demostrador operativo que une planta, expediciones, GIS, rutas, granjas y observabilidad en una interfaz común.",
+      "subtitle": "Zamora · Duero · Plant · Fields · Farm",
+      "body": "Entrada territorial a GAZA a través de una Zamora histórica reinterpretada en 3D: muralla, iglesias, Duero, campos, viñedos, planta industrial y granja. La escena es conceptual hasta georreferenciar la implantación real.",
       "visual": "../assets/visuals/gaza-operations-system.svg",
       "caseHref": "../projects/gaza-logistics-ia.html",
       "liveHref": "../apps/gaza/mission-control.html?guide=1",
       "world": {
-        "x": 2.2,
-        "y": 1.75,
-        "z": -18,
-        "lookX": 3.1,
-        "lookY": 1.8,
-        "lookZ": -25
-      }
+        "x": 1.2,
+        "y": 2.15,
+        "z": -16.5,
+        "lookX": 3.7,
+        "lookY": 1.4,
+        "lookZ": -27.5
+      },
+      "islandHref": "./gaza/"
     },
     {
       "id": "club-del-mar",
