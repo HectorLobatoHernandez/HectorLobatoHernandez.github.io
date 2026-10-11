@@ -375,14 +375,30 @@ function createWorld(data){
     const figureT=clamp(renderProgress+.045,0,1);
     const fp=curve.getPointAt(figureT);
     scaleFigure.position.set(fp.x,0,fp.z);
+
     const ahead=curve.getPointAt(clamp(figureT+.006,0,1));
-    scaleFigure.rotation.y=Math.atan2(ahead.x-fp.x,ahead.z-fp.z);
+    const tangentX=ahead.x-fp.x;
+    const tangentZ=ahead.z-fp.z;
+    const forwardYaw=Math.atan2(tangentX,tangentZ);
+
     const scrollVelocity=Math.abs(targetProgress-renderProgress);
     const recentlyScrolled=(performance.now()-lastScrollAt)<190;
     const moving=recentlyScrolled||scrollVelocity>.00022;
     const walkDirection=moving?scrollDirection:0;
     const walkSpeed=.75+Math.min(1.65,scrollVelocity*36+scrollImpulse*.9);
-    scaleFigure.userData.update?.(time,walkDirection,walkSpeed);
+
+    // When the user reverses the dossier, the avatar physically turns around and
+    // walks forward in the opposite direction instead of moonwalking backwards.
+    const targetYaw=scrollDirection>=0?forwardYaw:forwardYaw+Math.PI;
+    const yawDelta=Math.atan2(
+      Math.sin(targetYaw-scaleFigure.rotation.y),
+      Math.cos(targetYaw-scaleFigure.rotation.y)
+    );
+    scaleFigure.rotation.y+=yawDelta*Math.min(1,dt*9.0);
+
+    // Gait always runs as a forward walk once the body is facing the travel direction.
+    // direction=1 keeps feet/knees natural in both scroll directions.
+    scaleFigure.userData.update?.(time,moving?1:0,walkSpeed);
     scrollImpulse*=.88;
 
     ambientPoints.rotation.y=time*.004;
