@@ -1,6 +1,6 @@
 export function createHLAvatar(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_V03';
+  root.name='HL_AVATAR_V04';
   root.userData.reference='USER_SUPPLIED_PHOTOS_2026_10_11';
   root.userData.style='STYLIZED_LOW_POLY_REALTIME';
 
@@ -46,19 +46,32 @@ export function createHLAvatar(THREE){
   };
 
   // Core body
-  const hips=box(.40,.19,.24,mats.black2);hips.position.y=.91;root.add(hips);
+  const hips=new THREE.Mesh(new THREE.CylinderGeometry(.205,.225,.20,10),mats.black2);
+  hips.scale.z=.72;
+  hips.position.y=.91;
+  hips.castShadow=true;
+  root.add(hips);
 
   const torsoPivot=new THREE.Group();
   torsoPivot.position.y=1.34;
   root.add(torsoPivot);
 
-  const torso=box(.50,.66,.27,mats.black);
+  // Tapered torso gives a much more human silhouette than the old rectangular block.
+  const torso=new THREE.Mesh(new THREE.CylinderGeometry(.26,.205,.66,12),mats.black);
+  torso.scale.z=.63;
   torso.position.y=.02;
+  torso.castShadow=true;
+  torso.receiveShadow=true;
   torsoPivot.add(torso);
 
-  // Short-sleeve black T-shirt silhouette. Keep shoulders connected to torso.
-  const shoulderL=box(.16,.22,.28,mats.black);shoulderL.position.set(-.31,.22,0);torsoPivot.add(shoulderL);
-  const shoulderR=box(.16,.22,.28,mats.black);shoulderR.position.set(.31,.22,0);torsoPivot.add(shoulderR);
+  // Rounded short sleeves bridge the torso into the upper arms.
+  const shoulderL=new THREE.Mesh(new THREE.SphereGeometry(.13,12,10),mats.black);
+  shoulderL.scale.set(1.08,.76,.82);
+  shoulderL.position.set(-.285,.22,0);
+  torsoPivot.add(shoulderL);
+  const shoulderR=shoulderL.clone();
+  shoulderR.position.x=.285;
+  torsoPivot.add(shoulderR);
 
   // Carhartt chest patch requested by the user.
   const makeCarharttPatch=()=>{
@@ -78,7 +91,7 @@ export function createHLAvatar(THREE){
     new THREE.PlaneGeometry(.14,.095),
     new THREE.MeshBasicMaterial({map:makeCarharttPatch(),transparent:false,toneMapped:false})
   );
-  chestPatch.position.set(.135,.14,.139);
+  chestPatch.position.set(.125,.12,.171);
   torsoPivot.add(chestPatch);
 
   // Neck + head
@@ -234,9 +247,9 @@ export function createHLAvatar(THREE){
   const arms=[];
   for(const sx of [-1,1]){
     const shoulder=new THREE.Group();
-    shoulder.position.set(sx*.31,1.54,0);
+    shoulder.position.set(sx*.305,1.52,0);
 
-    const upper=cyl(.078,.067,.36,mats.black,12);
+    const upper=cyl(.082,.068,.35,mats.black,12);
     upper.position.y=-.16;
     shoulder.add(upper);
 
@@ -296,22 +309,40 @@ export function createHLAvatar(THREE){
   const legs=[];
   const makeSneaker=()=>{
     const g=new THREE.Group();
-    const sole=box(.205,.06,.34,mats.shoeSole);
-    sole.position.y=.012;
+
+    // Rounded, oversized sole inspired by modern knit sneakers.
+    const sole=sphere(.095,mats.shoeSole,14);
+    sole.scale.set(1.18,.42,2.05);
+    sole.position.set(0,.025,.025);
     g.add(sole);
 
-    const mid=box(.18,.072,.27,mats.shoe);
-    mid.position.set(0,.072,-.015);
-    g.add(mid);
+    const upper=sphere(.082,mats.shoe,14);
+    upper.scale.set(1.02,.72,1.55);
+    upper.position.set(0,.088,.025);
+    g.add(upper);
 
-    const toe=sphere(.075,mats.shoe,12);
-    toe.scale.set(1.28,.62,1.34);
-    toe.position.set(0,.08,.105);
+    const heel=sphere(.072,mats.shoe,12);
+    heel.scale.set(.96,1.05,.72);
+    heel.position.set(0,.10,-.105);
+    g.add(heel);
+
+    const toe=sphere(.074,mats.shoe,12);
+    toe.scale.set(1.06,.58,1.18);
+    toe.position.set(0,.075,.135);
     g.add(toe);
 
-    const heel=box(.16,.115,.11,mats.shoe);
-    heel.position.set(0,.10,-.115);
-    g.add(heel);
+    // Ribbed sole cues.
+    for(let i=0;i<6;i++){
+      const rib=new THREE.Mesh(
+        new THREE.TorusGeometry(.085+i*.004,.008,6,14,Math.PI),
+        mats.shoeSole
+      );
+      rib.rotation.x=Math.PI/2;
+      rib.rotation.z=Math.PI/2;
+      rib.position.set(0,.01,-.095+i*.045);
+      rib.scale.set(1.04,.62,1);
+      g.add(rib);
+    }
 
     return g;
   };
@@ -333,7 +364,7 @@ export function createHLAvatar(THREE){
     knee.add(shin);
 
     const sneaker=makeSneaker();
-    sneaker.position.set(0,-.51,.075);
+    sneaker.position.set(0,-.535,.075);
     knee.add(sneaker);
 
     root.add(hip);
@@ -375,6 +406,8 @@ export function createHLAvatar(THREE){
     const bounce=moving?Math.abs(Math.sin(phase))*0.022:Math.sin(time*1.8)*.006;
     root.position.y=bounce;
     torsoPivot.position.y=THREE.MathUtils.lerp(torsoPivot.position.y,0,.16);
+    torsoPivot.scale.x=THREE.MathUtils.lerp(torsoPivot.scale.x,1,.12);
+    torsoPivot.scale.y=THREE.MathUtils.lerp(torsoPivot.scale.y,1,.12);
 
     // Eyes subtly scan while idle and focus more centrally while walking.
     const eyeLookX=moving?0:Math.sin(time*.7)*.008;
