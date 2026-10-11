@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {AREAS,EQUIPMENT,pointOnRoute,sampleRoute,projectLab} from '../runtime/labs/layout.mjs';
+import {TESTS} from '../runtime/processes/catalog.mjs';
+import {initialState,reduce,planReady} from '../runtime/processes/ledger.mjs';
+const id='SIM-BOV-001';
+function running(){let s=initialState();s=reduce(s,{type:'AUTO',enabled:true});for(let i=0;i<300;i++){s=reduce(s,{type:'TICK',seconds:1});if(s.lots[id].tests.some(t=>t.testId==='RAW.INHIBITORS'&&t.status==='RUNNING'))return s}throw Error('No se alcanzó el ensayo')}
+test('seven stable stations and unique equipment IDs',()=>{assert.deepEqual(AREAS.map(a=>a.station),[0,1,2,3,4,5,6]);assert.equal(new Set(EQUIPMENT.map(e=>e.id)).size,17);assert(AREAS.every(a=>a.provenance==='SIMULATED_LAYOUT'))});
+test('every catalogue assay maps to exactly one correct instrument',()=>{for(const t of TESTS){const list=EQUIPMENT.filter(e=>e.testId===t.id);assert.equal(list.length,1);assert.equal(list[0].resource,t.resource);assert.equal(list[0].station,t.station)}});
+test('rooms have no overlapping floor rectangles',()=>{for(let i=0;i<AREAS.length;i++)for(let j=i+1;j<AREAS.length;j++){const a=AREAS[i],b=AREAS[j];assert(Math.abs(a.x-b.x)>=(a.w+b.w)/2||Math.abs(a.z-b.z)>=(a.d+b.d)/2)}});
+test('routes enter via central corridor and room doorway',()=>{for(let i=1;i<7;i++){const r=sampleRoute(i);assert.deepEqual(r[1],[-12,0]);assert.deepEqual(r[2],[AREAS[i].x,0]);assert.equal(r[3][0],AREAS[i].x);assert.deepEqual(pointOnRoute(r,1),r.at(-1))}});
+test('route interpolation clamps ends and rejects malformed data',()=>{assert.deepEqual(pointOnRoute([[0,0],[10,0]],.5),[5,0]);assert.deepEqual(pointOnRoute([[0,0],[10,0]],2),[10,0]);assert.throws(()=>pointOnRoute([[NaN,0],[1,2]],.5));assert.throws(()=>sampleRoute(8))});
+test('no scenario means no invented samples or active instruments',()=>{const v=projectLab(null,id);assert.equal(v.ready,false);assert.equal(v.samples.length,0);assert.equal(v.tokens.length,0);assert(!v.instruments.some(e=>e.status==='RUNNING'))});
+test('read-only projection does not alter state, quantities, gates or events',()=>{const s=running(),before=JSON.stringify(s);projectLab(s,id);assert.equal(JSON.stringify(s),before)});
+test('vial moves with simulated test time, not render calls',()=>{let s=running();const a=projectLab(s,id).tokens.find(t=>t.id==='RAW.INHIBITORS');assert(a);for(let i=0;i<100;i++)assert.deepEqual(projectLab(s,id).tokens.find(t=>t.id===a.id).position,a.position);s=reduce(s,{type:'TICK',seconds:2});const b=projectLab(s,id).tokens.find(t=>t.id===a.id);assert.notDeepEqual(a.position,b.position);assert.equal(b.sampleId,a.sampleId)});
+test('selected lot and resource owner are distinct',()=>{const s=running(),other=projectLab(s,'SIM-OVI-001').instruments.find(e=>e.id==='LAB.INHIBITORS');assert.equal(other.owner,id);assert.equal(other.status,'BUSY_OTHER_LOT')});
+test('invalid resource has explicit unavailable indicator',()=>{let s=running();s=reduce(s,{type:'EQUIPMENT',resource:'inhibitor-reader',valid:false,reason:'Fallo de verificación SIM'});const v=projectLab(s,id);assert.equal(v.instruments.find(e=>e.id==='LAB.INHIBITORS').status,'UNAVAILABLE');assert.equal(v.tokens.find(t=>t.id==='RAW.INHIBITORS')?.eligible,false)});
+test('hold is visible but does not fabricate decision or erase samples',()=>{let s=running(),n=Object.keys(s.lots[id].samples).length;s=reduce(s,{type:'INCIDENT',lotId:id,reason:'Incidencia de prueba'});const v=projectLab(s,id);assert(v.held);assert.equal(v.samples.length,n);assert.notEqual(v.gates.dispatch,'APPROVED')});
+test('original farm rendering code is byte-for-byte preserved',()=>{const s=fs.readFileSync(new URL('../farm-labs.html',import.meta.url),'utf8');const original=s.slice(s.indexOf(" const THREE=await import('three');"),s.indexOf('\n }\n}catch(err)')+1);assert.equal(createHash('sha256').update(original).digest('hex'),'c4c8985aa25d5573da7a96eb1301b6ae5a51177a29c3e7fcd9bd3a2fdf1e7e05')});
