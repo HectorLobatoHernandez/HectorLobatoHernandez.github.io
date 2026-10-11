@@ -29,7 +29,7 @@ jobs:
           node --check runtime/farm/realism-world.mjs
           node --check runtime/farm/herd-panel.mjs
           node --check runtime/farm/viewer.mjs
-          node --test tests/farm-realism.test.mjs tests/farm-zamora.test.mjs tests/farm-refinement.test.mjs tests/process-ledger.test.mjs
+          node --test tests/farm-realism.test.mjs tests/farm-polish.test.mjs tests/farm-zamora.test.mjs tests/farm-refinement.test.mjs tests/process-ledger.test.mjs
       - run: npx playwright install --with-deps chromium
       - name: Start application
         run: |

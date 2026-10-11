@@ -1,7 +1,7 @@
 import * as T from 'three';
 function mergeGeometries(parts){
  const result=new T.BufferGeometry();
- for(const name of ['position','normal','uv','color']){
+ for(const name of ['position','normal','uv','color','farmCoat']){
   const size=parts[0].attributes[name].itemSize,total=parts.reduce((n,g)=>n+g.attributes[name].array.length,0),data=new Float32Array(total);let offset=0;
   for(const g of parts){if(g.attributes[name].itemSize!==size)throw Error('Atributos incompatibles');data.set(g.attributes[name].array,offset);offset+=g.attributes[name].array.length;}
   result.setAttribute(name,new T.BufferAttribute(data,size));
@@ -16,7 +16,7 @@ export function geometryKit(){
   let g=kind==='box'?new T.BoxGeometry(1,1,1):kind==='cylinder'?new T.CylinderGeometry(1,1,1,10):new T.SphereGeometry(1,kind==='fine'?24:kind==='wool'?6:14,kind==='fine'?14:kind==='wool'?4:9);
   const a=g.attributes.position,colors=[],base=new T.Color(color),dark=new T.Color(C.black),variation=new T.Color();
   for(let i=0;i<a.count;i++){const x=a.getX(i),y=a.getY(i),z=a.getZ(i),pattern=Math.sin(x*7+z*3)*.6+Math.cos(z*9-y*4)*.5+Math.sin(y*8+x*3)*.4;variation.copy(coat&&pattern>.27?dark:base);variation.multiplyScalar(.95+.05*(y+1)/2);colors.push(variation.r,variation.g,variation.b);}
-  g.setAttribute('color',new T.Float32BufferAttribute(colors,3));const m=new T.Matrix4().compose(new T.Vector3(...pos),new T.Quaternion().setFromEuler(new T.Euler(...rotation)),new T.Vector3(...scale));g.applyMatrix4(m);list.push(g);return g;
+  g.setAttribute('color',new T.Float32BufferAttribute(colors,3));g.setAttribute('farmCoat',new T.Float32BufferAttribute(new Float32Array(a.count).fill(coat?1:0),1));const m=new T.Matrix4().compose(new T.Vector3(...pos),new T.Quaternion().setFromEuler(new T.Euler(...rotation)),new T.Vector3(...scale));g.applyMatrix4(m);list.push(g);return g;
  }
  return {add,finish(){const g=mergeGeometries(list,false);list.forEach(x=>x.dispose());g.computeBoundingSphere();return g}};
 }
@@ -26,24 +26,29 @@ export function createAnimalParts(species){
  k.add('fine',[0,ewe?.80:1.10,0],[ewe?.66:1.06,ewe?.34:.48,ewe?.29:.38],coat,[0,0,0],!ewe);
  k.add('sphere',[-.68,ewe?.78:1.13,0],[ewe?.18:.36,ewe?.27:.40,ewe?.25:.36],coat,[0,0,0],!ewe);
  k.add('sphere',[ewe?.44:.68,ewe?.88:1.13,0],[ewe?.25:.40,ewe?.31:.45,ewe?.26:.34],coat,[0,0,ewe?-.12:-.22],!ewe);
- k.add('sphere',[ewe?-.3:-.56,ewe?.44:.62,0],[ewe?.18:.28,ewe?.14:.19,ewe?.16:.22],C.pink);
- for(const x of ewe?[-.30]:[-.46,-.66])for(const z of [-.1,.1])k.add('cylinder',[x,ewe?.32:.42,z],[.028,.10,.028],C.pink);
- if(ewe){for(let i=0;i<36;i++){const angle=i*2.399,px=Math.sin(i*1.27)*.58,py=Math.cos(angle)*.27,pz=Math.sin(angle)*.28;k.add('wool',[px,.83+py,pz],[.17,.145,.125],coat);}}
+ k.add('sphere',[ewe?-.3:-.56,ewe?.44:.62,0],[ewe?.105:.22,ewe?.085:.145,ewe?.11:.20],C.pink);
+ for(const x of ewe?[-.30]:[-.46,-.66])for(const z of [-.1,.1])k.add('cylinder',[x,ewe?.32:.42,z],[.022,.08,.022],C.pink);
+ if(ewe){for(let i=0;i<72;i++){const angle=i*2.399,y=1-2*(i+.5)/72,r=Math.sqrt(1-y*y),x=Math.cos(angle)*r,z=Math.sin(angle)*r;k.add('wool',[x*.63,.80+y*.32,z*.28],[.084,.074,.077],coat);}}
  const body=k.finish(),h=geometryKit();
  h.add('fine',[.08,-.05,0],[ewe?.28:.36,ewe?.17:.21,ewe?.16:.18],ewe?C.ivory:C.black,[0,0,-.22]);
  h.add('sphere',[ewe?.25:.36,-.22,0],[ewe?.17:.21,.105,ewe?.115:.16],ewe?C.ivory:C.pink);
  h.add('sphere',[0,.08,0],[.18,.20,.155],C.ivory);
  for(const side of [-1,1]){h.add('sphere',[-.08,.13,side*(ewe?.23:.25)],[ewe?.18:.19,.052,.085],coat,[side*.15,side*-.2,0]);h.add('box',[-.08,.06,side*(ewe?.31:.35)],[.105,.11,.025],C.tag);h.add('sphere',[.10,0,side*.155],[.043,.039,.025],C.eye);h.add('sphere',[.29,-.24,side*.115],[.025,.018,.011],C.black);}
  const head=h.finish(),u=geometryKit(),l=geometryKit(),hoofY=ewe?-.29:-.39;
- u.add('sphere',[0,-.16,0],[ewe?.065:.085,ewe?.22:.25,ewe?.067:.087],coat);u.add('sphere',[0,ewe?-.31:-.38,0],[.075,.08,.075],coat);
+ u.add('sphere',[0,-.16,0],[ewe?.046:.064,ewe?.19:.235,ewe?.05:.069],coat);u.add('sphere',[0,ewe?-.31:-.38,0],[.044,.053,.044],coat);
  l.add('cylinder',[.01,hoofY/2,0],[.035,Math.abs(hoofY),.037],coat);
- for(const side of [-1,1])l.add('box',[.05,hoofY-.03,side*.033],[ewe?.14:.18,.09,.058],C.hoof);
- const upper=u.finish(),lower=l.finish(),t=geometryKit();t.add('cylinder',[0,-.24,0],[.035,.48,.035],coat);t.add('sphere',[0,-.49,0],[.072,.13,.065],ewe?coat:C.black);
+ for(const side of [-1,1])l.add('sphere',[.05,hoofY-.03,side*.027],[ewe?.064:.081,.047,.028],C.hoof);
+ const upper=u.finish(),lower=l.finish(),t=geometryKit();t.add('cylinder',[0,-.30,0],[.023,.60,.023],coat);t.add('sphere',[0,-.62,0],[.044,.11,.038],ewe?coat:C.black);
  return {body,head,upper,lower,tail:t.finish(),headAnchor:[ewe?.65:1.00,ewe?1.10:1.45,0],hipHeight:ewe?.68:.86,legLength:ewe?.30:.39,ewe};
 }
-/** Batch every articulated part across a herd: 11 draws/species, not dozens per animal. */
+/** Batch every articulated part across a herd: 5 batches/species, not dozens per animal. */
 export function createInstancedHerd(parent,species,count){
  const parts=createAnimalParts(species),material=new T.MeshStandardMaterial({vertexColors:true,roughness:.91}),meshes={},g=new T.Group();g.name='HERD_REALISM_'+species;parent.add(g);
+ // Crisp procedural coat edge at fragment resolution; anatomical skin/wool colours remain untouched.
+ material.onBeforeCompile=shader=>{
+  shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float farmCoat; varying float vFarmCoat;').replace('#include <begin_vertex>','#include <begin_vertex>\nvFarmCoat = farmCoat;');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nvarying float vFarmCoat;').replace('#include <color_fragment>','#include <color_fragment>\nif(vFarmCoat > 0.5){float patch = smoothstep(0.38,0.41,diffuseColor.r);diffuseColor.rgb=mix(vec3(0.023,0.026,0.029),vec3(0.81,0.79,0.74),patch);}');
+ };material.customProgramCacheKey=()=> 'gaza-farm-coat-v2';
  const geometryNames=['body','head','tail','upper','lower'];
  for(const key of geometryNames){const n=['upper','lower'].includes(key)?count*4:count;const mesh=new T.InstancedMesh(parts[key],material,Math.max(1,n));mesh.count=n;mesh.instanceMatrix.setUsage(T.DynamicDrawUsage);mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;g.add(mesh);meshes[key]=mesh;}
  const root=new T.Matrix4(),local=new T.Matrix4(),result=new T.Matrix4(),pos=new T.Vector3(),quat=new T.Quaternion(),scale=new T.Vector3(1,1,1),euler=new T.Euler();
@@ -56,7 +61,7 @@ export function createInstancedHerd(parent,species,count){
    put('upper',i*4+j,[x,parts.hipHeight,z],[0,0,ang]);
   }
  }
- return {g,meshes,parts,setAnimal,finish(){for(const m of Object.values(meshes))m.instanceMatrix.needsUpdate=true},dispose(){g.removeFromParent();Object.values(meshes).forEach(m=>m.dispose());geometryNames.forEach(k=>parts[k].dispose());material.dispose()}};
+ return {g,meshes,parts,setAnimal,finish(){for(const m of Object.values(meshes)){m.instanceMatrix.needsUpdate=true;m.boundingSphere=null;m.boundingBox=null}},dispose(){g.removeFromParent();Object.values(meshes).forEach(m=>m.dispose());geometryNames.forEach(k=>parts[k].dispose());material.dispose()}};
 }
 export function createUniformWorker(role='FARM'){
  const coat=/VET/.test(role)?0xe1e8e0:/CLEAN/.test(role)?0x5e9c9c:0x294c72,vest=/DRIVER/.test(role)?0xd4b747:0xb9cbd4;
