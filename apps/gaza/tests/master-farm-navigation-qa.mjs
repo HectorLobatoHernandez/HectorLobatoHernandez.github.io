@@ -28,9 +28,11 @@ try{
  await page.locator('[data-view="workflow"]').click();
  await page.locator('[data-pane="workflow"].on').waitFor({timeout:10000});
  const flow=page.frameLocator('iframe[title="GAZA End-to-End Workflow"]');
- await flow.locator('#flow .step').first().waitFor({timeout:15000});
- assert.equal(await flow.locator('#flow .step').count(),10);
- await flow.locator('#next').click();
- assert.match(await flow.locator('#state').textContent(),/FASE 2\/10/);
+ await flow.locator('[data-action="init"]').click();
+ await flow.locator('.rail span').first().waitFor({timeout:15000});
+ assert.equal(await flow.locator('.rail span').count(),14);
+ assert.equal(await flow.locator('.dpr').getAttribute('data-stage'),'0');
+ await flow.locator('[data-action="task"]').click();
+ assert.equal(await flow.locator('.dpr').getAttribute('data-stage'),'0','Starting a task is not completing it');
  console.log('GAZA spatial navigation, virtual aggregation and workflow QA passed');
 }finally{await browser.close();}

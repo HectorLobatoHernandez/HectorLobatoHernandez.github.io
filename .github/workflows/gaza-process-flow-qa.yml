@@ -1,0 +1,50 @@
+name: GAZA connected process QA
+on:
+  pull_request:
+    paths: ['apps/gaza/**', '.github/workflows/gaza-process-flow-qa.yml']
+  push:
+    branches: [main]
+    paths: ['apps/gaza/**', '.github/workflows/gaza-process-flow-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gaza-process-flow-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  process-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/gaza
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - run: npm install --no-audit --no-fund
+      - name: Domain invariants and legacy compatibility
+        run: |
+          node --test tests/dairy-process-core.test.mjs
+          node tests/operations-thread-qa.mjs
+          node --check tests/dairy-process-browser-qa.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Start application
+        run: |
+          npm run dev >/tmp/gaza-process-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/operations-thread.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/gaza-process-http.log
+          exit 1
+      - name: Five surfaces, 3D, decisions and traceability
+        run: node tests/dairy-process-browser-qa.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-connected-process-${{ github.run_number }}
+          path: apps/gaza/.qa/process-flow/
+          include-hidden-files: true
+          retention-days: 14
