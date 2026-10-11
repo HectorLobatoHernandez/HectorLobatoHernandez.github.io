@@ -7,7 +7,7 @@
   <meta name="description" content="HL Portfolio World · prototype interactive journey through RHB STUDIO, GAZA Operations and Club del Mar.">
   <title>HL Portfolio World · Prototype</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./world.css?v=3">
+  <link rel="stylesheet" href="./world.css?v=4">
 </head>
 <body>
   <canvas id="worldCanvas" aria-hidden="true"></canvas>
@@ -16,7 +16,7 @@
     <header class="world-topbar">
       <a class="world-brand" href="../index.html">
         HL
-        <small>PORTFOLIO WORLD · V0.3</small>
+        <small>PORTFOLIO WORLD · V0.4</small>
       </a>
       <div class="world-top-meta">
         <span id="worldChapterLabel">ENTRY</span>
@@ -38,7 +38,9 @@
         </div>
       </section>
 
-      <section class="world-section" data-chapter="rhb"></section>
+      <section class="world-section world-section--rhb" data-chapter="rhb-heritage"></section>
+      <section class="world-section world-section--rhb" data-chapter="rhb-workshop"></section>
+      <section class="world-section world-section--rhb" data-chapter="rhb-studio"></section>
       <section class="world-section world-section--gaza" data-chapter="gaza-arrival"></section>
       <section class="world-section world-section--gaza" data-chapter="gaza-zamora"></section>
       <section class="world-section world-section--gaza" data-chapter="gaza-duero"></section>
@@ -81,6 +83,6 @@
     }
   }
   </script>
-  <script type="module" src="./world.js?v=4"></script>
+  <script type="module" src="./world.js?v=5"></script>
 </body>
 </html>
