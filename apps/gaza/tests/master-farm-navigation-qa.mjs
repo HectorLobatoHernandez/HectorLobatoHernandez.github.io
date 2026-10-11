@@ -15,18 +15,18 @@ try{
  await farm.locator('[data-process-panel] #start').click();await farm.locator('#steps button').nth(2).click();assert.equal(await farm.locator('#steps button').count(),7);
  await page.locator('[data-view="plant"]').click();await plant.locator('#enterQualityLab').click();
  await page.locator('[data-pane="labs"].on').waitFor();const labs=page.frameLocator('iframe[title*="GAZA Quality Labs"]');
- await labs.locator('#steps button').nth(2).click();assert.match(await labs.locator('#stationProcedure').textContent(),/aséptica/);
+ await labs.locator('#steps button').nth(2).click();
+ await labs.locator('#stationProcedure').filter({hasText:/aséptica/}).waitFor({timeout:15000});
+ assert.match(await labs.locator('#stationProcedure').textContent(),/aséptica/);
  await page.locator('[data-view="workflow"]').click();await page.locator('[data-pane="workflow"].on').waitFor();
  const workflow=page.frameLocator('iframe[title="GAZA End-to-End Workflow"]');
  const task=workflow.locator('[data-process-panel] [data-task="FARM.BIOSECURITY"]');
  await task.locator('button').click();
- // A Playwright click does not await the handler's asynchronous Web Locks transaction.
- // Wait for the committed UI state, rather than racing storage observers under WebGL load.
+ // Await the committed state of the asynchronous Web Locks transaction, not just click completion.
  await task.filter({hasText:/RUNNING/}).waitFor({timeout:15000});
  await workflow.locator('[data-process-panel] #step').click();
  await task.filter({hasText:/DONE/}).waitFor({timeout:15000});
  assert.match(await task.textContent(),/DONE/);
  console.log('GAZA master navigation to unified process departments: PASS');
 }finally{await browser.close()}
-// Retain the full existing process browser regression after navigation.
 await import('./process-browser-qa.mjs');
