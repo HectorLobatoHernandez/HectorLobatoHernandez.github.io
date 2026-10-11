@@ -95,29 +95,54 @@ export function createHLAvatar(THREE){
   goatee.rotation.x=Math.PI/2;
   headPivot.add(goatee);
 
-  // Curly hair wraps the crown, sides, rear and nape.
+  // Curly hair wraps crown, sides, rear and nape with no bald seam.
   const curls=new THREE.Group();
+
   const frontAndTop=[
     [-.16,.14,.02],[-.08,.20,.04],[0,.225,.035],[.08,.205,.04],[.16,.15,.02],
     [-.19,.07,.03],[-.11,.12,.10],[-.03,.145,.12],[.055,.14,.12],[.13,.11,.095],[.19,.065,.03],
     [-.13,.23,-.03],[-.045,.255,-.02],[.05,.25,-.025],[.135,.205,-.035]
   ];
-  const rearAndNape=[
-    [-.17,.12,-.10],[-.08,.18,-.145],[0,.195,-.16],[.08,.18,-.145],[.17,.12,-.10],
-    [-.20,.035,-.09],[-.11,.065,-.155],[0,.075,-.17],[.11,.065,-.155],[.20,.035,-.09],
-    [-.15,-.045,-.10],[-.06,-.07,-.145],[.06,-.07,-.145],[.15,-.045,-.10],
-    [0,-.105,-.12]
+
+  // Dense bridge between crown and lower rear hair to remove the visible bald band.
+  const midBackBridge=[
+    [-.19,.115,-.055],[-.125,.135,-.085],[-.06,.145,-.11],[0,.15,-.12],[.06,.145,-.11],[.125,.135,-.085],[.19,.115,-.055],
+    [-.205,.055,-.075],[-.14,.065,-.11],[-.075,.075,-.135],[0,.078,-.145],[.075,.075,-.135],[.14,.065,-.11],[.205,.055,-.075],
+    [-.17,-.005,-.09],[-.10,.005,-.125],[0,.01,-.145],[.10,.005,-.125],[.17,-.005,-.09]
   ];
-  [...frontAndTop,...rearAndNape].forEach(([x,y,z],i)=>{
-    const curl=new THREE.Mesh(new THREE.IcosahedronGeometry(.07+(i%3)*.009,1),mats.hair);
-    curl.position.set(x,.105+y*.58,z-.035);
+
+  const rearAndNape=[
+    [-.18,.12,-.12],[-.09,.18,-.155],[0,.195,-.17],[.09,.18,-.155],[.18,.12,-.12],
+    [-.205,.035,-.115],[-.12,.065,-.16],[0,.075,-.18],[.12,.065,-.16],[.205,.035,-.115],
+    [-.16,-.05,-.115],[-.07,-.075,-.15],[.07,-.075,-.15],[.16,-.05,-.115],
+    [0,-.11,-.125]
+  ];
+
+  [...frontAndTop,...midBackBridge,...rearAndNape].forEach(([x,y,z],i)=>{
+    const curl=new THREE.Mesh(
+      new THREE.IcosahedronGeometry(.072+(i%3)*.009,1),
+      mats.hair
+    );
+    curl.position.set(x,.105+y*.58,z-.02);
     curls.add(curl);
   });
   headPivot.add(curls);
 
-  const nape=sphere(.11,mats.hair,12);
-  nape.scale.set(1.15,.72,.82);
-  nape.position.set(0,-.155,-.12);
+  // Continuous rear cap hidden under the curls. This guarantees there is no skin gap
+  // even when the camera is directly behind the avatar.
+  const backCap=sphere(.155,mats.hair,14);
+  backCap.scale.set(1.12,.90,.82);
+  backCap.position.set(0,.005,-.125);
+  headPivot.add(backCap);
+
+  const lowerBackCap=sphere(.125,mats.hair,12);
+  lowerBackCap.scale.set(1.16,.80,.88);
+  lowerBackCap.position.set(0,-.095,-.125);
+  headPivot.add(lowerBackCap);
+
+  const nape=sphere(.12,mats.hair,12);
+  nape.scale.set(1.20,.78,.88);
+  nape.position.set(0,-.165,-.115);
   headPivot.add(nape);
 
   // Large expressive cartoon-style eyes behind the glasses.
