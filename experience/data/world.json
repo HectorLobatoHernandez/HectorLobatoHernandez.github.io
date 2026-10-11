@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "title": "HL Portfolio World",
-  "status": "PROTOTYPE_V0_9_CACHE_SAFE_AVATAR",
+  "status": "PROTOTYPE_V1_0_FIXED_AVATAR_HIERARCHY",
   "note": "Immersive prototype. Stable dossier at /index.html remains unchanged. Formal education labels in the starfall remain generic skill domains until exact titles are supplied.",
   "chapters": [
     {
