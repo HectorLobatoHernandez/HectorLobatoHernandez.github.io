@@ -37,3 +37,12 @@ export function gaitPose(seconds,seed=0,walking=false){
  const phase=(Number.isFinite(seconds)?seconds:0)*2.8+seed*.618,angles=[0,Math.PI,Math.PI*.55,Math.PI*1.55].map(p=>walking?Math.sin(phase+p)*.30:0);
  return {upper:angles,lower:angles.map((a,i)=>walking?Math.max(0,-Math.sin(phase+i*Math.PI/2))*.42:0),head:Math.sin(phase*.23)*.035,tail:Math.sin(phase*.51)*.10};
 }
+
+/** Parallel-parlour choreography in local proposed room coordinates. Not surveyed stall dimensions. */
+export function parlourPose(progress,species='BOVINE'){
+ const p=Math.max(0,Math.min(1,Number.isFinite(progress)?progress:0)),side=species==='OVINE'?-1:1;
+ const smooth=n=>{const v=Math.max(0,Math.min(1,n));return v*v*(3-2*v)};
+ const turn=p<.30?smooth((p-.16)/.14):p<=.87?1:1-smooth((p-.87)/.04);
+ const z=p<.16?-6+6.25*smooth(p/.16):p>.91?.25+6*smooth((p-.91)/.09):.25;
+ return {x:side*2.85,y:.895,z,yaw:-Math.PI/2+side*Math.PI/2*turn,operatorX:side*.65,operatorZ:.25,hoseTarget:[side*(species==='OVINE'?2.55:2.30),species==='OVINE'?1.16:1.26,.25]};
+}

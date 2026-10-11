@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {createInstancedHerd,createUniformWorker,geometryKit} from '../shared/livestock-assets.mjs';
 import {PADDOCKS,STATION_INFO,point} from './site.mjs';
-import {estimateHerd,pastureSlots,seed01,gaitPose,milkingPhase,HERD_ASSUMPTIONS} from './herd-plan.mjs';
+import {estimateHerd,pastureSlots,seed01,gaitPose,milkingPhase,parlourPose,HERD_ASSUMPTIONS} from './herd-plan.mjs';
 /** Visual refinement only; original site remains, no new stock/events/results. */
 export function enrichFarmRealism(world){
  const root=new T.Group();root.name='FARM_REALISM_V2';world.site.add(root);
@@ -14,7 +14,7 @@ export function enrichFarmRealism(world){
  let options={...HERD_ASSUMPTIONS},lastView=null,selectedAnimal=null,geometryKey='',plan=null,phase=null,selectedStation=0,isolate=false,hiddenLayers=false;
  // Preserve parent transforms/semantic references and remove only the old visual bodies.
  legacy.animals.forEach(a=>a.g.children.forEach(c=>c.visible=false));
- legacy.staff.forEach(w=>{w.g.children.forEach(c=>c.visible=false);const person=createUniformWorker(w.id);person.g.name='UNIFORM_'+w.id;w.g.add(person.g);people.push({...person,taskId:w.taskId,station:w.station,id:w.id});});
+ legacy.staff.forEach(w=>{w.g.children.forEach(c=>c.visible=false);const person=createUniformWorker(w.id);person.g.name='UNIFORM_'+w.id;w.g.position.y=w.station===6?.26:.38;w.g.add(person.g);people.push({...person,taskId:w.taskId,station:w.station,id:w.id});});
  function solid(parent,kit,name){const g=kit.finish();if(!g)return null;const mesh=new T.Mesh(g,sharedMaterial);mesh.name=name;mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);helpers.push(mesh);return mesh;}
  const colour={straw:0xb6a16d,steel:0xa9b8b7,blue:0x204f7b,wood:0x877052,roof:0x8d826e,stone:0x8d937f};
  const box=(kit,p,s,c)=>kit.add('box',p,s,c),cyl=(kit,p,s,c,rotation=[0,0,0])=>kit.add('cylinder',p,s,c,rotation);
@@ -77,13 +77,13 @@ export function enrichFarmRealism(world){
   }
  }
  // Detailed versions of the two existing milking actors follow the same semantic task anchors.
- const milkingHerds=['BOVINE','OVINE'].map((species,i)=>{const h=createInstancedHerd(root,species,1);h.g.name='MILKING_REALISM_'+species;const hoseGeometry=new T.TubeGeometry(new T.CatmullRomCurve3([new T.Vector3(i?-1.2:1.2,.7,-.3),new T.Vector3(i?-2.1:2.1,.45,-.15),new T.Vector3(i?-3:3,.72,-.5)]),18,.043,6,false);const hose=new T.Mesh(hoseGeometry,new T.MeshStandardMaterial({color:0x414d4a,roughness:.8}));world.buildings.get('milking').inside.add(hose);helpers.push(hose);hose.visible=false;return {species,batch:h,parent:i?legacy.demoSheep:legacy.demoCow,hose}});
+ const milkingHerds=['BOVINE','OVINE'].map((species,i)=>{const h=createInstancedHerd(root,species,1);h.g.name='MILKING_REALISM_'+species;const hp=parlourPose(.55,species).hoseTarget;const hoseGeometry=new T.TubeGeometry(new T.CatmullRomCurve3([new T.Vector3(i?-1.2:1.2,1.12,.25),new T.Vector3(i?-1.8:1.8,.9,.25),new T.Vector3(...hp)]),18,.043,6,false);const hose=new T.Mesh(hoseGeometry,new T.MeshStandardMaterial({color:0x414d4a,roughness:.8}));world.buildings.get('milking').inside.add(hose);helpers.push(hose);hose.visible=false;return {species,batch:h,parent:i?legacy.demoSheep:legacy.demoCow,hose}});
  function update(view){
   lastView=view;build(view);const feed=view.tasks['FARM.FEED'],milk=view.tasks['FARM.MILKING'];phase=milk?milkingPhase(milk.progress):null;
   herds.forEach(h=>{h.positions.forEach((a,i)=>{const active=h.species===view.species&&feed?.status==='RUNNING',seconds=h.species===view.species?(feed?.elapsed||0):0,pose=gaitPose(seconds,a.seed,false),down=a.indoors?.05:(.55+seed01(i+7)*.26);h.batch.setAnimal(i,a,pose,down);});h.batch.finish();});
-  milkingHerds.forEach(h=>{h.batch.g.visible=h.parent.visible;const active=milk&&['RUNNING','HELD','UNAVAILABLE'].includes(milk.status)&&h.species===view.species,walking=active&&['entry','exit'].includes(phase?.id),f=world.buildings.get('milking'),progress=milk?.progress||0;let z=0;if(progress<.16)z=-6+6*progress/.16;else if(progress>.87)z=6*(progress-.87)/.13;const position=new T.Vector3(h.species==='OVINE'?-3:3,.52,z).applyMatrix4(f.inside.matrixWorld);h.batch.setAnimal(0,{x:position.x,y:position.y,z:position.z,yaw:f.f.yaw-Math.PI/2,scale:1},gaitPose(milk?.elapsed||0,4,walking),.03);h.batch.finish();h.hose.visible=active&&['attach','extract','detach'].includes(phase?.id);});
+  milkingHerds.forEach(h=>{h.batch.g.visible=h.parent.visible;const active=milk&&['RUNNING','HELD','UNAVAILABLE'].includes(milk.status)&&h.species===view.species,walking=active&&['entry','exit'].includes(phase?.id),f=world.buildings.get('milking'),progress=milk?.progress||0,pose=parlourPose(progress,h.species);const position=new T.Vector3(pose.x,pose.y,pose.z).applyMatrix4(f.inside.matrixWorld);h.batch.setAnimal(0,{x:position.x,y:position.y,z:position.z,yaw:f.f.yaw+pose.yaw,scale:1},gaitPose(milk?.elapsed||0,4,walking),.03);h.batch.finish();h.hose.visible=active&&['attach','extract','detach'].includes(phase?.id);});
   const milkFlow=legacy.flows.find(f=>f.taskId==='FARM.MILKING');if(milkFlow?.bead)milkFlow.bead.visible=milk?.status==='RUNNING'&&phase?.id==='extract';
-  people.forEach(p=>{const t=view.tasks[p.taskId];p.animate(t?.elapsed||0,['RUNNING','HELD','UNAVAILABLE'].includes(t?.status));});
+  people.forEach(p=>{const t=view.tasks[p.taskId];if(p.taskId==='FARM.MILKING'){const pose=parlourPose(milk?.progress||0,view.species);p.g.parent.position.set(pose.operatorX,.38,pose.operatorZ);p.g.parent.rotation.y=view.species==='OVINE'?-Math.PI/2:Math.PI/2;}p.animate(t?.elapsed||0,['RUNNING','HELD','UNAVAILABLE'].includes(t?.status));});
   applyVisibility();
  }
  function applyVisibility(){
