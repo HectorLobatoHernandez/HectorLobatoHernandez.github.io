@@ -153,3 +153,16 @@ The avatar is intentionally stylized rather than photorealistic so it remains li
 It follows the world path and uses a procedural walk cycle tied to scroll movement.
 
 The legacy Rufino Hernández Barba logo supplied in the same reference batch is treated as **heritage/origin material only** and does not replace the current RHB STUDIO identity.
+
+
+## V0.4 — RHB heritage / workshop / avatar
+
+RHB is no longer presented as a generic software stop. The immersive route now moves through:
+
+1. Rufino Hernández Barba — family metalworking origin;
+2. workshop — profiles, cutting, drilling, welding, assembly and architectural steelwork;
+3. RHB STUDIO — digital/CAD/agent layer growing out of the physical workshop.
+
+A stylized real-time avatar based on user-supplied photo references is used as the travelling scale figure. The avatar intentionally prioritizes recognizability and performance over photorealism.
+
+The workshop scene is conceptual for now. Detailed future versions should be replaced/refined from real workshop photos, measured layout, machine inventory and process mapping when those source materials are available.
