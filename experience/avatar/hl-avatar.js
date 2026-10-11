@@ -17,9 +17,10 @@ export function createHLAvatar(THREE){
     shoe:new THREE.MeshStandardMaterial({color:0x151515,roughness:.9}),
     sole:new THREE.MeshStandardMaterial({color:0x30302e,roughness:.98}),
     frame:new THREE.MeshStandardMaterial({color:0xa96032,roughness:.48,metalness:.08}),
-    lens:new THREE.MeshPhysicalMaterial({color:0x4b392b,transparent:true,opacity:.46,roughness:.12,metalness:0}),
+    lens:new THREE.MeshPhysicalMaterial({color:0x5a4632,transparent:true,opacity:.34,roughness:.10,metalness:0}),
     eye:new THREE.MeshStandardMaterial({color:0xf1ede4,roughness:.7}),
-    iris:new THREE.MeshStandardMaterial({color:0x4f3b2f,roughness:.5}),
+    irisOuter:new THREE.MeshStandardMaterial({color:0x456b36,roughness:.42}),
+    irisInner:new THREE.MeshStandardMaterial({color:0x86a95c,roughness:.38,emissive:0x17200f,emissiveIntensity:.10}),
     pupil:new THREE.MeshStandardMaterial({color:0x090909,roughness:.3}),
     metal:new THREE.MeshStandardMaterial({color:0x777876,roughness:.35,metalness:.62}),
     tattoo:new THREE.MeshBasicMaterial({color:0x263231,transparent:true,opacity:.82}),
@@ -186,16 +187,22 @@ export function createHLAvatar(THREE){
     white.scale.set(1.18,1,.62);
     eye.add(white);
 
-    const iris=sphere(.022,mats.iris,12);
-    iris.position.z=.034;
-    eye.add(iris);
+    const irisOuter=sphere(.023,mats.irisOuter,14);
+    irisOuter.scale.set(1,1,.58);
+    irisOuter.position.z=.034;
+    eye.add(irisOuter);
 
-    const pupil=sphere(.011,mats.pupil,10);
-    pupil.position.z=.047;
+    const irisInner=sphere(.015,mats.irisInner,14);
+    irisInner.scale.set(1,1,.62);
+    irisInner.position.z=.043;
+    eye.add(irisInner);
+
+    const pupil=sphere(.0088,mats.pupil,12);
+    pupil.position.z=.052;
     eye.add(pupil);
 
-    const glint=sphere(.0045,mats.white,8);
-    glint.position.set(.008,.010,.056);
+    const glint=sphere(.0048,mats.white,8);
+    glint.position.set(.009,.010,.058);
     eye.add(glint);
 
     headPivot.add(eye);
