@@ -1,0 +1,31 @@
+{
+  "unitTests": {
+    "new": 30,
+    "siteRealExisting": 10,
+    "passed": 40,
+    "failed": 0
+  },
+  "syntaxChecked": [
+    "runtime/processes/ledger.mjs",
+    "runtime/processes/scene-binding.mjs",
+    "runtime/processes/panel.mjs",
+    "runtime/processes/store.mjs",
+    "runtime/processes/catalog.mjs",
+    "runtime/site-real-app.mjs",
+    "runtime/site-real-world.mjs",
+    "tests/process-browser-qa.mjs",
+    "tests/master-farm-navigation-qa.mjs",
+    "farm-labs.html#script1",
+    "mission-control.html#script0",
+    "mission-control.html#script1",
+    "plant-3d.html#script0",
+    "plant-3d.html#script3",
+    "operations-thread.html#script0"
+  ],
+  "browser": {
+    "status": "NOT_EXECUTED",
+    "reason": "Local Chromium: WebGL2 unavailable; navigation blocked by administrator"
+  },
+  "remotePublication": "NOT_ATTEMPTED_NO_WRITE_TOOL",
+  "sourceRevision": "7d594fb726a31d01bbe5d72fc8e893ecae3c5394"
+}

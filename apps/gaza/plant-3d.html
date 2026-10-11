@@ -273,6 +273,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { loadProductionAssets } from './runtime/asset-registry.js';
 import { createTwinTelemetry } from './runtime/twin-telemetry.js';
+import {processStore} from './runtime/processes/store.mjs';
+import {mountProcessPanel} from './runtime/processes/panel.mjs';
+import {taskProgress} from './runtime/processes/scene-binding.mjs';
 
 const canvas=document.getElementById('twin3d');
 if(canvas){
@@ -658,6 +661,10 @@ if(canvas){
 
   let running=!freezeMode,phase=0,incident=false,envSpeedFactor=1,envRoadRisk=0,envWeatherRisk=0,envForecastRisk=0,envState={},laneMoving=0;
  const publishTwinState=createTwinTelemetry('plant');
+ let processState=null,processView=null,processError=null;
+ mountProcessPanel(document.querySelector('.twin-side'),{module:'plant'});
+ processStore.subscribe(({state,error})=>{processState=state;processError=error;processView=processStore.view();});
+
  const ENV_KEY='gaza:environment:v1';
  function readEnv(){try{return JSON.parse(localStorage.getItem(ENV_KEY)||'{}')}catch(_){return {}}}
  function weatherCodeRain(code){return [51,53,55,61,63,65,80,81,82,95,96,99].includes(Number(code))}
@@ -692,28 +699,29 @@ if(canvas){
  document.getElementById('twinReset').onclick=()=>setCameraView('exterior');
  document.querySelectorAll('[data-camera]').forEach(b=>b.addEventListener('click',()=>setCameraView(b.dataset.camera)));
  const requestedCamera=pageParams.get('camera');if(requestedCamera)setCameraView(requestedCamera);if(freezeMode){document.getElementById('twinPlay').textContent='Reanudar';document.body.dataset.freeze='1'}
- document.getElementById('twinIncident').onclick=()=>{incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min*':Math.round(17/envSpeedFactor)+' min*';document.getElementById('flowState').textContent=incident?'RETENIDO':'NORMAL';processBeacons[2].material.color.set(incident?0xd94a4a:0x73b866);sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida + retención visual en pasteurización. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado. El asterisco indica margen heurístico de entorno.'};
+ document.getElementById('twinIncident').onclick=()=>{if(processState){processStore.dispatch({type:'INCIDENT',lotId:processStore.selected,reason:'Incidencia registrada desde Plant 3D'}).catch(console.error);return}incident=!incident;document.getElementById('twinEta').textContent=incident?'29 min*':Math.round(17/envSpeedFactor)+' min*';document.getElementById('flowState').textContent=incident?'RETENIDO':'NORMAL';processBeacons[2].material.color.set(incident?0xd94a4a:0x73b866);sel.innerHTML=incident?'<b>INCIDENCIA INYECTADA</b><br>Retraso sintético de recogida + retención visual en pasteurización. El Control Tower debería recalcular ETA y slot de recepción.':'<b>Escenario normal restaurado.</b><br>La incidencia se ha retirado. El asterisco indica margen heurístico de entorno.'};
 
  function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;const dpr=targetRenderDpr();if(Math.abs(dpr-renderDpr)>.01){renderer.setPixelRatio(dpr);renderDpr=dpr}if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
  const clock=new THREE.Clock();
- function animate(){requestAnimationFrame(animate);resize();const dt=Math.min(clock.getDelta(),.05),s=Number(speed.value);assetRuntime.update(running?dt*s:0);if(running){phase=(phase+dt*s*.055*envSpeedFactor)%1;
+ function animate(){requestAnimationFrame(animate);resize();const dt=Math.min(clock.getDelta(),.05),s=processState?processState.clock.rate:Number(speed.value);assetRuntime.update(running?dt*s:0);if(running&&!processError&&(!processState||processState.clock.running)){phase=(phase+dt*s*.055*envSpeedFactor)%1;
+   const activeProcess=id=>!processView||(!processView.held&&processView.active.some(t=>t.id===id));
    // Nine-level ASRS shuttles + lift. Motion is demonstrative; topology is not claimed as the real control sequence.
-   asrsShuttles.forEach((a,i)=>{a.phase=(a.phase+dt*s*(.07+i*.009))%1;const x=60+a.phase*56;a.mesh.position.x=x;const half=a.phase>.5?1:0;if(half!==a.lastHalf){asrsCycles++;a.lastHalf=half}});
-   lift.position.y=3.2+((Math.sin(phase*Math.PI*2)+1)/2)*22;document.getElementById('asrsCycles').textContent=String(asrsCycles);
+   if(activeProcess('WAREHOUSE.PUTAWAY'))asrsShuttles.forEach((a,i)=>{a.phase=(a.phase+dt*s*(.07+i*.009))%1;const x=60+a.phase*56;a.mesh.position.x=x;const half=a.phase>.5?1:0;if(half!==a.lastHalf){asrsCycles++;a.lastHalf=half}});
+   if(activeProcess('WAREHOUSE.PUTAWAY'))lift.position.y=3.2+((Math.sin(phase*Math.PI*2)+1)/2)*22;document.getElementById('asrsCycles').textContent=String(asrsCycles);
    // Lane reservation: each mobile agent reserves its current and look-ahead cell before advancing.
    const cells=28,reserved=new Set();laneAgents.forEach(a=>reserved.add(Math.floor(a.u*cells)%cells));let moving=0;
-   laneAgents.forEach(a=>{const du=a.speed*dt*s*envSpeedFactor,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
+   laneAgents.forEach(a=>{const du=activeProcess('WAREHOUSE.PUTAWAY')?a.speed*dt*s*envSpeedFactor:0,next=(a.u+du)%1,nextCell=Math.floor(next*cells)%cells,look=(nextCell+1)%cells,current=Math.floor(a.u*cells)%cells;reserved.delete(current);if(!reserved.has(nextCell)&&!reserved.has(look)){a.u=next;a.wait=0;moving++}else a.wait+=dt;const cell=Math.floor(a.u*cells)%cells;reserved.add(cell);reserved.add((cell+1)%cells);moveLaneAgent(a,a.u)});
    laneMoving=moving;document.getElementById('laneStatus').textContent=moving+'/'+laneAgents.length;workers.forEach(w=>moveWorker(w,dt,s));document.getElementById('workerCount').textContent=workers.length+'/'+workers.length;
-   updateProcessFlowTokens(phase,incident);
+   updateProcessFlowTokens(processView?taskProgress(processState,processStore.selected,'PLANT.PROCESS'):phase,processView?(!activeProcess('PLANT.PROCESS')&&!activeProcess('PLANT.PACK')):incident);
    if(rainPts.visible){const p=rainGeo.attributes.position.array;for(let i=0;i<rainN;i++){p[i*3]-=wxFlow.dir.x*dt*wxFlow.speed*.14*s;p[i*3+2]-=wxFlow.dir.z*dt*wxFlow.speed*.14*s;p[i*3+1]-=dt*42*s;if(p[i*3+1]<1){p[i*3+1]=80+seededRain()*20;p[i*3]=-145+seededRain()*290;p[i*3+2]=-95+seededRain()*190}}rainGeo.attributes.position.needsUpdate=true}animateEnvironmentField(dt,s);
    farmCows.forEach((cow,i)=>{cow.position.x=cow.userData.baseX+Math.sin(phase*Math.PI*2+i*.73)*.55;cow.position.z=cow.userData.baseZ+Math.cos(phase*Math.PI*2*.7+i)*.28})
    // Inbound tanker and outbound trailers always orient to their direction of travel.
-   placeTruckOnCurve(tanker,tankerCurve,phase);
-   placeTruckOnCurve(out1,outCurveEast,(phase*1.32)%1);
-   placeTruckOnCurve(out2,outCurveWest,((phase+.43)*1.18)%1);
-   document.getElementById('milkLoad').textContent=(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
+   placeTruckOnCurve(tanker,tankerCurve,processView?taskProgress(processState,processStore.selected,'LOGISTICS.TRANSIT'):phase);
+   placeTruckOnCurve(out1,outCurveEast,processView?taskProgress(processState,processStore.selected,'DELIVERY.ARRIVE'):(phase*1.32)%1);
+   placeTruckOnCurve(out2,outCurveWest,processView?0:((phase+.43)*1.18)%1);
+   document.getElementById('milkLoad').textContent=processState?(processState.lots[processStore.selected].mass.tankerL.toLocaleString('es-ES')+' L SIM'):(18.4-Math.min(phase/.62,1)*7.8).toFixed(1)+' t';
  }
- controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;publishTwinState({simulation:{running,speed:Number(speed.value),phase:Number(phase.toFixed(4)),incident,flowState:incident?'RETENIDO':'NORMAL',laneMoving,laneAgents:laneAgents.length,workers:workers.length,asrsCycles},environment:{factor:Number(envSpeedFactor.toFixed(3)),weatherRisk:envWeatherRisk,forecastRisk:envForecastRisk,roadRisk:envRoadRisk,weather:envState.weather||null,weatherOps:window.__GAZA_WEATHER_OPS__||null,dgt:envState.dgt||null,field:window.__GAZA_ENV_FIELD__||null},assets:{state:window.__GAZA_ASSET_REGISTRY__?.state||'loading',loaded:window.__GAZA_ASSET_REGISTRY__?.loaded||0,failed:window.__GAZA_ASSET_REGISTRY__?.failed||0},render:stats,provenance:{public:true,inferred:true,simulated:true}});if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
+ controls.update();renderer.render(scene,camera);const ri=renderer.info,stats={calls:ri.render.calls,triangles:ri.render.triangles,geometries:ri.memory.geometries,textures:ri.memory.textures,dpr:renderer.getPixelRatio()};window.__GAZA_RENDER_STATS__=stats;publishTwinState({simulation:{process:processView,running,speed:Number(speed.value),phase:Number(phase.toFixed(4)),incident,flowState:incident?'RETENIDO':'NORMAL',laneMoving,laneAgents:laneAgents.length,workers:workers.length,asrsCycles},environment:{factor:Number(envSpeedFactor.toFixed(3)),weatherRisk:envWeatherRisk,forecastRisk:envForecastRisk,roadRisk:envRoadRisk,weather:envState.weather||null,weatherOps:window.__GAZA_WEATHER_OPS__||null,dgt:envState.dgt||null,field:window.__GAZA_ENV_FIELD__||null},assets:{state:window.__GAZA_ASSET_REGISTRY__?.state||'loading',loaded:window.__GAZA_ASSET_REGISTRY__?.loaded||0,failed:window.__GAZA_ASSET_REGISTRY__?.failed||0},render:stats,provenance:{public:true,inferred:true,simulated:true}});if(debugMode){const pc=document.getElementById('perfChip');pc.hidden=false;pc.textContent='GPU · '+stats.calls+' calls · '+Math.round(stats.triangles/1000)+'k tri · '+stats.geometries+' geo · DPR '+stats.dpr.toFixed(2)}}
  laneAgents.forEach(a=>moveLaneAgent(a,a.u));applyEnvironment();
   async function refreshWeather(){
     try{if(!window.GAZAWeatherOps)throw new Error('weather ops runtime missing');const weather=await GAZAWeatherOps.fetchWeather(41.52355,-5.59993),prev=readEnv(),next={...prev,weather,source:'GAZA Plant 3D',updatedAt:new Date().toISOString()};localStorage.setItem(ENV_KEY,JSON.stringify(next));applyEnvironment(next)}catch(e){console.warn('Weather Ops no disponible',e);applyEnvironment(readEnv())}}

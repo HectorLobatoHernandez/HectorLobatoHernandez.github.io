@@ -53,6 +53,7 @@ jobs:
           node --check ./tests/mission-control-qa.mjs
           node --check ./tests/master-farm-navigation-qa.mjs
           node --check ./tests/operations-thread-qa.mjs
+          node --check ./tests/process-browser-qa.mjs
           node ./tests/operations-thread-qa.mjs
           node --check ./runtime/public-gis-overlay.js
           node --check ./runtime/site-real-app.mjs
@@ -74,6 +75,8 @@ jobs:
           done
           cat /tmp/gaza-http.log
           exit 1
+      - name: Shared process ledger and browser QA
+        run: npm run qa:process
       - name: Site Real browser QA
         run: node ./tests/site-real-browser-qa.mjs
       - name: Run deterministic visual QA

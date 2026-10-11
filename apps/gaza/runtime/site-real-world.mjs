@@ -88,15 +88,17 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   for(let i=0;i<7;i++){const c=new THREE.Group();actors.add(c);box(0,.8,0,4,1.1,1.8,mat(['#d9dedf','#344a63','#99363e'][i%3]),c);box(0,1.5,0,2.1,.7,1.65,glass,c);c.position.set(-48,0,-6+i*9);c.rotation.y=Math.PI/2}
   const walkers=[];for(let i=0;i<8;i++){const g=new THREE.Group(),legs=[],arms=[];actors.add(g);box(0,1.05,0,.52,.65,.3,i%3?yellow:blue,g);mesh(geoSphere,mat('#b3886d'),0,1.62,0,.2,.22,.2,g);for(const sign of [-1,1]){const leg=new THREE.Group();leg.position.set(sign*.14,.76,0);g.add(leg);box(0,-.35,0,.15,.7,.16,black,leg);legs.push(leg);const arm=new THREE.Group();arm.position.set(sign*.33,1.36,0);g.add(arm);box(0,-.25,0,.12,.55,.14,i%3?yellow:blue,arm);arms.push(arm)}walkers.push({g,legs,arms,phase:i*.8,z:-43+i*17})}
   let time=0;
-  function update(dt,{held=false}={}){
+  function update(dt,{held=false,process=null}={}){
     time+=dt;
     for(const m of moving){
-      if(!held)m.elapsed+=dt;let p=sampleTrip(m.path,m.elapsed,{speed:m.speed,stops:m.stops});
-      if(p.complete&&!held){m.elapsed=0;p=sampleTrip(m.path,0,{speed:m.speed,stops:m.stops});m.previousDistance=0}
+      const taskId=m.id==='SIM-TANKER-1'?'LOGISTICS.TRANSIT':'DELIVERY.ARRIVE',task=process?.state.lots[process.lotId]?.tasks[taskId];
+      if(process){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;const fraction=task?.status==='DONE'?1:task?.status==='RUNNING'?task.elapsed/24:0;m.elapsed=Math.max(0,Math.min(1,fraction))*duration;}else if(!held)m.elapsed+=dt;
+      let p=sampleTrip(m.path,m.elapsed,{speed:m.speed,stops:m.stops});
+      if(p.complete&&!held&&!process){m.elapsed=0;p=sampleTrip(m.path,0,{speed:m.speed,stops:m.stops});m.previousDistance=0}
       m.tractor.position.set(p.x,.15,p.z);m.tractor.rotation.y=p.yaw;
       const rear=samplePath(m.path,Math.max(0,p.distance-6.5));if(p.distance<6.5){rear.x-=rear.tangent[0]*(6.5-p.distance);rear.z-=rear.tangent[1]*(6.5-p.distance)}m.load.position.set(rear.x,.15,rear.z);m.load.rotation.y=rear.yaw;
       const travel=p.distance-m.previousDistance;m.previousDistance=p.distance;for(const w of m.wheels)w.rotation.z-=Math.max(0,travel)/.52;
-      m.phase=held?'HOLD del lote · Workflow':p.phase;m.position=[p.x,p.z];m.heading=p.tangent;
+      m.phase=held?'HOLD del lote · Workflow':process?(task?.status==='RUNNING'?taskId:task?.status==='DONE'?'Tarea terminada':'Esperando tarea autorizada'):p.phase;m.position=[p.x,p.z];m.heading=p.tangent;
     }
     for(const [i,b] of barriers.entries()){const m=moving[i===0?1:0],open=!held&&m.previousDistance>m.stops[0].distance+.1&&m.phase!=='Control acceso '+(i+1);b.rotation.x=THREE.MathUtils.damp(b.rotation.x,open?-1.45:0,3,dt)}
     for(const w of walkers){w.g.position.set(-42,0,w.z+Math.sin(time*.025+w.phase)*4);w.g.rotation.y=Math.cos(time*.025+w.phase)>0?0:Math.PI;w.legs.forEach((l,i)=>l.rotation.x=Math.sin(time*3+w.phase+i*Math.PI)*.36);w.arms.forEach((a,i)=>a.rotation.x=-Math.sin(time*3+w.phase+i*Math.PI)*.25)}
