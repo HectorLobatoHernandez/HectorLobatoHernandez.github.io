@@ -290,6 +290,8 @@ function createWorld(data){
   let scrollDirection=1;
   let lastScrollAt=0;
   let scrollImpulse=0;
+  const fallExitPosition=new THREE.Vector3();
+  let fallExitReady=false;
 
   function setPanel(index){
     const ch=chapters[index];
@@ -425,7 +427,7 @@ function createWorld(data){
     const scrollVelocity=Math.abs(targetProgress-renderProgress);
     const recentlyScrolled=(performance.now()-lastScrollAt)<190;
     const moving=recentlyScrolled||scrollVelocity>.00022;
-    const walkSpeed=.72+Math.min(.38,scrollVelocity*12+scrollImpulse*.22);
+    const walkSpeed=.76+Math.min(.18,scrollVelocity*6+scrollImpulse*.10);
 
     const fallEnd=landingIndex>=0?landingIndex-.22:spaceEnd+.4;
     const inFall=landingIndex>=0&&chapterFloat<fallEnd;
@@ -434,35 +436,37 @@ function createWorld(data){
 
     if(inFall){
       const fallProgress=clamp(chapterFloat/Math.max(.001,fallEnd),0,1);
-      const gravity=fallProgress*fallProgress;
 
-      // Camera-relative framing: the avatar remains large and readable during the whole fall.
+      // Keep the full 1.8 m character centered in camera space through the whole fall.
       const camDir=new THREE.Vector3();
       camera.getWorldDirection(camDir);
       const camRight=new THREE.Vector3().crossVectors(camDir,camera.up).normalize();
       const camUp=camera.up.clone().normalize();
 
-      const distance=lerp(3.45,4.15,fallProgress);
+      const distance=lerp(5.2,4.55,fallProgress);
       const anchor=camera.position.clone()
         .add(camDir.clone().multiplyScalar(distance))
-        .add(camUp.clone().multiplyScalar(1.0));
+        .add(camUp.clone().multiplyScalar(-1.03));
 
-      const verticalOffset=lerp(2.3,-.65,gravity);
-      const lateralDrift=Math.sin(time*.72)*(1-fallProgress)*.18;
+      const lateralDrift=Math.sin(time*.55)*(1-fallProgress)*.10;
+      const verticalDrift=lerp(.18,-.12,fallProgress);
 
       scaleFigure.position.copy(anchor);
       scaleFigure.position.add(camRight.multiplyScalar(lateralDrift));
-      scaleFigure.position.y+=verticalOffset;
-      scaleFigure.scale.setScalar(1.48);
+      scaleFigure.position.add(camUp.multiplyScalar(verticalDrift));
+      scaleFigure.scale.setScalar(1.16);
 
       const faceCameraYaw=Math.atan2(
         camera.position.x-scaleFigure.position.x,
         camera.position.z-scaleFigure.position.z
       );
       scaleFigure.rotation.y=faceCameraYaw;
-      scaleFigure.rotation.x=-.10+fallProgress*.16;
-      scaleFigure.rotation.z=Math.sin(time*.86)*(1-fallProgress)*.055;
+      scaleFigure.rotation.x=-.05+fallProgress*.08;
+      scaleFigure.rotation.z=Math.sin(time*.62)*(1-fallProgress)*.025;
       scaleFigure.userData.updateFall?.(time,fallProgress);
+
+      fallExitPosition.copy(scaleFigure.position);
+      fallExitReady=true;
       landingImpact.visible=false;
     }else if(landingWindow){
       const local=clamp((chapterFloat-fallEnd)/Math.max(.001,(landingIndex+.72)-fallEnd),0,1);
@@ -470,10 +474,17 @@ function createWorld(data){
       const descent=clamp(local/impactAt,0,1);
       const recover=clamp((local-impactAt)/(1-impactAt),0,1);
 
-      // Final drop lands exactly on the dossier path.
-      const dropY=1.45*(1-smooth(descent));
-      scaleFigure.position.set(landingPoint.x,dropY,landingPoint.z);
-      scaleFigure.scale.setScalar(1.14);
+      // Blend from the last camera-space fall position into the actual world landing point.
+      const landingAir=new THREE.Vector3(landingPoint.x,1.35,landingPoint.z);
+      const ground=new THREE.Vector3(landingPoint.x,0,landingPoint.z);
+      const start=fallExitReady?fallExitPosition:landingAir;
+
+      if(local<impactAt){
+        scaleFigure.position.lerpVectors(start,landingAir,smooth(descent));
+      }else{
+        scaleFigure.position.lerpVectors(landingAir,ground,smooth(recover));
+      }
+      scaleFigure.scale.setScalar(1.06);
       scaleFigure.rotation.x=0;
       scaleFigure.rotation.z=0;
 
@@ -509,6 +520,7 @@ function createWorld(data){
       scaleFigure.userData.updateClimb?.(time,local);
     }else{
       landingImpact.visible=false;
+      fallExitReady=false;
       scaleFigure.scale.setScalar(.95);
       scaleFigure.position.set(fp.x,0,fp.z);
       scaleFigure.rotation.z=0;
