@@ -48,4 +48,13 @@ if(qa){document.getElementById('temp').textContent='17.0 °C';document.getElemen
 document.getElementById('fullscreenBtn').onclick=()=>document.documentElement.requestFullscreen?.();const initial=params.get('view');if(initial==='matrix')matrixBtn.click();else show(viewNames.includes(initial)?initial:'plant');
 const guide=document.getElementById('guide');if(params.get('guide')==='1'&&!qa){guide.style.display='grid';document.getElementById('guideClose').onclick=()=>guide.style.display='none'}
 window.__GAZA_MISSION_CONTROL__={schemaVersion:1,initialView:initial||'plant',guided:params.get('guide')==='1',fullscreenAvailable:!!document.documentElement.requestFullscreen,views:viewNames};
+</script><script type="module">
+import {processStore} from './runtime/processes/store.mjs';
+processStore.subscribe(({state,error})=>{
+ const el=document.getElementById('qualityBridgeState');
+ if(!el)return;
+ const l=state?.lots[processStore.selected];
+ el.textContent=l?l.id+' · '+(l.holds?'HOLD':'SIMULACIÓN V2')+' · descarga '+l.gates.admission.status+' · fabricación '+l.gates.manufacturing.status+' · expedición '+l.gates.dispatch.status:(error||'Procesos v2: iniciar en Workflow');
+ const title=document.querySelector('#qualityBridge > span');if(title)title.textContent='PROCESS LEDGER V2 · SIMULATED';
+});
 </script></body></html>

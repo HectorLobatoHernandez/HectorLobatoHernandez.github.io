@@ -9,10 +9,12 @@
     "qa:headed": "node ./tests/visual-qa.mjs --headed",
     "qa:ci": "node ./tests/visual-qa.mjs",
     "qa:manifest": "node ./tests/manifest-qa.mjs",
-    "qa:all": "npm run qa:manifest && npm run qa:domain && npm run qa && npm run qa:site",
+    "qa:all": "npm run qa:manifest && npm run qa:domain && npm run qa && npm run qa:site && npm run qa:process",
     "qa:domain": "node ./tests/domain-qa.mjs",
     "qa:site:core": "node --test ./tests/site-real-core.test.mjs",
-    "qa:site": "npm run qa:site:core && node ./tests/site-real-browser-qa.mjs"
+    "qa:site": "npm run qa:site:core && node ./tests/site-real-browser-qa.mjs",
+    "qa:process:core": "node --test ./tests/process-ledger.test.mjs",
+    "qa:process": "npm run qa:process:core && node ./tests/process-browser-qa.mjs"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
