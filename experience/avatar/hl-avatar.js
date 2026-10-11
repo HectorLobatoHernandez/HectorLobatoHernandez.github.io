@@ -1,6 +1,6 @@
 export function createHLAvatar(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_V10';
+  root.name='HL_AVATAR_V11';
   root.userData.reference='USER_SUPPLIED_PHOTOS_2026_10_11';
   root.userData.style='STYLIZED_REALTIME_HUMANOID';
 
@@ -89,34 +89,19 @@ export function createHLAvatar(THREE){
     torsoPivot.add(shoulder);
   }
 
-  // Carhartt chest patch
-  const makePatch=()=>{
-    const cv=document.createElement('canvas');
-    cv.width=420;cv.height=260;
-    const ctx=cv.getContext('2d');
-    ctx.clearRect(0,0,420,260);
-    ctx.fillStyle='#ffffff';
-    ctx.beginPath();
-    ctx.arc(122,92,62,0,Math.PI*2);
-    ctx.fill();
-    ctx.globalCompositeOperation='destination-out';
-    ctx.beginPath();
-    ctx.arc(150,74,46,0,Math.PI*2);
-    ctx.fill();
-    ctx.globalCompositeOperation='source-over';
-    ctx.fillStyle='#ffffff';
-    ctx.font='700 42px Arial';
-    ctx.textAlign='center';
-    ctx.fillText('carhartt.',215,195);
-    const tex=new THREE.CanvasTexture(cv);
-    tex.colorSpace=THREE.SRGBColorSpace;
-    return tex;
-  };
-  const patch=new THREE.Mesh(
-    new THREE.PlaneGeometry(.17,.105),
-    new THREE.MeshBasicMaterial({map:makePatch(),toneMapped:false})
+  // Carhartt chest patch — uses the real white logo supplied by the user.
+  const patchTexture=new THREE.TextureLoader().load(
+    'data:image/png;base64,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',
+    tex=>{
+      tex.colorSpace=THREE.SRGBColorSpace;
+      tex.minFilter=THREE.LinearFilter;
+    }
   );
-  patch.position.set(.145,.17,.202);
+  const patch=new THREE.Mesh(
+    new THREE.PlaneGeometry(.16,.17),
+    new THREE.MeshBasicMaterial({map:patchTexture,transparent:true,toneMapped:false,depthWrite:false})
+  );
+  patch.position.set(.145,.17,.203);
   torsoPivot.add(patch);
 
   // --- neck / head ---
@@ -149,18 +134,20 @@ export function createHLAvatar(THREE){
     headPivot.add(plug);
   }
 
-  // beard + moustache + goatee
-  const beard=sphere(.165,mats.beard,16);
-  beard.scale.set(.92,.44,.9);
-  beard.position.set(0,-.105,.115);
-  headPivot.add(beard);
-  const moustache=box(.18,.026,.026,mats.beard);
-  moustache.position.set(0,-.028,.187);
-  headPivot.add(moustache);
-  const goatee=cyl(.035,.022,.13,mats.beard,10);
-  goatee.rotation.x=Math.PI/2;
-  goatee.position.set(0,-.155,.18);
-  headPivot.add(goatee);
+  // Clean-shaven face so the mouth remains visible.
+  const mouthMat=new THREE.MeshStandardMaterial({color:0x7a443c,roughness:.72});
+  const mouth=new THREE.Mesh(new THREE.BoxGeometry(.085,.012,.012),mouthMat);
+  mouth.position.set(0,-.083,.192);
+  headPivot.add(mouth);
+
+  // Very subtle chin shadow only; no beard volume.
+  const chinShadow=new THREE.Mesh(
+    new THREE.CircleGeometry(.058,18),
+    new THREE.MeshBasicMaterial({color:0x352b27,transparent:true,opacity:.07})
+  );
+  chinShadow.position.set(0,-.145,.178);
+  chinShadow.scale.set(1,.48,1);
+  headPivot.add(chinShadow);
 
   // full curly hair shell + curls
   const hairCap=sphere(.205,mats.hair,18);
