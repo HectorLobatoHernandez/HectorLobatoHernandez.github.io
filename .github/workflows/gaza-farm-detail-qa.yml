@@ -29,9 +29,10 @@ jobs:
         run: |
           node --check runtime/farm/viewer.mjs
           node --check runtime/farm/world.mjs
+          node --check runtime/farm/refinements.mjs
           node --check runtime/processes/store.mjs
           node --check tests/farm-zamora-browser-qa.mjs
-          node --test tests/farm-zamora.test.mjs tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/process-ledger.test.mjs tests/lab-detail.test.mjs tests/site-real-core.test.mjs
+          node --test tests/farm-zamora.test.mjs tests/farm-refinement.test.mjs tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/process-ledger.test.mjs tests/lab-detail.test.mjs tests/site-real-core.test.mjs
       - name: Chromium
         run: npx playwright install --with-deps chromium
       - name: Start app
