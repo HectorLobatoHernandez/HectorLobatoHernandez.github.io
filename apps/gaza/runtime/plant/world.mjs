@@ -34,11 +34,23 @@ export function buildPlantDetail(T,world){
  e=equipment(p,'process','PROC.THERMAL','Tratamiento térmico','Sublínea genérica, sin receta atribuida',2,30,'PLANT.PROCESS');for(let i=0;i<22;i++)box(p,-3+i*.3,2.1,30,.16,3.5,4,m.steel);for(let i=0;i<4;i++){tube(p,14+i,3.3,32,.18,12,m.steel,Math.PI/2);tube(p,14+i,3.3,20,.18,3,m.steel,0,Math.PI/2)}
  tank(p,23,14,2.4,6);equipment(p,'process','PROC.BUFFER','Buffer de proceso','Depósito ilustrativo',23,9,'PLANT.PROCESS');monitor(p,-5,12);
  p=areas.get('cip').g;for(let z=22;z<=52;z+=10)tank(p,40,z,2,5);equipment(p,'cip','CIP.SKID','CIP / retorno','No concentra ni dosifica productos reales',40,61,'PLANT.CIP');
- p=areas.get('pack').g;for(let x=12;x<40;x+=19){equipment(p,'pack','PACK.FILL.'+x,'Llenadora / cerradora genérica','Sin proveedor/modelo atribuido',x,-10,'PLANT.PACK');box(p,x,3,-11,5,5,7,m.cream);box(p,x,3,-7.45,4.5,3,.12,m.glass);tube(p,x-2.5,4,-13,1.3,.8,m.cream,0,Math.PI/2);conveyor(p,x,-23,1.8,18);for(let k=0;k<12;k++)box(p,x,1.6,-15-k, .65,1,.55,m.cream)}
- const carton=mesh(root,boxes,m.blue,[12,1.6,-14],[.66,1,.58]);dynamic.push({o:carton,taskId:'PLANT.PACK',from:[12,1.6,-14],to:[12,1.6,-32]});
+ p=areas.get('pack').g;for(let x=12;x<40;x+=19){equipment(p,'pack','PACK.FILL.'+x,'Llenadora / cerradora genérica','Sin proveedor/modelo atribuido',x,-10,'PLANT.PACK');box(p,x,3,-11,5,5,7,m.cream);box(p,x,3,-7.45,4.5,3,.12,m.glass);tube(p,x-2.5,4,-13,1.3,.8,m.cream,0,Math.PI/2);conveyor(p,x,-23,1.8,18);for(let k=0;k<12;k++)box(p,x,1.6,-15-k,.65,1,.55,m.cream)}
+ const carton=mesh(areas.get('pack').g,boxes,m.blue,[12,1.6,-14],[.66,1,.58]);dynamic.push({o:carton,taskId:'PLANT.PACK',from:[12,1.6,-14],to:[12,1.6,-32]});
  p=areas.get('materials').g;for(let z=-26;z<=-8;z+=6)for(const x of [-10,-3])pallet(p,x,.4,z);name(p,'Stock auxiliar no medido',-6,4,-7,16);
  p=areas.get('pallet').g;conveyor(p,17,-43,2,12);equipment(p,'pallet','PALLET.ROBOT','Paletizado ilustrativo','Movimiento vinculado a almacenaje',28,-43,'WAREHOUSE.PUTAWAY');const arm=new T.Group();arm.position.set(28,1,-43);p.add(arm);box(arm,0,1.8,0,.6,3.6,.6,m.yellow);box(arm,1.7,3.4,0,3.4,.4,.5,m.yellow);dynamic.push({o:arm,taskId:'WAREHOUSE.PUTAWAY',rotation:true});
- p=areas.get('asrs').g;for(const x of [-6,7,27,40]){for(const z of [-101,-87,-73,-59])box(p,x,13,z,.3,26,.3,m.blue);for(let level=0;level<9;level++){const y=.8+level*2.8;for(let z=-101;z<=-59;z+=7){box(p,x,y,z,6,.2,6.5,m.yellow);pallet(p,x,y+.1,z,true)}}}
+ p=areas.get('asrs').g;
+ // Open steel frames and pallet runners, not solid plates. Bay/occupancy counts remain illustrative.
+ for(const x of [-6,7,27,40]){
+  for(let z=-104;z<=-55;z+=7)for(const side of [-1,1]){box(p,x+side*2.8,13,z,.25,26,.25,m.blue);for(let y=2;y<25;y+=5)box(p,x+side*2.8,y,z+.35,.16,.16,.7,m.steel)}
+  for(let level=0;level<9;level++){
+   const y=.8+level*2.8;
+   for(const side of [-1,1])box(p,x+side*2.8,y,-79.5,.18,.23,49,m.yellow);
+   for(let z=-100.5;z<-55;z+=7){
+    for(const dz of [-2.6,0,2.6])box(p,x,y,z+dz,5.6,.16,.14,m.yellow);
+    for(const side of [-1,1])for(const dz of [-1.8,0,1.8])pallet(p,x+side*1.35,y+.05,z+dz,true);
+   }
+  }
+ }
  const lift=mesh(p,boxes,m.red,[17,1.1,-81],[4,.6,4]);dynamic.push({o:lift,taskId:'WAREHOUSE.PUTAWAY',from:[17,1.1,-81],to:[17,23.5,-81]});name(p,'9 niveles · referencia Esnova / calles propuestas',17,28,-81,46);
  p=areas.get('shipping').g;for(let z=-99;z<=-49;z+=15){pallet(p,61,.5,z);box(p,61,1.6,z,3,.1,5,m.yellow)}equipment(p,'shipping','SHIP.CONTROL','Control de salida','Verifica decisión de expedición',62,-49,'DISPATCH.LOAD');
  for(const id of ['frontdesk','administration','meeting']){p=areas.get(id).g;const d=areas.get(id).d;if(id==='meeting'){box(p,-26,1.1,d.z,10,.2,2.5,m.wood);for(let i=0;i<5;i++)box(p,-30+i*2,.7,d.z-2,.7,.15,.6,m.blue)}else{for(let z=d.z-d.d/2+3;z<d.z+d.d/2-1;z+=4)for(const x of [-31,-24])monitor(p,x,z);equipment(p,id,'ADMIN.'+id,d.title,'Dossier derivado; no réplica de ERP',-20,d.z)}}
@@ -51,12 +63,12 @@ export function buildPlantDetail(T,world){
  pipe([[22,6,88],[24,6,63],[0,6,63],[0,4,55],[16,4,55],[16,4,30],[23,4,14]],0xe9e7ce,'PLANT.PROCESS');
  pipe([[23,4,14],[23,4,0],[12,4,0],[12,3,-10]],0x89cdb7,'PLANT.PACK');
  pipe([[40,2,61],[32,2,61],[32,3,27],[2,3,27]],0xe9b460,'PLANT.CIP');
- const helper=new T.Object3D();for(const b of batches.values()){const inst=new T.InstancedMesh(b.geo,b.mat,b.items.length);b.items.forEach((t,i)=>{helper.position.set(...t.pos);helper.scale.set(...t.scale);helper.rotation.set(...t.rotation);helper.updateMatrix();inst.setMatrixAt(i,helper.matrix)});inst.castShadow=true;inst.receiveShadow=true;inst.instanceMatrix.needsUpdate=true;b.p.add(inst)}
+ const helper=new T.Object3D();for(const b of batches.values()){const inst=new T.InstancedMesh(b.geo,b.mat,b.items.length);b.items.forEach((t,i)=>{helper.position.set(...t.pos);helper.scale.set(...t.scale);helper.rotation.set(...t.rotation);helper.updateMatrix();inst.setMatrixAt(i,dummyFix(helper))});inst.castShadow=true;inst.receiveShadow=true;b.p.add(inst)}
+ function dummyFix(helper){return helper.matrix}
  const outline=mesh(root,boxes,new T.MeshBasicMaterial({color:0xf2c564,wireframe:true}),[17,1,0],[66,1,220]);
  function pathAt(points,t){let lengths=points.slice(1).map((b,i)=>new T.Vector3(...b).distanceTo(new T.Vector3(...points[i]))),dist=t*lengths.reduce((a,b)=>a+b,0);for(let i=0;i<lengths.length;i++){if(dist<=lengths[i]||i===lengths.length-1)return new T.Vector3(...points[i]).lerp(new T.Vector3(...points[i+1]),lengths[i]?Math.min(1,dist/lengths[i]):0);dist-=lengths[i]}}
  let selected='process',isolated=false,flowVisible=true,last=null,signsApplied=false;
  function resolveSigns(){if(signsApplied)return;const old=world.shell.children.find(o=>o.geometry?.type==='PlaneGeometry'&&o.material?.map&&Math.abs(o.position.x+16.25)<.01&&Math.abs(o.position.y-22)<.01);if(!old)return;SIGN_PLACEMENTS.forEach((d,i)=>{const o=i===0?old:new T.Mesh(new T.PlaneGeometry(...d.size),old.material);o.position.set(...d.position);o.rotation.y=d.rotationY;o.name=d.id;o.userData={id:d.id,title:d.surface,description:'Posición fotointerpretada, sin medida. SVG existente de referencia, no vector oficial verificado.',provenance:'INFERRED_RECONSTRUCTION'};if(i)world.shell.add(o);world.selectable.push(o)});signsApplied=true;}
-
  function visibility(){for(const [id,a]of areas)a.g.visible=!isolated||id===selected;for(const f of flows)f.p.visible=flowVisible&&!isolated;const a=areas.get(selected).d;outline.position.set(a.x,.7,a.z);outline.scale.set(a.w+.2,.6,a.d+.2);outline.visible=world.interior.visible&&selected!=='parking'}
  function update(v){last=v;for(const device of machines){const status=v.tasks?.[device.taskId]?.state;device.led.material.color.setHex(status==='RUNNING'?0x3ebd91:['HELD','UNAVAILABLE','WAIT_GATE'].includes(status)?0xd45d55:status==='DONE'?0x67b892:0x657b86)}for(const a of dynamic){const t=v.tasks?.[a.taskId],progress=t?.progress||0;if(a.rotation)a.o.rotation.y=-progress*Math.PI*.7;else a.o.position.lerpVectors(new T.Vector3(...a.from),new T.Vector3(...a.to),progress);a.o.visible=!!t&&t.state!=='PENDING'&&t.progress>0}
   for(const f of flows){const t=v.tasks?.[f.taskId];f.bead.visible=t?.state==='RUNNING';if(t)f.bead.position.copy(pathAt(f.points,t.progress))}for(const person of workers){const d=v.departments.find(d=>d.id===person.dept);person.arms.forEach((arm,i)=>arm.rotation.x=d?.status==='RUNNING'?.25+Math.sin(v.seconds*1.8+i)*.22:0)}visibility();
