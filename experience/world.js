@@ -246,6 +246,10 @@ function createWorld(data){
   let targetProgress=0;
   let renderProgress=0;
   let pointerX=0,pointerY=0;
+  let lastScrollY=scrollY;
+  let scrollDirection=1;
+  let lastScrollAt=0;
+  let scrollImpulse=0;
 
   function setPanel(index){
     const ch=chapters[index];
@@ -301,8 +305,17 @@ function createWorld(data){
   }
 
   function updateScroll(){
+    const currentY=scrollY;
+    const deltaY=currentY-lastScrollY;
+    if(Math.abs(deltaY)>.5){
+      scrollDirection=deltaY>0?1:-1;
+      scrollImpulse=Math.min(1,Math.abs(deltaY)/80);
+      lastScrollAt=performance.now();
+    }
+    lastScrollY=currentY;
+
     const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
-    targetProgress=clamp(scrollY/max,0,1);
+    targetProgress=clamp(currentY/max,0,1);
     const chapterFloat=targetProgress*(chapters.length-1);
     const nextActive=clamp(Math.round(chapterFloat),0,chapters.length-1);
     if(nextActive!==activeIndex)setPanel(nextActive);
@@ -365,7 +378,12 @@ function createWorld(data){
     const ahead=curve.getPointAt(clamp(figureT+.006,0,1));
     scaleFigure.rotation.y=Math.atan2(ahead.x-fp.x,ahead.z-fp.z);
     const scrollVelocity=Math.abs(targetProgress-renderProgress);
-    scaleFigure.userData.update?.(time,1+Math.min(1.5,scrollVelocity*28));
+    const recentlyScrolled=(performance.now()-lastScrollAt)<190;
+    const moving=recentlyScrolled||scrollVelocity>.00022;
+    const walkDirection=moving?scrollDirection:0;
+    const walkSpeed=.75+Math.min(1.65,scrollVelocity*36+scrollImpulse*.9);
+    scaleFigure.userData.update?.(time,walkDirection,walkSpeed);
+    scrollImpulse*=.88;
 
     ambientPoints.rotation.y=time*.004;
 
