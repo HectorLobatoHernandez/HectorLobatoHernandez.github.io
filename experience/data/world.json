@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "title": "HL Portfolio World",
-  "status": "PROTOTYPE_V0_3_IMMERSIVE_GAZA_JOURNEY",
+  "status": "PROTOTYPE_V0_4_RHB_HERITAGE_AVATAR",
   "note": "Isolated experience prototype. The stable dossier at /index.html is not modified.",
   "chapters": [
     {
@@ -26,29 +26,77 @@
       }
     },
     {
-      "id": "rhb",
+      "id": "rhb-heritage",
       "order": 1,
+      "navLabel": "RHB / ORIGIN",
+      "kicker": "01 / RHB · ORIGIN",
+      "title": "RUFINO HERNÁNDEZ BARBA",
+      "subtitle": "Family metalwork · iron · architectural structures",
+      "body": "El viaje entra en Zamora desde el oficio. RHB nace como taller familiar de carpintería metálica, hierro y estructuras para arquitectura: perfiles, corte, soldadura, montaje y fabricación real.",
+      "visual": "../assets/visuals/rhb-monogram.svg",
+      "caseHref": "../projects/rhb-studio.html",
+      "liveHref": null,
+      "islandHref": "./rhb/",
+      "environment": "rhb",
+      "portal": false,
+      "world": {
+        "x": -2.6,
+        "y": 1.55,
+        "z": -5.8,
+        "lookX": -3,
+        "lookY": 1.45,
+        "lookZ": -11.7
+      }
+    },
+    {
+      "id": "rhb-workshop",
+      "order": 2,
+      "navLabel": "RHB / WORKSHOP",
+      "kicker": "01.1 / WORKSHOP",
+      "title": "THE METAL SHOP",
+      "subtitle": "Steel profiles · cutting · drilling · welding · assembly",
+      "body": "Dentro del taller aparecen los procesos que sostienen el oficio: almacenamiento de perfiles, bancos, sierra, taladro, soldadura, estructuras y preparación para obra.",
+      "visual": "../assets/visuals/rhb-gate-case.svg",
+      "caseHref": "../projects/rhb-studio.html",
+      "liveHref": null,
+      "islandHref": "./rhb/",
+      "environment": "rhb",
+      "portal": false,
+      "world": {
+        "x": -1.8,
+        "y": 1.55,
+        "z": -8.4,
+        "lookX": -2.7,
+        "lookY": 1.4,
+        "lookZ": -13.8
+      }
+    },
+    {
+      "id": "rhb-studio",
+      "order": 3,
       "navLabel": "RHB STUDIO",
-      "kicker": "01 / ENGINEERING PLATFORM",
+      "kicker": "01.2 / EVOLUTION",
       "title": "RHB STUDIO",
-      "subtitle": "Local-first project operating system",
-      "body": "Survey, CAD, BOM, fabricación, documentación y agentes IA conectados alrededor del estado real de cada proyecto.",
+      "subtitle": "Craft → CAD → fabrication → automation → agents",
+      "body": "El taller se convierte en plataforma: levantamiento, CAD, ingeniería, presupuestos, fabricación, documentación y agentes IA conectados al proyecto real.",
       "visual": "../assets/visuals/rhb-studio-system.svg",
       "caseHref": "../projects/rhb-studio.html",
       "liveHref": "../apps/rhb/",
-      "environment": "dark",
+      "islandHref": "./rhb/",
+      "environment": "rhb",
+      "portal": false,
       "world": {
-        "x": -1.6,
-        "y": 1.7,
-        "z": -5,
-        "lookX": -2.6,
-        "lookY": 1.8,
-        "lookZ": -12
+        "x": -0.7,
+        "y": 1.65,
+        "z": -11.2,
+        "lookX": -2,
+        "lookY": 1.7,
+        "lookZ": -15.1
       }
     },
     {
       "id": "gaza-arrival",
-      "order": 2,
+      "order": 4,
       "navLabel": "GAZA / ARRIVAL",
       "kicker": "02 / GAZA · ARRIVAL",
       "title": "ENTER ZAMORA",
@@ -69,7 +117,7 @@
     },
     {
       "id": "gaza-zamora",
-      "order": 3,
+      "order": 5,
       "navLabel": "GAZA / ZAMORA",
       "kicker": "02.1 / ZAMORA",
       "title": "THE WALLED CITY",
@@ -90,7 +138,7 @@
     },
     {
       "id": "gaza-duero",
-      "order": 4,
+      "order": 6,
       "navLabel": "GAZA / DUERO",
       "kicker": "02.2 / DUERO",
       "title": "RIVER / BRIDGE / LAND",
@@ -111,7 +159,7 @@
     },
     {
       "id": "gaza-territory",
-      "order": 5,
+      "order": 7,
       "navLabel": "GAZA / LAND",
       "kicker": "02.3 / TERRITORY",
       "title": "FIELDS / VINEYARDS",
@@ -132,7 +180,7 @@
     },
     {
       "id": "gaza-plant",
-      "order": 6,
+      "order": 8,
       "navLabel": "GAZA / PLANT",
       "kicker": "02.4 / OPERATIONS",
       "title": "GAZA PLANT",
@@ -155,7 +203,7 @@
     },
     {
       "id": "gaza-farm",
-      "order": 7,
+      "order": 9,
       "navLabel": "GAZA / FARM",
       "kicker": "02.5 / FARM",
       "title": "THE FARM",
@@ -178,7 +226,7 @@
     },
     {
       "id": "club-del-mar",
-      "order": 8,
+      "order": 10,
       "navLabel": "CLUB DEL MAR",
       "kicker": "03 / HOSPITALITY · SYSTEMS",
       "title": "CLUB DEL MAR",

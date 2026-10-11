@@ -82,3 +82,12 @@ a{color:inherit}
 @media(max-width:980px){
   .project-panel--gaza{width:min(520px,88vw)}
 }
+
+
+/* V0.4 · RHB heritage / workshop */
+.world-section--rhb{min-height:110vh}
+.project-panel--rhb{width:min(410px,31vw);background:rgba(20,16,12,.62);border-color:rgba(214,164,103,.24)}
+.project-panel--rhb .project-panel__media{display:none}
+.project-panel--rhb .project-panel__subtitle{color:#d4b07b}
+.project-panel--rhb .project-panel__body{color:#b5ada1}
+@media(max-width:980px){.project-panel--rhb{width:min(520px,88vw)}}
