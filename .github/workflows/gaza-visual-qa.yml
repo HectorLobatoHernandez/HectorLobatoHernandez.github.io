@@ -7,12 +7,14 @@ on:
       - 'apps/gaza/**'
       - '.github/workflows/gaza-visual-qa.yml'
       - 'tools/blender/**'
+      - 'tools/gaza/**'
       - 'tools/BUILD_GAZA_GLBS.ps1'
   pull_request:
     paths:
       - 'apps/gaza/**'
       - '.github/workflows/gaza-visual-qa.yml'
       - 'tools/blender/**'
+      - 'tools/gaza/**'
       - 'tools/BUILD_GAZA_GLBS.ps1'
   workflow_dispatch:
 
@@ -53,7 +55,11 @@ jobs:
           node --check ./tests/operations-thread-qa.mjs
           node ./tests/operations-thread-qa.mjs
           node --check ./runtime/public-gis-overlay.js
+          node --check ./runtime/site-real-app.mjs
+          node --check ./runtime/site-real-world.mjs
+          npm run qa:site:core
           python -m py_compile ../../tools/blender/GAZA_BUILD_WORKER_GLBS.py
+          python -m unittest discover -s tests -p 'test_site_real.py'
           npm run qa:manifest
           npm run qa:domain
       - name: Install Chromium
@@ -68,6 +74,8 @@ jobs:
           done
           cat /tmp/gaza-http.log
           exit 1
+      - name: Site Real browser QA
+        run: node ./tests/site-real-browser-qa.mjs
       - name: Run deterministic visual QA
         run: |
           npm run qa
