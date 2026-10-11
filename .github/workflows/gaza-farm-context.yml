@@ -1,7 +1,5 @@
 name: GAZA Zamora context discovery
 on:
-  pull_request:
-    paths: ['tools/gaza/collect-zamora-farm-context.mjs', '.github/workflows/gaza-farm-context.yml']
   workflow_dispatch:
 permissions:
   contents: read

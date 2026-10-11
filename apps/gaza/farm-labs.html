@@ -12,7 +12,7 @@ document.querySelector('#simClock').textContent='Reloj del registro compartido v
 async function publicWeather(){
  const label=document.querySelector('#weatherDisplay');
  if(qa){label.textContent='Fixture QA · 17 °C · 8 km/h (no dato observado)';return}
- const coords=mode==='farm'?[41.506,-5.744]:[41.52355,-5.59993];
+ const coords=mode==='farm'?[41.5013093,-5.7585331]:[41.52355,-5.59993];
  label.textContent='Open-Meteo · consultando datos del entorno (no sensor instalado)';
  try{
   const uri='https://api.open-meteo.com/v1/forecast?latitude='+coords[0]+'&longitude='+coords[1]+'&current=temperature_2m,wind_speed_10m,precipitation&timezone=Europe%2FMadrid';
@@ -76,6 +76,9 @@ try{
  if(mode==='labs'){
   const {mountLabViewer}=await import('./runtime/labs/viewer.mjs');
   visual=mountLabViewer({mount:document.querySelector('#world'),side,onSelect:select,getState:()=>processState,getLotId:()=>processStore.selected});
+ }else if(mode==='farm'&&params.get('legacy')!=='1'){
+  const {mountFarmViewer}=await import('./runtime/farm/viewer.mjs');
+  visual=mountFarmViewer({mount:document.querySelector('#world'),side,onSelect:select,store:processStore});
  }else{
  const THREE=await import('three');
  const mount=document.querySelector('#world'),scene=new THREE.Scene();scene.background=new THREE.Color('#101e2b');scene.fog=new THREE.Fog('#101e2b',35,85);

@@ -1,0 +1,54 @@
+name: GAZA historic farm QA
+on:
+  pull_request:
+    paths: ['apps/gaza/**', '.github/workflows/gaza-farm-detail-qa.yml']
+  push:
+    branches: [main]
+    paths: ['apps/gaza/**', '.github/workflows/gaza-farm-detail-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gaza-farm-detail-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  historic-farm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: apps/gaza
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Dependencies
+        run: npm install --no-audit --no-fund
+      - name: Geometry, network, ledger and regression tests
+        run: |
+          node --check runtime/farm/viewer.mjs
+          node --check runtime/farm/world.mjs
+          node --check runtime/processes/store.mjs
+          node --check tests/farm-zamora-browser-qa.mjs
+          node --test tests/farm-zamora.test.mjs tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/process-ledger.test.mjs tests/lab-detail.test.mjs tests/site-real-core.test.mjs
+      - name: Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start app
+        run: |
+          npm run dev >/tmp/farm-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/farm-labs.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/farm-http.log
+          exit 1
+      - name: Historic farm browser QA
+        run: node tests/farm-zamora-browser-qa.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-historic-farm-${{ github.run_number }}
+          path: apps/gaza/.qa/farm-zamora/
+          include-hidden-files: true
+          retention-days: 14
