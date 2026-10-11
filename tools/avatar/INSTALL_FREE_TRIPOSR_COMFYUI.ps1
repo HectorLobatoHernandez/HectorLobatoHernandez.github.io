@@ -1,14 +1,26 @@
 $ErrorActionPreference = "Stop"
 
 Write-Host ""
-Write-Host "=== RHB AVATAR FREE 3D PIPELINE ===" -ForegroundColor Cyan
-Write-Host "Installing ComfyUI-3D-Pack + TripoSR locally" -ForegroundColor Cyan
+Write-Host "=== RHB AVATAR FREE 3D PIPELINE V2 ===" -ForegroundColor Cyan
+Write-Host "ComfyUI + Flowty TripoSR / local / no subscription" -ForegroundColor Cyan
 Write-Host ""
 
 $UserHome = $env:USERPROFILE
+$InstallRoot = Join-Path $UserHome "Desktop\ComfyUI_RHB"
+$Comfy = $InstallRoot
+$Venv = Join-Path $Comfy ".venv"
+$VenvPython = Join-Path $Venv "Scripts\python.exe"
+
+function Assert-LastExitCode([string]$Step) {
+    if ($LASTEXITCODE -ne 0) {
+        throw "$Step failed with exit code $LASTEXITCODE"
+    }
+}
+
 $candidates = @(
     "$UserHome\ComfyUI",
     "$UserHome\Desktop\ComfyUI",
+    "$UserHome\Desktop\ComfyUI_RHB",
     "$UserHome\Documents\ComfyUI",
     "$UserHome\Downloads\ComfyUI",
     "$UserHome\Pinokio\api\comfyui.git\app",
@@ -17,92 +29,134 @@ $candidates = @(
     "$UserHome\Downloads\ComfyUI_windows_portable\ComfyUI"
 )
 
-$comfy = $null
-foreach ($p in $candidates) {
-    if (Test-Path (Join-Path $p "main.py")) {
-        $comfy = $p
-        break
+$existing = $candidates |
+    Where-Object { Test-Path (Join-Path $_ "main.py") } |
+    Select-Object -First 1
+
+if ($existing) {
+    $Comfy = $existing
+    Write-Host "[OK] Existing ComfyUI: $Comfy" -ForegroundColor Green
+}
+else {
+    Write-Host "ComfyUI not found. Installing isolated copy:" -ForegroundColor Yellow
+    Write-Host "  $InstallRoot" -ForegroundColor Yellow
+
+    if (-not (Test-Path $InstallRoot)) {
+        git clone https://github.com/Comfy-Org/ComfyUI.git $InstallRoot
+        Assert-LastExitCode "ComfyUI clone"
+    }
+
+    if (-not (Test-Path (Join-Path $InstallRoot "main.py"))) {
+        throw "COMFYUI_INSTALL_FAILED"
+    }
+
+    $Comfy = $InstallRoot
+}
+
+$Venv = Join-Path $Comfy ".venv"
+$VenvPython = Join-Path $Venv "Scripts\python.exe"
+$CustomNodes = Join-Path $Comfy "custom_nodes"
+$TripoNode = Join-Path $CustomNodes "ComfyUI-Flowty-TripoSR"
+$ModelDir = Join-Path $Comfy "models\checkpoints"
+$ModelPath = Join-Path $ModelDir "triposr-model.ckpt"
+
+if (-not (Test-Path $VenvPython)) {
+    Write-Host "Creating isolated Python 3.12 environment..." -ForegroundColor Yellow
+
+    $py = Get-Command py -ErrorAction SilentlyContinue
+    if ($py) {
+        & py -3.12 -c "import sys; print(sys.executable)"
+        if ($LASTEXITCODE -eq 0) {
+            & py -3.12 -m venv $Venv
+            Assert-LastExitCode "Python venv creation"
+        }
+    }
+
+    if (-not (Test-Path $VenvPython)) {
+        $python = Get-Command python -ErrorAction SilentlyContinue
+        if (-not $python) { throw "PYTHON_3_12_NOT_FOUND" }
+
+        $ver = & $python.Source -c "import sys; print(str(sys.version_info.major)+'.'+str(sys.version_info.minor))"
+        if ($ver -ne "3.12") { throw "PYTHON_3_12_NOT_FOUND" }
+
+        & $python.Source -m venv $Venv
+        Assert-LastExitCode "Python venv creation"
     }
 }
 
-if (-not $comfy) {
-    Write-Host "ComfyUI not found in common locations. Searching user profile..." -ForegroundColor Yellow
-    $hit = Get-ChildItem $UserHome -Directory -Recurse -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -eq "ComfyUI" -and (Test-Path (Join-Path $_.FullName "main.py")) } |
-        Select-Object -First 1
-    if ($hit) { $comfy = $hit.FullName }
-}
+Write-Host "[OK] Python: $VenvPython" -ForegroundColor Green
 
-if (-not $comfy) {
-    throw "COMFYUI_NOT_FOUND"
-}
+& $VenvPython -m pip install --upgrade pip setuptools wheel
+Assert-LastExitCode "pip bootstrap"
 
-Write-Host "[OK] ComfyUI: $comfy" -ForegroundColor Green
-
-$customNodes = Join-Path $comfy "custom_nodes"
-New-Item -ItemType Directory -Force -Path $customNodes | Out-Null
-
-$pack = Join-Path $customNodes "ComfyUI-3D-Pack"
-
-if (-not (Test-Path $pack)) {
-    Write-Host "Cloning ComfyUI-3D-Pack..." -ForegroundColor Yellow
-    git clone https://github.com/MrForExample/ComfyUI-3D-Pack.git $pack
-} else {
-    Write-Host "Updating ComfyUI-3D-Pack..." -ForegroundColor Yellow
-    git -C $pack pull
-}
-
-$pythonCandidates = @(
-    (Join-Path (Split-Path $comfy -Parent) "python_embeded\python.exe"),
-    (Join-Path $comfy "python_embeded\python.exe"),
-    (Join-Path $comfy ".venv\Scripts\python.exe"),
-    (Join-Path (Split-Path $comfy -Parent) ".venv\Scripts\python.exe")
-)
-
-$python = $pythonCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-
-if (-not $python) {
-    $cmd = Get-Command python -ErrorAction SilentlyContinue
-    if ($cmd) { $python = $cmd.Source }
-}
-
-if (-not $python) {
-    throw "PYTHON_NOT_FOUND_FOR_COMFYUI"
-}
-
-Write-Host "[OK] Python: $python" -ForegroundColor Green
-
-Write-Host ""
-Write-Host "Running ComfyUI-3D-Pack installer..." -ForegroundColor Yellow
-Push-Location $pack
+$cudaReady = $false
 try {
-    & $python install.py
-    if ($LASTEXITCODE -ne 0) {
-        throw "COMFY3D_INSTALL_FAILED_$LASTEXITCODE"
+    $cudaCheck = & $VenvPython -c "import torch; print(torch.cuda.is_available())" 2>$null
+    if ($LASTEXITCODE -eq 0 -and $cudaCheck -contains "True") {
+        $cudaReady = $true
     }
 }
-finally {
-    Pop-Location
+catch {}
+
+if (-not $cudaReady) {
+    Write-Host "Installing NVIDIA CUDA PyTorch..." -ForegroundColor Yellow
+    & $VenvPython -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+    Assert-LastExitCode "PyTorch CUDA install"
 }
 
-# Low-VRAM defaults for GTX 1660 SUPER 6 GB.
-$configDir = Join-Path $pack "configs"
-if (Test-Path $configDir) {
-    Write-Host "[OK] 3D Pack config directory detected." -ForegroundColor Green
+Write-Host "Installing ComfyUI dependencies..." -ForegroundColor Yellow
+& $VenvPython -m pip install -r (Join-Path $Comfy "requirements.txt")
+Assert-LastExitCode "ComfyUI requirements"
+
+New-Item -ItemType Directory -Force -Path $CustomNodes | Out-Null
+
+if (-not (Test-Path $TripoNode)) {
+    Write-Host "Installing lightweight Flowty TripoSR..." -ForegroundColor Yellow
+    git clone https://github.com/flowtyone/ComfyUI-Flowty-TripoSR.git $TripoNode
+    Assert-LastExitCode "Flowty TripoSR clone"
+}
+else {
+    Write-Host "Updating Flowty TripoSR..." -ForegroundColor Yellow
+    git -C $TripoNode pull
+    Assert-LastExitCode "Flowty TripoSR update"
 }
 
-$inputDir = Join-Path $comfy "input"
-$outputDir = Join-Path $comfy "output"
-New-Item -ItemType Directory -Force -Path $inputDir | Out-Null
-New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
+& $VenvPython -m pip install -r (Join-Path $TripoNode "requirements.txt")
+Assert-LastExitCode "TripoSR requirements"
+
+& $VenvPython -m pip install rembg onnxruntime
+Assert-LastExitCode "rembg install"
+
+New-Item -ItemType Directory -Force -Path $ModelDir | Out-Null
+
+if (-not (Test-Path $ModelPath)) {
+    Write-Host "Downloading TripoSR checkpoint..." -ForegroundColor Yellow
+    $downloadCode = "from huggingface_hub import hf_hub_download; import shutil; src=hf_hub_download(repo_id='stabilityai/TripoSR', filename='model.ckpt'); shutil.copy2(src, r'$ModelPath'); print(r'$ModelPath')"
+    & $VenvPython -c $downloadCode
+    Assert-LastExitCode "TripoSR model download"
+}
+
+Write-Host "Verifying GPU..." -ForegroundColor Yellow
+& $VenvPython -c "import torch; print('TORCH='+torch.__version__); print('CUDA_AVAILABLE='+str(torch.cuda.is_available())); print('GPU='+(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')); print('VRAM_GB='+(str(round(torch.cuda.get_device_properties(0).total_memory/1024**3,2)) if torch.cuda.is_available() else '0'))"
+Assert-LastExitCode "CUDA verification"
+
+$Launcher = Join-Path $Comfy "START_RHB_TRIPOSR.ps1"
+$launcherLines = @(
+    '$ErrorActionPreference = "Stop"',
+    'Set-Location "' + $Comfy + '"',
+    '& "' + $VenvPython + '" main.py --lowvram'
+)
+Set-Content -Path $Launcher -Value $launcherLines -Encoding UTF8
 
 Write-Host ""
 Write-Host "RHB_TRIPOSR_LOCAL_READY=True" -ForegroundColor Green
-Write-Host "COMFYUI_ROOT=$comfy"
-Write-Host "INPUT_DIR=$inputDir"
-Write-Host "OUTPUT_DIR=$outputDir"
+Write-Host "COMFYUI_ROOT=$Comfy"
+Write-Host "PYTHON=$VenvPython"
+Write-Host "TRIPOSR_NODE=$TripoNode"
+Write-Host "TRIPOSR_MODEL=$ModelPath"
+Write-Host "LAUNCHER=$Launcher"
 Write-Host ""
-Write-Host "Use TripoSR with low VRAM settings:" -ForegroundColor Cyan
-Write-Host "  chunk size: 2048 (or 1024 if CUDA OOM)"
-Write-Host "  marching cubes: 192 first test, then 256"
-Write-Host "  output: GLB"
+Write-Host "GTX 1660 SUPER defaults:" -ForegroundColor Cyan
+Write-Host "  chunk_size = 1024"
+Write-Host "  geometry_resolution = 192"
+Write-Host "  threshold = 25"
