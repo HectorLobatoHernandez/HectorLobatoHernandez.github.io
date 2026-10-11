@@ -24,6 +24,9 @@ try{
  const exported=page.waitForEvent('download');await page.locator('#lifeExport').click();const dl=await exported,filename=path.join(out,'herd-scenario.json');await dl.saveAs(filename);const report=JSON.parse(await fs.readFile(filename,'utf8'));assert.equal(report.provenance,'CALCULATED_SCENARIO_NOT_REAL_CENSUS');assert.equal(report.plans[0].productive,320);checks.push('weighted-census-export-provenance');
  await page.locator('#lifeTruck').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'05-tanker-uniforms.png')});
  await page.locator('#farmOverview').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'06-meadow-buildings.png')});const render=await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.render);assert(render.calls<1800);assert(render.triangles<5e6);
- await page.setViewportSize({width:390,height:844});await page.waitForTimeout(200);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'07-mobile.png')});checks.push('render-budget-mobile');
+ const previousWidth=await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.lastDrawnSize.width);
+ await page.setViewportSize({width:390,height:844});
+ await page.waitForFunction(old=>{const d=window.__GAZA_FARM_DETAIL__,c=document.querySelector('#world canvas');return d?.lastDrawnSize&&d.lastDrawnSize.width!==old&&d.lastDrawnSize.width===c.width&&d.lastDrawnSize.height===c.height},previousWidth);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'07-mobile.png')});checks.push('render-budget-mobile-resize-repaint');
  assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors,render,referenceDate:report.reference.date},null,2));console.log('FARM LIFE BROWSER QA PASS',checks);
 }catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(e)},null,2));throw e}finally{await browser.close()}
