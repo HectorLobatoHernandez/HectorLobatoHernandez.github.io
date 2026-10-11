@@ -7,9 +7,9 @@ import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url),threeRoot=path.dirname(path.dirname(require.resolve('three')));
 const base=process.env.GAZA_URL||'http://127.0.0.1:4173',out=path.resolve('.qa/process-v2');
 await fs.mkdir(out,{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});const checks=[],errors=[];
+const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});const checks=[],errors=[],warnings=[];let context;
 try{
- const context=await browser.newContext({viewport:{width:1440,height:1000}});
+ context=await browser.newContext({viewport:{width:1440,height:1000}});
  await context.route('https://cdn.jsdelivr.net/npm/three@0.180.0/**',async r=>{
   const rel=r.request().url().split('/three@0.180.0/')[1];if(!rel||rel.includes('..'))return r.abort();
   return r.fulfill({body:await fs.readFile(path.join(threeRoot,rel)),contentType:'text/javascript'});
@@ -37,7 +37,7 @@ try{
  await labs.waitForFunction(()=>window.__GAZA_PROCESS_STATE__.lots['SIM-BOV-001'].holds);
  assert.equal(await labs.evaluate(()=>window.__GAZA_PROCESS_STATE__.lots['SIM-OVI-001'].holds),false);checks.push('hold-is-lot-specific');
  assert(await flow.locator('[data-process-panel] [data-gate="dispatch"]').isDisabled());checks.push('independent-quality-gates');
- const site=await context.newPage();site.on('pageerror',e=>errors.push(e.message));await site.goto(base+'/site-real-preview.html?qa=1');
+ const site=await context.newPage();site.on('console',m=>{if(['warning','error'].includes(m.type()))warnings.push(m.text())});site.on('pageerror',e=>errors.push(e.message));await site.goto(base+'/site-real-preview.html?qa=1');
  await site.waitForFunction(()=>window.__GAZA_SITE_REAL__?.process?.held&&window.__GAZA_SITE_REAL__?.render?.calls>0);
  const position=await site.evaluate(()=>window.__GAZA_SITE_REAL__.actors[0].position);await site.waitForTimeout(400);
  assert.deepEqual(await site.evaluate(()=>window.__GAZA_SITE_REAL__.actors[0].position),position);checks.push('Site-Real-hold-binding');
@@ -45,4 +45,4 @@ try{
  await flow.setViewportSize({width:390,height:844});assert(await flow.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  await flow.screenshot({path:path.join(out,'workflow-mobile.png'),fullPage:true});checks.push('mobile-layout');
  assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors},null,2));console.log('PROCESS V2 BROWSER QA PASS',checks);
-}catch(e){await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(e)},null,2));throw e}finally{await browser.close()}
+}catch(e){const diagnostics=[];for(const [i,p]of (context?.pages()||[]).entries()){try{const state=await p.evaluate(()=>({url:location.href,fallback:document.querySelector('#fallback')?.textContent,site:window.__GAZA_SITE_REAL__,processError:window.__GAZA_PROCESS_ERROR__,visibility:document.visibilityState,render:window.__GAZA_RENDER_STATS__}));diagnostics.push(state);await p.screenshot({path:path.join(out,'failure-'+i+'.png'),timeout:5000})}catch(x){diagnostics.push({error:String(x)})}}await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,warnings,diagnostics,error:String(e)},null,2));throw e}finally{await browser.close()}

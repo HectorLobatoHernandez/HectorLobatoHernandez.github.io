@@ -16,6 +16,7 @@ export function validateAssumptions(a){
 export function sizeHerd(grossL,yieldL,days,share){
  if(!Number.isSafeInteger(grossL)||grossL<0||!positive(yieldL)||!positive(days,366)||!positive(share,1))throw Error('Balance de censo no válido');
  const productive=Math.ceil(grossL/(yieldL*days)),adultFemales=Math.ceil(productive/share);
+ if(!Number.isSafeInteger(productive)||!Number.isSafeInteger(adultFemales)||!Number.isFinite(productive*yieldL*days))throw Error('Hipótesis fuera del rango numérico: revisa periodo y rendimientos.');
  return {grossL,productive,adultFemales,nonLactating:adultFemales-productive,potentialL:productive*yieldL*days,
   yieldLPerLactatingFemalePerDay:yieldL,days,lactatingShare:share,provenance:'CALCULATED_SCENARIO_NOT_CENSUS'};
 }
@@ -41,7 +42,6 @@ export function herdPlan(view,assumptions=DEFAULTS){
   const cow=species==='BOVINE',gross=view?.lots?.filter(l=>l.species===species).reduce((n,l)=>n+l.plannedL,0)||0;
   const size=sizeHerd(gross,cow?assumptions.bovineYield:assumptions.ovineYield,assumptions.days,cow?assumptions.bovineLactatingShare:assumptions.ovineLactatingShare);
   const slots=placements(species),visible=Math.min(cap[assumptions.density][species],size.productive,slots.length),w=weights(size.productive,visible);
-  // Spread symbols across barn AND paddock, without filling corridors or adding bodies on top of each other.
   const chosen=Array.from({length:visible},(_,i)=>slots[Math.floor(i*slots.length/visible)]);
   return {...size,species,visible,visualSlots:slots.length,spatialCompression:visible<size.productive,
    members:chosen.map((slot,i)=>({...slot,id:`SIM-ANIMAL-${cow?'BOV':'OVI'}-${String(i+1).padStart(3,'0')}`,weight:w[i],index:i,
@@ -57,7 +57,6 @@ export function operationPhase(task){
  return {title:steps[i][0],phase:i,progress:p,flow:task.status==='RUNNING'&&(task.id==='FARM.MILKING'?i===3:task.id==='FARM.CIP'?i===1:true),active:task.status==='RUNNING',status:task.status,
   provenance:'VISUAL_CHOREOGRAPHY_NOT_ANALYTICAL_OR_VETERINARY_SOP'};
 }
-/** Primary publication gives COLLECTED milk; add the separately chosen excluded scenario milk to gross. */
 export function publicReferenceInputs(ovineTarget,excludedBovine=0,excludedOvine=0){
  if(!Number.isSafeInteger(ovineTarget)||ovineTarget<6000||ovineTarget>14000||![excludedBovine,excludedOvine].every(x=>Number.isSafeInteger(x)&&x>=0&&x<1e6))throw Error('Referencia ovina: elige 6.000–14.000 L/día y segregados no negativos.');
  return {bovineL:150000+excludedBovine,ovineL:ovineTarget+excludedOvine,bovineExcludedL:excludedBovine,ovineExcludedL:excludedOvine,
