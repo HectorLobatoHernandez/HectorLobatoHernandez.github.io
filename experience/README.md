@@ -113,3 +113,24 @@ The dedicated GAZA island provides free orbit / zoom / pan and hotspot camera vi
 - fields / vineyards.
 
 Important provenance rule: the current plant/farm placement and historic-city composition are **conceptual world design**, not georeferenced or as-built geometry. Later versions should replace or align these volumes with verified GIS / plant geometry where available.
+
+
+## V0.3 — GAZA becomes a continuous journey
+
+The main immersive dossier no longer treats GAZA as one stop. The scroll path now travels through:
+
+1. GAZA / ARRIVAL — approach to a walled Zamora;
+2. GAZA / ZAMORA — historic walls, churches and stone fabric;
+3. GAZA / DUERO — river and bridge as territorial spine;
+4. GAZA / LAND — plains, vineyards and rural landscape;
+5. GAZA / PLANT — conceptual industrial plant and logistics;
+6. GAZA / FARM — farm, animals, workers and tractor;
+7. transition out toward Club del Mar.
+
+The GAZA set remains visible across the entire sequence and the global environment shifts toward a brighter green/golden tone while crossing the GAZA segment.
+
+The right-side project panel becomes smaller and image-free during GAZA so the 3D world remains visible.
+
+`ENTER GAZA WORLD` is always available during this segment to switch from guided cinematic scroll to the free-navigation island at `/experience/gaza/`.
+
+The stable dossier at `/index.html` is still unchanged.
