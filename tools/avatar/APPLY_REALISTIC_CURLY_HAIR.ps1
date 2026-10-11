@@ -40,9 +40,18 @@ Write-Host "Avatar:  $AvatarPath" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Applying realistic curly hair..." -ForegroundColor Yellow
 
-& $Blender --background --python $Py -- --input $AvatarPath
-if ($LASTEXITCODE -ne 0) {
-    throw "Blender failed with exit code $LASTEXITCODE"
+$log = Join-Path $env:TEMP "rhb_avatar_curly_hair.log"
+if (Test-Path $log) { Remove-Item $log -Force }
+
+& $Blender --background --python $Py -- --input $AvatarPath 2>&1 | Tee-Object -FilePath $log
+$exit = $LASTEXITCODE
+
+if ($exit -ne 0) {
+    throw "Blender failed with exit code $exit"
+}
+
+if (-not (Select-String -Path $log -Pattern "RHB_CURLY_HAIR_SCRIPT_OK=True" -Quiet)) {
+    throw "Blender script did not report success. Review: $log"
 }
 
 Write-Host ""
