@@ -1,0 +1,58 @@
+name: GAZA plant departments QA
+on:
+  pull_request:
+    paths: ['apps/gaza/**', '.github/workflows/gaza-plant-detail-qa.yml']
+  push:
+    branches: [main]
+    paths: ['apps/gaza/**', '.github/workflows/gaza-plant-detail-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gaza-plant-detail-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  plant-detail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: apps/gaza
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Model, mass and regression tests
+        run: |
+          node --check runtime/plant/model.mjs
+          node --check runtime/plant/world.mjs
+          node --check runtime/plant/panel.mjs
+          node --check runtime/plant/inventory-view.mjs
+          node --check runtime/site-real-app.mjs
+          node --test tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/process-ledger.test.mjs tests/lab-detail.test.mjs tests/site-real-core.test.mjs
+      - name: Browser
+        run: npx playwright install --with-deps chromium
+      - name: Start app
+        run: |
+          npm run dev >/tmp/plant-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/site-real-preview.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/plant-http.log
+          exit 1
+      - name: Plant departments browser QA
+        run: node tests/plant-detail-browser-qa.mjs
+      - name: Stock and parking browser QA
+        run: node tests/plant-stock-browser-qa.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-plant-departments-${{ github.run_number }}
+          path: apps/gaza/.qa/plant-detail/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

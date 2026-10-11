@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {inventoryGlyphPlan as plan} from '../runtime/plant/inventory-view.mjs';
+const view=(stock=20,state='WAITING',progress=0,placed=true)=>({ready:true,pallets:{stored:stock},tasks:{'WAREHOUSE.PUTAWAY':{state:placed?'DONE':'RUNNING'},'DISPATCH.LOAD':{state,progress}}});
+test('no scenario has no pallet stock',()=>assert.equal(plan(null).represented,0));
+test('product not put away is not silently placed into rack',()=>{const p=plan(view(20,'WAITING',0,false));assert.equal(p.rack,0);assert.equal(p.dock,0)});
+test('stored stock fills bounded rack only',()=>{const p=plan(view());assert.equal(p.rack,20);assert.equal(p.dock,0);assert.equal(p.stock,20)});
+test('loading reallocates glyphs without duplicating stock',()=>{const p=plan(view(20,'RUNNING',.5));assert.equal(p.rack,10);assert.equal(p.dock,10);assert.equal(p.represented,20)});
+test('hold and equipment problems retain the loading position',()=>{for(const status of ['HELD','UNAVAILABLE','WAIT_GATE'])assert.deepEqual(plan(view(20,status,.5)),plan(view(20,'RUNNING',.5)))});
+test('after dispatch no pallet stock remains at rack or dock',()=>assert.equal(plan(view(0,'DONE',1)).represented,0));
+test('large stock is a bounded subset, not capacity',()=>{const p=plan(view(500,'RUNNING',.5));assert.equal(p.rack,24);assert.equal(p.dock,12);assert.equal(p.stock,500);assert(p.represented<=p.stock)});
+test('malformed quantities or limits fail closed',()=>{for(const n of [-1,NaN,Infinity,1.1,'20',undefined]){const v=view();v.pallets.stored=n;assert.equal(plan(v).represented,0)}assert.equal(plan(view(),{rack:-1,dock:12}).represented,0)});
+test('visual projection is immutable and deterministic',()=>{const v=view(20,'RUNNING',.5),before=JSON.stringify(v),expected=plan(v);for(let i=0;i<100;i++)assert.deepEqual(plan(v),expected);assert.equal(JSON.stringify(v),before)});
