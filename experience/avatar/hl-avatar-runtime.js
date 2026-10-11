@@ -3,7 +3,7 @@ import { createHLAvatar as createFallbackAvatar } from './hl-avatar.js?v=11';
 
 export function createHLAvatarRuntime(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_RUNTIME_V14';
+  root.name='HL_AVATAR_RUNTIME_V15';
   root.userData.source='METAPERSON_GLB_WITH_PROCEDURAL_FALLBACK';
 
   const fallback=createFallbackAvatar(THREE);
@@ -103,7 +103,7 @@ export function createHLAvatarRuntime(THREE){
     }
   }
 
-  const ARM_DOWN=1.42;
+  const ARM_DOWN=1.55;
 
   function applyStandPose(time=0,amount=.22){
     rotateLocal('LeftArm',ARM_DOWN,0,-.015,amount);
@@ -143,7 +143,8 @@ export function createHLAvatarRuntime(THREE){
 
       // MetaPerson export is ~1.81 m high, so it can live at world scale 1.
       scene.scale.setScalar(1);
-      scene.rotation.y=Math.PI;
+      // MetaPerson already faces the runtime forward axis. The old PI flip made it walk backwards.
+      scene.rotation.y=0;
       modelRoot.add(scene);
 
       state.model=scene;
@@ -194,65 +195,71 @@ export function createHLAvatarRuntime(THREE){
     }
 
     const moving=Math.abs(direction)>.01;
-    const targetBlend=moving?1:0;
-    state.moveBlend=THREE.MathUtils.lerp(state.moveBlend,targetBlend,moving?.11:.08);
+    state.moveBlend=THREE.MathUtils.lerp(
+      state.moveBlend,
+      moving?1:0,
+      moving?.075:.055
+    );
 
-    const cadence=2.15*Math.max(.78,Math.min(1.08,speed));
-    const phase=time*cadence;
     const blend=state.moveBlend;
+    const cadence=1.82*Math.max(.82,Math.min(1.05,speed));
+    const phase=time*cadence;
 
-    const legSwing=Math.sin(phase)*.18*blend;
-    const opposite=Math.sin(phase+Math.PI)*.18*blend;
-    const kneeL=Math.max(0,-Math.sin(phase))*.15*blend;
-    const kneeR=Math.max(0,-Math.sin(phase+Math.PI))*.15*blend;
+    const legL=Math.sin(phase)*.14*blend;
+    const legR=Math.sin(phase+Math.PI)*.14*blend;
+    const kneeL=Math.max(0,-Math.sin(phase))*.10*blend;
+    const kneeR=Math.max(0,-Math.sin(phase+Math.PI))*.10*blend;
 
-    // Keep the imported MetaPerson out of T-pose at all times.
-    rotateLocal('LeftArm',ARM_DOWN-legSwing*.24,0,-.015,.18);
-    rotateLocal('RightArm',ARM_DOWN-opposite*.24,0,.015,.18);
-    rotateLocal('LeftForeArm',.09+Math.max(0,legSwing)*.035,0,0,.16);
-    rotateLocal('RightForeArm',.09+Math.max(0,opposite)*.035,0,0,.16);
+    // Natural relaxed arms: start from arm-down, then add only a very small counter swing.
+    rotateLocal('LeftArm',ARM_DOWN-legL*.18,0,-.008,.16);
+    rotateLocal('RightArm',ARM_DOWN-legR*.18,0,.008,.16);
+    rotateLocal('LeftForeArm',.055+Math.max(0,legL)*.025,0,0,.14);
+    rotateLocal('RightForeArm',.055+Math.max(0,legR)*.025,0,0,.14);
 
-    rotateLocal('LeftUpLeg',legSwing,0,0,.18);
-    rotateLocal('RightUpLeg',opposite,0,0,.18);
-    rotateLocal('LeftLeg',kneeL,0,0,.17);
-    rotateLocal('RightLeg',kneeR,0,0,.17);
+    rotateLocal('LeftUpLeg',legL,0,0,.17);
+    rotateLocal('RightUpLeg',legR,0,0,.17);
+    rotateLocal('LeftLeg',kneeL,0,0,.16);
+    rotateLocal('RightLeg',kneeR,0,0,.16);
 
-    rotateLocal('Spine2',.006*Math.sin(phase*.5)*blend,0,.004*Math.sin(phase*.5)*blend,.14);
-    rotateLocal('Head',0,.008*Math.sin(time*.38)*blend,0,.12);
+    rotateLocal('Spine2',.003*Math.sin(phase*.5)*blend,0,.002*Math.sin(phase*.5)*blend,.12);
+    rotateLocal('Head',0,.005*Math.sin(time*.32)*blend,0,.10);
 
-    // No vertical jump/bob during walking: only lock root motion to the bind pose.
+    // Lock root motion: walking animation never changes the avatar's world height or position.
     const hips=bone('Hips');
     const base=state.basePos.get('Hips');
     if(hips&&base){
-      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.32);
-      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y,.32);
-      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.32);
+      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.38);
+      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y,.38);
+      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.38);
     }
 
-    if(!moving && state.moveBlend<.04)applyStandPose(time,.16);
+    if(!moving && blend<.035)applyStandPose(time,.18);
   }
   function updateFall(time,progress=0){
     if(!state.ready){
       fallback.userData.updateFall?.(time,progress);
       return;
     }
-    const wind=Math.sin(time*1.9);
-    rotateLocal('LeftArm',.72,0,-.16+wind*.018,.18);
-    rotateLocal('RightArm',.72,0,.16-wind*.018,.18);
-    rotateLocal('LeftForeArm',.16,0,0,.16);
-    rotateLocal('RightForeArm',.16,0,0,.16);
-    rotateLocal('LeftUpLeg',.07+wind*.015,0,-.012,.16);
-    rotateLocal('RightUpLeg',-.04-wind*.015,0,.012,.16);
-    rotateLocal('LeftLeg',.10,0,0,.16);
-    rotateLocal('RightLeg',.08,0,0,.16);
-    rotateLocal('Spine2',-.045,0,wind*.008,.14);
-    rotateLocal('Head',.015,Math.sin(time*.32)*.012,0,.14);
 
-    const hips=bone('Hips'), base=state.basePos.get('Hips');
+    // Stable belly-down/free-fall silhouette. No frantic arm windmilling.
+    const wind=Math.sin(time*1.35);
+    rotateLocal('LeftArm',1.18,0,-.12+wind*.012,.15);
+    rotateLocal('RightArm',1.18,0,.12-wind*.012,.15);
+    rotateLocal('LeftForeArm',.18,0,0,.14);
+    rotateLocal('RightForeArm',.18,0,0,.14);
+    rotateLocal('LeftUpLeg',.08+wind*.008,0,-.01,.14);
+    rotateLocal('RightUpLeg',-.04-wind*.008,0,.01,.14);
+    rotateLocal('LeftLeg',.12,0,0,.14);
+    rotateLocal('RightLeg',.10,0,0,.14);
+    rotateLocal('Spine2',-.055,0,wind*.004,.12);
+    rotateLocal('Head',.02,Math.sin(time*.25)*.008,0,.12);
+
+    const hips=bone('Hips');
+    const base=state.basePos.get('Hips');
     if(hips&&base){
-      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.3);
-      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y,.3);
-      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.3);
+      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.35);
+      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y,.35);
+      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.35);
     }
   }
   function updateLanding(time,progress=0){
