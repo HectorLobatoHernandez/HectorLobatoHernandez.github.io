@@ -7,7 +7,7 @@
   <meta name="description" content="HL Portfolio World · prototype interactive journey through RHB STUDIO, GAZA Operations and Club del Mar.">
   <title>HL Portfolio World · Prototype</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./world.css?v=4">
+  <link rel="stylesheet" href="./world.css?v=5">
 </head>
 <body>
   <canvas id="worldCanvas" aria-hidden="true"></canvas>
@@ -16,7 +16,7 @@
     <header class="world-topbar">
       <a class="world-brand" href="../index.html">
         HL
-        <small>PORTFOLIO WORLD · V0.4</small>
+        <small>PORTFOLIO WORLD · V0.5</small>
       </a>
       <div class="world-top-meta">
         <span id="worldChapterLabel">ENTRY</span>
@@ -29,21 +29,22 @@
     <aside class="world-index" id="worldIndex" aria-label="Chapters"></aside>
 
     <main id="worldScroll" class="world-scroll" aria-live="polite">
-      <section class="world-section world-section--intro" data-chapter="origin">
+      <section class="world-section world-section--intro world-section--space" data-chapter="fall">
         <div class="world-copy">
-          <p class="world-kicker">00 / ENTRY</p>
-          <h1>Build systems.<br><em>Enter the world.</em></h1>
-          <p class="world-lead">Un portfolio recorrido como un espacio. Scroll para avanzar. En cada estación puedes abrir el proyecto real sin perder la narrativa.</p>
-          <div class="world-hint"><span>SCROLL TO MOVE</span><i>↓</i></div>
+          <p class="world-kicker">00 / PROLOGUE</p>
+          <h1>Fall through<br><em>what shaped you.</em></h1>
+          <p class="world-lead">El viaje empieza antes de los proyectos: conocimientos, disciplinas y oficio aparecen mientras caes hacia la tierra.</p>
+          <div class="world-hint"><span>SCROLL TO FALL</span><i>↓</i></div>
         </div>
       </section>
-
+      <section class="world-section world-section--space" data-chapter="knowledge"></section>
+      <section class="world-section world-section--landing" data-chapter="landing"></section>
+      <section class="world-section world-section--zamora" data-chapter="zamora-approach"></section>
+      <section class="world-section world-section--zamora" data-chapter="zamora-climb"></section>
       <section class="world-section world-section--rhb" data-chapter="rhb-heritage"></section>
       <section class="world-section world-section--rhb" data-chapter="rhb-workshop"></section>
       <section class="world-section world-section--rhb" data-chapter="rhb-studio"></section>
-      <section class="world-section world-section--gaza" data-chapter="gaza-arrival"></section>
-      <section class="world-section world-section--gaza" data-chapter="gaza-zamora"></section>
-      <section class="world-section world-section--gaza" data-chapter="gaza-duero"></section>
+      <section class="world-section world-section--gaza" data-chapter="zamora-exit"></section>
       <section class="world-section world-section--gaza" data-chapter="gaza-territory"></section>
       <section class="world-section world-section--gaza" data-chapter="gaza-plant"></section>
       <section class="world-section world-section--gaza" data-chapter="gaza-farm"></section>
@@ -83,6 +84,6 @@
     }
   }
   </script>
-  <script type="module" src="./world.js?v=7"></script>
+  <script type="module" src="./world.js?v=8"></script>
 </body>
 </html>

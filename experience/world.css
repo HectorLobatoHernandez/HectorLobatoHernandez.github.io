@@ -91,3 +91,33 @@ a{color:inherit}
 .project-panel--rhb .project-panel__subtitle{color:#d4b07b}
 .project-panel--rhb .project-panel__body{color:#b5ada1}
 @media(max-width:980px){.project-panel--rhb{width:min(520px,88vw)}}
+
+
+/* V0.5 · starfall prologue / Zamora wall / RHB inside the city */
+.world-section--space{min-height:120vh}
+.world-section--landing{min-height:105vh}
+.world-section--zamora{min-height:112vh}
+
+.project-panel--space,
+.project-panel--zamora{
+  width:min(400px,31vw);
+  background:rgba(7,10,12,.48);
+}
+.project-panel--space .project-panel__media,
+.project-panel--zamora .project-panel__media{display:none}
+
+.project-panel--space{border-color:rgba(160,190,255,.2)}
+.project-panel--space .project-panel__subtitle{color:#a9c6ff}
+.project-panel--space .world-kicker{color:#d6a467}
+
+.project-panel--zamora{
+  background:rgba(22,20,16,.58);
+  border-color:rgba(214,164,103,.24)
+}
+.project-panel--zamora .project-panel__subtitle{color:#c8b38e}
+.project-panel--zamora .project-panel__body{color:#b3aba0}
+
+@media(max-width:980px){
+  .project-panel--space,
+  .project-panel--zamora{width:min(520px,88vw)}
+}
