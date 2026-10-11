@@ -103,29 +103,39 @@ export function createHLAvatarRuntime(THREE){
       fallback.userData.update?.(time,direction,speed);
       return;
     }
-    const moving=Math.abs(direction)>.01;
-    const phase=time*4.8*Math.max(.65,speed);
-    const s=moving?Math.sin(phase)*.55:0;
-    const k=moving?Math.max(0,-Math.sin(phase))*.45:0;
-    const k2=moving?Math.max(0,-Math.sin(phase+Math.PI))*.45:0;
 
-    rotateLocal('LeftUpLeg', s,0,0,.28);
-    rotateLocal('RightUpLeg',-s,0,0,.28);
-    rotateLocal('LeftLeg',k,0,0,.25);
-    rotateLocal('RightLeg',k2,0,0,.25);
-    rotateLocal('LeftArm',-s*.7,0,-.03,.24);
-    rotateLocal('RightArm',s*.7,0,.03,.24);
-    rotateLocal('LeftForeArm',Math.max(0,s)*.16,0,0,.2);
-    rotateLocal('RightForeArm',Math.max(0,-s)*.16,0,0,.2);
-    rotateLocal('Spine2',moving?.03*Math.sin(phase*.5):0,0,moving?.02*Math.sin(phase*.5):0,.2);
-    rotateLocal('Head',0,moving?.03*Math.sin(time*.5):0,0,.15);
+    const moving=Math.abs(direction)>.01;
+    const cadence=2.65*Math.max(.72,Math.min(1.15,speed));
+    const phase=time*cadence;
+
+    const legSwing=moving?Math.sin(phase)*.30:0;
+    const opposite=moving?Math.sin(phase+Math.PI)*.30:0;
+    const kneeL=moving?Math.max(0,-Math.sin(phase))*.27:0;
+    const kneeR=moving?Math.max(0,-Math.sin(phase+Math.PI))*.27:0;
+
+    rotateLocal('LeftUpLeg',legSwing,0,0,.18);
+    rotateLocal('RightUpLeg',opposite,0,0,.18);
+    rotateLocal('LeftLeg',kneeL,0,0,.18);
+    rotateLocal('RightLeg',kneeR,0,0,.18);
+
+    rotateLocal('LeftArm',-legSwing*.38,0,-.015,.16);
+    rotateLocal('RightArm',-opposite*.38,0,.015,.16);
+    rotateLocal('LeftForeArm',moving?.08+Math.max(0,legSwing)*.05:0,0,0,.14);
+    rotateLocal('RightForeArm',moving?.08+Math.max(0,opposite)*.05:0,0,0,.14);
+
+    rotateLocal('Spine2',moving?.012*Math.sin(phase*.5):0,0,moving?.008*Math.sin(phase*.5):0,.14);
+    rotateLocal('Head',0,moving?.012*Math.sin(time*.45):0,0,.12);
 
     const hips=bone('Hips');
     const base=state.basePos.get('Hips');
     if(hips&&base){
-      const bob=moving?Math.abs(Math.sin(phase))*0.018:Math.sin(time*1.5)*.004;
-      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y+bob,.25);
+      const bob=moving?Math.abs(Math.sin(phase))*0.008:Math.sin(time*1.25)*0.002;
+      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.3);
+      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.3);
+      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y+bob,.22);
     }
+
+    if(!moving)restoreRig(.12);
   }
 
   function updateFall(time,progress=0){
@@ -134,16 +144,16 @@ export function createHLAvatarRuntime(THREE){
       return;
     }
     const wind=Math.sin(time*2.8);
-    rotateLocal('LeftArm',-.55,0,-.75+wind*.06,.24);
-    rotateLocal('RightArm',-.55,0,.75-wind*.06,.24);
-    rotateLocal('LeftForeArm',-.25,0,0,.2);
-    rotateLocal('RightForeArm',-.25,0,0,.2);
-    rotateLocal('LeftUpLeg',.16+wind*.05,0,-.05,.2);
-    rotateLocal('RightUpLeg',-.10-wind*.05,0,.05,.2);
-    rotateLocal('LeftLeg',.22,0,0,.2);
-    rotateLocal('RightLeg',.18,0,0,.2);
-    rotateLocal('Spine2',-.12,0,wind*.025,.18);
-    rotateLocal('Head',.05,Math.sin(time*.45)*.04,0,.18);
+    rotateLocal('LeftArm',-.28,0,-.32+wind*.035,.18);
+    rotateLocal('RightArm',-.28,0,.32-wind*.035,.18);
+    rotateLocal('LeftForeArm',-.14,0,0,.16);
+    rotateLocal('RightForeArm',-.14,0,0,.16);
+    rotateLocal('LeftUpLeg',.10+wind*.025,0,-.025,.16);
+    rotateLocal('RightUpLeg',-.06-wind*.025,0,.025,.16);
+    rotateLocal('LeftLeg',.14,0,0,.16);
+    rotateLocal('RightLeg',.12,0,0,.16);
+    rotateLocal('Spine2',-.07,0,wind*.012,.14);
+    rotateLocal('Head',.02,Math.sin(time*.4)*.02,0,.14);
   }
 
   function updateLanding(time,progress=0){
