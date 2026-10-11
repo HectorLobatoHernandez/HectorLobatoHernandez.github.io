@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createGazaWorld } from './gaza/gaza-scene.js?v=9';
 import { createRhbWorld } from './rhb/rhb-scene.js?v=9';
-import { createHLAvatar } from './avatar/hl-avatar.js?v=11';
+import { createHLAvatarRuntime } from './avatar/hl-avatar-runtime.js?v=12';
 import { createKnowledgeFall } from './intro/knowledge-fall.js?v=9';
 import { createLandingImpact } from './intro/landing-impact.js?v=9';
 import { createZamoraWall } from './zamora/zamora-wall.js?v=9';
@@ -260,7 +260,7 @@ function createWorld(data){
   gazaSet.userData.worldChapterEnd=gazaIndices.length?Math.max(...gazaIndices):-1;
   scene.add(gazaSet);
 
-  const scaleFigure=createHLAvatar(THREE);
+  const scaleFigure=createHLAvatarRuntime(THREE);
   scaleFigure.userData.role='WORLD_TRAVELLER';
   scene.add(scaleFigure);
 
