@@ -5,16 +5,16 @@ Write-Host "=== RHB AVATAR FREE 3D PIPELINE ===" -ForegroundColor Cyan
 Write-Host "Installing ComfyUI-3D-Pack + TripoSR locally" -ForegroundColor Cyan
 Write-Host ""
 
-$home = $env:USERPROFILE
+$UserHome = $env:USERPROFILE
 $candidates = @(
-    "$home\ComfyUI",
-    "$home\Desktop\ComfyUI",
-    "$home\Documents\ComfyUI",
-    "$home\Downloads\ComfyUI",
-    "$home\Pinokio\api\comfyui.git\app",
-    "$home\pinokio\api\comfyui.git\app",
-    "$home\Desktop\ComfyUI_windows_portable\ComfyUI",
-    "$home\Downloads\ComfyUI_windows_portable\ComfyUI"
+    "$UserHome\ComfyUI",
+    "$UserHome\Desktop\ComfyUI",
+    "$UserHome\Documents\ComfyUI",
+    "$UserHome\Downloads\ComfyUI",
+    "$UserHome\Pinokio\api\comfyui.git\app",
+    "$UserHome\pinokio\api\comfyui.git\app",
+    "$UserHome\Desktop\ComfyUI_windows_portable\ComfyUI",
+    "$UserHome\Downloads\ComfyUI_windows_portable\ComfyUI"
 )
 
 $comfy = $null
@@ -27,7 +27,7 @@ foreach ($p in $candidates) {
 
 if (-not $comfy) {
     Write-Host "ComfyUI not found in common locations. Searching user profile..." -ForegroundColor Yellow
-    $hit = Get-ChildItem $home -Directory -Recurse -ErrorAction SilentlyContinue |
+    $hit = Get-ChildItem $UserHome -Directory -Recurse -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -eq "ComfyUI" -and (Test-Path (Join-Path $_.FullName "main.py")) } |
         Select-Object -First 1
     if ($hit) { $comfy = $hit.FullName }
