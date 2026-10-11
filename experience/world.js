@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { createGazaWorld } from './gaza/gaza-scene.js';
 import { createRhbWorld } from './rhb/rhb-scene.js';
 import { createHLAvatar } from './avatar/hl-avatar.js';
+import { createKnowledgeFall } from './intro/knowledge-fall.js';
+import { createZamoraWall } from './zamora/zamora-wall.js';
 
 const DATA_URL='./data/world.json';
 const canvas=document.getElementById('worldCanvas');
@@ -58,8 +60,19 @@ function createWorld(data){
   scene.add(cool);
 
   const baseBgColor=new THREE.Color(0x050706);
+  const spaceBgColor=new THREE.Color(0x02040b);
+  const zamoraBgColor=new THREE.Color(0x191815);
   const rhbBgColor=new THREE.Color(0x17130f);
   const gazaBgColor=new THREE.Color(0x172116);
+
+  const knowledgeFall=createKnowledgeFall(THREE);
+  knowledgeFall.position.set(0,6,0);
+  scene.add(knowledgeFall);
+
+  const spaceIndices=chapters
+    .map((ch,index)=>ch.environment==='space'?index:-1)
+    .filter(index=>index>=0);
+  const spaceEnd=spaceIndices.length?Math.max(...spaceIndices):-1;
 
   const terrainGeom=new THREE.PlaneGeometry(110,110,64,64);
   const pos=terrainGeom.attributes.position;
@@ -200,11 +213,22 @@ function createWorld(data){
     portals.push(group);
   }
 
+  // Human-scale Zamora gateway for the climb sequence.
+  const zamoraWall=createZamoraWall(THREE);
+  zamoraWall.position.set(.2,.02,-16.8);
+  zamoraWall.rotation.y=.02;
+  scene.add(zamoraWall);
+  zamoraWall.updateMatrixWorld(true);
+  const climbStartWorld=zamoraWall.localToWorld(zamoraWall.userData.climb.start.clone());
+  const climbEndWorld=zamoraWall.localToWorld(zamoraWall.userData.climb.end.clone());
+  const climbTopWorld=zamoraWall.localToWorld(zamoraWall.userData.climb.top.clone());
+  const climbIndex=chapters.findIndex(ch=>ch.motion==='climb');
+
   // RHB family metalworking workshop / RHB STUDIO evolution.
   const rhbSet=createRhbWorld(THREE,{detail:'world'});
-  rhbSet.scale.setScalar(.56);
-  rhbSet.position.set(-1.0,.02,-13.8);
-  rhbSet.rotation.y=.03;
+  rhbSet.scale.setScalar(.34);
+  rhbSet.position.set(1.2,.04,-21.2);
+  rhbSet.rotation.y=.08;
   const rhbIndices=chapters
     .map((ch,index)=>ch.environment==='rhb'?index:-1)
     .filter(index=>index>=0);
@@ -219,7 +243,7 @@ function createWorld(data){
   gazaSet.position.set(4.3,.02,-26.4);
   gazaSet.rotation.y=-.11;
   const gazaIndices=chapters
-    .map((ch,index)=>ch.environment==='gaza'?index:-1)
+    .map((ch,index)=>['zamora','rhb','gaza'].includes(ch.environment)?index:-1)
     .filter(index=>index>=0);
   gazaSet.userData.worldChapterStart=gazaIndices.length?Math.min(...gazaIndices):-1;
   gazaSet.userData.worldChapterEnd=gazaIndices.length?Math.max(...gazaIndices):-1;
@@ -418,7 +442,7 @@ function createWorld(data){
         const localProgress=clamp((chapterFloat-rhbStart)/Math.max(1,rhbEnd-rhbStart),0,1);
         rhbSet.userData.update?.(time,localProgress);
       }catch(err){console.error('RHB set update',err)}
-      rhbSet.scale.setScalar(.56*(1+rhbBlend*.02));
+      rhbSet.scale.setScalar(.34*(1+rhbBlend*.02));
     }
 
     const gazaStart=gazaSet.userData.worldChapterStart;
