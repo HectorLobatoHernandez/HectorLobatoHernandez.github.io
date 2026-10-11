@@ -378,7 +378,7 @@ export function createHLAvatar(THREE){
     torsoPivot.rotation.z=Math.sin(time*.8)*.035;
     headPivot.rotation.x=THREE.MathUtils.lerp(headPivot.rotation.x,.06,.14);
     headPivot.rotation.y=Math.sin(time*.55)*.08;
-    root.position.y=Math.sin(time*5.0)*.018;
+    torsoPivot.position.y=Math.sin(time*5.0)*.018;
   };
 
   root.userData.updateClimb=(time,progress=0)=>{
@@ -399,7 +399,7 @@ export function createHLAvatar(THREE){
     torsoPivot.rotation.x=THREE.MathUtils.lerp(torsoPivot.rotation.x,-.18,.2);
     headPivot.rotation.x=THREE.MathUtils.lerp(headPivot.rotation.x,.12,.2);
     headPivot.rotation.y=Math.sin(time*.35)*.03;
-    root.position.y=Math.sin(phase*2)*.008;
+    torsoPivot.position.y=Math.sin(phase*2)*.008;
   };
 
   root.userData.setWalking=(walking)=>{
