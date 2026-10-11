@@ -166,3 +166,48 @@ RHB is no longer presented as a generic software stop. The immersive route now m
 A stylized real-time avatar based on user-supplied photo references is used as the travelling scale figure. The avatar intentionally prioritizes recognizability and performance over photorealism.
 
 The workshop scene is conceptual for now. Detailed future versions should be replaced/refined from real workshop photos, measured layout, machine inventory and process mapping when those source materials are available.
+
+
+## V0.5 — starfall prologue / Zamora wall / RHB inside the city
+
+The immersive route is now reorganized as one continuous world:
+
+```text
+STARFALL
+  ↓
+KNOWLEDGE OBJECTS / DISCIPLINES
+  ↓
+LANDING
+  ↓
+ZAMORA APPROACH
+  ↓
+CLIMB THE WALL
+  ↓
+RHB · ORIGIN
+  ↓
+RHB · WORKSHOP
+  ↓
+RHB STUDIO
+  ↓
+DUERO / TERRITORY
+  ↓
+GAZA PLANT
+  ↓
+GAZA FARM
+  ↓
+CLUB DEL MAR
+```
+
+### Prologue
+A procedural star tunnel and falling knowledge objects introduce music/piano, physics/technical thinking, audio systems, lighting/control, CAD/3D, fabrication, software/AI and project delivery.
+
+These are **discipline labels**, not formal academic-title claims. Exact degree/certification names must only be substituted once verified.
+
+### Zamora entry
+A human-scale procedural stone gateway/wall has been added specifically for the dossier journey. The Hector avatar approaches it, switches to a procedural climbing pose, reaches the wall walk and enters the city.
+
+### RHB placement
+The RHB workshop set has been moved spatially behind the Zamora wall so the visual narrative matches the intended story: Rufino Hernández Barba / RHB originates inside Zamora, then evolves into RHB STUDIO.
+
+### Performance
+The starfall set is only visible during the prologue; ground-world geometry is hidden while falling. Heavy project islands remain on-demand.
