@@ -1,6 +1,6 @@
 export function createHLAvatar(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_V02';
+  root.name='HL_AVATAR_V03';
   root.userData.reference='USER_SUPPLIED_PHOTOS_2026_10_11';
   root.userData.style='STYLIZED_LOW_POLY_REALTIME';
 
@@ -46,28 +46,50 @@ export function createHLAvatar(THREE){
   };
 
   // Core body
-  const hips=box(.34,.18,.22,mats.black2);hips.position.y=.92;root.add(hips);
+  const hips=box(.40,.19,.24,mats.black2);hips.position.y=.91;root.add(hips);
 
   const torsoPivot=new THREE.Group();
   torsoPivot.position.y=1.34;
   root.add(torsoPivot);
 
-  const torso=box(.46,.72,.25,mats.black);
+  const torso=box(.50,.66,.27,mats.black);
+  torso.position.y=.02;
   torsoPivot.add(torso);
 
-  // Oversized black coat silhouette inspired by the supplied outfits.
-  const coatL=box(.18,.82,.28,mats.black2);coatL.position.set(-.25,-.06,0);coatL.rotation.z=-.035;torsoPivot.add(coatL);
-  const coatR=box(.18,.82,.28,mats.black2);coatR.position.set(.25,-.06,0);coatR.rotation.z=.035;torsoPivot.add(coatR);
+  // Short-sleeve black T-shirt silhouette. Keep shoulders connected to torso.
+  const shoulderL=box(.16,.22,.28,mats.black);shoulderL.position.set(-.31,.22,0);torsoPivot.add(shoulderL);
+  const shoulderR=box(.16,.22,.28,mats.black);shoulderR.position.set(.31,.22,0);torsoPivot.add(shoulderR);
+
+  // Carhartt chest patch requested by the user.
+  const makeCarharttPatch=()=>{
+    const cv=document.createElement('canvas');
+    cv.width=320;cv.height=220;
+    const ctx=cv.getContext('2d');
+    ctx.fillStyle='#161616';ctx.fillRect(0,0,320,220);
+    ctx.fillStyle='#c78a35';
+    ctx.beginPath();ctx.arc(92,95,52,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#161616';
+    ctx.beginPath();ctx.arc(112,82,42,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#f0eee8';
+    ctx.font='700 38px Arial';ctx.textAlign='center';ctx.fillText('Carhartt',170,185);
+    const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+  };
+  const chestPatch=new THREE.Mesh(
+    new THREE.PlaneGeometry(.14,.095),
+    new THREE.MeshBasicMaterial({map:makeCarharttPatch(),transparent:false,toneMapped:false})
+  );
+  chestPatch.position.set(.135,.14,.139);
+  torsoPivot.add(chestPatch);
 
   // Neck + head
-  const neck=cyl(.105,.115,.2,mats.skin,10);neck.position.y=1.79;root.add(neck);
+  const neck=cyl(.095,.105,.18,mats.skin,12);neck.position.y=1.75;root.add(neck);
 
   const headPivot=new THREE.Group();
-  headPivot.position.y=2.02;
+  headPivot.position.y=1.965;
   root.add(headPivot);
 
-  const head=sphere(.22,mats.skin,18);
-  head.scale.set(.96,1.08,.93);
+  const head=sphere(.205,mats.skin,20);
+  head.scale.set(.98,1.08,.94);
   headPivot.add(head);
 
   // Slight jaw volume so the head reads less like an egg.
@@ -212,18 +234,18 @@ export function createHLAvatar(THREE){
   const arms=[];
   for(const sx of [-1,1]){
     const shoulder=new THREE.Group();
-    shoulder.position.set(sx*.32,1.58,0);
+    shoulder.position.set(sx*.31,1.54,0);
 
-    const upper=cyl(.075,.065,.48,mats.black,10);
-    upper.position.y=-.22;
+    const upper=cyl(.078,.067,.36,mats.black,12);
+    upper.position.y=-.16;
     shoulder.add(upper);
 
     const elbow=new THREE.Group();
-    elbow.position.y=-.46;
+    elbow.position.y=-.34;
     shoulder.add(elbow);
 
-    const fore=cyl(.063,.055,.43,mats.skin,10);
-    fore.position.y=-.2;
+    const fore=cyl(.062,.052,.40,mats.skin,12);
+    fore.position.y=-.19;
     elbow.add(fore);
 
     const tattooBand=cyl(.066,.058,.17,mats.tattooSoft,10);
@@ -235,8 +257,9 @@ export function createHLAvatar(THREE){
     tattooPanel.rotation.x=-.12;
     elbow.add(tattooPanel);
 
-    const hand=sphere(.066,mats.skin,10);
-    hand.position.y=-.43;
+    const hand=sphere(.064,mats.skin,12);
+    hand.scale.set(.86,1.18,.62);
+    hand.position.y=-.41;
     elbow.add(hand);
 
     const handTattoo=new THREE.Mesh(new THREE.RingGeometry(.018,.034,7),mats.tattoo);
@@ -273,20 +296,20 @@ export function createHLAvatar(THREE){
   const legs=[];
   const makeSneaker=()=>{
     const g=new THREE.Group();
-    const sole=box(.19,.065,.31,mats.shoeSole);
-    sole.position.y=.015;
+    const sole=box(.205,.06,.34,mats.shoeSole);
+    sole.position.y=.012;
     g.add(sole);
 
-    const mid=box(.17,.075,.25,mats.shoe);
+    const mid=box(.18,.072,.27,mats.shoe);
     mid.position.set(0,.072,-.015);
     g.add(mid);
 
-    const toe=sphere(.072,mats.shoe,10);
-    toe.scale.set(1.25,.68,1.2);
+    const toe=sphere(.075,mats.shoe,12);
+    toe.scale.set(1.28,.62,1.34);
     toe.position.set(0,.08,.105);
     g.add(toe);
 
-    const heel=box(.15,.12,.10,mats.shoe);
+    const heel=box(.16,.115,.11,mats.shoe);
     heel.position.set(0,.10,-.115);
     g.add(heel);
 
@@ -295,18 +318,18 @@ export function createHLAvatar(THREE){
 
   for(const sx of [-1,1]){
     const hip=new THREE.Group();
-    hip.position.set(sx*.115,.86,0);
+    hip.position.set(sx*.13,.86,0);
 
-    const thigh=cyl(.085,.072,.52,mats.denim,10);
+    const thigh=cyl(.09,.073,.56,mats.denim,12);
     thigh.position.y=-.25;
     hip.add(thigh);
 
     const knee=new THREE.Group();
-    knee.position.y=-.51;
+    knee.position.y=-.55;
     hip.add(knee);
 
-    const shin=cyl(.072,.06,.48,mats.denim,10);
-    shin.position.y=-.23;
+    const shin=cyl(.073,.058,.52,mats.denim,12);
+    shin.position.y=-.25;
     knee.add(shin);
 
     const sneaker=makeSneaker();
@@ -317,7 +340,7 @@ export function createHLAvatar(THREE){
     legs.push({hip,knee,sx,sneaker});
   }
 
-  root.scale.setScalar(.78);
+  root.scale.setScalar(.82);
 
   const rig={torsoPivot,headPivot,arms,legs,curls,eyeGroups};
   root.userData.rig=rig;
@@ -341,6 +364,8 @@ export function createHLAvatar(THREE){
 
     arms[0].shoulder.rotation.x=THREE.MathUtils.lerp(arms[0].shoulder.rotation.x,armSwingOpp,.22);
     arms[1].shoulder.rotation.x=THREE.MathUtils.lerp(arms[1].shoulder.rotation.x,armSwing,.22);
+    arms[0].shoulder.rotation.z=THREE.MathUtils.lerp(arms[0].shoulder.rotation.z,0,.18);
+    arms[1].shoulder.rotation.z=THREE.MathUtils.lerp(arms[1].shoulder.rotation.z,0,.18);
 
     torsoPivot.rotation.x=THREE.MathUtils.lerp(torsoPivot.rotation.x,moving?.07*dir:0,.18);
     torsoPivot.rotation.z=THREE.MathUtils.lerp(torsoPivot.rotation.z,moving?Math.sin(phase*.5)*.018:0,.18);
@@ -349,6 +374,7 @@ export function createHLAvatar(THREE){
 
     const bounce=moving?Math.abs(Math.sin(phase))*0.022:Math.sin(time*1.8)*.006;
     root.position.y=bounce;
+    torsoPivot.position.y=THREE.MathUtils.lerp(torsoPivot.position.y,0,.16);
 
     // Eyes subtly scan while idle and focus more centrally while walking.
     const eyeLookX=moving?0:Math.sin(time*.7)*.008;
@@ -379,6 +405,28 @@ export function createHLAvatar(THREE){
     headPivot.rotation.x=THREE.MathUtils.lerp(headPivot.rotation.x,.06,.14);
     headPivot.rotation.y=Math.sin(time*.55)*.08;
     torsoPivot.position.y=Math.sin(time*5.0)*.018;
+  };
+
+  root.userData.updateLanding=(time,progress=0)=>{
+    const p=THREE.MathUtils.clamp(progress,0,1);
+    // 0 = impact crouch, 1 = recovered upright.
+    const recover=p*p*(3-2*p);
+
+    arms[0].shoulder.rotation.x=THREE.MathUtils.lerp(arms[0].shoulder.rotation.x,-1.10+recover*.95,.22);
+    arms[1].shoulder.rotation.x=THREE.MathUtils.lerp(arms[1].shoulder.rotation.x,.35-recover*.30,.22);
+    arms[0].shoulder.rotation.z=THREE.MathUtils.lerp(arms[0].shoulder.rotation.z,-.48+recover*.46,.20);
+    arms[1].shoulder.rotation.z=THREE.MathUtils.lerp(arms[1].shoulder.rotation.z,.58-recover*.55,.20);
+
+    legs[0].hip.rotation.x=THREE.MathUtils.lerp(legs[0].hip.rotation.x,.88-recover*.84,.24);
+    legs[1].hip.rotation.x=THREE.MathUtils.lerp(legs[1].hip.rotation.x,-.35+recover*.33,.24);
+    legs[0].knee.rotation.x=THREE.MathUtils.lerp(legs[0].knee.rotation.x,1.12-recover*1.06,.24);
+    legs[1].knee.rotation.x=THREE.MathUtils.lerp(legs[1].knee.rotation.x,.78-recover*.74,.24);
+
+    torsoPivot.rotation.x=THREE.MathUtils.lerp(torsoPivot.rotation.x,-.34+recover*.34,.22);
+    torsoPivot.rotation.z=THREE.MathUtils.lerp(torsoPivot.rotation.z,-.08+recover*.08,.18);
+    headPivot.rotation.x=THREE.MathUtils.lerp(headPivot.rotation.x,.18-recover*.18,.20);
+    headPivot.rotation.y=THREE.MathUtils.lerp(headPivot.rotation.y,0,.18);
+    torsoPivot.position.y=-.12*(1-recover);
   };
 
   root.userData.updateClimb=(time,progress=0)=>{

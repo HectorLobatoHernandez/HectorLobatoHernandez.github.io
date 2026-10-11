@@ -3,6 +3,7 @@ import { createGazaWorld } from './gaza/gaza-scene.js';
 import { createRhbWorld } from './rhb/rhb-scene.js';
 import { createHLAvatar } from './avatar/hl-avatar.js';
 import { createKnowledgeFall } from './intro/knowledge-fall.js';
+import { createLandingImpact } from './intro/landing-impact.js';
 import { createZamoraWall } from './zamora/zamora-wall.js';
 
 const DATA_URL='./data/world.json';
@@ -68,6 +69,9 @@ function createWorld(data){
   const knowledgeFall=createKnowledgeFall(THREE);
   knowledgeFall.position.set(0,6,0);
   scene.add(knowledgeFall);
+
+  const landingImpact=createLandingImpact(THREE);
+  scene.add(landingImpact);
 
   const spaceIndices=chapters
     .map((ch,index)=>ch.environment==='space'?index:-1)
@@ -226,6 +230,10 @@ function createWorld(data){
   const climbEndWorld=zamoraWall.localToWorld(zamoraWall.userData.climb.end.clone());
   const climbTopWorld=zamoraWall.localToWorld(zamoraWall.userData.climb.top.clone());
   const climbIndex=chapters.findIndex(ch=>ch.motion==='climb');
+  const landingIndex=chapters.findIndex(ch=>ch.id==='landing');
+  const landingT=landingIndex>=0?clamp(landingIndex/(chapters.length-1),0,1):0;
+  const landingPoint=curve.getPointAt(landingT);
+  landingImpact.position.set(landingPoint.x,0,landingPoint.z);
 
   // RHB family metalworking workshop / RHB STUDIO evolution.
   const rhbSet=createRhbWorld(THREE,{detail:'world'});
@@ -414,20 +422,55 @@ function createWorld(data){
     const moving=recentlyScrolled||scrollVelocity>.00022;
     const walkSpeed=.75+Math.min(1.65,scrollVelocity*36+scrollImpulse*.9);
 
-    const spaceProgress=spaceEnd>=0?clamp(chapterFloat/Math.max(1,spaceEnd+.85),0,1):1;
-    const inSpace=spaceEnd>=0&&chapterFloat<spaceEnd+.78;
+    const fallEnd=landingIndex>=0?landingIndex-.22:spaceEnd+.4;
+    const inFall=landingIndex>=0&&chapterFloat<fallEnd;
+    const landingWindow=landingIndex>=0&&chapterFloat>=fallEnd&&chapterFloat<(landingIndex+.72);
     const climbWindow=climbIndex>=0&&chapterFloat>(climbIndex-.52)&&chapterFloat<(climbIndex+.58);
 
-    if(inSpace){
-      const fallY=11.5-spaceProgress*9.8;
-      scaleFigure.position.set(
-        Math.sin(time*.65)*.18,
-        fallY,
-        1.0-spaceProgress*4.0
+    if(inFall){
+      const fallProgress=clamp(chapterFloat/Math.max(.001,fallEnd),0,1);
+      // Accelerating descent: slow initial drift, fast final approach.
+      const gravity=fallProgress*fallProgress;
+      const fallY=15.5-gravity*14.1;
+      const fallZ=2.2-gravity*5.1;
+      const fallX=Math.sin(time*.62)*(1-fallProgress)*.28;
+
+      scaleFigure.position.set(fallX,fallY,fallZ);
+      scaleFigure.rotation.y=Math.sin(time*.28)*.18;
+      scaleFigure.rotation.x=-.18+fallProgress*.30;
+      scaleFigure.rotation.z=Math.sin(time*.82)*(1-fallProgress)*.10;
+      scaleFigure.userData.updateFall?.(time,fallProgress);
+      landingImpact.visible=false;
+    }else if(landingWindow){
+      const local=clamp((chapterFloat-fallEnd)/Math.max(.001,(landingIndex+.72)-fallEnd),0,1);
+      const impactAt=.22;
+      const descent=clamp(local/impactAt,0,1);
+      const recover=clamp((local-impactAt)/(1-impactAt),0,1);
+
+      // Final drop lands exactly on the dossier path.
+      const dropY=1.45*(1-smooth(descent));
+      scaleFigure.position.set(landingPoint.x,dropY,landingPoint.z);
+      scaleFigure.rotation.x=0;
+      scaleFigure.rotation.z=0;
+
+      // Face the viewer/camera during impact and recovery.
+      const toCameraX=camera.position.x-scaleFigure.position.x;
+      const toCameraZ=camera.position.z-scaleFigure.position.z;
+      const faceCameraYaw=Math.atan2(toCameraX,toCameraZ);
+      const landingYawDelta=Math.atan2(
+        Math.sin(faceCameraYaw-scaleFigure.rotation.y),
+        Math.cos(faceCameraYaw-scaleFigure.rotation.y)
       );
-      scaleFigure.rotation.y=Math.sin(time*.35)*.22;
-      scaleFigure.rotation.z=Math.sin(time*.7)*.08;
-      scaleFigure.userData.updateFall?.(time,spaceProgress);
+      scaleFigure.rotation.y+=landingYawDelta*Math.min(1,dt*12);
+
+      scaleFigure.userData.updateLanding?.(time,recover);
+
+      if(local>=impactAt){
+        landingImpact.visible=true;
+        landingImpact.userData.update?.(recover);
+      }else{
+        landingImpact.visible=false;
+      }
     }else if(climbWindow){
       const local=clamp((chapterFloat-(climbIndex-.52))/1.10,0,1);
       const vertical=clamp(local/.78,0,1);
@@ -440,6 +483,7 @@ function createWorld(data){
       scaleFigure.rotation.z=0;
       scaleFigure.userData.updateClimb?.(time,local);
     }else{
+      landingImpact.visible=false;
       scaleFigure.position.set(fp.x,0,fp.z);
       scaleFigure.rotation.z=0;
 
@@ -455,7 +499,8 @@ function createWorld(data){
     scrollImpulse*=.88;
     ambientPoints.rotation.y=time*.004;
 
-    const spaceBlend=spaceEnd>=0?clamp(1-Math.max(0,chapterFloat-spaceEnd)/.8,0,1):0;
+    const spaceFadeStart=landingIndex>=0?landingIndex-.65:spaceEnd;
+    const spaceBlend=spaceEnd>=0?clamp(1-Math.max(0,chapterFloat-spaceFadeStart)/.82,0,1):0;
     knowledgeFall.visible=spaceBlend>.001;
     if(knowledgeFall.visible){
       try{knowledgeFall.userData.update?.(time,1-spaceBlend*.35)}catch(err){console.error('Knowledge fall update',err)}
