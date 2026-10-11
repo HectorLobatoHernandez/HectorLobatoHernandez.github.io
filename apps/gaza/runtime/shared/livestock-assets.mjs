@@ -47,7 +47,7 @@ export function createInstancedHerd(parent,species,count){
  // Crisp procedural coat edge at fragment resolution; anatomical skin/wool colours remain untouched.
  material.onBeforeCompile=shader=>{
   shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float farmCoat; varying float vFarmCoat;').replace('#include <begin_vertex>','#include <begin_vertex>\nvFarmCoat = farmCoat;');
-  shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nvarying float vFarmCoat;').replace('#include <color_fragment>','#include <color_fragment>\nif(vFarmCoat > 0.5){float patch = smoothstep(0.38,0.41,diffuseColor.r);diffuseColor.rgb=mix(vec3(0.023,0.026,0.029),vec3(0.81,0.79,0.74),patch);}');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nvarying float vFarmCoat;').replace('#include <color_fragment>','#include <color_fragment>\nif(vFarmCoat > 0.5){float coatBlend = smoothstep(0.38,0.41,diffuseColor.r);diffuseColor.rgb=mix(vec3(0.023,0.026,0.029),vec3(0.81,0.79,0.74),coatBlend);}');
  };material.customProgramCacheKey=()=> 'gaza-farm-coat-v2';
  const geometryNames=['body','head','tail','upper','lower'];
  for(const key of geometryNames){const n=['upper','lower'].includes(key)?count*4:count;const mesh=new T.InstancedMesh(parts[key],material,Math.max(1,n));mesh.count=n;mesh.instanceMatrix.setUsage(T.DynamicDrawUsage);mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;g.add(mesh);meshes[key]=mesh;}
