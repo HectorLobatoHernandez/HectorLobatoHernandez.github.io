@@ -9,5 +9,5 @@ test('loading reallocates glyphs without duplicating stock',()=>{const p=plan(vi
 test('hold and equipment problems retain the loading position',()=>{for(const status of ['HELD','UNAVAILABLE','WAIT_GATE'])assert.deepEqual(plan(view(20,status,.5)),plan(view(20,'RUNNING',.5)))});
 test('after dispatch no pallet stock remains at rack or dock',()=>assert.equal(plan(view(0,'DONE',1)).represented,0));
 test('large stock is a bounded subset, not capacity',()=>{const p=plan(view(500,'RUNNING',.5));assert.equal(p.rack,24);assert.equal(p.dock,12);assert.equal(p.stock,500);assert(p.represented<=p.stock)});
-test('malformed quantities or limits fail closed',()=>{for(const n of [-1,NaN,Infinity,1.1,'20',undefined])assert.equal(plan(view(n)).represented,0);assert.equal(plan(view(),{rack:-1,dock:12}).represented,0)});
+test('malformed quantities or limits fail closed',()=>{for(const n of [-1,NaN,Infinity,1.1,'20',undefined]){const v=view();v.pallets.stored=n;assert.equal(plan(v).represented,0)}assert.equal(plan(view(),{rack:-1,dock:12}).represented,0)});
 test('visual projection is immutable and deterministic',()=>{const v=view(20,'RUNNING',.5),before=JSON.stringify(v),expected=plan(v);for(let i=0;i<100;i++)assert.deepEqual(plan(v),expected);assert.equal(JSON.stringify(v),before)});
