@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createGazaWorld } from './gaza/gaza-scene.js';
+import { createRhbWorld } from './rhb/rhb-scene.js';
 import { createHLAvatar } from './avatar/hl-avatar.js';
 
 const DATA_URL='./data/world.json';
@@ -57,6 +58,7 @@ function createWorld(data){
   scene.add(cool);
 
   const baseBgColor=new THREE.Color(0x050706);
+  const rhbBgColor=new THREE.Color(0x17130f);
   const gazaBgColor=new THREE.Color(0x172116);
 
   const terrainGeom=new THREE.PlaneGeometry(110,110,64,64);
@@ -198,6 +200,18 @@ function createWorld(data){
     portals.push(group);
   }
 
+  // RHB family metalworking workshop / RHB STUDIO evolution.
+  const rhbSet=createRhbWorld(THREE,{detail:'world'});
+  rhbSet.scale.setScalar(.56);
+  rhbSet.position.set(-1.0,.02,-13.8);
+  rhbSet.rotation.y=.03;
+  const rhbIndices=chapters
+    .map((ch,index)=>ch.environment==='rhb'?index:-1)
+    .filter(index=>index>=0);
+  rhbSet.userData.worldChapterStart=rhbIndices.length?Math.min(...rhbIndices):-1;
+  rhbSet.userData.worldChapterEnd=rhbIndices.length?Math.max(...rhbIndices):-1;
+  scene.add(rhbSet);
+
   // GAZA / Zamora procedural world set-piece.
   // Conceptual spatial composition only: not georeferenced and not as-built.
   const gazaSet=createGazaWorld(THREE,{detail:'world'});
@@ -245,6 +259,7 @@ function createWorld(data){
     }
 
     panel.classList.toggle('project-panel--gaza',ch.environment==='gaza');
+    panel.classList.toggle('project-panel--rhb',ch.environment==='rhb');
     panelKicker.textContent=ch.kicker||'';
     panelTitle.textContent=ch.title||'';
     panelSubtitle.textContent=ch.subtitle||'';
@@ -265,7 +280,7 @@ function createWorld(data){
       const a=document.createElement('a');
       a.href=ch.islandHref;
       a.className='world-btn primary';
-      a.textContent='ENTER GAZA WORLD ↗';
+      a.textContent=ch.environment==='rhb'?'ENTER RHB WORKSHOP ↗':'ENTER GAZA WORLD ↗';
       panelActions.appendChild(a);
     }
     if(ch.caseHref){
@@ -355,6 +370,23 @@ function createWorld(data){
     ambientPoints.rotation.y=time*.004;
 
     const chapterFloat=renderProgress*(chapters.length-1);
+    const rhbStart=rhbSet.userData.worldChapterStart;
+    const rhbEnd=rhbSet.userData.worldChapterEnd;
+    const distanceToRhb=chapterFloat<rhbStart
+      ? rhbStart-chapterFloat
+      : chapterFloat>rhbEnd
+        ? chapterFloat-rhbEnd
+        : 0;
+    const rhbBlend=clamp(1-distanceToRhb/.85,0,1);
+    rhbSet.visible=rhbBlend>.001;
+    if(rhbSet.visible){
+      try{
+        const localProgress=clamp((chapterFloat-rhbStart)/Math.max(1,rhbEnd-rhbStart),0,1);
+        rhbSet.userData.update?.(time,localProgress);
+      }catch(err){console.error('RHB set update',err)}
+      rhbSet.scale.setScalar(.56*(1+rhbBlend*.02));
+    }
+
     const gazaStart=gazaSet.userData.worldChapterStart;
     const gazaEnd=gazaSet.userData.worldChapterEnd;
     const distanceToGaza=chapterFloat<gazaStart
@@ -370,13 +402,17 @@ function createWorld(data){
       gazaSet.scale.setScalar(.48*(1+gazaBlend*.025));
     }
 
-    scene.background.copy(baseBgColor).lerp(gazaBgColor,gazaBlend);
-    scene.fog.color.copy(baseBgColor).lerp(gazaBgColor,gazaBlend);
-    scene.fog.density=lerp(.028,.012,gazaBlend);
-    hemi.intensity=lerp(1.25,2.0,gazaBlend);
-    key.intensity=lerp(2.2,4.0,gazaBlend);
-    cool.intensity=lerp(1.0,.55,gazaBlend);
-    renderer.toneMappingExposure=lerp(.82,1.02,gazaBlend);
+    const worldBg=baseBgColor.clone();
+    if(rhbBlend>0)worldBg.lerp(rhbBgColor,rhbBlend);
+    if(gazaBlend>0)worldBg.lerp(gazaBgColor,gazaBlend);
+    scene.background.copy(worldBg);
+    scene.fog.color.copy(worldBg);
+    scene.fog.density=lerp(.028,.019,rhbBlend);
+    scene.fog.density=lerp(scene.fog.density,.012,gazaBlend);
+    hemi.intensity=1.25+rhbBlend*.35+gazaBlend*.75;
+    key.intensity=2.2+rhbBlend*1.15+gazaBlend*1.8;
+    cool.intensity=1.0-rhbBlend*.12-gazaBlend*.45;
+    renderer.toneMappingExposure=.82+rhbBlend*.12+gazaBlend*.20;
 
     portals.forEach(portal=>{
       const idx=portal.userData.chapterIndex;
