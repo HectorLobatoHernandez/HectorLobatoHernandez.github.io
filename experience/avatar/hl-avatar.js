@@ -1,6 +1,6 @@
 export function createHLAvatar(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_V08';
+  root.name='HL_AVATAR_V09';
   root.userData.reference='USER_SUPPLIED_PHOTOS_2026_10_11';
   root.userData.style='STYLIZED_REALTIME_HUMANOID';
 
@@ -12,10 +12,11 @@ export function createHLAvatar(THREE){
     skin2:new THREE.MeshStandardMaterial({color:0x9d674f,roughness:.92}),
     hair:new THREE.MeshStandardMaterial({color:0x171514,roughness:.98}),
     beard:new THREE.MeshStandardMaterial({color:0x241f1c,roughness:.98}),
-    shirt:new THREE.MeshStandardMaterial({color:0x0d0e0e,roughness:.96}),
-    pants:new THREE.MeshStandardMaterial({color:0x17191b,roughness:.94}),
-    shoe:new THREE.MeshStandardMaterial({color:0x151515,roughness:.9}),
-    sole:new THREE.MeshStandardMaterial({color:0x30302e,roughness:.98}),
+    shirt:new THREE.MeshStandardMaterial({color:0x242426,roughness:.92}),
+    pants:new THREE.MeshStandardMaterial({color:0x202329,roughness:.92}),
+    shoe:new THREE.MeshStandardMaterial({color:0x5b554b,roughness:.92}),
+    sole:new THREE.MeshStandardMaterial({color:0x383733,roughness:.98}),
+    shoeStripe:new THREE.MeshStandardMaterial({color:0xc66f4d,roughness:.88}),
     frame:new THREE.MeshStandardMaterial({color:0xa96032,roughness:.48,metalness:.08}),
     lens:new THREE.MeshPhysicalMaterial({color:0x5a4632,transparent:true,opacity:.34,roughness:.10,metalness:0}),
     eye:new THREE.MeshStandardMaterial({color:0xf1ede4,roughness:.7}),
@@ -57,12 +58,12 @@ export function createHLAvatar(THREE){
   torsoPivot.position.y=1.33;
   bodyRoot.add(torsoPivot);
 
-  const abdomen=cyl(.19,.17,.34,mats.shirt,16);
+  const abdomen=cyl(.205,.182,.36,mats.shirt,16);
   abdomen.scale.z=.70;
   abdomen.position.y=-.14;
   torsoPivot.add(abdomen);
 
-  const chest=cyl(.25,.19,.40,mats.shirt,16);
+  const chest=cyl(.285,.205,.42,mats.shirt,16);
   chest.scale.z=.68;
   chest.position.y=.22;
   torsoPivot.add(chest);
@@ -75,34 +76,39 @@ export function createHLAvatar(THREE){
   // shoulders / short sleeves
   for(const sx of [-1,1]){
     const shoulder=sphere(.145,mats.shirt,14);
-    shoulder.scale.set(1.0,.78,.86);
-    shoulder.position.set(sx*.285,.26,0);
+    shoulder.scale.set(1.08,.80,.92);
+    shoulder.position.set(sx*.30,.26,0);
     torsoPivot.add(shoulder);
   }
 
   // Carhartt chest patch
   const makePatch=()=>{
     const cv=document.createElement('canvas');
-    cv.width=360;cv.height=220;
+    cv.width=420;cv.height=260;
     const ctx=cv.getContext('2d');
-    ctx.fillStyle='#191919';ctx.fillRect(0,0,360,220);
-    ctx.fillStyle='#cf8d35';
-    ctx.beginPath();ctx.arc(92,102,48,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#191919';
-    ctx.beginPath();ctx.arc(112,88,37,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#f0ece4';
-    ctx.font='700 34px Arial';
+    ctx.clearRect(0,0,420,260);
+    ctx.fillStyle='#ffffff';
+    ctx.beginPath();
+    ctx.arc(122,92,62,0,Math.PI*2);
+    ctx.fill();
+    ctx.globalCompositeOperation='destination-out';
+    ctx.beginPath();
+    ctx.arc(150,74,46,0,Math.PI*2);
+    ctx.fill();
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='#ffffff';
+    ctx.font='700 42px Arial';
     ctx.textAlign='center';
-    ctx.fillText('Carhartt',235,156);
+    ctx.fillText('carhartt.',215,195);
     const tex=new THREE.CanvasTexture(cv);
     tex.colorSpace=THREE.SRGBColorSpace;
     return tex;
   };
   const patch=new THREE.Mesh(
-    new THREE.PlaneGeometry(.14,.085),
+    new THREE.PlaneGeometry(.17,.105),
     new THREE.MeshBasicMaterial({map:makePatch(),toneMapped:false})
   );
-  patch.position.set(.13,.19,.185);
+  patch.position.set(.145,.17,.202);
   torsoPivot.add(patch);
 
   // --- neck / head ---
@@ -181,23 +187,23 @@ export function createHLAvatar(THREE){
   const eyeGroups=[];
   for(const sx of [-1,1]){
     const eye=new THREE.Group();
-    eye.position.set(sx*.092,.025,.177);
+    eye.position.set(sx*.086,.022,.178);
 
-    const white=sphere(.044,mats.eye,14);
-    white.scale.set(1.18,1,.62);
+    const white=sphere(.036,mats.eye,14);
+    white.scale.set(1.12,1,.62);
     eye.add(white);
 
-    const irisOuter=sphere(.023,mats.irisOuter,14);
+    const irisOuter=sphere(.019,mats.irisOuter,14);
     irisOuter.scale.set(1,1,.58);
     irisOuter.position.z=.034;
     eye.add(irisOuter);
 
-    const irisInner=sphere(.015,mats.irisInner,14);
+    const irisInner=sphere(.0125,mats.irisInner,14);
     irisInner.scale.set(1,1,.62);
     irisInner.position.z=.043;
     eye.add(irisInner);
 
-    const pupil=sphere(.0088,mats.pupil,12);
+    const pupil=sphere(.0072,mats.pupil,12);
     pupil.position.z=.052;
     eye.add(pupil);
 
@@ -212,11 +218,11 @@ export function createHLAvatar(THREE){
   // glasses + bridge + side chains
   const glasses=new THREE.Group();
   for(const sx of [-1,1]){
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(.09,.013,8,24),mats.frame);
-    ring.position.set(sx*.098,.026,.198);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.078,.012,8,24),mats.frame);
+    ring.position.set(sx*.086,.024,.198);
     glasses.add(ring);
-    const lens=new THREE.Mesh(new THREE.CircleGeometry(.081,24),mats.lens);
-    lens.position.set(sx*.098,.026,.201);
+    const lens=new THREE.Mesh(new THREE.CircleGeometry(.070,24),mats.lens);
+    lens.position.set(sx*.086,.024,.201);
     glasses.add(lens);
 
     const chain=new THREE.Group();
@@ -230,7 +236,7 @@ export function createHLAvatar(THREE){
     headPivot.add(chain);
   }
   const bridge=box(.055,.012,.012,mats.frame);
-  bridge.position.set(0,.027,.201);
+  bridge.position.set(0,.024,.201);
   glasses.add(bridge);
   headPivot.add(glasses);
 
@@ -246,11 +252,11 @@ export function createHLAvatar(THREE){
     shoulderPivot.position.set(sx*.305,1.50,0);
     bodyRoot.add(shoulderPivot);
 
-    const upper=cyl(.071,.061,.35,mats.skin,14);
+    const upper=cyl(.079,.067,.36,mats.skin,14);
     upper.position.y=-.17;
     shoulderPivot.add(upper);
 
-    const sleeve=cyl(.082,.074,.17,mats.shirt,14);
+    const sleeve=cyl(.094,.082,.18,mats.shirt,14);
     sleeve.position.y=-.055;
     shoulderPivot.add(sleeve);
 
@@ -262,7 +268,7 @@ export function createHLAvatar(THREE){
     elbowPivot.position.y=-.35;
     shoulderPivot.add(elbowPivot);
 
-    const fore=cyl(.059,.048,.36,mats.skin,14);
+    const fore=cyl(.064,.052,.37,mats.skin,14);
     fore.position.y=-.18;
     elbowPivot.add(fore);
 
@@ -270,7 +276,7 @@ export function createHLAvatar(THREE){
     tattooBand.position.y=-.17;
     elbowPivot.add(tattooBand);
 
-    const hand=sphere(.058,mats.skin,12);
+    const hand=sphere(.063,mats.skin,12);
     hand.scale.set(.82,1.15,.64);
     hand.position.y=-.38;
     elbowPivot.add(hand);
@@ -302,6 +308,11 @@ export function createHLAvatar(THREE){
     heel.position.set(0,.105,-.11);
     g.add(heel);
 
+    const stripe=box(.018,.035,.26,mats.shoeStripe);
+    stripe.position.set(.082,.105,.035);
+    stripe.rotation.y=-.05;
+    g.add(stripe);
+
     for(let i=0;i<5;i++){
       const rib=box(.17,.012,.014,mats.sole);
       rib.position.set(0,.01,-.07+i*.042);
@@ -314,7 +325,7 @@ export function createHLAvatar(THREE){
 
   for(const sx of [-1,1]){
     const hipPivot=new THREE.Group();
-    hipPivot.position.set(sx*.125,.84,0);
+    hipPivot.position.set(sx*.14,.84,0);
     bodyRoot.add(hipPivot);
 
     const thigh=cyl(.085,.071,.52,mats.pants,14);
