@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createGazaWorld } from './gaza/gaza-scene.js?v=9';
 import { createRhbWorld } from './rhb/rhb-scene.js?v=9';
-import { createHLAvatarRuntime } from './avatar/hl-avatar-runtime.js?v=12';
+import { createHLAvatarRuntime } from './avatar/hl-avatar-runtime.js?v=15';
 import { createKnowledgeFall } from './intro/knowledge-fall.js?v=9';
 import { createLandingImpact } from './intro/landing-impact.js?v=9';
 import { createZamoraWall } from './zamora/zamora-wall.js?v=9';
@@ -425,9 +425,9 @@ function createWorld(data){
     const forwardYaw=Math.atan2(tangentX,tangentZ);
 
     const scrollVelocity=Math.abs(targetProgress-renderProgress);
-    const recentlyScrolled=(performance.now()-lastScrollAt)<190;
-    const moving=recentlyScrolled||scrollVelocity>.00022;
-    const walkSpeed=.76+Math.min(.18,scrollVelocity*6+scrollImpulse*.10);
+    const recentlyScrolled=(performance.now()-lastScrollAt)<280;
+    const moving=recentlyScrolled||scrollVelocity>.00010;
+    const walkSpeed=.84+Math.min(.10,scrollVelocity*3+scrollImpulse*.05);
 
     const fallEnd=landingIndex>=0?landingIndex-.22:spaceEnd+.4;
     const inFall=landingIndex>=0&&chapterFloat<fallEnd;
@@ -443,18 +443,19 @@ function createWorld(data){
       const camRight=new THREE.Vector3().crossVectors(camDir,camera.up).normalize();
       const camUp=camera.up.clone().normalize();
 
-      const distance=lerp(5.2,4.55,fallProgress);
+      const distance=lerp(4.65,4.25,fallProgress);
       const anchor=camera.position.clone()
         .add(camDir.clone().multiplyScalar(distance))
-        .add(camUp.clone().multiplyScalar(-1.03));
+        .add(camRight.clone().multiplyScalar(1.35))
+        .add(camUp.clone().multiplyScalar(-.82));
 
-      const lateralDrift=Math.sin(time*.55)*(1-fallProgress)*.10;
-      const verticalDrift=lerp(.18,-.12,fallProgress);
+      const lateralDrift=Math.sin(time*.45)*(1-fallProgress)*.06;
+      const verticalDrift=lerp(.10,-.08,fallProgress);
 
       scaleFigure.position.copy(anchor);
       scaleFigure.position.add(camRight.multiplyScalar(lateralDrift));
       scaleFigure.position.add(camUp.multiplyScalar(verticalDrift));
-      scaleFigure.scale.setScalar(1.16);
+      scaleFigure.scale.setScalar(1.22);
 
       const faceCameraYaw=Math.atan2(
         camera.position.x-scaleFigure.position.x,
@@ -525,12 +526,13 @@ function createWorld(data){
       scaleFigure.position.set(fp.x,0,fp.z);
       scaleFigure.rotation.z=0;
 
-      const targetYaw=scrollDirection>=0?forwardYaw:forwardYaw+Math.PI;
+      // The avatar always faces the actual direction of travel.
+      const travelYaw=scrollDirection>=0?forwardYaw:forwardYaw+Math.PI;
       const yawDelta=Math.atan2(
-        Math.sin(targetYaw-scaleFigure.rotation.y),
-        Math.cos(targetYaw-scaleFigure.rotation.y)
+        Math.sin(travelYaw-scaleFigure.rotation.y),
+        Math.cos(travelYaw-scaleFigure.rotation.y)
       );
-      scaleFigure.rotation.y+=yawDelta*Math.min(1,dt*9.0);
+      scaleFigure.rotation.y+=yawDelta*Math.min(1,dt*5.2);
       scaleFigure.userData.update?.(time,moving?1:0,walkSpeed);
     }
 
