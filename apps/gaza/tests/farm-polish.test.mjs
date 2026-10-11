@@ -6,3 +6,7 @@ test('changing instance matrices invalidates raycast bounds, including after iso
 
 test('milking stall feet remain on the proposed platform and face away from the pit',()=>{const c=parlourPose(.55,'BOVINE'),e=parlourPose(.55,'OVINE');assert.equal(c.y,.895);assert.equal(e.y,.895);assert.equal(c.yaw,0);assert.equal(e.yaw,-Math.PI);assert.equal(c.z,.25);assert(c.operatorX<c.x);assert(e.operatorX>e.x);});
 test('entry and exit have continuous turning and do not walk through separators',()=>{for(const species of ['BOVINE','OVINE']){let before=parlourPose(0,species);for(let i=1;i<=1000;i++){const now=parlourPose(i/1000,species);assert(Math.abs(now.yaw-before.yaw)<.08);assert(Math.abs(now.z-before.z)<.11);before=now;}assert.equal(parlourPose(.8,species).z,parlourPose(.4,species).z);}});
+
+const {createRenderScheduler}=await import('../runtime/farm/render-scheduler.mjs');
+test('idle rendering is on demand, not a competing 60fps loop in every department',()=>{const r=createRenderScheduler();assert(r.needsFrame());r.observe('revision1');r.rendered();for(let i=0;i<100;i++){r.observe('revision1');assert(!r.needsFrame())}assert.equal(r.snapshot().frames,1);r.invalidate();assert(r.needsFrame())});
+test('a changed simulation pose triggers rendering but never changes source state',()=>{const state={revision:2},r=createRenderScheduler();r.observe(JSON.stringify(state));r.rendered();const before=JSON.stringify(state);r.observe('revision3');assert(r.needsFrame());assert.equal(JSON.stringify(state),before)});
