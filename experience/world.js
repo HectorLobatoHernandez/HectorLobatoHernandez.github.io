@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import { createGazaWorld } from './gaza/gaza-scene.js';
-import { createRhbWorld } from './rhb/rhb-scene.js';
-import { createHLAvatar } from './avatar/hl-avatar.js';
-import { createKnowledgeFall } from './intro/knowledge-fall.js';
-import { createLandingImpact } from './intro/landing-impact.js';
-import { createZamoraWall } from './zamora/zamora-wall.js';
+import { createGazaWorld } from './gaza/gaza-scene.js?v=9';
+import { createRhbWorld } from './rhb/rhb-scene.js?v=9';
+import { createHLAvatar } from './avatar/hl-avatar.js?v=9';
+import { createKnowledgeFall } from './intro/knowledge-fall.js?v=9';
+import { createLandingImpact } from './intro/landing-impact.js?v=9';
+import { createZamoraWall } from './zamora/zamora-wall.js?v=9';
 
 const DATA_URL='./data/world.json';
 const canvas=document.getElementById('worldCanvas');
@@ -264,6 +264,11 @@ function createWorld(data){
   scaleFigure.userData.role='WORLD_TRAVELLER';
   scene.add(scaleFigure);
 
+  // Character lights: keep dark clothes readable against the dossier background.
+  const avatarKey=new THREE.PointLight(0xffd7b0,3.2,8,2);
+  const avatarFill=new THREE.PointLight(0x9bc8d8,1.55,7,2);
+  scene.add(avatarKey,avatarFill);
+
   const indexButtons=[];
   chapters.forEach((ch,i)=>{
     const b=document.createElement('button');
@@ -437,7 +442,7 @@ function createWorld(data){
       const camRight=new THREE.Vector3().crossVectors(camDir,camera.up).normalize();
       const camUp=camera.up.clone().normalize();
 
-      const distance=lerp(4.6,5.3,fallProgress);
+      const distance=lerp(3.45,4.15,fallProgress);
       const anchor=camera.position.clone()
         .add(camDir.clone().multiplyScalar(distance))
         .add(camUp.clone().multiplyScalar(1.0));
@@ -448,7 +453,7 @@ function createWorld(data){
       scaleFigure.position.copy(anchor);
       scaleFigure.position.add(camRight.multiplyScalar(lateralDrift));
       scaleFigure.position.y+=verticalOffset;
-      scaleFigure.scale.setScalar(1.28);
+      scaleFigure.scale.setScalar(1.48);
 
       const faceCameraYaw=Math.atan2(
         camera.position.x-scaleFigure.position.x,
@@ -468,7 +473,7 @@ function createWorld(data){
       // Final drop lands exactly on the dossier path.
       const dropY=1.45*(1-smooth(descent));
       scaleFigure.position.set(landingPoint.x,dropY,landingPoint.z);
-      scaleFigure.scale.setScalar(1.05);
+      scaleFigure.scale.setScalar(1.14);
       scaleFigure.rotation.x=0;
       scaleFigure.rotation.z=0;
 
@@ -491,7 +496,7 @@ function createWorld(data){
         landingImpact.visible=false;
       }
     }else if(climbWindow){
-      scaleFigure.scale.setScalar(.88);
+      scaleFigure.scale.setScalar(.95);
       const local=clamp((chapterFloat-(climbIndex-.52))/1.10,0,1);
       const vertical=clamp(local/.78,0,1);
       if(local<.78){
@@ -504,7 +509,7 @@ function createWorld(data){
       scaleFigure.userData.updateClimb?.(time,local);
     }else{
       landingImpact.visible=false;
-      scaleFigure.scale.setScalar(.88);
+      scaleFigure.scale.setScalar(.95);
       scaleFigure.position.set(fp.x,0,fp.z);
       scaleFigure.rotation.z=0;
 
@@ -516,6 +521,18 @@ function createWorld(data){
       scaleFigure.rotation.y+=yawDelta*Math.min(1,dt*9.0);
       scaleFigure.userData.update?.(time,moving?1:0,walkSpeed);
     }
+
+    // Follow the avatar with readable key/fill lighting.
+    avatarKey.position.set(
+      scaleFigure.position.x+1.15,
+      scaleFigure.position.y+1.7,
+      scaleFigure.position.z+1.5
+    );
+    avatarFill.position.set(
+      scaleFigure.position.x-1.4,
+      scaleFigure.position.y+1.0,
+      scaleFigure.position.z-.7
+    );
 
     scrollImpulse*=.88;
     ambientPoints.rotation.y=time*.004;
