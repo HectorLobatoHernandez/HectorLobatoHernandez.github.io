@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createGazaWorld } from './gaza/gaza-scene.js';
+import { createHLAvatar } from './avatar/hl-avatar.js';
 
 const DATA_URL='./data/world.json';
 const canvas=document.getElementById('worldCanvas');
@@ -210,18 +211,8 @@ function createWorld(data){
   gazaSet.userData.worldChapterEnd=gazaIndices.length?Math.max(...gazaIndices):-1;
   scene.add(gazaSet);
 
-  const scaleFigure=new THREE.Group();
-  const figureMat=new THREE.MeshStandardMaterial({
-    color:0xd8ddd8,
-    roughness:.7,
-    emissive:0x303a34,
-    emissiveIntensity:.2
-  });
-  const body=new THREE.Mesh(new THREE.CylinderGeometry(.095,.13,.78,10),figureMat);
-  body.position.y=.53;
-  const head=new THREE.Mesh(new THREE.SphereGeometry(.125,14,10),figureMat);
-  head.position.y=1.02;
-  scaleFigure.add(body,head);
+  const scaleFigure=createHLAvatar(THREE);
+  scaleFigure.userData.role='WORLD_TRAVELLER';
   scene.add(scaleFigure);
 
   const indexButtons=[];
@@ -356,8 +347,10 @@ function createWorld(data){
     const figureT=clamp(renderProgress+.045,0,1);
     const fp=curve.getPointAt(figureT);
     scaleFigure.position.set(fp.x,0,fp.z);
-    scaleFigure.position.y=.02+Math.abs(Math.sin(time*3.4))*.018;
-    scaleFigure.rotation.y=Math.sin(time*.3)*.08;
+    const ahead=curve.getPointAt(clamp(figureT+.006,0,1));
+    scaleFigure.rotation.y=Math.atan2(ahead.x-fp.x,ahead.z-fp.z);
+    const scrollVelocity=Math.abs(targetProgress-renderProgress);
+    scaleFigure.userData.update?.(time,1+Math.min(1.5,scrollVelocity*28));
 
     ambientPoints.rotation.y=time*.004;
 

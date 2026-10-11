@@ -134,3 +134,22 @@ The right-side project panel becomes smaller and image-free during GAZA so the 3
 `ENTER GAZA WORLD` is always available during this segment to switch from guided cinematic scroll to the free-navigation island at `/experience/gaza/`.
 
 The stable dossier at `/index.html` is still unchanged.
+
+
+## V0.4 — reference-based HL avatar
+
+The placeholder scale figure has been replaced by a stylized realtime avatar derived from the user-supplied photo references.
+
+Recognizable visual cues used:
+- dark curly hair;
+- short beard / goatee;
+- round glasses with warm/orange frame;
+- ear plugs / hoops;
+- visible neck / arm tattoo cues;
+- predominantly black clothing / oversized outerwear silhouette.
+
+The avatar is intentionally stylized rather than photorealistic so it remains lightweight, readable at distance and suitable for realtime navigation.
+
+It follows the world path and uses a procedural walk cycle tied to scroll movement.
+
+The legacy Rufino Hernández Barba logo supplied in the same reference batch is treated as **heritage/origin material only** and does not replace the current RHB STUDIO identity.
