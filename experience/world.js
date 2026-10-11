@@ -431,29 +431,32 @@ function createWorld(data){
       const fallProgress=clamp(chapterFloat/Math.max(.001,fallEnd),0,1);
       const gravity=fallProgress*fallProgress;
 
-      // Keep the avatar framed in front of the camera during the whole descent.
+      // Camera-relative framing: the avatar remains large and readable during the whole fall.
       const camDir=new THREE.Vector3();
       camera.getWorldDirection(camDir);
       const camRight=new THREE.Vector3().crossVectors(camDir,camera.up).normalize();
-      const anchor=camera.position.clone()
-        .add(camDir.clone().multiplyScalar(6.3))
-        .add(camRight.clone().multiplyScalar(.75));
+      const camUp=camera.up.clone().normalize();
 
-      const verticalOffset=lerp(3.6,-1.05,gravity);
-      const lateralDrift=Math.sin(time*.7)*(1-fallProgress)*.22;
+      const distance=lerp(4.6,5.3,fallProgress);
+      const anchor=camera.position.clone()
+        .add(camDir.clone().multiplyScalar(distance))
+        .add(camUp.clone().multiplyScalar(1.0));
+
+      const verticalOffset=lerp(2.3,-.65,gravity);
+      const lateralDrift=Math.sin(time*.72)*(1-fallProgress)*.18;
 
       scaleFigure.position.copy(anchor);
+      scaleFigure.position.add(camRight.multiplyScalar(lateralDrift));
       scaleFigure.position.y+=verticalOffset;
-      scaleFigure.position.x+=lateralDrift;
-      scaleFigure.scale.setScalar(.94);
+      scaleFigure.scale.setScalar(1.28);
 
       const faceCameraYaw=Math.atan2(
         camera.position.x-scaleFigure.position.x,
         camera.position.z-scaleFigure.position.z
       );
       scaleFigure.rotation.y=faceCameraYaw;
-      scaleFigure.rotation.x=-.14+fallProgress*.22;
-      scaleFigure.rotation.z=Math.sin(time*.9)*(1-fallProgress)*.07;
+      scaleFigure.rotation.x=-.10+fallProgress*.16;
+      scaleFigure.rotation.z=Math.sin(time*.86)*(1-fallProgress)*.055;
       scaleFigure.userData.updateFall?.(time,fallProgress);
       landingImpact.visible=false;
     }else if(landingWindow){
@@ -465,7 +468,7 @@ function createWorld(data){
       // Final drop lands exactly on the dossier path.
       const dropY=1.45*(1-smooth(descent));
       scaleFigure.position.set(landingPoint.x,dropY,landingPoint.z);
-      scaleFigure.scale.setScalar(.82);
+      scaleFigure.scale.setScalar(1.05);
       scaleFigure.rotation.x=0;
       scaleFigure.rotation.z=0;
 
@@ -488,7 +491,7 @@ function createWorld(data){
         landingImpact.visible=false;
       }
     }else if(climbWindow){
-      scaleFigure.scale.setScalar(.82);
+      scaleFigure.scale.setScalar(.88);
       const local=clamp((chapterFloat-(climbIndex-.52))/1.10,0,1);
       const vertical=clamp(local/.78,0,1);
       if(local<.78){
@@ -501,7 +504,7 @@ function createWorld(data){
       scaleFigure.userData.updateClimb?.(time,local);
     }else{
       landingImpact.visible=false;
-      scaleFigure.scale.setScalar(.82);
+      scaleFigure.scale.setScalar(.88);
       scaleFigure.position.set(fp.x,0,fp.z);
       scaleFigure.rotation.z=0;
 
