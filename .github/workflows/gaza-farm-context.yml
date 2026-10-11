@@ -1,0 +1,25 @@
+name: GAZA Zamora context discovery
+on:
+  pull_request:
+    paths: ['tools/gaza/collect-zamora-farm-context.mjs', '.github/workflows/gaza-farm-context.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-context:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Query public OSM and IGN imagery for the historic Zamora site
+        run: node tools/gaza/collect-zamora-farm-context.mjs .qa/zamora-context
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-zamora-context-${{ github.run_number }}
+          path: .qa/zamora-context/
+          include-hidden-files: true
+          retention-days: 14
