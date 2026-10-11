@@ -1,4 +1,5 @@
 import {TASKS,TESTS,GATES,ROLES,DEFAULT_LOTS} from './catalog.mjs';
+import {validateContributions} from './farm-network.mjs';
 export const SCHEMA=2;
 export const KEY='gaza:process-ledger:v2';
 const taskById=Object.fromEntries(TASKS.map(t=>[t.id,t]));
@@ -20,11 +21,12 @@ export function initialState(config={}){
  for(const def of definitions){
   assert(typeof def.id==='string'&&/^SIM-[A-Z0-9-]+$/.test(def.id)&&!s.lots[def.id],'ID de lote inválido o duplicado');
   assert(['BOVINE','OVINE'].includes(def.species),'Especie inválida');
+  assert(validateContributions(def),'Aportaciones de origen incompatibles con el lote');
   assert(integer(def.plannedL)&&def.plannedL>0&&integer(def.excludedL)&&def.excludedL<def.plannedL,'Cantidades iniciales inválidas');
   s.lots[def.id]={...clone(def),tasks:Object.fromEntries(TASKS.map(t=>[t.id,{status:'PENDING',startedAt:null,completedAt:null}])),
    mass:Object.fromEntries(['producedL',...massKeys].map(k=>[k,0])),samples:{},tests:[],issues:[],holds:false,recall:false,
    gates:Object.fromEntries(Object.keys(GATES).map(k=>[k,{status:'PENDING',reviewer:null,at:null}])),
-   genealogy:[{id:def.id,parentIds:[],kind:'RAW_ORIGIN',species:def.species}],deliveredPallets:0};
+   genealogy:[...(def.sourceContributions||[]).map(r=>({id:r.id,parentIds:[],kind:'FARM_SOURCE_SIM',species:r.species})),{id:def.id,parentIds:(def.sourceContributions||[]).map(r=>r.id),kind:'RAW_ORIGIN',species:def.species}],deliveredPallets:0};
  }
  for(const r of [...TASKS,...TESTS].map(x=>x.resource))s.equipment[r]={valid:true,revision:0};
  event(s,'CREATED',null,'Escenario creado con dos circuitos de especie independientes; sin datos reales');
@@ -196,6 +198,8 @@ export function assertState(s){
  const resources=new Set();
  for(const lot of Object.values(s.lots)){
   assert(lot&&s.lots[lot.id]===lot&&['BOVINE','OVINE'].includes(lot.species)&&integer(lot.plannedL)&&integer(lot.excludedL)&&lot.excludedL<lot.plannedL,'Lote inválido');
+  assert(validateContributions(lot),'Aportaciones de origen inválidas');
+  if(lot.sourceContributions){const origin=lot.genealogy.find(n=>n.id===lot.id);assert(origin&&origin.parentIds.length===lot.sourceContributions.length&&lot.sourceContributions.every(r=>origin.parentIds.includes(r.id)&&lot.genealogy.some(n=>n.id===r.id&&n.kind==='FARM_SOURCE_SIM')),'Genealogía de red incompleta');}
   assert(typeof lot.holds==='boolean'&&typeof lot.recall==='boolean'&&Array.isArray(lot.tests)&&Array.isArray(lot.issues)&&Array.isArray(lot.genealogy),'Datos de lote incompletos');
   for(const k of ['producedL',...massKeys])assert(integer(lot.mass?.[k]),'Balance negativo o no numérico: '+k);
   assert(lot.mass.producedL===massKeys.reduce((v,k)=>v+lot.mass[k],0),'Balance de masa incumplido');
