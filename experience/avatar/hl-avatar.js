@@ -1,6 +1,6 @@
 export function createHLAvatar(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_V10';
+  root.name='HL_AVATAR_V11';
   root.userData.reference='USER_SUPPLIED_PHOTOS_2026_10_11';
   root.userData.style='STYLIZED_REALTIME_HUMANOID';
 
@@ -89,34 +89,19 @@ export function createHLAvatar(THREE){
     torsoPivot.add(shoulder);
   }
 
-  // Carhartt chest patch
-  const makePatch=()=>{
-    const cv=document.createElement('canvas');
-    cv.width=420;cv.height=260;
-    const ctx=cv.getContext('2d');
-    ctx.clearRect(0,0,420,260);
-    ctx.fillStyle='#ffffff';
-    ctx.beginPath();
-    ctx.arc(122,92,62,0,Math.PI*2);
-    ctx.fill();
-    ctx.globalCompositeOperation='destination-out';
-    ctx.beginPath();
-    ctx.arc(150,74,46,0,Math.PI*2);
-    ctx.fill();
-    ctx.globalCompositeOperation='source-over';
-    ctx.fillStyle='#ffffff';
-    ctx.font='700 42px Arial';
-    ctx.textAlign='center';
-    ctx.fillText('carhartt.',215,195);
-    const tex=new THREE.CanvasTexture(cv);
-    tex.colorSpace=THREE.SRGBColorSpace;
-    return tex;
-  };
-  const patch=new THREE.Mesh(
-    new THREE.PlaneGeometry(.17,.105),
-    new THREE.MeshBasicMaterial({map:makePatch(),toneMapped:false})
+  // Carhartt chest patch — uses the real white logo supplied by the user.
+  const patchTexture=new THREE.TextureLoader().load(
+    '../assets/branding/carhartt-white.png',
+    tex=>{
+      tex.colorSpace=THREE.SRGBColorSpace;
+      tex.minFilter=THREE.LinearFilter;
+    }
   );
-  patch.position.set(.145,.17,.202);
+  const patch=new THREE.Mesh(
+    new THREE.PlaneGeometry(.16,.17),
+    new THREE.MeshBasicMaterial({map:patchTexture,transparent:true,toneMapped:false,depthWrite:false})
+  );
+  patch.position.set(.145,.17,.203);
   torsoPivot.add(patch);
 
   // --- neck / head ---
@@ -149,18 +134,22 @@ export function createHLAvatar(THREE){
     headPivot.add(plug);
   }
 
-  // beard + moustache + goatee
-  const beard=sphere(.165,mats.beard,16);
-  beard.scale.set(.92,.44,.9);
-  beard.position.set(0,-.105,.115);
-  headPivot.add(beard);
-  const moustache=box(.18,.026,.026,mats.beard);
-  moustache.position.set(0,-.028,.187);
-  headPivot.add(moustache);
-  const goatee=cyl(.035,.022,.13,mats.beard,10);
-  goatee.rotation.x=Math.PI/2;
-  goatee.position.set(0,-.155,.18);
-  headPivot.add(goatee);
+  // Clean-shaven face so the mouth remains visible.
+  const mouthMat=new THREE.MeshStandardMaterial({color:0x7a443c,roughness:.72});
+  const mouth=new THREE.Mesh(new THREE.CapsuleGeometry(.038,.060,4,10),mouthMat);
+  mouth.rotation.z=Math.PI/2;
+  mouth.scale.set(1,.22,.18);
+  mouth.position.set(0,-.085,.186);
+  headPivot.add(mouth);
+
+  // Very subtle chin shadow only; no beard volume.
+  const chinShadow=new THREE.Mesh(
+    new THREE.CircleGeometry(.058,18),
+    new THREE.MeshBasicMaterial({color:0x352b27,transparent:true,opacity:.16})
+  );
+  chinShadow.position.set(0,-.145,.178);
+  chinShadow.scale.set(1,.48,1);
+  headPivot.add(chinShadow);
 
   // full curly hair shell + curls
   const hairCap=sphere(.205,mats.hair,18);
