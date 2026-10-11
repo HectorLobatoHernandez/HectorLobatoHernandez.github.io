@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
   "title": "HL Portfolio World",
-  "status": "PROTOTYPE_V0_2_GAZA_WORLD",
+  "status": "PROTOTYPE_V0_3_IMMERSIVE_GAZA_JOURNEY",
   "note": "Isolated experience prototype. The stable dossier at /index.html is not modified.",
   "chapters": [
     {
       "id": "origin",
       "order": 0,
+      "navLabel": "ENTRY",
       "kicker": "00 / ENTRY",
       "title": "HECTOR LOBATO",
       "subtitle": "Systems · Architecture · Software",
@@ -14,6 +15,7 @@
       "visual": null,
       "caseHref": null,
       "liveHref": null,
+      "environment": "dark",
       "world": {
         "x": 0,
         "y": 1.65,
@@ -26,6 +28,7 @@
     {
       "id": "rhb",
       "order": 1,
+      "navLabel": "RHB STUDIO",
       "kicker": "01 / ENGINEERING PLATFORM",
       "title": "RHB STUDIO",
       "subtitle": "Local-first project operating system",
@@ -33,6 +36,7 @@
       "visual": "../assets/visuals/rhb-studio-system.svg",
       "caseHref": "../projects/rhb-studio.html",
       "liveHref": "../apps/rhb/",
+      "environment": "dark",
       "world": {
         "x": -1.6,
         "y": 1.7,
@@ -43,43 +47,155 @@
       }
     },
     {
-      "id": "gaza",
+      "id": "gaza-arrival",
       "order": 2,
-      "kicker": "02 / OPERATIONS INTELLIGENCE",
-      "title": "GAZA OPERATIONS",
-      "subtitle": "Zamora · Duero · Plant · Fields · Farm",
-      "body": "Entrada territorial a GAZA a través de una Zamora histórica reinterpretada en 3D: muralla, iglesias, Duero, campos, viñedos, planta industrial y granja. La escena es conceptual hasta georreferenciar la implantación real.",
+      "navLabel": "GAZA / ARRIVAL",
+      "kicker": "02 / GAZA · ARRIVAL",
+      "title": "ENTER ZAMORA",
+      "subtitle": "Stone walls · Romanesque skyline · territory",
+      "body": "El mundo cambia de escala. Entramos por una Zamora histórica reinterpretada en 3D: muralla, piedra, torres e iglesias antes de que aparezca la operación industrial.",
+      "visual": "../assets/visuals/gaza-operations-system.svg",
+      "islandHref": "./gaza/",
+      "environment": "gaza",
+      "portal": false,
+      "world": {
+        "x": -1,
+        "y": 1.35,
+        "z": -18.5,
+        "lookX": 0.45,
+        "lookY": 1,
+        "lookZ": -22.9
+      }
+    },
+    {
+      "id": "gaza-zamora",
+      "order": 3,
+      "navLabel": "GAZA / ZAMORA",
+      "kicker": "02.1 / ZAMORA",
+      "title": "THE WALLED CITY",
+      "subtitle": "Historic core · churches · stone gate",
+      "body": "La cámara bordea la muralla y entra en el tejido antiguo. Esta composición es narrativa; la fase siguiente alineará hitos y trazado con referencias territoriales verificadas.",
+      "visual": "../assets/visuals/gaza-operations-system.svg",
+      "islandHref": "./gaza/",
+      "environment": "gaza",
+      "portal": false,
+      "world": {
+        "x": -1.15,
+        "y": 2.25,
+        "z": -20.4,
+        "lookX": 0.25,
+        "lookY": 1.2,
+        "lookZ": -24.6
+      }
+    },
+    {
+      "id": "gaza-duero",
+      "order": 4,
+      "navLabel": "GAZA / DUERO",
+      "kicker": "02.2 / DUERO",
+      "title": "RIVER / BRIDGE / LAND",
+      "subtitle": "Duero as geographic spine",
+      "body": "El Duero corta el territorio y conecta la lectura histórica con el paisaje productivo. Desde aquí empiezan a aparecer campos, carreteras y viñedos.",
+      "visual": "../assets/visuals/gaza-operations-system.svg",
+      "islandHref": "./gaza/",
+      "environment": "gaza",
+      "portal": false,
+      "world": {
+        "x": 1.8,
+        "y": 1.55,
+        "z": -22.5,
+        "lookX": 3.8,
+        "lookY": 0.35,
+        "lookZ": -26.4
+      }
+    },
+    {
+      "id": "gaza-territory",
+      "order": 5,
+      "navLabel": "GAZA / LAND",
+      "kicker": "02.3 / TERRITORY",
+      "title": "FIELDS / VINEYARDS",
+      "subtitle": "Green plains · agricultural landscape",
+      "body": "La ciudad queda atrás y el recorrido entra en el paisaje productivo: llanuras, viñedos, caminos rurales y las primeras conexiones con la cadena agroalimentaria.",
+      "visual": "../assets/visuals/gaza-operations-system.svg",
+      "islandHref": "./gaza/",
+      "environment": "gaza",
+      "portal": false,
+      "world": {
+        "x": 2,
+        "y": 2.1,
+        "z": -24.5,
+        "lookX": 4,
+        "lookY": 0.55,
+        "lookZ": -30.1
+      }
+    },
+    {
+      "id": "gaza-plant",
+      "order": 6,
+      "navLabel": "GAZA / PLANT",
+      "kicker": "02.4 / OPERATIONS",
+      "title": "GAZA PLANT",
+      "subtitle": "Plant · logistics · trucks · data",
+      "body": "La planta aparece como pieza operativa dentro del territorio. En esta fase el volumen es conceptual; la versión definitiva se conectará con la geometría 3D y GIS que ya estamos desarrollando en GAZA Operations.",
       "visual": "../assets/visuals/gaza-operations-system.svg",
       "caseHref": "../projects/gaza-logistics-ia.html",
       "liveHref": "../apps/gaza/mission-control.html?guide=1",
+      "islandHref": "./gaza/",
+      "environment": "gaza",
+      "portal": false,
       "world": {
-        "x": 1.2,
-        "y": 2.15,
-        "z": -16.5,
-        "lookX": 3.7,
-        "lookY": 1.4,
-        "lookZ": -27.5
-      },
-      "islandHref": "./gaza/"
+        "x": 9.4,
+        "y": 2.45,
+        "z": -19.8,
+        "lookX": 7.35,
+        "lookY": 1.05,
+        "lookZ": -24.6
+      }
+    },
+    {
+      "id": "gaza-farm",
+      "order": 7,
+      "navLabel": "GAZA / FARM",
+      "kicker": "02.5 / FARM",
+      "title": "THE FARM",
+      "subtitle": "Animals · workers · tractors · origin",
+      "body": "El recorrido termina en la parte más humana del sistema: granja tradicional, vacas y ovejas en libertad, trabajadores, tractor y paisaje. Desde aquí se entiende de dónde nace la operación que después vemos en planta.",
+      "visual": "../assets/visuals/gaza-operations-system.svg",
+      "caseHref": "../projects/gaza-logistics-ia.html",
+      "liveHref": "../apps/gaza/farm-network.html",
+      "islandHref": "./gaza/",
+      "environment": "gaza",
+      "portal": false,
+      "world": {
+        "x": 10,
+        "y": 2.35,
+        "z": -25.1,
+        "lookX": 7,
+        "lookY": 0.8,
+        "lookZ": -30
+      }
     },
     {
       "id": "club-del-mar",
-      "order": 3,
+      "order": 8,
+      "navLabel": "CLUB DEL MAR",
       "kicker": "03 / HOSPITALITY · SYSTEMS",
       "title": "CLUB DEL MAR",
       "subtitle": "Sound Club and restaurant · Palma de Mallorca",
-      "body": "Arquitectura, audio profesional, acústica, iluminación, KNX/DALI, fabricación y commissioning convergen en un único espacio.",
+      "body": "El paisaje rural se disuelve y el viaje entra en arquitectura, hospitality y sistemas: audio, acústica, iluminación, KNX/DALI, fabricación y commissioning.",
       "visual": "../assets/visuals/sound-club-master-2026-02-12-preview.svg",
       "visualFallback": "../assets/visuals/sound-club-cad-blueprint.svg",
       "caseHref": "../projects/sound-club-palma.html",
       "liveHref": null,
+      "environment": "dark",
       "world": {
         "x": 0,
         "y": 1.75,
-        "z": -31,
+        "z": -38,
         "lookX": 0,
         "lookY": 2,
-        "lookZ": -41
+        "lookZ": -48
       }
     }
   ]
