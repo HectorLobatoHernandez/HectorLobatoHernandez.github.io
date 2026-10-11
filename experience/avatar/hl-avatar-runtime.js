@@ -3,7 +3,7 @@ import { createHLAvatar as createFallbackAvatar } from './hl-avatar.js?v=11';
 
 export function createHLAvatarRuntime(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_RUNTIME_V15';
+  root.name='HL_AVATAR_RUNTIME_V16';
   root.userData.source='METAPERSON_GLB_WITH_PROCEDURAL_FALLBACK';
 
   const fallback=createFallbackAvatar(THREE);
@@ -21,9 +21,7 @@ export function createHLAvatarRuntime(THREE){
     baseQuat:new Map(),
     basePos:new Map(),
     model:null,
-    moveBlend:0,
-    facingYaw:0,
-    landingBlend:0
+    moveBlend:0
   };
 
   const boneNames=[
@@ -34,163 +32,269 @@ export function createHLAvatarRuntime(THREE){
     'RightUpLeg','RightLeg','RightFoot','RightToeBase'
   ];
 
-  function styleImportedAvatar(scene){
-    const colors={
-      hair:0x1a1412,
-      top:0x18191b,
-      bottom:0x151619,
-      shoes:0x5d554b
-    };
-
-    scene.traverse(obj=>{
-      if(!obj.isMesh && !obj.isSkinnedMesh)return;
-      const mats=Array.isArray(obj.material)?obj.material:[obj.material];
-      mats.forEach(mat=>{
-        if(!mat || !mat.color)return;
-        if(obj.name==='haircut')mat.color.setHex(colors.hair);
-        if(obj.name==='outfit_top')mat.color.setHex(colors.top);
-        if(obj.name==='outfit_bottom')mat.color.setHex(colors.bottom);
-        if(obj.name==='outfit_shoes')mat.color.setHex(colors.shoes);
-        if('roughness' in mat)mat.roughness=Math.max(.68,mat.roughness??.72);
-      });
-    });
-
-    const head=state.bones.get('Head');
-    if(head){
-      const amber=new THREE.MeshStandardMaterial({
-        color:0xb7642f,
-        roughness:.45,
-        metalness:.05
-      });
-
-      const lens=new THREE.MeshPhysicalMaterial({
-        color:0x5a4632,
-        transparent:true,
-        opacity:.28,
-        roughness:.12,
-        metalness:0,
-        depthWrite:false
-      });
-
-      const glasses=new THREE.Group();
-      glasses.name='HL_AMBER_GLASSES';
-
-      for(const sx of [-1,1]){
-        const ring=new THREE.Mesh(
-          new THREE.TorusGeometry(.039,.0055,8,24),
-          amber
-        );
-        ring.position.set(sx*.036,.055,.126);
-        glasses.add(ring);
-
-        const l=new THREE.Mesh(
-          new THREE.CircleGeometry(.034,24),
-          lens
-        );
-        l.position.set(sx*.036,.055,.127);
-        glasses.add(l);
-
-        for(let i=0;i<6;i++){
-          const link=new THREE.Mesh(
-            new THREE.TorusGeometry(.0065,.0017,5,10),
-            amber
-          );
-          link.scale.set(.72,1.28,1);
-          link.rotation.y=Math.PI/2;
-          link.position.set(sx*.079,.025-i*.018,.048);
-          glasses.add(link);
-        }
-      }
-
-      const bridge=new THREE.Mesh(
-        new THREE.BoxGeometry(.028,.0045,.0045),
-        amber
-      );
-      bridge.position.set(0,.055,.127);
-      glasses.add(bridge);
-      head.add(glasses);
-
-      const curlMat=new THREE.MeshStandardMaterial({
-        color:0x171311,
-        roughness:.98
-      });
-
-      const curls=new THREE.Group();
-      curls.name='HL_CURLY_HAIR_OVERLAY';
-
-      const pts=[
-        [-.065,.145,.03],[-.03,.162,.045],[0,.168,.05],[.03,.162,.045],[.065,.145,.03],
-        [-.075,.115,.015],[-.04,.128,.06],[0,.135,.07],[.04,.128,.06],[.075,.115,.015],
-        [-.07,.095,-.025],[-.035,.11,-.055],[0,.115,-.065],[.035,.11,-.055],[.07,.095,-.025],
-        [-.055,.06,-.065],[0,.07,-.08],[.055,.06,-.065]
-      ];
-
-      pts.forEach(([x,y,z],i)=>{
-        const curl=new THREE.Mesh(
-          new THREE.IcosahedronGeometry(.026+(i%3)*.003,1),
-          curlMat
-        );
-        curl.position.set(x,y,z);
-        curls.add(curl);
-      });
-
-      head.add(curls);
-    }
-  }
-
-  const ARM_DROP=1.30;
-  const WALK_LEG_SWING=.24;
-  const WALK_ARM_SWING=.16;
-
-  function bone(name){
-    return state.bones.get(name) || null;
-  }
+  const bone=name=>state.bones.get(name)||null;
 
   function rotateLocal(name,x=0,y=0,z=0,amount=.22){
-    const b=bone(name);
-    const q0=state.baseQuat.get(name);
-    if(!b || !q0)return;
+    const b=bone(name), q0=state.baseQuat.get(name);
+    if(!b||!q0)return;
+    const qDelta=new THREE.Quaternion().setFromEuler(new THREE.Euler(x,y,z,'XYZ'));
+    b.quaternion.slerp(q0.clone().multiply(qDelta),amount);
+  }
 
-    const qDelta=new THREE.Quaternion().setFromEuler(
-      new THREE.Euler(x,y,z,'XYZ')
-    );
+  function aimBoneModel(name,childName,desiredModelDirection,amount=.25){
+    const b=bone(name), child=bone(childName), q0=state.baseQuat.get(name);
+    if(!b||!child||!q0||!b.parent)return;
 
-    const target=q0.clone().multiply(qDelta);
+    modelRoot.updateWorldMatrix(true,true);
+
+    const localAxis=child.position.clone();
+    if(localAxis.lengthSq()<1e-8)return;
+    localAxis.normalize();
+
+    const modelWorldQ=new THREE.Quaternion();
+    modelRoot.getWorldQuaternion(modelWorldQ);
+
+    const desiredWorld=desiredModelDirection.clone().normalize().applyQuaternion(modelWorldQ);
+
+    const parentWorldQ=new THREE.Quaternion();
+    b.parent.getWorldQuaternion(parentWorldQ);
+
+    const desiredParent=desiredWorld.clone().applyQuaternion(parentWorldQ.clone().invert()).normalize();
+    const restParent=localAxis.clone().applyQuaternion(q0).normalize();
+
+    const delta=new THREE.Quaternion().setFromUnitVectors(restParent,desiredParent);
+    const target=delta.multiply(q0.clone());
+
     b.quaternion.slerp(target,amount);
   }
 
-  function lerpAngle(current,target,amount){
-    let delta=(target-current+Math.PI)%(Math.PI*2)-Math.PI;
-    if(delta<-Math.PI)delta+=Math.PI*2;
-    return current+delta*amount;
+  function setArmsDown(swing=0,amount=.28){
+    aimBoneModel(
+      'LeftArm','LeftForeArm',
+      new THREE.Vector3(-.08,-1,swing),
+      amount
+    );
+    aimBoneModel(
+      'RightArm','RightForeArm',
+      new THREE.Vector3(.08,-1,-swing),
+      amount
+    );
+
+    modelRoot.updateWorldMatrix(true,true);
+
+    aimBoneModel(
+      'LeftForeArm','LeftHand',
+      new THREE.Vector3(-.035,-1,.08+swing*.30),
+      amount*.92
+    );
+    aimBoneModel(
+      'RightForeArm','RightHand',
+      new THREE.Vector3(.035,-1,.08-swing*.30),
+      amount*.92
+    );
   }
 
-  function smooth01(v){
-    v=THREE.MathUtils.clamp(v,0,1);
-    return v*v*(3-2*v);
+  function addGlasses(head){
+    const frameMat=new THREE.MeshStandardMaterial({
+      color:0xd66f28,
+      roughness:.34,
+      metalness:.08
+    });
+    const lensMat=new THREE.MeshPhysicalMaterial({
+      color:0x7b5b3d,
+      transparent:true,
+      opacity:.17,
+      roughness:.08,
+      transmission:.12,
+      depthWrite:false
+    });
+
+    const glasses=new THREE.Group();
+    glasses.name='HL_PERSONAL_GLASSES_V16';
+
+    for(const sx of [-1,1]){
+      const ring=new THREE.Mesh(
+        new THREE.TorusGeometry(.0355,.0032,10,32),
+        frameMat
+      );
+      ring.position.set(sx*.0385,.055,.129);
+      glasses.add(ring);
+
+      const lens=new THREE.Mesh(
+        new THREE.CircleGeometry(.0325,32),
+        lensMat
+      );
+      lens.position.set(sx*.0385,.055,.130);
+      glasses.add(lens);
+
+      const temple=new THREE.Mesh(
+        new THREE.CylinderGeometry(.0022,.0022,.105,8),
+        frameMat
+      );
+      temple.rotation.x=Math.PI/2;
+      temple.position.set(sx*.074,.055,.078);
+      glasses.add(temple);
+    }
+
+    const bridge=new THREE.Mesh(
+      new THREE.BoxGeometry(.025,.0035,.0035),
+      frameMat
+    );
+    bridge.position.set(0,.055,.130);
+    glasses.add(bridge);
+
+    head.add(glasses);
   }
 
-  function setNeutralArms(amount=.22){
-    rotateLocal('LeftArm',0,0, ARM_DROP,amount);
-    rotateLocal('RightArm',0,0,-ARM_DROP,amount);
-    rotateLocal('LeftForeArm',.08,0,.03,amount);
-    rotateLocal('RightForeArm',.08,0,-.03,amount);
+  function addCurlyHair(head){
+    const mat=new THREE.MeshStandardMaterial({
+      color:0x211713,
+      roughness:.94,
+      metalness:0
+    });
+
+    const curls=new THREE.Group();
+    curls.name='HL_CURLY_HAIR_V16';
+
+    const rows=[
+      {y:.170,z:.020,xs:[-.060,-.030,0,.030,.060],r:.031},
+      {y:.148,z:.058,xs:[-.074,-.040,0,.040,.074],r:.032},
+      {y:.122,z:.082,xs:[-.072,-.036,0,.036,.072],r:.031},
+      {y:.100,z:.058,xs:[-.078,-.040,0,.040,.078],r:.030},
+      {y:.083,z:.010,xs:[-.070,-.035,0,.035,.070],r:.029},
+      {y:.086,z:-.045,xs:[-.055,-.018,.018,.055],r:.028}
+    ];
+
+    rows.forEach((row,ri)=>{
+      row.xs.forEach((x,i)=>{
+        const curl=new THREE.Mesh(
+          new THREE.SphereGeometry(row.r*(.90+((i+ri)%3)*.07),10,8),
+          mat
+        );
+        curl.scale.set(1,.82,1.06);
+        curl.position.set(
+          x,
+          row.y+(((i+ri)%2)?-.006:.004),
+          row.z+(((i*2+ri)%3)-1)*.008
+        );
+        curls.add(curl);
+      });
+    });
+
+    head.add(curls);
   }
 
-  function applyStandPose(time=0,amount=.22){
-    setNeutralArms(amount);
+  function addChestBadge(){
+    const chest=bone('Spine2')||bone('Spine1')||bone('Spine');
+    if(!chest||typeof document==='undefined')return;
+
+    const canvas=document.createElement('canvas');
+    canvas.width=512;
+    canvas.height=160;
+    const ctx=canvas.getContext('2d');
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#111111';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#f2f2ed';
+    ctx.font='700 72px Arial, sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText('carhartt',256,82);
+
+    const texture=new THREE.CanvasTexture(canvas);
+    texture.colorSpace=THREE.SRGBColorSpace;
+
+    const material=new THREE.MeshBasicMaterial({
+      map:texture,
+      transparent:true,
+      depthWrite:false,
+      side:THREE.DoubleSide
+    });
+
+    const badge=new THREE.Mesh(
+      new THREE.PlaneGeometry(.105,.033),
+      material
+    );
+    badge.name='HL_CARHARTT_CHEST_BADGE';
+    badge.position.set(.070,.035,.142);
+    chest.add(badge);
+  }
+
+  function styleImportedAvatar(scene){
+    scene.traverse(obj=>{
+      if(!obj.isMesh&&!obj.isSkinnedMesh)return;
+
+      const objName=(obj.name||'').toLowerCase();
+
+      if(/jacket|coat|blazer|outerwear/.test(objName)){
+        obj.visible=false;
+        return;
+      }
+
+      if(objName==='haircut'||/haircut|hairstyle/.test(objName)){
+        obj.visible=false;
+      }
+
+      const mats=Array.isArray(obj.material)?obj.material:[obj.material];
+
+      mats.forEach(mat=>{
+        if(!mat)return;
+        const matName=(mat.name||'').toLowerCase();
+
+        if(/jacket|coat|blazer|outerwear/.test(matName)){
+          mat.visible=false;
+          return;
+        }
+
+        if(mat.color){
+          if(objName==='outfit_top'||/shirt|tshirt|t-shirt|tee/.test(objName)||/shirt|tshirt|t-shirt|tee/.test(matName)){
+            mat.color.setHex(0x111214);
+          }
+          if(objName==='outfit_bottom')mat.color.setHex(0x121316);
+          if(objName==='outfit_shoes')mat.color.setHex(0x554d45);
+        }
+
+        if('roughness' in mat)mat.roughness=Math.max(.62,mat.roughness??.72);
+      });
+    });
+
+    const head=bone('Head');
+    if(head){
+      addGlasses(head);
+      addCurlyHair(head);
+    }
+
+    addChestBadge();
+
+    root.userData.meshNames=[];
+    root.userData.materialNames=[];
+
+    scene.traverse(obj=>{
+      if(obj.isMesh||obj.isSkinnedMesh){
+        root.userData.meshNames.push(obj.name||'(unnamed)');
+        const mats=Array.isArray(obj.material)?obj.material:[obj.material];
+        mats.forEach(m=>root.userData.materialNames.push(m?.name||'(unnamed)'));
+      }
+    });
+  }
+
+  function applyStandPose(time=0,amount=.28){
+    setArmsDown(0,amount);
 
     rotateLocal('LeftUpLeg',0,0,0,amount);
     rotateLocal('RightUpLeg',0,0,0,amount);
     rotateLocal('LeftLeg',0,0,0,amount);
     rotateLocal('RightLeg',0,0,0,amount);
+    rotateLocal('LeftFoot',0,0,0,amount);
+    rotateLocal('RightFoot',0,0,0,amount);
 
     rotateLocal(
       'Spine2',
       Math.sin(time*.55)*.003,
       Math.sin(time*.27)*.006,
       Math.sin(time*.42)*.003,
-      amount
+      amount*.55
     );
 
     rotateLocal(
@@ -198,33 +302,23 @@ export function createHLAvatarRuntime(THREE){
       Math.sin(time*.31)*.004,
       Math.sin(time*.23)*.008,
       0,
-      amount
+      amount*.50
     );
   }
 
   const loader=new GLTFLoader();
-
   loader.load(
-    '../assets/models/avatar/hector-metaperson.glb?v=12',
+    '../assets/models/avatar/hector-metaperson.glb?v=16',
     gltf=>{
       const scene=gltf.scene;
 
       scene.traverse(obj=>{
-        if(obj.isMesh || obj.isSkinnedMesh){
+        if(obj.isMesh||obj.isSkinnedMesh){
           obj.castShadow=true;
           obj.receiveShadow=true;
-
-          if(obj.material){
-            const mats=Array.isArray(obj.material)?obj.material:[obj.material];
-            mats.forEach(mat=>{
-              if('roughness' in mat){
-                mat.roughness=Math.max(.5,mat.roughness??.7);
-              }
-            });
-          }
         }
 
-        if(obj.isBone || boneNames.includes(obj.name)){
+        if(obj.isBone||boneNames.includes(obj.name)){
           state.bones.set(obj.name,obj);
           state.baseQuat.set(obj.name,obj.quaternion.clone());
           state.basePos.set(obj.name,obj.position.clone());
@@ -233,17 +327,17 @@ export function createHLAvatarRuntime(THREE){
 
       scene.scale.setScalar(1);
       scene.rotation.y=0;
-
+      modelRoot.rotation.y=0;
       modelRoot.add(scene);
 
       state.model=scene;
       state.ready=true;
-      state.facingYaw=0;
 
       fallback.visible=false;
       modelRoot.visible=true;
 
       styleImportedAvatar(scene);
+      scene.updateWorldMatrix(true,true);
       applyStandPose(0,1);
 
       root.userData.ready=true;
@@ -251,61 +345,31 @@ export function createHLAvatarRuntime(THREE){
     },
     undefined,
     err=>{
-      console.warn(
-        'MetaPerson avatar unavailable, using procedural fallback',
-        err
-      );
+      console.warn('MetaPerson avatar unavailable, using procedural fallback',err);
       root.userData.ready=false;
       root.userData.loadError=String(err?.message||err);
     }
   );
 
   function restoreBone(name,amount=.18){
-    const b=bone(name);
-    const q=state.baseQuat.get(name);
-    const p=state.basePos.get(name);
-
-    if(!b || !q)return;
-
+    const b=bone(name), q=state.baseQuat.get(name), p=state.basePos.get(name);
+    if(!b||!q)return;
     b.quaternion.slerp(q,amount);
     if(p)b.position.lerp(p,amount);
   }
 
   function restoreRig(amount=.18){
-    for(const name of boneNames){
-      restoreBone(name,amount);
-    }
+    for(const name of boneNames)restoreBone(name,amount);
 
-    modelRoot.position.x=THREE.MathUtils.lerp(
-      modelRoot.position.x,0,amount
-    );
-    modelRoot.position.y=THREE.MathUtils.lerp(
-      modelRoot.position.y,0,amount
-    );
-    modelRoot.position.z=THREE.MathUtils.lerp(
-      modelRoot.position.z,0,amount
-    );
-
-    modelRoot.rotation.x=THREE.MathUtils.lerp(
-      modelRoot.rotation.x,0,amount
-    );
-    modelRoot.rotation.z=THREE.MathUtils.lerp(
-      modelRoot.rotation.z,0,amount
-    );
+    modelRoot.position.y=THREE.MathUtils.lerp(modelRoot.position.y,0,amount);
+    modelRoot.rotation.x=THREE.MathUtils.lerp(modelRoot.rotation.x,0,amount);
+    modelRoot.rotation.y=THREE.MathUtils.lerp(modelRoot.rotation.y,0,amount);
+    modelRoot.rotation.z=THREE.MathUtils.lerp(modelRoot.rotation.z,0,amount);
   }
 
-  function updateFacing(direction,moving){
-    if(!moving)return;
-
-    const targetYaw=direction<0 ? Math.PI : 0;
-
-    state.facingYaw=lerpAngle(
-      state.facingYaw,
-      targetYaw,
-      .105
-    );
-
-    modelRoot.rotation.y=state.facingYaw;
+  function smooth01(v){
+    v=THREE.MathUtils.clamp(v,0,1);
+    return v*v*(3-2*v);
   }
 
   function updateWalk(time,direction=0,speed=1){
@@ -315,137 +379,48 @@ export function createHLAvatarRuntime(THREE){
     }
 
     const moving=Math.abs(direction)>.01;
-    const targetBlend=moving ? 1 : 0;
-
     state.moveBlend=THREE.MathUtils.lerp(
       state.moveBlend,
-      targetBlend,
-      moving ? .095 : .075
+      moving?1:0,
+      moving?.09:.07
     );
 
-    updateFacing(direction,moving);
-
-    const normalizedSpeed=THREE.MathUtils.clamp(speed,.55,1.15);
-    const cadence=1.72*normalizedSpeed;
-    const phase=time*cadence;
     const blend=state.moveBlend;
-
+    const cadence=1.62*THREE.MathUtils.clamp(speed,.60,1.10);
+    const phase=time*cadence;
     const s=Math.sin(phase);
     const c=Math.cos(phase);
 
-    const legL=s*WALK_LEG_SWING*blend;
-    const legR=-s*WALK_LEG_SWING*blend;
+    const legSwing=.22*s*blend;
+    const kneeL=Math.max(0,-s)*.23*blend;
+    const kneeR=Math.max(0,s)*.23*blend;
 
-    const kneeL=Math.max(0,-s)*.27*blend;
-    const kneeR=Math.max(0, s)*.27*blend;
+    setArmsDown(-s*.12*blend,.28);
 
-    const ankleL=Math.max(0,s)*.055*blend;
-    const ankleR=Math.max(0,-s)*.055*blend;
-
-    rotateLocal(
-      'LeftArm',
-      -s*WALK_ARM_SWING*blend,
-      0,
-      ARM_DROP+.025,
-      .20
-    );
-
-    rotateLocal(
-      'RightArm',
-      s*WALK_ARM_SWING*blend,
-      0,
-      -ARM_DROP-.025,
-      .20
-    );
-
-    rotateLocal(
-      'LeftForeArm',
-      .10+Math.max(0,s)*.055*blend,
-      0,
-      .025,
-      .18
-    );
-
-    rotateLocal(
-      'RightForeArm',
-      .10+Math.max(0,-s)*.055*blend,
-      0,
-      -.025,
-      .18
-    );
-
-    rotateLocal('LeftUpLeg', legL,0,0,.20);
-    rotateLocal('RightUpLeg',legR,0,0,.20);
-
-    rotateLocal('LeftLeg', kneeL,0,0,.20);
+    rotateLocal('LeftUpLeg',legSwing,0,0,.20);
+    rotateLocal('RightUpLeg',-legSwing,0,0,.20);
+    rotateLocal('LeftLeg',kneeL,0,0,.20);
     rotateLocal('RightLeg',kneeR,0,0,.20);
+    rotateLocal('LeftFoot',-Math.max(0,s)*.045*blend,0,0,.18);
+    rotateLocal('RightFoot',-Math.max(0,-s)*.045*blend,0,0,.18);
 
-    rotateLocal('LeftFoot', -ankleL,0,0,.18);
-    rotateLocal('RightFoot',-ankleR,0,0,.18);
+    rotateLocal('Spine2',.012*blend,-.012*s*blend,-.008*s*blend,.14);
+    rotateLocal('Head',-.006*blend,.008*s*blend,0,.12);
 
-    rotateLocal(
-      'Spine2',
-      .018*blend,
-      -.018*s*blend,
-      -.012*s*blend,
-      .16
-    );
-
-    rotateLocal(
-      'Head',
-      -.008*blend,
-      .010*s*blend,
-      0,
-      .14
-    );
-
-    const hips=bone('Hips');
-    const base=state.basePos.get('Hips');
-
-    if(hips && base){
-      const bob=(1-Math.cos(phase*2))*.0045*blend;
-      const sway=c*.004*blend;
-
-      hips.position.x=THREE.MathUtils.lerp(
-        hips.position.x,
-        base.x+sway,
-        .24
-      );
-
-      hips.position.y=THREE.MathUtils.lerp(
-        hips.position.y,
-        base.y+bob,
-        .24
-      );
-
-      hips.position.z=THREE.MathUtils.lerp(
-        hips.position.z,
-        base.z,
-        .28
-      );
+    const hips=bone('Hips'), base=state.basePos.get('Hips');
+    if(hips&&base){
+      const bob=(1-Math.cos(phase*2))*.0038*blend;
+      const sway=c*.003*blend;
+      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x+sway,.24);
+      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y+bob,.24);
+      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.28);
     }
 
-    modelRoot.position.y=THREE.MathUtils.lerp(
-      modelRoot.position.y,
-      0,
-      .18
-    );
+    modelRoot.rotation.y=THREE.MathUtils.lerp(modelRoot.rotation.y,0,.22);
+    modelRoot.rotation.x=THREE.MathUtils.lerp(modelRoot.rotation.x,0,.15);
+    modelRoot.rotation.z=THREE.MathUtils.lerp(modelRoot.rotation.z,0,.15);
 
-    modelRoot.rotation.x=THREE.MathUtils.lerp(
-      modelRoot.rotation.x,
-      0,
-      .15
-    );
-
-    modelRoot.rotation.z=THREE.MathUtils.lerp(
-      modelRoot.rotation.z,
-      0,
-      .15
-    );
-
-    if(!moving && state.moveBlend<.055){
-      applyStandPose(time,.18);
-    }
+    if(!moving&&blend<.05)applyStandPose(time,.24);
   }
 
   function updateFall(time,progress=0){
@@ -455,128 +430,25 @@ export function createHLAvatarRuntime(THREE){
     }
 
     const p=smooth01(progress);
-    const wind=Math.sin(time*2.2);
+    const drift=Math.sin(time*1.6)*.04;
 
-    rotateLocal(
-      'LeftArm',
-      -.20+wind*.025,
-      0,
-      1.02,
-      .24
-    );
+    aimBoneModel('LeftArm','LeftForeArm',new THREE.Vector3(-.55,-.58,.30+drift),.30);
+    aimBoneModel('RightArm','RightForeArm',new THREE.Vector3(.55,-.58,.30-drift),.30);
 
-    rotateLocal(
-      'RightArm',
-      -.16-wind*.025,
-      0,
-      -1.02,
-      .24
-    );
+    modelRoot.updateWorldMatrix(true,true);
 
-    rotateLocal(
-      'LeftForeArm',
-      .28,
-      0,
-      .08,
-      .22
-    );
+    aimBoneModel('LeftForeArm','LeftHand',new THREE.Vector3(-.22,-.78,.48),.27);
+    aimBoneModel('RightForeArm','RightHand',new THREE.Vector3(.22,-.78,.48),.27);
 
-    rotateLocal(
-      'RightForeArm',
-      .24,
-      0,
-      -.08,
-      .22
-    );
+    rotateLocal('LeftUpLeg',.13,0,-.02,.22);
+    rotateLocal('RightUpLeg',-.08,0,.02,.22);
+    rotateLocal('LeftLeg',.23,0,0,.22);
+    rotateLocal('RightLeg',.17,0,0,.22);
+    rotateLocal('Spine2',-.09,0,drift*.15,.18);
+    rotateLocal('Head',.035,Math.sin(time*.35)*.012,0,.16);
 
-    rotateLocal(
-      'LeftUpLeg',
-      .18+wind*.025,
-      0,
-      -.025,
-      .22
-    );
-
-    rotateLocal(
-      'RightUpLeg',
-      -.10-wind*.025,
-      0,
-      .025,
-      .22
-    );
-
-    rotateLocal(
-      'LeftLeg',
-      .28,
-      0,
-      0,
-      .22
-    );
-
-    rotateLocal(
-      'RightLeg',
-      .18,
-      0,
-      0,
-      .22
-    );
-
-    rotateLocal(
-      'Spine2',
-      -.10,
-      0,
-      wind*.018,
-      .20
-    );
-
-    rotateLocal(
-      'Head',
-      .035,
-      Math.sin(time*.45)*.018,
-      0,
-      .18
-    );
-
-    const hips=bone('Hips');
-    const base=state.basePos.get('Hips');
-
-    if(hips && base){
-      hips.position.x=THREE.MathUtils.lerp(
-        hips.position.x,
-        base.x,
-        .25
-      );
-
-      hips.position.y=THREE.MathUtils.lerp(
-        hips.position.y,
-        base.y-.018*p,
-        .22
-      );
-
-      hips.position.z=THREE.MathUtils.lerp(
-        hips.position.z,
-        base.z,
-        .25
-      );
-    }
-
-    modelRoot.rotation.x=THREE.MathUtils.lerp(
-      modelRoot.rotation.x,
-      -.11-.05*p,
-      .12
-    );
-
-    modelRoot.rotation.z=THREE.MathUtils.lerp(
-      modelRoot.rotation.z,
-      wind*.012,
-      .10
-    );
-
-    modelRoot.position.y=THREE.MathUtils.lerp(
-      modelRoot.position.y,
-      -.018*p,
-      .12
-    );
+    modelRoot.rotation.x=THREE.MathUtils.lerp(modelRoot.rotation.x,-.13-.04*p,.13);
+    modelRoot.rotation.z=THREE.MathUtils.lerp(modelRoot.rotation.z,drift*.18,.10);
   }
 
   function updateLanding(time,progress=0){
@@ -587,133 +459,31 @@ export function createHLAvatarRuntime(THREE){
 
     const p=THREE.MathUtils.clamp(progress,0,1);
     const recover=smooth01(p);
-    const impact=Math.sin(Math.PI*Math.min(1,p))*0.88;
-    const crouch=Math.max(0,(1-recover)*.58+impact*.42);
+    const impact=Math.sin(Math.PI*p);
+    const crouch=Math.max(0,(1-recover)*.52+impact*.36);
 
-    rotateLocal(
-      'LeftUpLeg',
-      .46*crouch,
-      0,
-      0,
-      .30
-    );
+    setArmsDown(.09*crouch,.31);
 
-    rotateLocal(
-      'RightUpLeg',
-      .43*crouch,
-      0,
-      0,
-      .30
-    );
+    rotateLocal('LeftUpLeg',.43*crouch,0,0,.30);
+    rotateLocal('RightUpLeg',.43*crouch,0,0,.30);
+    rotateLocal('LeftLeg',.78*crouch,0,0,.30);
+    rotateLocal('RightLeg',.78*crouch,0,0,.30);
+    rotateLocal('Spine2',-.19*crouch,0,0,.24);
+    rotateLocal('Head',.075*crouch,0,0,.20);
 
-    rotateLocal(
-      'LeftLeg',
-      .82*crouch,
-      0,
-      0,
-      .30
-    );
-
-    rotateLocal(
-      'RightLeg',
-      .78*crouch,
-      0,
-      0,
-      .30
-    );
-
-    rotateLocal(
-      'LeftArm',
-      -.16*crouch,
-      0,
-      ARM_DROP-.10*crouch,
-      .26
-    );
-
-    rotateLocal(
-      'RightArm',
-      -.13*crouch,
-      0,
-      -ARM_DROP+.10*crouch,
-      .26
-    );
-
-    rotateLocal(
-      'LeftForeArm',
-      .16*crouch,
-      0,
-      .025,
-      .22
-    );
-
-    rotateLocal(
-      'RightForeArm',
-      .16*crouch,
-      0,
-      -.025,
-      .22
-    );
-
-    rotateLocal(
-      'Spine2',
-      -.22*crouch,
-      0,
-      0,
-      .25
-    );
-
-    rotateLocal(
-      'Head',
-      .09*crouch,
-      0,
-      0,
-      .20
-    );
-
-    const hips=bone('Hips');
-    const base=state.basePos.get('Hips');
-
-    if(hips && base){
+    const hips=bone('Hips'), base=state.basePos.get('Hips');
+    if(hips&&base){
       hips.position.y=THREE.MathUtils.lerp(
         hips.position.y,
-        base.y-.105*crouch,
-        .34
-      );
-
-      hips.position.x=THREE.MathUtils.lerp(
-        hips.position.x,
-        base.x,
-        .28
-      );
-
-      hips.position.z=THREE.MathUtils.lerp(
-        hips.position.z,
-        base.z,
-        .28
+        base.y-.10*crouch,
+        .32
       );
     }
 
-    modelRoot.rotation.x=THREE.MathUtils.lerp(
-      modelRoot.rotation.x,
-      -.08*crouch,
-      .22
-    );
+    modelRoot.rotation.x=THREE.MathUtils.lerp(modelRoot.rotation.x,-.06*crouch,.22);
+    modelRoot.rotation.z=THREE.MathUtils.lerp(modelRoot.rotation.z,0,.22);
 
-    modelRoot.rotation.z=THREE.MathUtils.lerp(
-      modelRoot.rotation.z,
-      0,
-      .22
-    );
-
-    modelRoot.position.y=THREE.MathUtils.lerp(
-      modelRoot.position.y,
-      -.055*crouch,
-      .28
-    );
-
-    if(p>.94){
-      applyStandPose(time,.20);
-    }
+    if(p>.94)applyStandPose(time,.24);
   }
 
   function updateClimb(time,progress=0){
@@ -722,79 +492,23 @@ export function createHLAvatarRuntime(THREE){
       return;
     }
 
-    const phase=time*3.25;
-    const a=Math.sin(phase);
-    const b=-a;
+    const phase=time*3.15;
+    const s=Math.sin(phase);
 
-    rotateLocal(
-      'LeftArm',
-      -.18+a*.12,
-      0,
-      .98,
-      .22
-    );
+    aimBoneModel('LeftArm','LeftForeArm',new THREE.Vector3(-.28,.35,.58+s*.08),.27);
+    aimBoneModel('RightArm','RightForeArm',new THREE.Vector3(.28,.35,.58-s*.08),.27);
 
-    rotateLocal(
-      'RightArm',
-      -.18+b*.12,
-      0,
-      -.98,
-      .22
-    );
-
-    rotateLocal(
-      'LeftForeArm',
-      -.38,
-      0,
-      .05,
-      .22
-    );
-
-    rotateLocal(
-      'RightForeArm',
-      -.38,
-      0,
-      -.05,
-      .22
-    );
-
-    rotateLocal(
-      'LeftUpLeg',
-      .42+b*.16,
-      0,
-      0,
-      .24
-    );
-
-    rotateLocal(
-      'RightUpLeg',
-      .42+a*.16,
-      0,
-      0,
-      .24
-    );
-
-    rotateLocal('LeftLeg',.68,0,0,.24);
-    rotateLocal('RightLeg',.68,0,0,.24);
-    rotateLocal('Spine2',-.13,0,0,.20);
-    rotateLocal('Head',.06,0,0,.18);
+    rotateLocal('LeftUpLeg',.39-s*.14,0,0,.24);
+    rotateLocal('RightUpLeg',.39+s*.14,0,0,.24);
+    rotateLocal('LeftLeg',.66,0,0,.24);
+    rotateLocal('RightLeg',.66,0,0,.24);
+    rotateLocal('Spine2',-.12,0,0,.20);
   }
 
-  root.userData.update=(time,direction=0,speed=1)=>{
-    updateWalk(time,direction,speed);
-  };
-
-  root.userData.updateFall=(time,progress=0)=>{
-    updateFall(time,progress);
-  };
-
-  root.userData.updateLanding=(time,progress=0)=>{
-    updateLanding(time,progress);
-  };
-
-  root.userData.updateClimb=(time,progress=0)=>{
-    updateClimb(time,progress);
-  };
+  root.userData.update=(time,direction=0,speed=1)=>updateWalk(time,direction,speed);
+  root.userData.updateFall=(time,progress=0)=>updateFall(time,progress);
+  root.userData.updateLanding=(time,progress=0)=>updateLanding(time,progress);
+  root.userData.updateClimb=(time,progress=0)=>updateClimb(time,progress);
 
   root.userData.reset=(amount=.2)=>{
     if(state.ready){
@@ -804,6 +518,5 @@ export function createHLAvatarRuntime(THREE){
   };
 
   root.userData.ready=false;
-
   return root;
 }
