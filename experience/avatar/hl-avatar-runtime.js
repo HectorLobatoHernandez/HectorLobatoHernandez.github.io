@@ -3,7 +3,7 @@ import { createHLAvatar as createFallbackAvatar } from './hl-avatar.js?v=11';
 
 export function createHLAvatarRuntime(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_RUNTIME_V12';
+  root.name='HL_AVATAR_RUNTIME_V14';
   root.userData.source='METAPERSON_GLB_WITH_PROCEDURAL_FALLBACK';
 
   const fallback=createFallbackAvatar(THREE);
@@ -20,7 +20,8 @@ export function createHLAvatarRuntime(THREE){
     bones:new Map(),
     baseQuat:new Map(),
     basePos:new Map(),
-    model:null
+    model:null,
+    moveBlend:0
   };
 
   const boneNames=[
@@ -30,6 +31,92 @@ export function createHLAvatarRuntime(THREE){
     'LeftUpLeg','LeftLeg','LeftFoot','LeftToeBase',
     'RightUpLeg','RightLeg','RightFoot','RightToeBase'
   ];
+
+  function styleImportedAvatar(scene){
+    const colors={
+      hair:0x1a1412,
+      top:0x18191b,
+      bottom:0x151619,
+      shoes:0x5d554b
+    };
+
+    scene.traverse(obj=>{
+      if(!obj.isMesh && !obj.isSkinnedMesh)return;
+      const mats=Array.isArray(obj.material)?obj.material:[obj.material];
+      mats.forEach(mat=>{
+        if(!mat || !mat.color)return;
+        if(obj.name==='haircut')mat.color.setHex(colors.hair);
+        if(obj.name==='outfit_top')mat.color.setHex(colors.top);
+        if(obj.name==='outfit_bottom')mat.color.setHex(colors.bottom);
+        if(obj.name==='outfit_shoes')mat.color.setHex(colors.shoes);
+        if('roughness' in mat)mat.roughness=Math.max(.68,mat.roughness??.72);
+      });
+    });
+
+    const head=state.bones.get('Head');
+    if(head){
+      const amber=new THREE.MeshStandardMaterial({color:0xb7642f,roughness:.45,metalness:.05});
+      const lens=new THREE.MeshPhysicalMaterial({
+        color:0x5a4632,transparent:true,opacity:.28,roughness:.12,metalness:0,depthWrite:false
+      });
+
+      const glasses=new THREE.Group();
+      glasses.name='HL_AMBER_GLASSES';
+      for(const sx of [-1,1]){
+        const ring=new THREE.Mesh(new THREE.TorusGeometry(.039,.0055,8,24),amber);
+        ring.position.set(sx*.036,.055,.126);
+        glasses.add(ring);
+
+        const l=new THREE.Mesh(new THREE.CircleGeometry(.034,24),lens);
+        l.position.set(sx*.036,.055,.127);
+        glasses.add(l);
+
+        for(let i=0;i<6;i++){
+          const link=new THREE.Mesh(new THREE.TorusGeometry(.0065,.0017,5,10),amber);
+          link.scale.set(.72,1.28,1);
+          link.rotation.y=Math.PI/2;
+          link.position.set(sx*.079,.025-i*.018,.048);
+          glasses.add(link);
+        }
+      }
+      const bridge=new THREE.Mesh(new THREE.BoxGeometry(.028,.0045,.0045),amber);
+      bridge.position.set(0,.055,.127);
+      glasses.add(bridge);
+      head.add(glasses);
+
+      // Curly-hair overlay: only an accessory shell, not the whole character.
+      const curlMat=new THREE.MeshStandardMaterial({color:0x171311,roughness:.98});
+      const curls=new THREE.Group();
+      curls.name='HL_CURLY_HAIR_OVERLAY';
+      const pts=[
+        [-.065,.145,.03],[-.03,.162,.045],[0,.168,.05],[.03,.162,.045],[.065,.145,.03],
+        [-.075,.115,.015],[-.04,.128,.06],[0,.135,.07],[.04,.128,.06],[.075,.115,.015],
+        [-.07,.095,-.025],[-.035,.11,-.055],[0,.115,-.065],[.035,.11,-.055],[.07,.095,-.025],
+        [-.055,.06,-.065],[0,.07,-.08],[.055,.06,-.065]
+      ];
+      pts.forEach(([x,y,z],i)=>{
+        const curl=new THREE.Mesh(new THREE.IcosahedronGeometry(.026+(i%3)*.003,1),curlMat);
+        curl.position.set(x,y,z);
+        curls.add(curl);
+      });
+      head.add(curls);
+    }
+  }
+
+  const ARM_DOWN=1.42;
+
+  function applyStandPose(time=0,amount=.22){
+    rotateLocal('LeftArm',ARM_DOWN,0,-.015,amount);
+    rotateLocal('RightArm',ARM_DOWN,0,.015,amount);
+    rotateLocal('LeftForeArm',.08,0,0,amount);
+    rotateLocal('RightForeArm',.08,0,0,amount);
+    rotateLocal('LeftUpLeg',0,0,0,amount);
+    rotateLocal('RightUpLeg',0,0,0,amount);
+    rotateLocal('LeftLeg',0,0,0,amount);
+    rotateLocal('RightLeg',0,0,0,amount);
+    rotateLocal('Spine2',0,0,0,amount);
+    rotateLocal('Head',0,Math.sin(time*.35)*.008,0,amount);
+  }
 
   const loader=new GLTFLoader();
   loader.load(
@@ -63,6 +150,8 @@ export function createHLAvatarRuntime(THREE){
       state.ready=true;
       fallback.visible=false;
       modelRoot.visible=true;
+      styleImportedAvatar(scene);
+      applyStandPose(0,1);
       root.userData.ready=true;
       root.userData.skeletonBones=[...state.bones.keys()];
     },
@@ -105,57 +194,67 @@ export function createHLAvatarRuntime(THREE){
     }
 
     const moving=Math.abs(direction)>.01;
-    const cadence=2.65*Math.max(.72,Math.min(1.15,speed));
-    const phase=time*cadence;
+    const targetBlend=moving?1:0;
+    state.moveBlend=THREE.MathUtils.lerp(state.moveBlend,targetBlend,moving?.11:.08);
 
-    const legSwing=moving?Math.sin(phase)*.30:0;
-    const opposite=moving?Math.sin(phase+Math.PI)*.30:0;
-    const kneeL=moving?Math.max(0,-Math.sin(phase))*.27:0;
-    const kneeR=moving?Math.max(0,-Math.sin(phase+Math.PI))*.27:0;
+    const cadence=2.15*Math.max(.78,Math.min(1.08,speed));
+    const phase=time*cadence;
+    const blend=state.moveBlend;
+
+    const legSwing=Math.sin(phase)*.18*blend;
+    const opposite=Math.sin(phase+Math.PI)*.18*blend;
+    const kneeL=Math.max(0,-Math.sin(phase))*.15*blend;
+    const kneeR=Math.max(0,-Math.sin(phase+Math.PI))*.15*blend;
+
+    // Keep the imported MetaPerson out of T-pose at all times.
+    rotateLocal('LeftArm',ARM_DOWN-legSwing*.24,0,-.015,.18);
+    rotateLocal('RightArm',ARM_DOWN-opposite*.24,0,.015,.18);
+    rotateLocal('LeftForeArm',.09+Math.max(0,legSwing)*.035,0,0,.16);
+    rotateLocal('RightForeArm',.09+Math.max(0,opposite)*.035,0,0,.16);
 
     rotateLocal('LeftUpLeg',legSwing,0,0,.18);
     rotateLocal('RightUpLeg',opposite,0,0,.18);
-    rotateLocal('LeftLeg',kneeL,0,0,.18);
-    rotateLocal('RightLeg',kneeR,0,0,.18);
+    rotateLocal('LeftLeg',kneeL,0,0,.17);
+    rotateLocal('RightLeg',kneeR,0,0,.17);
 
-    rotateLocal('LeftArm',-legSwing*.38,0,-.015,.16);
-    rotateLocal('RightArm',-opposite*.38,0,.015,.16);
-    rotateLocal('LeftForeArm',moving?.08+Math.max(0,legSwing)*.05:0,0,0,.14);
-    rotateLocal('RightForeArm',moving?.08+Math.max(0,opposite)*.05:0,0,0,.14);
+    rotateLocal('Spine2',.006*Math.sin(phase*.5)*blend,0,.004*Math.sin(phase*.5)*blend,.14);
+    rotateLocal('Head',0,.008*Math.sin(time*.38)*blend,0,.12);
 
-    rotateLocal('Spine2',moving?.012*Math.sin(phase*.5):0,0,moving?.008*Math.sin(phase*.5):0,.14);
-    rotateLocal('Head',0,moving?.012*Math.sin(time*.45):0,0,.12);
-
+    // No vertical jump/bob during walking: only lock root motion to the bind pose.
     const hips=bone('Hips');
     const base=state.basePos.get('Hips');
     if(hips&&base){
-      const bob=moving?Math.abs(Math.sin(phase))*0.008:Math.sin(time*1.25)*0.002;
-      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.3);
-      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.3);
-      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y+bob,.22);
+      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.32);
+      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y,.32);
+      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.32);
     }
 
-    if(!moving)restoreRig(.12);
+    if(!moving && state.moveBlend<.04)applyStandPose(time,.16);
   }
-
   function updateFall(time,progress=0){
     if(!state.ready){
       fallback.userData.updateFall?.(time,progress);
       return;
     }
-    const wind=Math.sin(time*2.8);
-    rotateLocal('LeftArm',-.28,0,-.32+wind*.035,.18);
-    rotateLocal('RightArm',-.28,0,.32-wind*.035,.18);
-    rotateLocal('LeftForeArm',-.14,0,0,.16);
-    rotateLocal('RightForeArm',-.14,0,0,.16);
-    rotateLocal('LeftUpLeg',.10+wind*.025,0,-.025,.16);
-    rotateLocal('RightUpLeg',-.06-wind*.025,0,.025,.16);
-    rotateLocal('LeftLeg',.14,0,0,.16);
-    rotateLocal('RightLeg',.12,0,0,.16);
-    rotateLocal('Spine2',-.07,0,wind*.012,.14);
-    rotateLocal('Head',.02,Math.sin(time*.4)*.02,0,.14);
-  }
+    const wind=Math.sin(time*1.9);
+    rotateLocal('LeftArm',.72,0,-.16+wind*.018,.18);
+    rotateLocal('RightArm',.72,0,.16-wind*.018,.18);
+    rotateLocal('LeftForeArm',.16,0,0,.16);
+    rotateLocal('RightForeArm',.16,0,0,.16);
+    rotateLocal('LeftUpLeg',.07+wind*.015,0,-.012,.16);
+    rotateLocal('RightUpLeg',-.04-wind*.015,0,.012,.16);
+    rotateLocal('LeftLeg',.10,0,0,.16);
+    rotateLocal('RightLeg',.08,0,0,.16);
+    rotateLocal('Spine2',-.045,0,wind*.008,.14);
+    rotateLocal('Head',.015,Math.sin(time*.32)*.012,0,.14);
 
+    const hips=bone('Hips'), base=state.basePos.get('Hips');
+    if(hips&&base){
+      hips.position.x=THREE.MathUtils.lerp(hips.position.x,base.x,.3);
+      hips.position.y=THREE.MathUtils.lerp(hips.position.y,base.y,.3);
+      hips.position.z=THREE.MathUtils.lerp(hips.position.z,base.z,.3);
+    }
+  }
   function updateLanding(time,progress=0){
     if(!state.ready){
       fallback.userData.updateLanding?.(time,progress);
@@ -169,8 +268,8 @@ export function createHLAvatarRuntime(THREE){
     rotateLocal('RightUpLeg',.52*crouch,0,0,.28);
     rotateLocal('LeftLeg',1.02*crouch,0,0,.28);
     rotateLocal('RightLeg',.84*crouch,0,0,.28);
-    rotateLocal('LeftArm',-.85*crouch,0,-.35*crouch,.24);
-    rotateLocal('RightArm',.25*crouch,0,.4*crouch,.24);
+    rotateLocal('LeftArm',ARM_DOWN-.34*crouch,0,-.18*crouch,.22);
+    rotateLocal('RightArm',ARM_DOWN-.22*crouch,0,.18*crouch,.22);
     rotateLocal('Spine2',-.28*crouch,0,-.04*crouch,.22);
     rotateLocal('Head',.12*crouch,0,0,.18);
 
@@ -185,8 +284,8 @@ export function createHLAvatarRuntime(THREE){
     }
     const phase=time*4.1;
     const a=Math.sin(phase), b=Math.sin(phase+Math.PI);
-    rotateLocal('LeftArm',-1.15+a*.24,0,-.18,.26);
-    rotateLocal('RightArm',-1.15+b*.24,0,.18,.26);
+    rotateLocal('LeftArm',.35+a*.16,0,-.12,.22);
+    rotateLocal('RightArm',.35+b*.16,0,.12,.22);
     rotateLocal('LeftForeArm',-.45,0,0,.22);
     rotateLocal('RightForeArm',-.45,0,0,.22);
     rotateLocal('LeftUpLeg',.45+b*.18,0,0,.24);
