@@ -1,0 +1,36 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),threeRoot=path.dirname(path.dirname(require.resolve('three')));
+const base=process.env.GAZA_URL||'http://127.0.0.1:4173',out=path.resolve('.qa/lab-detail');await fs.mkdir(out,{recursive:true});
+const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']}),checks=[],errors=[];let page;
+try{
+ const context=await browser.newContext({viewport:{width:1440,height:1000}});
+ await context.route('https://cdn.jsdelivr.net/npm/three@0.180.0/**',async r=>{const rel=r.request().url().split('/three@0.180.0/')[1];if(!rel||rel.includes('..'))return r.abort();return r.fulfill({body:await fs.readFile(path.join(threeRoot,rel)),contentType:'text/javascript'})});
+ page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+ assert((await page.goto(base+'/farm-labs.html?mode=labs&qa=1',{waitUntil:'domcontentloaded'})).ok());
+ await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__?.render?.calls>0,{},{timeout:30000});
+ let view=await page.evaluate(()=>window.__GAZA_LAB_DETAIL__);assert.equal(view.rooms,7);assert.equal(view.instruments,17);assert.equal(view.staff,7);assert.equal(view.sampleMarkers,0);assert(view.render.calls<900);checks.push('WebGL-7-rooms-17-instruments-7-fictional-staff');
+ await page.screenshot({path:path.join(out,'01-lab-overview.png')});
+ await page.locator('#labPlan').click();await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.camera==='plan');await page.screenshot({path:path.join(out,'02-lab-floor-plan.png')});
+ await page.locator('#labMicro').click();await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.selected===2);await page.locator('#labIsolate').click();await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.isolate);await page.screenshot({path:path.join(out,'03-microbiology.png')});await page.locator('#labIsolate').click();
+ await page.locator('#labRoof').click();await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.roofs);await page.locator('#labRoof').click();checks.push('orthographic-plan-camera-isolation-roof');
+ await page.locator('[data-process-panel] #start').click();await page.waitForFunction(()=>window.__GAZA_PROCESS_STATE__?.schemaVersion===2);
+ const before=await page.evaluate(()=>JSON.stringify(window.__GAZA_PROCESS_STATE__));
+ await page.locator('#labEquipment').selectOption('LAB.BALANCE');await page.locator('#labZoom').click();await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.selected===4);assert.equal(await page.evaluate(()=>JSON.stringify(window.__GAZA_PROCESS_STATE__)),before);checks.push('navigation-never-mutates-ledger');
+ await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'AUTO',enabled:true});for(let i=0;i<300;i++){await s.dispatch({type:'TICK',seconds:1});if(s.state.lots['SIM-BOV-001'].tests.some(t=>t.testId==='RAW.INHIBITORS'&&t.status==='RUNNING'))return}throw Error('No active inhibitors test')});
+ await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.equipment.some(e=>e.id==='LAB.INHIBITORS'&&e.status==='RUNNING'));
+ await page.locator('#labEquipment').selectOption('LAB.INHIBITORS');await page.locator('#labZoom').click();
+ const markerBefore=await page.evaluate(()=>window.__GAZA_LAB_DETAIL__.markers.find(t=>t.id==='RAW.INHIBITORS').position);
+ await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'TICK',seconds:2})});
+ await page.waitForFunction(p=>JSON.stringify(window.__GAZA_LAB_DETAIL__.markers.find(t=>t.id==='RAW.INHIBITORS')?.position)!==JSON.stringify(p),markerBefore);
+ const markers=await page.evaluate(()=>window.__GAZA_LAB_DETAIL__.markers);await page.waitForTimeout(300);assert.deepEqual(await page.evaluate(()=>window.__GAZA_LAB_DETAIL__.markers),markers);checks.push('sample-link-and-simulation-time-motion-pause');
+ await page.screenshot({path:path.join(out,'04-active-physicochemistry.png')});
+ await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'EQUIPMENT',resource:'inhibitor-reader',valid:false,reason:'QA invalid equipment'})});
+ await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.equipment.find(e=>e.id==='LAB.INHIBITORS').status==='UNAVAILABLE');checks.push('metrology-shown-from-ledger');
+ await page.locator('[data-process-panel] #lot').selectOption('SIM-OVI-001');await page.waitForFunction(()=>window.__GAZA_LAB_DETAIL__.lotId==='SIM-OVI-001');checks.push('species-switch-keeps-lot-identity');
+ await page.locator('#labOverview').click();await page.setViewportSize({width:390,height:844});await page.waitForTimeout(150);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'05-lab-mobile.png')});checks.push('mobile-no-horizontal-overflow');
+ assert.deepEqual(errors,[]);view=await page.evaluate(()=>window.__GAZA_LAB_DETAIL__);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors,render:view.render,provenance:'SIMULATED_LAYOUT'},null,2));console.log('LAB DETAIL QA PASS',checks);
+}catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(e)},null,2));throw e}finally{await browser.close()}

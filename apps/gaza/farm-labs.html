@@ -73,6 +73,10 @@ document.querySelector('#simRate').onchange=e=>{const rate=Number(e.target.value
 let visual=null;
 
 try{
+ if(mode==='labs'){
+  const {mountLabViewer}=await import('./runtime/labs/viewer.mjs');
+  visual=mountLabViewer({mount:document.querySelector('#world'),side,onSelect:select,getState:()=>processState,getLotId:()=>processStore.selected});
+ }else{
  const THREE=await import('three');
  const mount=document.querySelector('#world'),scene=new THREE.Scene();scene.background=new THREE.Color('#101e2b');scene.fog=new THREE.Fog('#101e2b',35,85);
  const camera=new THREE.PerspectiveCamera(45,1,.1,160);camera.position.set(20,26,28);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;mount.prepend(renderer.domElement);
@@ -110,6 +114,7 @@ try{
  visual={focus(i){objects.forEach((obj,j)=>{obj.material.emissive=new THREE.Color(j===i?'#354c88':'#000000')})}};
  const binding=attachStationBinding(THREE,scene,steps.map((_,i)=>[-13+(i%4)*8.4,4.4,-7+Math.floor(i/4)*12]));
  const resize=()=>{const w=mount.clientWidth,h=mount.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)};new ResizeObserver(resize).observe(mount);resize();visual.focus(0);function frame(){const nowSim=processSnapshot?.simSeconds??0;processDelta=Math.max(0,Math.min(1,nowSim-lastSimSeconds));lastSimSeconds=nowSim;animateActors();binding.update(processSnapshot,mode);detailedWorld.update((freeze||processSnapshot?.held||!processSnapshot?.tankerMoving)?0:processDelta);renderer.render(scene,camera);window.__GAZA_RENDER_STATS__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};requestAnimationFrame(frame)}frame();window.__GAZA_RENDER_STATS__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};document.querySelector('#fallback').textContent='WebGL 3D · geometría procedimental · arrastra, amplía o selecciona';
+ }
 }catch(err){document.querySelector('#fallback').textContent='3D no disponible: revisa conexión CDN/WebGL. Procesos interactivos disponibles.';console.warn('GAZA module 3D fallback',err)}
 select(0);
 </script></body></html>

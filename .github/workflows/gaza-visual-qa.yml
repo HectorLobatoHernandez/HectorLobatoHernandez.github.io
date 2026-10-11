@@ -28,7 +28,7 @@ concurrency:
 jobs:
   visual-qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: apps/gaza
@@ -58,6 +58,9 @@ jobs:
           node --check ./runtime/public-gis-overlay.js
           node --check ./runtime/site-real-app.mjs
           node --check ./runtime/site-real-world.mjs
+          node --check ./runtime/labs/viewer.mjs
+          node --check ./runtime/labs/world.mjs
+          node --test ./tests/lab-detail.test.mjs
           npm run qa:site:core
           python -m py_compile ../../tools/blender/GAZA_BUILD_WORKER_GLBS.py
           python -m unittest discover -s tests -p 'test_site_real.py'
@@ -75,6 +78,8 @@ jobs:
           done
           cat /tmp/gaza-http.log
           exit 1
+      - name: Laboratory interior browser QA
+        run: node ./tests/lab-detail-browser-qa.mjs
       - name: Shared process ledger and browser QA
         run: npm run qa:process
       - name: Site Real browser QA
