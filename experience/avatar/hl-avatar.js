@@ -362,6 +362,25 @@ export function createHLAvatar(THREE){
     root.userData.walkDirection=direction;
   };
 
+  root.userData.updateFall=(time,progress=0)=>{
+    const flutter=Math.sin(time*3.2);
+    arms[0].shoulder.rotation.x=THREE.MathUtils.lerp(arms[0].shoulder.rotation.x,-.65+flutter*.18,.18);
+    arms[1].shoulder.rotation.x=THREE.MathUtils.lerp(arms[1].shoulder.rotation.x,-.65-flutter*.18,.18);
+    arms[0].shoulder.rotation.z=THREE.MathUtils.lerp(arms[0].shoulder.rotation.z,-.72,.16);
+    arms[1].shoulder.rotation.z=THREE.MathUtils.lerp(arms[1].shoulder.rotation.z,.72,.16);
+
+    legs[0].hip.rotation.x=THREE.MathUtils.lerp(legs[0].hip.rotation.x,.18+flutter*.14,.18);
+    legs[1].hip.rotation.x=THREE.MathUtils.lerp(legs[1].hip.rotation.x,-.12-flutter*.14,.18);
+    legs[0].knee.rotation.x=THREE.MathUtils.lerp(legs[0].knee.rotation.x,.28,.18);
+    legs[1].knee.rotation.x=THREE.MathUtils.lerp(legs[1].knee.rotation.x,.22,.18);
+
+    torsoPivot.rotation.x=THREE.MathUtils.lerp(torsoPivot.rotation.x,-.12,.14);
+    torsoPivot.rotation.z=Math.sin(time*.8)*.035;
+    headPivot.rotation.x=THREE.MathUtils.lerp(headPivot.rotation.x,.06,.14);
+    headPivot.rotation.y=Math.sin(time*.55)*.08;
+    root.position.y=Math.sin(time*5.0)*.018;
+  };
+
   root.userData.updateClimb=(time,progress=0)=>{
     const phase=time*4.1;
     const reach=Math.sin(phase);
