@@ -57,8 +57,9 @@ if head_bone is None:
 # Remove MetaPerson haircut entirely.
 for obj in list(bpy.context.scene.objects):
     if obj.name.lower() == "haircut" or "haircut" in obj.name.lower():
+        old_name = obj.name
         bpy.data.objects.remove(obj, do_unlink=True)
-        print(f"[OK] Removed old haircut: {obj.name}")
+        print(f"[OK] Removed old haircut: {old_name}")
 
 # Remove any prior generated curly hair if script is rerun.
 for obj in list(bpy.context.scene.objects):
@@ -243,3 +244,5 @@ if not os.path.exists(temp_path):
 os.replace(temp_path, input_path)
 print(f"[OK] Curly hair applied directly to: {input_path}")
 print(f"[OK] Original backup: {backup_path}")
+
+print("RHB_CURLY_HAIR_SCRIPT_OK=True")
