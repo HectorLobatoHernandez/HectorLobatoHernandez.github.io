@@ -402,6 +402,7 @@ function createWorld(data){
     );
 
     const chapterFloat=renderProgress*(chapters.length-1);
+    const figureT=clamp(renderProgress+.045,0,1);
     const fp=curve.getPointAt(figureT);
     const ahead=curve.getPointAt(clamp(figureT+.006,0,1));
     const tangentX=ahead.x-fp.x;
@@ -544,12 +545,11 @@ function createWorld(data){
   resize();
   updateScroll();
   setPanel(0);
+  loading.classList.add('hide');
   animate();
-
-  setTimeout(()=>loading.classList.add('hide'),500);
 }
 
 loadData().then(createWorld).catch(err=>{
   console.error(err);
-  loading.innerHTML='<span>HL / WORLD</span><b>Scene load failed</b>';
+  loading.innerHTML='<span>HL / WORLD</span><b>Scene load failed</b><small style="display:block;margin-top:12px;color:#8c9690;font:11px monospace">'+String(err?.message||err)+'</small>';
 });
