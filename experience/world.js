@@ -425,7 +425,7 @@ function createWorld(data){
     const scrollVelocity=Math.abs(targetProgress-renderProgress);
     const recentlyScrolled=(performance.now()-lastScrollAt)<190;
     const moving=recentlyScrolled||scrollVelocity>.00022;
-    const walkSpeed=.75+Math.min(1.65,scrollVelocity*36+scrollImpulse*.9);
+    const walkSpeed=.72+Math.min(.38,scrollVelocity*12+scrollImpulse*.22);
 
     const fallEnd=landingIndex>=0?landingIndex-.22:spaceEnd+.4;
     const inFall=landingIndex>=0&&chapterFloat<fallEnd;
