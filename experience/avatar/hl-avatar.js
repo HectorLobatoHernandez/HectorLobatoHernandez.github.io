@@ -364,6 +364,8 @@ export function createHLAvatar(THREE){
 
     arms[0].shoulder.rotation.x=THREE.MathUtils.lerp(arms[0].shoulder.rotation.x,armSwingOpp,.22);
     arms[1].shoulder.rotation.x=THREE.MathUtils.lerp(arms[1].shoulder.rotation.x,armSwing,.22);
+    arms[0].shoulder.rotation.z=THREE.MathUtils.lerp(arms[0].shoulder.rotation.z,0,.18);
+    arms[1].shoulder.rotation.z=THREE.MathUtils.lerp(arms[1].shoulder.rotation.z,0,.18);
 
     torsoPivot.rotation.x=THREE.MathUtils.lerp(torsoPivot.rotation.x,moving?.07*dir:0,.18);
     torsoPivot.rotation.z=THREE.MathUtils.lerp(torsoPivot.rotation.z,moving?Math.sin(phase*.5)*.018:0,.18);
@@ -372,6 +374,7 @@ export function createHLAvatar(THREE){
 
     const bounce=moving?Math.abs(Math.sin(phase))*0.022:Math.sin(time*1.8)*.006;
     root.position.y=bounce;
+    torsoPivot.position.y=THREE.MathUtils.lerp(torsoPivot.position.y,0,.16);
 
     // Eyes subtly scan while idle and focus more centrally while walking.
     const eyeLookX=moving?0:Math.sin(time*.7)*.008;
