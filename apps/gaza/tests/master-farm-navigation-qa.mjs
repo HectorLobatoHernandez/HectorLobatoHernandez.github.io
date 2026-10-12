@@ -9,11 +9,11 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:1000}});
  await page.route('https://cdn.jsdelivr.net/npm/three@0.180.0/**',async r=>{const rel=r.request().url().split('/three@0.180.0/')[1];if(!rel||rel.includes('..'))return r.abort();return r.fulfill({body:await fs.readFile(path.join(threeRoot,rel)),contentType:'text/javascript'})});
  assert((await page.goto(base+'/mission-control.html?view=plant&qa=1')).ok());
- const plant=page.frameLocator('iframe[title="GAZA Plant 3D"]');
+ const plant=page.frameLocator('iframe[title="GAZA Site Real Exterior"]');
  await plant.locator('#enterMasterFarm').click();await page.locator('[data-pane="farm"].on').waitFor();
  const farm=page.frameLocator('iframe[title*="GAZA Farm 3D"]');
  await farm.locator('[data-process-panel] #start').click();await farm.locator('#steps button').nth(2).click();assert.equal(await farm.locator('#steps button').count(),7);
- await page.locator('[data-view="plant"]').click();await plant.locator('#enterQualityLab').click();
+ await page.locator('[data-view="site"]').click();await plant.locator('#enterQualityLab').click();
  await page.locator('[data-pane="labs"].on').waitFor();const labs=page.frameLocator('iframe[title*="GAZA Quality Labs"]');
  await labs.locator('#steps button').nth(2).click();
  await labs.locator('#stationProcedure').filter({hasText:/aséptica/}).waitFor({timeout:15000});

@@ -39,11 +39,12 @@ try{
  assert(await flow.locator('[data-process-panel] [data-gate="dispatch"]').isDisabled());checks.push('independent-quality-gates');
  const site=await context.newPage();site.on('console',m=>{if(['warning','error'].includes(m.type()))warnings.push(m.text())});site.on('pageerror',e=>errors.push(e.message));
  const started=performance.now();await site.goto(base+'/site-real-preview.html?qa=1');
- // Three simultaneously open WebGL views contend for the CI software renderer.
- // The 239 artifact shows ready+held with zero JS errors after the former 30 s cold-start budget.
- // Extend ONLY readiness to 60 s, report measured latency, and keep exact state/motion assertions.
- await site.waitForFunction(()=>window.__GAZA_SITE_REAL__?.state==='ready'&&window.__GAZA_SITE_REAL__?.process?.held&&window.__GAZA_SITE_REAL__?.render?.calls>0,null,{timeout:60000});
- readiness.push({scene:'Site Real',milliseconds:Math.round(performance.now()-started),renderer:'CI SwiftShader with concurrent Farm and Labs',waitBudgetMs:60000});
+ // Inspect the real foreground WebGL view. Background pages may suspend animation-frame polling.
+ // Artifacts 259/262 showed the exact ready/held/render predicates true in failure diagnostics.
+ // Keep the same 60 s bound and all assertions; do not seed state or substitute a mocked renderer.
+ await site.bringToFront();
+ await site.waitForFunction(()=>window.__GAZA_SITE_REAL__?.state==='ready'&&window.__GAZA_SITE_REAL__?.process?.held&&window.__GAZA_SITE_REAL__?.render?.calls>0,null,{timeout:60000,polling:100});
+ readiness.push({scene:'Site Real',milliseconds:Math.round(performance.now()-started),renderer:'CI SwiftShader; inspected tab brought to foreground',waitBudgetMs:60000,pollingMs:100});
  assert.equal(await site.evaluate(()=>window.__GAZA_SITE_REAL__.process.lotId),'SIM-BOV-001');
  assert.equal(await site.evaluate(()=>window.__GAZA_SITE_REAL__.process.simSeconds),18);
  const position=await site.evaluate(()=>window.__GAZA_SITE_REAL__.actors[0].position);await site.waitForTimeout(400);

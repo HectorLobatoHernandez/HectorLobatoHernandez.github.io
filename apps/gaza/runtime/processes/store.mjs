@@ -4,6 +4,7 @@ import {sessionScope} from '../demo/session.mjs';
 import {createDemonstration} from '../demo/scenario.mjs';
 const scope=sessionScope(typeof location!=='undefined'?location.search:'');
 const KEY=scope.key;
+const SELECTION=KEY+':selected';
 const listeners=new Set();
 let snapshot=null,error=null,selected=null,closed=false,busyClock=false;
 const LEGACY=scope.legacy;
@@ -16,7 +17,7 @@ function read(){
 }
 function notify(){
  try{snapshot=read();error=null}catch(e){error=e.message;snapshot=null}
- if(snapshot&&!snapshot.lots[selected])selected=Object.keys(snapshot.lots)[0];
+ if(snapshot&&!snapshot.lots[selected]){const saved=localStorage.getItem(SELECTION);selected=snapshot.lots[saved]?saved:Object.keys(snapshot.lots)[0];}
  window.__GAZA_PROCESS_STATE__=snapshot;window.__GAZA_PROCESS_ERROR__=error;
  const detail={state:snapshot,error,selected};
  for(const fn of listeners)try{fn(detail)}catch(e){console.error('GAZA process observer',e)}
@@ -55,9 +56,9 @@ function archive(){
 export const processStore={
  get scope(){return scope},
  get state(){return snapshot},get error(){return error},get selected(){return selected},get writable(){return !!locks},
- setLot(id){if(!snapshot?.lots[id])return;selected=id;notify()},
+ setLot(id){if(!snapshot?.lots[id])return;selected=id;localStorage.setItem(SELECTION,id);notify();channel?.postMessage({type:'SELECTED',id})},
  subscribe(fn){listeners.add(fn);fn({state:snapshot,error,selected});return()=>listeners.delete(fn)},
- restartDemonstration(){if(!scope.demo)return Promise.reject(new Error('Reinicio de presentación no disponible en trabajo.'));return transaction(()=>{const n=createDemonstration({running:!qa});n.clock.wallAt=Date.now();return n})},
+ restartDemonstration(living=null){if(!scope.demo)return Promise.reject(new Error('Reinicio de presentación no disponible en trabajo.'));return transaction(()=>{const n=createDemonstration({running:!qa,living});n.clock.wallAt=Date.now();return n})},
  start(config={}){return transaction(s=>{if(s)return s;archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  reset(config={}){return transaction(()=>{archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  dispatch(action){return transaction(s=>{if(!s)throw new Error('Inicia el escenario compartido');const n=reduce(s,action);if(action.type==='CLOCK')n.clock.wallAt=Date.now();return n})},
@@ -71,8 +72,8 @@ export const processStore={
  })}catch(e){error=e.message;window.__GAZA_PROCESS_ERROR__=error}finally{busyClock=false}},
  close(){closed=true;clearInterval(timer);channel?.close()}
 };
-channel&&(channel.onmessage=()=>notify());
-window.addEventListener('storage',e=>{if(e.key===KEY)notify()});
+channel&&(channel.onmessage=e=>{if(e.data?.type==='SELECTED'&&snapshot?.lots[e.data.id])selected=e.data.id;notify()});
+window.addEventListener('storage',e=>{if(e.key===SELECTION&&snapshot?.lots[e.newValue])selected=e.newValue;if(e.key===KEY||e.key===SELECTION)notify()});
 window.addEventListener('pageshow',notify);window.addEventListener('pagehide',e=>{if(!e.persisted)processStore.close()});
 notify();const timer=setInterval(()=>processStore.pulse(),250);
 // Only the explicit ?demo=company session may bootstrap itself. Corrupt records fail closed.

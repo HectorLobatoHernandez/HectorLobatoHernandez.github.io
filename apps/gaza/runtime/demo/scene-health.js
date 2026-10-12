@@ -1,6 +1,6 @@
 /* Runs before ESM imports: a network/WebGL failure must be visible, not an empty pasture. */
 (() => {
- const RELEASE='gaza-demo-20261012-r2';let ready=false,pending=null;
+ const RELEASE='gaza-live-20261012-v1';let ready=false,pending=null;
  const box=document.createElement('aside');box.id='gazaLoadStatus';box.setAttribute('role','status');
  box.style.cssText='position:fixed;z-index:70;left:12px;top:64px;background:#102e3eef;color:#e3f1ef;border:1px solid #659496;border-radius:8px;padding:12px;max-width:min(550px,90vw);font:13px/1.5 system-ui';
  box.textContent='GAZA '+RELEASE+' · cargando módulos y escena 3D…';document.body.append(box);

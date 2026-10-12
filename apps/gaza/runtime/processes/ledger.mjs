@@ -1,5 +1,6 @@
 import {TASKS,TESTS,GATES,ROLES,DEFAULT_LOTS} from './catalog.mjs';
 import {validateContributions} from './farm-network.mjs';
+import {DEFAULT_LIVING,validateLiving,settingsOf,roleEligibility} from '../living/model.mjs';
 export const SCHEMA=2;
 export const KEY='gaza:process-ledger:v2';
 const taskById=Object.fromEntries(TASKS.map(t=>[t.id,t]));
@@ -18,6 +19,7 @@ export function initialState(config={}){
  const s={schemaVersion:SCHEMA,provenance:'SIMULATED',revision:0,sequence:0,clock:{seconds:0,running:false,rate:1},autoTasks:false,
   config:{processingYieldBasisPoints:9700,palletCapacityL:720,plan:'DEMO_DAIRY_V2_NOT_GAZA_SOP'},
   lots:{},equipment:{},events:[]};
+ if(config.living)s.config.living=validateLiving({...DEFAULT_LIVING,...config.living});
  for(const def of definitions){
   assert(typeof def.id==='string'&&/^SIM-[A-Z0-9-]+$/.test(def.id)&&!s.lots[def.id],'ID de lote inválido o duplicado');
   assert(['BOVINE','OVINE'].includes(def.species),'Especie inválida');
@@ -52,6 +54,7 @@ export function taskEligibility(s,lotId,taskId){
  if(def.after.some(id=>lot.tasks[id].status!=='DONE'))return {ok:false,reason:'Faltan tareas precedentes'};
  if(def.gate&&lot.gates[def.gate].status!=='APPROVED')return {ok:false,reason:'Falta decisión: '+GATES[def.gate].title};
  if(!s.equipment[def.resource]?.valid)return {ok:false,reason:'Equipo fuera de servicio'};
+ const staffing=roleEligibility(s,def.role);if(!staffing.ok)return staffing;
  if(resourceBusy(s,def.resource))return {ok:false,reason:'Recurso ocupado por otra tarea/lote'};
  return {ok:true,reason:''};
 }
@@ -62,6 +65,7 @@ export function testEligibility(s,lotId,testId){
  if(!sample||sample.status!=='RECEIVED')return {ok:false,reason:'Muestra ausente o custodia no válida'};
  if(!s.equipment[def.resource]?.valid)return {ok:false,reason:'Equipo no apto'};
  if(lot.tests.some(t=>t.testId===testId&&t.status==='RUNNING'))return {ok:false,reason:'Ensayo ya en curso'};
+ const staffing=roleEligibility(s,'SIM-LAB-01');if(!staffing.ok)return staffing;
  if(resourceBusy(s,def.resource))return {ok:false,reason:'Equipo ocupado'};
  return {ok:true,reason:''};
 }
@@ -69,6 +73,7 @@ export function gateEligibility(s,lotId,gateId){
  const lot=s.lots[lotId],plan=GATES[gateId];
  if(!lot||!plan)return {ok:false,reason:'Decisión desconocida'};
  if(lot.holds)return {ok:false,reason:'Retención activa: revisar investigación'};
+ const staffing=roleEligibility(s,'SIM-QA-01');if(!staffing.ok)return staffing;
  if((plan.requires||[]).some(t=>lot.tasks[t].status!=='DONE'))return {ok:false,reason:'Registros/tareas incompletos'};
  for(const id of plan.tests){
   const t=latestTest(lot,id),def=testById[id];
@@ -138,6 +143,11 @@ export function reduce(input,action){
  assertState(input);assert(action&&typeof action.type==='string','Acción inválida');
  const s=clone(input);s.revision++;
  const fail=(reason)=>{event(s,'ACTION_BLOCKED',action.lotId||null,reason,{action:action.type});return s};
+ if(action.type==='LIVING_SETTINGS'){
+  const previous=settingsOf(s),allowed=['environment','schedule'],changes=Object.fromEntries(allowed.filter(k=>Object.hasOwn(action,k)).map(k=>[k,action[k]]));
+  assert(Object.keys(action).every(k=>k==='type'||allowed.includes(k)),'Parámetro no admitido');
+  s.config.living=validateLiving({...previous,...changes});event(s,'LIVING_SETTINGS',null,'Iluminación / turnos de escenario actualizados; cantidades conservadas',{settings:s.config.living});assertState(s);return s;
+ }
  if(action.type==='AUTO'){assert(typeof action.enabled==='boolean','Planificador inválido');s.autoTasks=action.enabled;return s}
  if(action.type==='CLOCK'){assert(typeof action.running==='boolean'&&[1,4,8].includes(action.rate),'Reloj inválido');s.clock.running=action.running;s.clock.rate=action.rate;return s}
  if(action.type==='TICK'){tick(s,action.seconds);assertState(s);return s.autoTasks?planReady(s):s}
@@ -194,6 +204,7 @@ export function assertState(s){
  assert(s&&s.schemaVersion===SCHEMA&&s.provenance==='SIMULATED','Estado o procedencia incompatible');
  assert(integer(s.revision)&&integer(s.sequence)&&s.clock&&Number.isFinite(s.clock.seconds)&&s.clock.seconds>=0&&typeof s.clock.running==='boolean'&&[1,4,8].includes(s.clock.rate),'Reloj/revisión inválidos');
  assert(s.config?.plan==='DEMO_DAIRY_V2_NOT_GAZA_SOP'&&integer(s.config.processingYieldBasisPoints)&&s.config.processingYieldBasisPoints<=10000&&integer(s.config.palletCapacityL)&&s.config.palletCapacityL>0,'Configuración incompatible');
+ if(s.config.living)validateLiving(s.config.living);
  assert(s.lots&&Object.keys(s.lots).length>0&&Object.keys(s.lots).length<=20&&s.equipment&&Array.isArray(s.events),'Estructura de estado inválida');
  const resources=new Set();
  for(const lot of Object.values(s.lots)){

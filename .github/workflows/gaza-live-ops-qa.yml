@@ -1,0 +1,73 @@
+name: GAZA live operations and night QA
+on:
+  pull_request:
+    paths: ['apps/gaza/**', 'skills/gaza-geospatial-industrial-twin/**', '.github/workflows/gaza-live-ops-qa.yml']
+  push:
+    branches: [main]
+    paths: ['apps/gaza/**', 'skills/gaza-geospatial-industrial-twin/**', '.github/workflows/gaza-live-ops-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gaza-live-ops-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  review-source:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Archive tracked application sources only
+        run: |
+          mkdir -p /tmp/gaza-review
+          git archive --format=tar HEAD apps/gaza skills/gaza-geospatial-industrial-twin .github/workflows start/gaza.html > /tmp/gaza-review/source.tar
+          git rev-parse HEAD > /tmp/gaza-review/commit.txt
+          sha256sum /tmp/gaza-review/source.tar > /tmp/gaza-review/source.sha256
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gaza-live-reviewed-source-${{ github.run_number }}
+          path: /tmp/gaza-review/
+          retention-days: 1
+  integrated-night:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    defaults:
+      run:
+        working-directory: apps/gaza
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Shared clock, staffing, cargo and regressions
+        run: |
+          node --check runtime/living/scene.mjs
+          node --check runtime/living/console.mjs
+          node --test tests/live-ops.test.mjs tests/process-ledger.test.mjs tests/farm-stall-alignment.test.mjs tests/farm-life.test.mjs tests/company-demo.test.mjs tests/selfhost-engine.test.mjs tests/lab-detail.test.mjs tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/site-real-core.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Start application
+        run: |
+          npm run dev >/tmp/gaza-live-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/mission-control.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Integrated graphics, shifts and cargo
+        run: node tests/live-ops-browser-qa.mjs
+      - name: Verify published live application
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        env:
+          GAZA_PUBLIC_BASE: https://hectorlobatohernandez.github.io/apps/gaza
+        run: node tests/live-ops-browser-qa.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-live-ops-${{ github.run_number }}
+          path: apps/gaza/.qa/live-ops/
+          include-hidden-files: true
+          retention-days: 14
