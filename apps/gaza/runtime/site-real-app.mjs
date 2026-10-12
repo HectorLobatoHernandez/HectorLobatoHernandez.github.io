@@ -16,6 +16,7 @@ const sun=new THREE.DirectionalLight('#fff6e4',3);sun.position.set(-180,230,80);
 const world=buildExterior(THREE);scene.add(world.root);const gisGroup=new THREE.Group();scene.add(gisGroup);gisGroup.visible=false;const gisSelectable=[];
 let processState=null,processView=null,processError=null,living=null;
 mountProcessPanel(document.querySelector('aside'),{module:'site'});
+const startup={phase:'initializing',startedAt:performance.now(),compileMs:null,firstFrameMs:null,error:null};
 let geometryQA=[],mode='study',geo=null,paused=qa||frozen||matchMedia('(prefers-reduced-motion: reduce)').matches,follow=false,ledger=null,dirty=true,last=performance.now(),elapsed=0,frameCount=0,selected=null;
 processStore.subscribe(({state,error})=>{processState=state;processError=error;processView=processStore.view();dirty=true;syncLedger();});
 const cameras={overview:{p:[-245,170,268],t:[0,6,0]},facade:{p:[-162,46,58],t:[-14,8,-13]},access1:{p:[-120,24,-167],t:[-43,7,-91]},access2:{p:[-133,26,149],t:[-33,5,82]},top:{p:[-8,440,2],t:[0,0,0]}};
@@ -49,7 +50,48 @@ let busy=false;
 $('load').onclick=async()=>{if(busy)return;busy=true;$('load').disabled=true;$('status').textContent='Consultando Overpass… (límite 30 s; sin reintentos automáticos)';const box='41.5163635,-5.6095288,41.5307365,-5.5903312',query=`[out:json][timeout:25];(way["highway"](${box});way["building"](${box}););out geom;`;try{const response=await fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query),{signal:AbortSignal.timeout(30000)});if(!response.ok)throw new Error('HTTP '+response.status);applyGeo(overpassToGeoJSON(await response.json()),'OSM_PUBLIC_REFERENCE')}catch(e){$('status').textContent='OSM no disponible: '+e.message+'. Se conserva lo que ya estaba cargado. Puedes importar GeoJSON local.'}finally{busy=false;$('load').disabled=false;publish()}};
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>10*1024*1024)throw new Error('Archivo mayor de 10 MB');applyGeo(JSON.parse(await f.text()),'IMPORTED_GEOJSON_SOURCE_TO_VALIDATE')}catch(err){$('status').textContent='Importación rechazada: '+err.message}finally{e.target.value=''}};
 $('export').onclick=()=>{if(!geo)return;const payload={...geo.original,siteReal:{anchor:ORIGIN,source:geo.source,geometryCRS:'EPSG:4326',renderAxes:'X_EAST_Y_UP_Z_SOUTH',derivedWidthsAndHeights:'INFERRED_NOT_SURVEYED',attribution:geo.source==='OSM_PUBLIC_REFERENCE'?'© OpenStreetMap contributors / ODbL':'See original file; source not verified'}},url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/geo+json'})),a=document.createElement('a');a.href=url;a.download='gaza-site-context.geojson';a.click();setTimeout(()=>URL.revokeObjectURL(url),500)};
-function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,processScope:processStore.scope.id,living:living?.snapshot()||null,state:'ready',mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
-function frame(now){requestAnimationFrame(frame);const raw=Math.min(.08,(now-last)/1000);last=now;const dt=(!paused&&!frozen&&!document.hidden&&mode==='study')?raw*Number($('speed').value):0;elapsed+=dt;const processDt=processState?(processState.clock.running?dt*processState.clock.rate:0):dt;plantDetail.update();world.update(processDt,{held:!!processError||(processView?processView.held:!!ledger?.held),process:processState?{state:processState,lotId:processStore.selected}:null});if(rain.visible&&dt){for(let i=1;i<rainArray.length;i+=3)rainArray[i]=(rainArray[i]-dt*35+90)%90;rainGeo.attributes.position.needsUpdate=true}if(follow){const v=world.moving[0].tractor.position;camera.position.lerp(v.clone().add(new THREE.Vector3(-26,16,24)),.05);controls.target.lerp(v,.08)}living?.update();controls.update();if(dirty||dt>0){renderer.render(scene,camera);dirty=false}if(frameCount++%20===0){window.__GAZA_SITE_RENDER_STATS__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};$('stats').textContent=`GPU: ${renderer.info.render.calls} draws · ${renderer.info.render.triangles.toLocaleString('es-ES')} triángulos · ${renderer.info.memory.geometries} geometrías`;$('tankerStatus').textContent='CISTERNA / ACCESO 2 · '+world.moving[0].phase;$('trailerStatus').textContent='TRÁILER / ACCESO 1 · '+world.moving[1].phase;publish()}}
-renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();paused=true;$('loading').hidden=false;$('loading').textContent='Contexto gráfico perdido. Recarga para recuperar la escena.'});
-ambience();$('loading').hidden=true;if(params.has('dept'))plantDetail.open(params.get('dept'));publish();requestAnimationFrame(frame);
+function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,startup:{...startup},processScope:processStore.scope.id,living:living?.snapshot()||null,state:startup.phase==='ready'?'ready':startup.phase,mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
+// Bound visual work independently of ledger writes. A paused scene renders on demand.
+// Shader compilation is prepared asynchronously below; no readiness is published before a real draw.
+function frame(now){
+ requestAnimationFrame(frame);
+ if(document.hidden){last=now;return;}
+ if(now-last<1000/30)return;
+ const raw=Math.min(.08,(now-last)/1000);last=now;
+ const dt=(!paused&&!frozen&&mode==='study')?raw*Number($('speed').value):0;elapsed+=dt;
+ const processDt=processState?(processState.clock.running?dt*processState.clock.rate:0):dt;
+ // UI handlers and the process observer invalidate the scene. Idle frames must not traverse
+ // hundreds of machines and materials while another GAZA map is compiling/rendering.
+ if(dirty||dt>0){
+  plantDetail.update();
+  world.update(processDt,{held:!!processError||(processView?processView.held:!!ledger?.held),process:processState?{state:processState,lotId:processStore.selected}:null});
+  living?.update();
+  if(rain.visible&&dt){for(let i=1;i<rainArray.length;i+=3)rainArray[i]=(rainArray[i]-dt*35+90)%90;rainGeo.attributes.position.needsUpdate=true}
+ }
+ if(follow){const v=world.moving[0].tractor.position;camera.position.lerp(v.clone().add(new THREE.Vector3(-26,16,24)),.05);controls.target.lerp(v,.08)}
+ controls.update();
+ if(dirty||dt>0){
+  const drawStart=performance.now();renderer.render(scene,camera);dirty=false;frameCount++;
+  if(startup.firstFrameMs===null){startup.firstFrameMs=Math.round(performance.now()-startup.startedAt);startup.phase='ready';$('loading').hidden=true;}
+  window.__GAZA_SITE_RENDER_STATS__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,drawMs:Math.round(performance.now()-drawStart),frames:frameCount};
+  $('stats').textContent=`GPU: ${renderer.info.render.calls} draws · ${renderer.info.render.triangles.toLocaleString('es-ES')} triángulos · ${renderer.info.memory.geometries} geometrías`;
+  $('tankerStatus').textContent='CISTERNA / ACCESO 2 · '+world.moving[0].phase;
+  $('trailerStatus').textContent='TRÁILER / ACCESO 1 · '+world.moving[1].phase;
+  publish();
+ }
+}
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();paused=true;startup.phase='context-lost';publish();$('loading').hidden=false;$('loading').textContent='Contexto gráfico perdido. Recarga para recuperar la escena.'});
+ambience();if(params.has('dept'))plantDetail.open(params.get('dept'));
+$('loading').hidden=false;$('loading').textContent='Preparando planta, materiales e iluminación…';publish();
+async function startRendering(){
+ try{
+  const compileStart=performance.now();startup.phase='compiling';publish();
+  // Three r180 uses KHR_parallel_shader_compile when available. This avoids a synchronous
+  // first-draw compilation stall while Farm/Labs remain connected to the same ledger.
+  // https://threejs.org/docs/pages/WebGLRenderer.html#compileAsync
+  await renderer.compileAsync(scene,camera);
+  startup.compileMs=Math.round(performance.now()-compileStart);startup.phase='first-frame';
+  dirty=true;last=performance.now()-1000/30;publish();requestAnimationFrame(frame);
+ }catch(error){startup.phase='error';startup.error=String(error?.message||error);$('loading').hidden=false;$('loading').textContent='No se pudo preparar el motor 3D: '+startup.error;publish();console.error('GAZA plant graphics initialization',error);}
+}
+void startRendering();
