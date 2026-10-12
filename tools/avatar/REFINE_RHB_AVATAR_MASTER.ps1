@@ -14,7 +14,12 @@ if (-not (Test-Path $Backup)) {
   Copy-Item $Input $Backup -Force
 }
 
-$Python=(Get-Command python -ErrorAction Stop).Source
+$TripPython="$env:USERPROFILE\Desktop\RHB_TripoSR\.venv\Scripts\python.exe"
+if(Test-Path $TripPython){
+  $Python=$TripPython
+}else{
+  $Python=(Get-Command python -ErrorAction Stop).Source
+}
 & $Python $Py $Input $Output
 if ($LASTEXITCODE -ne 0) { throw "MASTER_REFINEMENT_FAILED_$LASTEXITCODE" }
 if (-not (Test-Path $Output)) { throw "REFINED_MASTER_NOT_CREATED" }
