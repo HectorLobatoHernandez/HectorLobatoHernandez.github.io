@@ -8,6 +8,7 @@ export const EVIDENCE=Object.freeze({
  conflict:'La página corporativa ganaderos.html mantiene «más de 80». Se conservan ambas referencias: no se inventa un reparto de socios por especie.',
  corporateURL:'https://www.lechegaza.com/ganaderos.html'
 });
+export const INDOOR_ALIGNMENT='bovine-cubicles-20261012-v1';
 export const DEFAULTS=Object.freeze({days:1,bovineYield:30,ovineYield:2.5,bovineLactatingShare:.8,ovineLactatingShare:.7,density:'balanced'});
 const positive=(v,max=1e8)=>typeof v==='number'&&Number.isFinite(v)&&v>0&&v<=max;
 export function validateAssumptions(a){
@@ -30,7 +31,20 @@ function toWorld(f,x,z){return [f.x+Math.cos(f.yaw)*x+Math.sin(f.yaw)*z,f.z-Math
 /** Grid spacing is a rendering clearance, not a livestock welfare or stocking-density standard. */
 export function placements(species){
  const cow=species==='BOVINE',b=BUILDINGS.find(x=>x.id===(cow?'bovine':'ovine')),f=frame(b),spacing=cow?4.5:2.6,slots=[];
- for(const sign of [-1,1])for(let x=-f.w/2+3;x<f.w/2-3;x+=spacing){const z=sign*f.d*.32;slots.push({position:toWorld(f,x,z),yaw:f.yaw+(sign>0?Math.PI:0),zone:b.id,station:cow?1:2,space:spacing});}
+ // Match the existing bedding centers drawn by world.mjs::pens (3.2 m pitch).
+ // Keep the old number/order of indoor symbols so paddock positions and headings do not change.
+ const cubicleCenters=[];
+ if(cow)for(let x=-f.w/2+3;x<f.w/2-3;x+=3.2)cubicleCenters.push(x);
+ for(const sign of [-1,1])for(let x=-f.w/2+3;x<f.w/2-3;x+=spacing){
+  // Keep the full animal behind the existing front rail, inside the bedding depth.
+  const z=sign*(f.d*.32+(cow?1.5:0));
+  const centeredX=cow?cubicleCenters.reduce((best,c)=>Math.abs(c-x)<Math.abs(best-x)?c:best,cubicleCenters[0]):x;
+  // Anatomical forward is +X. The cubicle runs along barn-local Z, not along the aisle (X).
+  // Opposite rows face inward: +Z row -> -Z; -Z row -> +Z. Include the barn's world rotation.
+  const yaw=cow?f.yaw+sign*Math.PI/2:f.yaw+(sign>0?Math.PI:0);
+  slots.push({position:toWorld(f,centeredX,z),yaw,zone:b.id,station:cow?1:2,space:cow?3.2:spacing,
+   ...(cow?{alignment:INDOOR_ALIGNMENT,stallIndex:cubicleCenters.indexOf(centeredX),row:sign}: {})});
+ }
  const ring=PADDOCKS.find(x=>x.species===species).corners.map(point),xs=ring.map(p=>p[0]),zs=ring.map(p=>p[1]);
  for(let z=Math.min(...zs)+spacing;z<Math.max(...zs)-spacing;z+=spacing)for(let x=Math.min(...xs)+spacing;x<Math.max(...xs)-spacing;x+=spacing){const p=[x,z];if(inside(p,ring)&&ring.every((a,i)=>distanceEdge(p,a,ring[(i+1)%ring.length])>spacing*.7))slots.push({position:p,yaw:(slots.length%4)*Math.PI/2,zone:cow?'cow-yard':'sheep-yard',station:cow?1:2,space:spacing});}
  return slots;
