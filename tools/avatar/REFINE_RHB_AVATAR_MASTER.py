@@ -103,6 +103,11 @@ def main():
     norm_idx=attrs.get('NORMAL')
     norm=read_acc(js,binbuf,norm_idx).astype(np.float32) if norm_idx is not None else None
     col=read_acc(js,binbuf,attrs['COLOR_0']).astype(np.float32)
+    color_channels=col.shape[1]
+    if color_channels not in (3,4):
+        raise RuntimeError(f"UNSUPPORTED_COLOR_CHANNELS_{color_channels}")
+    rgb=col[:,:3].copy()
+    alpha=col[:,3:4].copy() if color_channels==4 else None
     indices=read_acc(js,binbuf,prim['indices']).astype(np.int32).reshape(-1,3)
 
     # Model generated earlier is Y-up and ~1.8 m tall.
@@ -113,17 +118,17 @@ def main():
     cx=np.median(head_pts[:,0])
     cz=np.median(head_pts[:,2])
 
-    lum=0.2126*col[:,0]+0.7152*col[:,1]+0.0722*col[:,2]
+    lum=0.2126*rgb[:,0]+0.7152*rgb[:,1]+0.0722*rgb[:,2]
 
     # Skin reference from central face.
     face_sample=head & (pos[:,1] > ymin+0.82*H) & (pos[:,1] < ymin+0.90*H) & (pos[:,0] > cx+0.01) & (np.abs(pos[:,2]-cz)<0.08) & (lum>0.18)
-    skin=np.median(col[face_sample],axis=0) if face_sample.any() else np.array([0.56,0.32,0.17],dtype=np.float32)
+    skin=np.median(rgb[face_sample],axis=0) if face_sample.any() else np.array([0.56,0.32,0.17],dtype=np.float32)
 
     # 1) REMOVE BAD GLASSES
     eye_low=ymin+0.865*H
     eye_high=ymin+0.925*H
     eye=head & (pos[:,1]>eye_low) & (pos[:,1]<eye_high) & (pos[:,0]>cx+0.015) & (np.abs(pos[:,2]-cz)<0.11)
-    warm=(col[:,0]>np.maximum(0.26,col[:,1]*1.10)) & (col[:,1]>0.08)
+    warm=(rgb[:,0]>np.maximum(0.26,rgb[:,1]*1.10)) & (rgb[:,1]>0.08)
     dark=lum<0.13
     glasses=eye & (warm|dark)
 
@@ -133,7 +138,7 @@ def main():
     alpha=0.86*p[glasses]
     pos[glasses,0]=pos[glasses,0]*(1-alpha)+x_target*alpha
     pos[glasses,2]=cz+(pos[glasses,2]-cz)*(1-0.28*alpha)
-    col[glasses]=skin[None,:]
+    rgb[glasses]=skin[None,:]
 
     # 2) HAIR: medium-long curly top, short sides
     hair_low=ymin+0.865*H
@@ -166,11 +171,11 @@ def main():
 
     # Color: dark brown, still allowing baked highlights.
     hair_color=np.array([0.105,0.062,0.038],dtype=np.float32)
-    col[idx]=np.clip(col[idx]*0.28+hair_color*0.72,0,1)
+    rgb[idx]=np.clip(rgb[idx]*0.28+hair_color*0.72,0,1)
 
     # Restore visible forehead/face color below hairline.
     face_restore=head & (pos[:,1]<ymin+0.89*H) & (pos[:,0]>cx+0.01) & (lum>0.16)
-    col[face_restore]=np.clip(col[face_restore]*0.20+skin*0.80,0,1)
+    rgb[face_restore]=np.clip(rgb[face_restore]*0.20+skin*0.80,0,1)
 
     # Recompute normals.
     vn=np.zeros_like(pos)
