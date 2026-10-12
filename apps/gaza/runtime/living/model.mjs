@@ -23,7 +23,7 @@ export function environmentOf(s){
  const cfg=settingsOf(s),clock=clockOf(s),hour=cfg.environment==='night'?23:cfg.environment==='day'?13:cfg.environment==='dusk'?19.4:clock.hour;
  // Artistic solar envelope, not astronomical ephemerides or a lux calculation.
  const elevation=Math.sin((hour-6.5)*Math.PI/13),daylight=clamp((elevation+.12)/.62),darkness=1-daylight;
- return {...clock,hour,sourceHour:clock.hour,preview:cfg.environment!=='auto',mode:cfg.environment,daylight,darkness,lamps:darkness>.12,sunIntensity:.055+1.65*daylight,ambientIntensity:.10+.95*daylight,phase:daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche',provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
+ return {...clock,hour,sourceHour:clock.hour,preview:cfg.environment!=='auto',mode:cfg.environment,daylight,darkness,lamps:darkness>.45,sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase:daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche',provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
 }
 export function taskState(s,l,def){const t=l?.tasks?.[def.id];if(!t)return 'PENDING';if(t.status==='RUNNING'){if(!s.equipment[def.resource]?.valid)return 'UNAVAILABLE';if(l.holds&&!def.qualityIndependent)return 'HELD';if(def.gate&&l.gates[def.gate]?.status!=='APPROVED')return 'WAIT_GATE';}return t.status;}
 export function roleActivity(s,role){

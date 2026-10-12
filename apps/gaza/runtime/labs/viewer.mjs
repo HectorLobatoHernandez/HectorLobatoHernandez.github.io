@@ -28,7 +28,7 @@ export function mountLabViewer({mount,side,onSelect,getState,getLotId}){
  scene.add(new THREE.HemisphereLight(0xf1f8ff,0x5e707b,2.3));const sun=new THREE.DirectionalLight(0xfff4db,2.7);sun.position.set(-12,28,18);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-24;sun.shadow.camera.right=24;sun.shadow.camera.top=24;sun.shadow.camera.bottom=-24;sun.shadow.normalBias=.025;scene.add(sun);
  const fill=new THREE.DirectionalLight(0xc3eaff,1.25);fill.position.set(16,12,-15);scene.add(fill);
  const world=buildLabWorld(scene);let selection=0,selectedEquipment=EQUIPMENT[0].id,projection=projectLab(null,null),revisionKey='',isolate=false,roof=false,cutaway=true,routes=true,closed=false,raf=0;
- const living=mountLivingScene(THREE,{scene,world,kind:'labs',getState,getLotId});
+ const living=mountLivingScene(THREE,{scene,world,kind:'labs',getState,getLotId,renderer});
  const floatingLabels=[];world.root.traverse(o=>{if(o.isSprite)floatingLabels.push(o)});
  function refreshLabels(){const show=!isolate&&['overview','plan'].includes(cameraName);floatingLabels.forEach(o=>o.visible=show)}
  function resize(){const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight),aspect=w/h;perspective.aspect=aspect;perspective.updateProjectionMatrix();const half=Math.max(12,18/aspect);ortho.left=-half*aspect;ortho.right=half*aspect;ortho.top=half;ortho.bottom=-half;ortho.updateProjectionMatrix();renderer.setSize(w,h)}

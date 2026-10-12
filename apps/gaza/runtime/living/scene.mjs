@@ -4,10 +4,25 @@ import {PARCEL,BUILDINGS,point,frame as farmFrame} from '../farm/site.mjs';
 import {DEPARTMENTS} from '../plant/model.mjs';
 import {AREAS} from '../labs/layout.mjs';
 /** Rendering is a read-only projection. Neither frame rate nor lights can write milk or quality. */
-export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=null,controls=null,dirty=()=>{}}){
+export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=null,controls=null,renderer=null,dirty=()=>{}}){
  const priorLights=[];scene.traverse(o=>{if(o.isLight)priorLights.push(o)});
+ // UI/ledger updates remain immediate. Only repeated pixel draws are budgeted.
+ let renderDirty=true,renderAt=-Infinity,renderCamera='',draws=0,skippedDraws=0,parentActive=true;
+ const invalidate=()=>{renderDirty=true;};
+ const activation=e=>{if(e.source===window.parent&&e.origin===location.origin&&e.data?.type==='GAZA_VIEW_VISIBILITY_V1'){parentActive=!!e.data.active;if(parentActive)invalidate();}};
+ const originalRender=renderer?.render;
+ if(renderer){
+  renderer.render=function(s,c){
+   const now=performance.now(),key=[...c.position.toArray(),...c.quaternion.toArray(),c.zoom,...c.projectionMatrix.elements,renderer.domElement.width,renderer.domElement.height].join(',');
+   const shown=parentActive&&!document.hidden&&renderer.domElement.getClientRects().length>0;
+   if(draws&&(!shown||now-renderAt<1000/30||(!renderDirty&&key===renderCamera&&now-renderAt<1000))){skippedDraws++;return;}
+   originalRender.call(this,s,c);draws++;renderAt=now;renderCamera=key;renderDirty=false;
+  };
+  for(const type of ['click','input','change','pointerdown','pointerup'])document.addEventListener(type,invalidate,true);
+  window.addEventListener('message',activation);document.addEventListener('visibilitychange',invalidate);
+ }
  const assets=livingAssets(T),root=new T.Group();root.name='LIVING_SCENE_'+kind;(kind==='farm'?world.site:world.root).add(root);
- const pools=[],lights=[],uniforms=[],batches=new Map(),machineScreens=[],transportLayers=[];let lastKey='',last=null,cargoOpen=false,inspection='',cartons=null,stock=null,fixtureCount=0;const stockDetails=[];
+ const pools=[],lights=[],uniforms=[],batches=new Map(),machineScreens=[],transportLayers=[];let lastKey='',last=null,cargoOpen=false,inspection='',cartons=null,stock=null,fixtureCount=0;const stockDetails=[],outboundPanels=[];
  function batch(parent,geo,material,pos,scale,rotation=[0,0,0]){const k=parent.uuid+geo.uuid+material.uuid;let b=batches.get(k);if(!b){b={parent,geo,material,items:[]};batches.set(k,b)}b.items.push({pos,scale,rotation});}
  function lamp(parent,x,z,height=7,inside=false){fixtureCount++;
   if(!inside){batch(parent,assets.cylinder,assets.m.dark,[x,height/2,z],[.09,height,.09]);batch(parent,assets.cube,assets.m.dark,[x+.65,height,z],[1.4,.10,.18]);}
@@ -34,6 +49,8 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
  if(kind==='site'){
   for(const v of world.moving)transportLayers.push(assets.transport(v));
   const outbound=world.moving.find(v=>v.id==='SIM-TRAILER-1');
+  for(const child of outbound.load.children)if(child.geometry?.type==='PlaneGeometry'&&child.material?.map){child.material.side=T.FrontSide;outboundPanels.push(child);}
+  const worklight=new T.PointLight(0xe4efff,0,15,2);worklight.position.set(0,4.3,0);outbound.load.add(worklight);lights.push({light:worklight,inside:true,cargo:true});
   const solid=outbound.load.children.find(o=>o.geometry?.type==='BoxGeometry'&&Math.abs(o.scale.y-3)<.01);if(solid)solid.name='OUTBOUND_CLOSED_BODY';
   cartons=assets.cargo(outbound.load,Array.from({length:12},(_,i)=>[-3.15+Math.floor(i/2)*1.26,.8,i%2?.62:-.62]));cartons.setCount(0);
   const glyphs=[];world.root.traverse(o=>{if(o.name==='SELECTED_LOT_PALLET_GLYPH')glyphs.push(o)});world.root.updateMatrixWorld(true);for(const g of glyphs){const before=[...g.children],bounds=new T.Box3().setFromObject(g),pos=bounds.getCenter(new T.Vector3());g.worldToLocal(pos);const detail=assets.cargo(g,[[pos.x,bounds.min.y+.1,pos.z]]);detail.setCount(1);before.forEach(o=>o.visible=false);stockDetails.push({g,before,detail})}
@@ -43,23 +60,24 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
  }
  const dummy=new T.Object3D(),instances=[];for(const b of batches.values()){const o=new T.InstancedMesh(b.geo,b.material,b.items.length);b.items.forEach((p,i)=>{dummy.position.set(...p.pos);dummy.scale.set(...p.scale);dummy.rotation.set(...p.rotation);dummy.updateMatrix();o.setMatrixAt(i,dummy.matrix)});o.castShadow=false;o.receiveShadow=true;o.instanceMatrix.needsUpdate=true;b.parent.add(o);instances.push(o);}
  const sceneKey='__GAZA_LIVING_'+kind.toUpperCase()+'__';
- function refresh(force=false){const s=getState(),lot=getLotId(),key=JSON.stringify([s?.revision,lot,cargoOpen]);if(!force&&key===lastKey)return false;lastKey=key;const env=environmentOf(s),dark=env.darkness;last=env;
+ function refresh(force=false){const s=getState(),lot=getLotId(),key=JSON.stringify([s?.revision,lot,cargoOpen]);if(!force&&key===lastKey)return false;lastKey=key;invalidate();const env=environmentOf(s),dark=env.darkness;last=env;
   const bg=new T.Color(0x07101f).lerp(new T.Color(0x839da9),env.daylight);scene.background=bg;if(scene.fog)scene.fog.color.copy(bg);
   for(const light of priorLights){if(light.isHemisphereLight)light.intensity=env.ambientIntensity;else if(light.isDirectionalLight)light.intensity=(light.castShadow?1:.4)*env.sunIntensity;}
   assets.m.lamp.emissiveIntensity=dark*3.8;assets.m.red.emissiveIntensity=dark*1.8;assets.poolMaterial.opacity=dark*.9;
   for(const p of pools)p.visible=dark>.08;
-  for(const {light,inside}of lights)light.intensity=(inside?110:950)*dark;
+  for(const {light,inside,cargo:bay}of lights){light.visible=bay?cargoOpen:(inside||dark>.45);light.intensity=bay?(cargoOpen?180:0):(inside?85:550)*dark;}
   const staff=uniforms.map(u=>{u.hidden.forEach(o=>o.visible=false);const a=roleActivity(s,u.role),active=a.tasks.find(t=>t.status==='RUNNING'),paused=a.tasks.length&&!active;u.g.visible=a.onDuty||a.tasks.length>0||!s;
    const t=active?active.progress*12:0;u.arms.forEach(j=>{j.upper.rotation.x=active?-.4+Math.sin(t+j.sign)*.17:paused?-.4:0;j.lower.rotation.x=active||paused?-.58:0});return {role:u.role,status:a.status,shift:a.shift};});
   const cargo=cargoOf(s,lot),stockPlan=cargoOf(s,lot,'stock',8);
-  if(cartons){cartons.setCount(cargo.visible);const out=world.moving.find(v=>v.id==='SIM-TRAILER-1');const body=out.load.getObjectByName('OUTBOUND_CLOSED_BODY');if(body)body.visible=!cargoOpen;cartons.g.visible=cargoOpen&&cargo.visible>0;}
+  if(cartons){cartons.setCount(cargo.visible);const out=world.moving.find(v=>v.id==='SIM-TRAILER-1');const body=out.load.getObjectByName('OUTBOUND_CLOSED_BODY');if(body)body.visible=!cargoOpen;for(const panel of outboundPanels)panel.visible=!cargoOpen;cartons.g.visible=cargoOpen&&cargo.visible>0;}
   for(const item of stockDetails)item.before.forEach(o=>o.visible=false);
-  window[sceneKey]={release:LIVE_RELEASE,kind,clockSeconds:s?.clock?.seconds||0,environment:env,streetAndIndoorFixtures:fixtureCount,actualLights:lights.length,staff,cargo,stock:stockPlan,cargoOpen,cartonsRendered:cartons&&cargoOpen?cargo.visible*24:0,assetProvenance:'SIMULATED_ASSET_DETAILS',inspection};dirty();return true;
+  window[sceneKey]={release:LIVE_RELEASE,kind,clockSeconds:s?.clock?.seconds||0,environment:env,streetAndIndoorFixtures:fixtureCount,actualLights:lights.length,staff,cargo,stock:stockPlan,cargoOpen,cartonsRendered:cartons&&cargoOpen?cargo.visible*24:0,assetProvenance:'SIMULATED_ASSET_DETAILS',renderBudget:renderer?'DIRTY_30FPS_IDLE_1HZ_HIDDEN_SUSPENDED':'HOST_MANAGED',inspection};dirty();return true;
  }
  const bar=document.createElement('div');bar.className='living-scene-bar';bar.innerHTML='<span data-env>Horario del registro común</span>'+(kind==='site'?'<button type="button" id="livingCargo">Ver carga de briks</button>':'');
  const mount=document.getElementById(kind==='site'?'viewport':'world');mount?.append(bar);
+ if(kind==='site')for(const a of document.querySelectorAll('header a'))if(a.textContent==='Planta original')a.textContent='Vista de planta';
  const style=document.createElement('style');style.textContent='.living-scene-bar{position:absolute;z-index:5;right:12px;bottom:8px;display:flex;gap:8px;align-items:center;background:#071926ee;border:1px solid #4a716f;border-radius:5px;padding:5px 9px;max-width:88%;font:11px system-ui;color:#dbe9e4}.living-scene-bar button{font:11px system-ui;padding:5px;background:#20463e;color:#e2ece5;border:1px solid #5c8b7d;cursor:pointer}@media(max-width:600px){.living-scene-bar{bottom:4px;font-size:9px;right:4px}}';document.head.append(style);
  if(kind==='site')bar.querySelector('button').onclick=()=>{cargoOpen=!cargoOpen;bar.querySelector('button').textContent=cargoOpen?'Cerrar transporte':'Ver carga de briks';if(cargoOpen&&camera&&controls){const p=world.moving.find(v=>v.id==='SIM-TRAILER-1').load.position;camera.position.copy(p).add(new T.Vector3(-12,7,12));controls.target.copy(p).add(new T.Vector3(0,1.5,0));controls.update()}refresh(true)};
  const update=()=>{const changed=refresh();if(changed)bar.querySelector('[data-env]').textContent=last.text+' SIM · '+last.phase+(last.preview?' · vista lumínica':'');return changed};update();
- return {update,snapshot:()=>window[sceneKey],openCargo(value=true){cargoOpen=!!value;refresh(true)},dispose(){uniforms.forEach(u=>u.g.removeFromParent());instances.forEach(o=>{o.dispose();o.removeFromParent()});cartons?.dispose();stock?.dispose();stockDetails.forEach(i=>i.detail.dispose());pools.forEach(o=>o.removeFromParent());lights.forEach(o=>o.light.removeFromParent());root.removeFromParent();assets.dispose();bar.remove();style.remove()}};
+ return {update,snapshot:()=>window[sceneKey],openCargo(value=true){cargoOpen=!!value;refresh(true)},dispose(){if(renderer){renderer.render=originalRender;for(const type of ['click','input','change','pointerdown','pointerup'])document.removeEventListener(type,invalidate,true);window.removeEventListener('message',activation);document.removeEventListener('visibilitychange',invalidate)}uniforms.forEach(u=>u.g.removeFromParent());instances.forEach(o=>{o.dispose();o.removeFromParent()});cartons?.dispose();stock?.dispose();stockDetails.forEach(i=>i.detail.dispose());pools.forEach(o=>o.removeFromParent());lights.forEach(o=>o.light.removeFromParent());root.removeFromParent();assets.dispose();bar.remove();style.remove()}};
 }
