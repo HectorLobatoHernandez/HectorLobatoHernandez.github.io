@@ -38,6 +38,12 @@ try{
  let labs;for(let i=0;i<200;i++){labs=page.frames().find(f=>f.url().includes('mode=labs'));if(labs)break;await page.waitForTimeout(50)}
  await labs.waitForFunction(()=>window.__GAZA_LAB_DETAIL__?.rooms===7,{},{timeout:90000});
  const labScope=await labs.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');return s.scope.key});assert.equal(labScope,scope.key);checks.push('laboratory-preserved-and-shares-only-demo-record');
+ await page.locator('#companyDemoDock [data-demo-view="site"]').click();
+ let site;for(let i=0;i<200;i++){site=page.frames().find(f=>f.url().includes('site-real-preview.html'));if(site)break;await page.waitForTimeout(50)}
+ await site.waitForFunction(()=>window.__GAZA_SITE_REAL__?.processScope==='company-demo'&&window.__GAZA_SITE_REAL__?.render?.calls>0,{},{timeout:90000});
+ assert.match(await site.locator('#ledger').textContent(),/DEMOSTRACIÓN AISLADA/);
+ assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2')),working);
+ await page.screenshot({path:path.join(out,'03b-plant-demo.png')});checks.push('plant-3D-and-legacy-status-use-isolated-demo-not-working-record');
  await page.locator('#companyDemoDock [data-demo-view="workflow"]').click();
  const wf=page.frameLocator('iframe[title="GAZA End-to-End Workflow"]');await wf.locator('[data-process-panel] [data-gate="dispatch"]').waitFor();assert(await wf.locator('[data-process-panel] [data-gate="dispatch"]').isDisabled());checks.push('quality-not-auto-approved-for-presentation');
  await page.locator('#companyDemoDock [data-focus="herds"]').click();await page.setViewportSize({width:390,height:844});

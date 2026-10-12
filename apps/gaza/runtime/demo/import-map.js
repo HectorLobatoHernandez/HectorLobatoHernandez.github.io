@@ -7,6 +7,7 @@
  for(const path of MODULES){const key=new URL(path,base).href;imports[key]=key+'?release='+RELEASE;}
  const map=document.createElement('script');map.type='importmap';map.textContent=JSON.stringify({imports});source.after(map);
  window.__GAZA_ASSET_RELEASE__=RELEASE;
+ const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('runtime/demo/layout.css?release='+RELEASE,base).href;document.head.append(css);
  if(new URLSearchParams(location.search).get('demo')==='company'){
   const decorate=root=>{for(const a of root.querySelectorAll('a[href]')){const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname.includes('/apps/gaza/')&&(u.pathname.endsWith('.html')||u.pathname.endsWith('/'))){u.searchParams.set('demo','company');u.searchParams.set('release',RELEASE);a.href=u.href}}};
   document.addEventListener('DOMContentLoaded',()=>{decorate(document);new MutationObserver(()=>decorate(document)).observe(document.body,{childList:true,subtree:true})},{once:true});
