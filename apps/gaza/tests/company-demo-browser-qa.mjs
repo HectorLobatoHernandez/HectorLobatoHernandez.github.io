@@ -13,6 +13,8 @@ try{
  page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base+'/operations-thread.html?qa=1');await page.locator('[data-process-panel] #start').click();await page.waitForFunction(()=>window.__GAZA_PROCESS_STATE__?.schemaVersion===2);
  const working=await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2')),legacy=await page.evaluate(()=>localStorage.getItem('gaza:operations-thread:v1'));
+ const preference=JSON.stringify({days:30,bovineYield:50,ovineYield:10,bovineLactatingShare:.75,ovineLactatingShare:.65,density:'light'});
+ await page.evaluate(raw=>localStorage.setItem('gaza:farm-life:assumptions:v1',raw),preference);
  await page.goto(base+'/demostracion.html?qa=1');await page.waitForURL('**/mission-control.html?**');
  const farm=()=>page.frames().find(f=>f.url().includes('mode=farm'));
  await page.waitForFunction(()=>document.querySelector('[data-pane="farm"]').classList.contains('on'));
@@ -23,6 +25,10 @@ try{
  assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2')),working);
  checks.push('real-launch-link-opens-current-herds-with-360-symbols-and-visible-centers');
  await page.screenshot({path:path.join(out,'01-company-arrival.png')});
+ await farm().locator('#lifeAssumptions').evaluate(n=>n.open=true);await farm().locator('#lifeApply').click();
+ assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:farm-life:assumptions:v1')),preference);
+ assert.equal(await farm().evaluate(()=>window.__GAZA_FARM_DETAIL__.life.assumptions.days),1);
+ checks.push('working-herd-preferences-neither-hide-demo-herds-nor-change-on-demo-edit');
  const src=await page.locator('[data-pane="farm"] iframe').getAttribute('src');assert(src.includes('demo=company')&&src.includes('release='+RELEASE));
  const scope=await farm().evaluate(async()=>{const {processStore}=await import('./runtime/processes/store.mjs');return processStore.scope});assert.equal(scope.id,'company-demo');checks.push('version-and-demo-scope-reach-iframe-and-module-graph');
  await page.locator('#companyDemoDock [data-focus="cow"]').click();await farm().waitForFunction(()=>window.__GAZA_FARM_DETAIL__.camera==='animal');
@@ -49,5 +55,6 @@ try{
  await page.locator('#companyDemoDock [data-focus="herds"]').click();await page.setViewportSize({width:390,height:844});
  await farm().waitForFunction(()=>{const c=document.querySelector('#world canvas'),s=window.__GAZA_FARM_DETAIL__;return s.lastDrawnSize.width===c.width&&s.lastDrawnSize.height===c.height});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'04-mobile-company-demo.png')});checks.push('mobile-canvas-repaint-and-entry-visible');
+ assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:farm-life:assumptions:v1')),preference);
  assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors,release:RELEASE},null,2));console.log('COMPANY DEMO QA PASS',checks);
 }catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(e)},null,2));throw e}finally{await browser.close()}
