@@ -25,7 +25,15 @@ try{
  assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2')),working);
  checks.push('real-launch-link-opens-current-herds-with-360-symbols-and-visible-centers');
  await page.screenshot({path:path.join(out,'01-company-arrival.png')});
- await farm().locator('#lifeAssumptions').evaluate(n=>n.open=true);await farm().locator('#lifeApply').click();
+ await farm().locator('#lifeAssumptions').evaluate(n=>n.open=true);
+ await farm().evaluate(()=>{
+  window.__GAZA_INPUT_QA__={events:[],beats:0,started:performance.now()};
+  window.__GAZA_INPUT_TIMER__=setInterval(()=>window.__GAZA_INPUT_QA__.beats++,100);
+  for(const type of ['pointerdown','mousedown','mouseup','click'])document.addEventListener(type,e=>{const d=window.__GAZA_INPUT_QA__;d.events.push({type,id:e.target.id,x:e.clientX,y:e.clientY,at:performance.now()-d.started});if(d.events.length>20)d.events.shift()},true);
+  const b=document.getElementById('lifeApply'),original=b.onclick;b.onclick=function(e){const d=window.__GAZA_INPUT_QA__;d.entered=performance.now();try{return original.call(this,e)}finally{d.finished=performance.now()}};
+ });
+ await farm().locator('#lifeApply').click();
+ await farm().evaluate(()=>clearInterval(window.__GAZA_INPUT_TIMER__));
  assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:farm-life:assumptions:v1')),preference);
  assert.equal(await farm().evaluate(()=>window.__GAZA_FARM_DETAIL__.life.assumptions.days),1);
  checks.push('working-herd-preferences-neither-hide-demo-herds-nor-change-on-demo-edit');
@@ -57,4 +65,4 @@ try{
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'04-mobile-company-demo.png')});checks.push('mobile-canvas-repaint-and-entry-visible');
  assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:farm-life:assumptions:v1')),preference);
  assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors,release:RELEASE},null,2));console.log('COMPANY DEMO QA PASS',checks);
-}catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(e)},null,2));throw e}finally{await browser.close()}
+}catch(e){const diagnostics=[];for(const f of page?.frames()||[]){try{diagnostics.push(await f.evaluate(()=>{const b=document.getElementById('lifeApply'),r=b?.getBoundingClientRect(),top=r?document.elementFromPoint(r.x+r.width/2,r.y+r.height/2):null;return {url:location.href,visibility:document.visibilityState,input:window.__GAZA_INPUT_QA__,button:r?{x:r.x,y:r.y,width:r.width,height:r.height,form:b.form?.id||null}:null,hit:top?.outerHTML?.slice(0,350),scene:window.__GAZA_FARM_DETAIL__?{frames:window.__GAZA_FARM_DETAIL__.renderFrames,render:window.__GAZA_FARM_DETAIL__.render}:null,lifeStatus:document.getElementById('lifeError')?.textContent}}))}catch(x){diagnostics.push({error:String(x)})}}if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,diagnostics,error:String(e)},null,2));throw e}finally{await browser.close()}
