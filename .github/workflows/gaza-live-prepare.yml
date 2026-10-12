@@ -1,0 +1,39 @@
+name: GAZA reviewed live-source preparation
+on:
+  push:
+    branches: ['feat/gaza-live-ops-20261012']
+    paths: ['.gaza-preparation/**', '.github/workflows/gaza-live-prepare.yml']
+permissions:
+  contents: read
+jobs:
+  verified-source-blobs:
+    if: github.repository == 'HectorLobatoHernandez/HectorLobatoHernandez.github.io' && github.ref == 'refs/heads/feat/gaza-live-ops-20261012'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Verify and materialize reviewed source without Git writes
+        run: node .gaza-preparation/apply-live.mjs apply
+      - name: Dependencies without install scripts
+        working-directory: apps/gaza
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: All unit tests before blob publication
+        run: node --test apps/gaza/tests/*.test.mjs
+      - name: Store immutable verified blobs only, never update refs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node .gaza-preparation/apply-live.mjs publish
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-reviewed-live-sources-${{ github.run_number }}
+          path: .qa/live-preparation/
+          include-hidden-files: true
+          retention-days: 7
