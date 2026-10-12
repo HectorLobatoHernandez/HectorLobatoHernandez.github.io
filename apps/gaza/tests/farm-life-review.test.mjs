@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {sizeHerd} from '../runtime/farm/life/herd-model.mjs';
+test('extreme positive tiny yields fail closed rather than returning unsafe census integers',()=>{
+ for(const yieldL of [1e-100,1e-300])assert.throws(()=>sizeHerd(150120,yieldL,1,.8),/rango numérico/);
+ assert.equal(sizeHerd(150120,30,1,.8).productive,5004);
+});
+test('async 3D boot preserves a station already selected by the user',()=>{
+ const html=fs.readFileSync(new URL('../farm-labs.html',import.meta.url),'utf8');
+ assert.match(html,/select\(selectedStation\);\s*<\/script>/);
+ assert.doesNotMatch(html,/select\(0\);\s*<\/script>/);
+});

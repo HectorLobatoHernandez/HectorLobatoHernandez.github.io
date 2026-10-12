@@ -119,5 +119,6 @@ try{
  const resize=()=>{const w=mount.clientWidth,h=mount.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)};new ResizeObserver(resize).observe(mount);resize();visual.focus(0);function frame(){const nowSim=processSnapshot?.simSeconds??0;processDelta=Math.max(0,Math.min(1,nowSim-lastSimSeconds));lastSimSeconds=nowSim;animateActors();binding.update(processSnapshot,mode);detailedWorld.update((freeze||processSnapshot?.held||!processSnapshot?.tankerMoving)?0:processDelta);renderer.render(scene,camera);window.__GAZA_RENDER_STATS__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};requestAnimationFrame(frame)}frame();window.__GAZA_RENDER_STATS__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};document.querySelector('#fallback').textContent='WebGL 3D · geometría procedimental · arrastra, amplía o selecciona';
  }
 }catch(err){document.querySelector('#fallback').textContent='3D no disponible: revisa conexión CDN/WebGL. Procesos interactivos disponibles.';console.warn('GAZA module 3D fallback',err)}
-select(0);
+// Preserve a station selected while the 3D module was loading.
+select(selectedStation);
 </script></body></html>

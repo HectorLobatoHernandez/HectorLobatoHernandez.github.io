@@ -1,0 +1,32 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),threeRoot=path.dirname(path.dirname(require.resolve('three'))),base=process.env.GAZA_URL||'http://127.0.0.1:4173',out=path.resolve('.qa/farm-life');await fs.mkdir(out,{recursive:true});
+const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']}),checks=[],errors=[];let page;
+try{
+ const context=await browser.newContext({viewport:{width:1440,height:1000}});await context.route('https://cdn.jsdelivr.net/npm/three@0.180.0/**',async r=>{const rel=r.request().url().split('/three@0.180.0/')[1];if(!rel||rel.includes('..'))return r.abort();return r.fulfill({body:await fs.readFile(path.join(threeRoot,rel)),contentType:'text/javascript'})});
+ page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'/farm-labs.html?mode=farm&qa=1',{waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>window.__GAZA_FARM_DETAIL__?.life?.animalsRendered>=48);assert.equal(await page.evaluate(()=>window.__GAZA_PROCESS_STATE__),null);checks.push('illustrative-preview-without-created-production');
+ await page.locator('#lifeCow').click();await page.waitForFunction(()=>window.__GAZA_FARM_DETAIL__.camera==='animal');await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'01-cow-anatomy.png')});
+ await page.locator('#lifeSheep').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'02-sheep-fleece.png')});checks.push('cow-sheep-inspection-and-camera');
+ await page.locator('[data-process-panel] #start').click();await page.waitForFunction(()=>window.__GAZA_FARM_DETAIL__.life.animalsRendered===200);
+ const before=await page.evaluate(()=>JSON.stringify(window.__GAZA_PROCESS_STATE__));
+ await page.locator('#lifeAssumptions').evaluate(n=>n.open=true);await page.locator('#lifeDensity').selectOption('dense');await page.locator('#lifeApply').click();await page.waitForFunction(()=>window.__GAZA_FARM_DETAIL__.life.animalsRendered===360);assert.equal(await page.evaluate(()=>JSON.stringify(window.__GAZA_PROCESS_STATE__)),before);checks.push('density-and-sizing-read-only');
+ await page.locator('#farmPlan').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'03-dense-herds-plan.png')});
+ await page.locator('#lifeReference').evaluate(n=>n.open=true);await page.locator('#lifeLoadReference').click();assert.equal(await page.locator('#farm-bovineL').inputValue(),'150120');assert.equal(await page.locator('#farm-ovineL').inputValue(),'10040');assert.equal(await page.evaluate(()=>JSON.stringify(window.__GAZA_PROCESS_STATE__)),before);checks.push('dated-collected-reference-does-not-reset-current-scenario');
+ await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'AUTO',enabled:true});for(let i=0;i<150;i++){await s.dispatch({type:'TICK',seconds:1});if(s.state.lots[s.selected].tasks['FARM.MILKING'].status==='RUNNING'){await s.dispatch({type:'TICK',seconds:11});return}}throw Error('No milking reached')});
+ await page.waitForFunction(()=>window.__GAZA_FARM_DETAIL__.life.phase.flow);await page.locator('#lifeMilking').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'04-identified-milking.png')});
+ const state=await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.life.phase);await page.waitForTimeout(250);assert.deepEqual(await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.life.phase),state);
+ await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'INCIDENT',lotId:s.selected,reason:'Life QA hold'});await s.dispatch({type:'TICK',seconds:5})});await page.waitForFunction(()=>window.__GAZA_FARM_DETAIL__.life.phase.status==='HELD');assert.equal(await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.life.phase.flow),false);assert.equal(await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.life.phase.progress),state.progress);checks.push('timed-subprocess-and-hold-no-flow');
+ await page.waitForTimeout(500);const renders=await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.renderFrames);await page.waitForTimeout(600);assert((await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.renderFrames))-renders<=2);checks.push('idle-scene-suspends-continuous-GPU-drawing');
+ const exported=page.waitForEvent('download');await page.locator('#lifeExport').click();const dl=await exported,filename=path.join(out,'herd-scenario.json');await dl.saveAs(filename);const report=JSON.parse(await fs.readFile(filename,'utf8'));assert.equal(report.provenance,'CALCULATED_SCENARIO_NOT_REAL_CENSUS');assert.equal(report.plans[0].productive,320);checks.push('weighted-census-export-provenance');
+ await page.locator('#lifeTruck').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'05-tanker-uniforms.png')});
+ await page.locator('#farmOverview').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'06-meadow-buildings.png')});const render=await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.render);assert(render.calls<1800);assert(render.triangles<5e6);
+ const previousWidth=await page.evaluate(()=>window.__GAZA_FARM_DETAIL__.lastDrawnSize.width);
+ await page.setViewportSize({width:390,height:844});
+ await page.waitForFunction(old=>{const d=window.__GAZA_FARM_DETAIL__,c=document.querySelector('#world canvas');return d?.lastDrawnSize&&d.lastDrawnSize.width!==old&&d.lastDrawnSize.width===c.width&&d.lastDrawnSize.height===c.height},previousWidth);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'07-mobile.png')});checks.push('render-budget-mobile-resize-repaint');
+ assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors,render,referenceDate:report.reference.date},null,2));console.log('FARM LIFE BROWSER QA PASS',checks);
+}catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(e)},null,2));throw e}finally{await browser.close()}
