@@ -28,7 +28,7 @@ def acc_info(js,idx):
     bv=js['bufferViews'][a['bufferView']]
     off=bv.get('byteOffset',0)+a.get('byteOffset',0)
     num={'SCALAR':1,'VEC2':2,'VEC3':3,'VEC4':4,'MAT4':16}[a['type']]
-    dt={5126:np.float32,5121:np.uint8,5123:np.uint16}[a['componentType']]
+    dt={5126:np.float32,5121:np.uint8,5123:np.uint16,5125:np.uint32}[a['componentType']]
     return a,bv,off,num,dt
 
 def read_acc(js,binbuf,idx):
