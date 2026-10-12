@@ -43,6 +43,36 @@ def write_acc(js,binbuf,idx,arr):
         js['accessors'][idx]['min']=arr.min(axis=0).tolist()
         js['accessors'][idx]['max']=arr.max(axis=0).tolist()
 
+def append_vec3_float_accessor(js,chunks,order,arr,target=34962):
+    binbuf=chunks[0x004E4942]
+    while len(binbuf)%4:
+        binbuf+=b'\x00'
+    byte_offset=len(binbuf)
+    payload=np.asarray(arr,dtype=np.float32).tobytes()
+    binbuf+=payload
+
+    bv_index=len(js.setdefault('bufferViews',[]))
+    js['bufferViews'].append({
+        'buffer':0,
+        'byteOffset':byte_offset,
+        'byteLength':len(payload),
+        'target':target,
+    })
+
+    acc_index=len(js.setdefault('accessors',[]))
+    a=np.asarray(arr,dtype=np.float32)
+    js['accessors'].append({
+        'bufferView':bv_index,
+        'componentType':5126,
+        'count':int(a.shape[0]),
+        'type':'VEC3',
+        'min':a.min(axis=0).tolist(),
+        'max':a.max(axis=0).tolist(),
+    })
+
+    js.setdefault('buffers',[{}])[0]['byteLength']=len(binbuf)
+    return acc_index
+
 def save_glb(js,chunks,order,path):
     jb=json.dumps(js,separators=(',',':')).encode('utf-8')
     while len(jb)%4: jb+=b' '
@@ -70,7 +100,8 @@ def main():
     attrs=prim['attributes']
 
     pos=read_acc(js,binbuf,attrs['POSITION']).astype(np.float32)
-    norm=read_acc(js,binbuf,attrs['NORMAL']).astype(np.float32)
+    norm_idx=attrs.get('NORMAL')
+    norm=read_acc(js,binbuf,norm_idx).astype(np.float32) if norm_idx is not None else None
     col=read_acc(js,binbuf,attrs['COLOR_0']).astype(np.float32)
     indices=read_acc(js,binbuf,prim['indices']).astype(np.int32).reshape(-1,3)
 
@@ -152,8 +183,13 @@ def main():
     vn/=ln
 
     write_acc(js,binbuf,attrs['POSITION'],pos)
-    write_acc(js,binbuf,attrs['NORMAL'],vn)
+    if norm_idx is not None:
+        write_acc(js,binbuf,norm_idx,vn)
+    else:
+        norm_idx=append_vec3_float_accessor(js,chunks,order,vn)
+        attrs['NORMAL']=norm_idx
     write_acc(js,binbuf,attrs['COLOR_0'],col)
+    js.setdefault('buffers',[{}])[0]['byteLength']=len(chunks[0x004E4942])
 
     dst.parent.mkdir(parents=True,exist_ok=True)
     save_glb(js,chunks,order,dst)
