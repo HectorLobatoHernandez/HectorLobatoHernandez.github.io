@@ -2,7 +2,7 @@ name: GAZA verified renderer preparation
 on:
   push:
     branches: ['fix/gaza-dossier-demo-entry-20261012']
-    paths: ['tools/gaza/prepare_three_vendor.mjs', '.github/workflows/gaza-vendor-prepare.yml']
+    paths: ['tools/gaza/prepare_three_vendor.mjs', 'tools/gaza/prepare_demo_release.mjs', '.github/workflows/gaza-vendor-prepare.yml']
 permissions:
   contents: read
 jobs:
@@ -23,9 +23,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node tools/gaza/prepare_three_vendor.mjs
+      - name: Prepare versioned reviewed demo sources without changing refs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/gaza/prepare_demo_release.mjs
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: gaza-three-verified-blobs-${{ github.run_number }}
-          path: .qa/three-vendor/verified-blobs.json
+          path: |
+            .qa/three-vendor/
+            .qa/demo-release/
           include-hidden-files: true
           retention-days: 7
