@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
 import {AREAS,EQUIPMENT,CAMERAS,LAB_BOUNDARY,projectLab} from './layout.mjs';
 import {buildLabWorld} from './world.mjs';
+import {mountLivingScene} from '../living/scene.mjs';
 const text=(tag,content)=>{const el=document.createElement(tag);el.textContent=content;return el};
 const visible=o=>{for(let p=o;p;p=p.parent)if(!p.visible)return false;return true};
 /** No writes to ledger. All actions here are camera/display/inspection only. */
@@ -27,6 +28,7 @@ export function mountLabViewer({mount,side,onSelect,getState,getLotId}){
  scene.add(new THREE.HemisphereLight(0xf1f8ff,0x5e707b,2.3));const sun=new THREE.DirectionalLight(0xfff4db,2.7);sun.position.set(-12,28,18);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-24;sun.shadow.camera.right=24;sun.shadow.camera.top=24;sun.shadow.camera.bottom=-24;sun.shadow.normalBias=.025;scene.add(sun);
  const fill=new THREE.DirectionalLight(0xc3eaff,1.25);fill.position.set(16,12,-15);scene.add(fill);
  const world=buildLabWorld(scene);let selection=0,selectedEquipment=EQUIPMENT[0].id,projection=projectLab(null,null),revisionKey='',isolate=false,roof=false,cutaway=true,routes=true,closed=false,raf=0;
+ const living=mountLivingScene(THREE,{scene,world,kind:'labs',getState,getLotId});
  const floatingLabels=[];world.root.traverse(o=>{if(o.isSprite)floatingLabels.push(o)});
  function refreshLabels(){const show=!isolate&&['overview','plan'].includes(cameraName);floatingLabels.forEach(o=>o.visible=show)}
  function resize(){const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight),aspect=w/h;perspective.aspect=aspect;perspective.updateProjectionMatrix();const half=Math.max(12,18/aspect);ortho.left=-half*aspect;ortho.right=half*aspect;ortho.top=half;ortho.bottom=-half;ortho.updateProjectionMatrix();renderer.setSize(w,h)}
@@ -50,13 +52,13 @@ export function mountLabViewer({mount,side,onSelect,getState,getLotId}){
  renderer.domElement.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY]});
  renderer.domElement.addEventListener('click',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;const rect=renderer.domElement.getBoundingClientRect();pointer.set(2*(e.clientX-rect.left)/rect.width-1,1-2*(e.clientY-rect.top)/rect.height);ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(world.picks.filter(visible))[0];if(!hit)return;const data=hit.object.userData;if(data.equipmentId)selectedEquipment=data.equipmentId;onSelect(data.station);focus(data.station)});
  preset('overview');focus(0);world.update(projection);
- function frame(){if(closed)return;const state=getState(),lotId=getLotId(),key=(state?.revision??'none')+':'+(lotId||'none');if(key!==revisionKey){revisionKey=key;projection=projectLab(state,lotId);world.update(projection);refreshInfo()}controls.update();renderer.render(scene,camera);
+ function frame(){if(closed)return;const state=getState(),lotId=getLotId(),key=(state?.revision??'none')+':'+(lotId||'none');if(key!==revisionKey){revisionKey=key;projection=projectLab(state,lotId);world.update(projection);refreshInfo()}living.update();controls.update();renderer.render(scene,camera);
   const render={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};window.__GAZA_RENDER_STATS__=render;
   window.__GAZA_LAB_DETAIL__={schemaVersion:1,...world.snapshot(),camera:cameraName,labelsVisible:floatingLabels.some(o=>o.visible),render,lotId:projection.lotId,held:projection.held,simSeconds:projection.seconds,equipment:projection.instruments.map(e=>({id:e.id,resource:e.resource,status:e.status,sampleId:e.sampleId,owner:e.owner,progress:e.progress})),samples:projection.samples,markers:projection.tokens.map(t=>({id:t.id,sampleId:t.sampleId,station:t.station,position:t.position,eligible:t.eligible})),source:'READ_ONLY_PROCESS_LEDGER_V2'};
   raf=requestAnimationFrame(frame);
  }frame();
  const fallback=document.querySelector('#fallback');fallback.textContent='WebGL · arrastra, acerca y selecciona equipos · plano y modelo propuestos';
- const dispose=()=>{if(closed)return;closed=true;cancelAnimationFrame(raf);observer.disconnect();controls.dispose();world.dispose();renderer.dispose();renderer.domElement.remove();toolbar.remove();evidence.remove();info.remove();style.remove()};
+ const dispose=()=>{if(closed)return;closed=true;cancelAnimationFrame(raf);observer.disconnect();controls.dispose();living.dispose();world.dispose();renderer.dispose();renderer.domElement.remove();toolbar.remove();evidence.remove();info.remove();style.remove()};
  window.addEventListener('pagehide',e=>{if(!e.persisted)dispose()});
  return {focus,dispose};
 }

@@ -1,8 +1,8 @@
 import {initialState,reduce,validateState} from '../processes/ledger.mjs';
 import {networkConfig} from '../processes/farm-network.mjs';
 /** Reproducible staging via legal demo transitions; no quality gate is approved here. */
-export function createDemonstration({running=true}={}) {
- let state=initialState(networkConfig());
+export function createDemonstration({running=true,living=null}={}) {
+ let state=initialState({...networkConfig(),...(living?{living}:{})});
  state=reduce(state,{type:'AUTO',enabled:true});
  for(let i=0;i<120;i++){
   state=reduce(state,{type:'TICK',seconds:1});

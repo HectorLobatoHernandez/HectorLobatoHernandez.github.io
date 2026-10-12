@@ -19,7 +19,7 @@
 <div class="card"><h3>Regla de promoción</h3><p class="warn">OSM permite ajustar contexto y detectar contradicciones, pero no sustituye un DWG/DXF/IFC o levantamiento. Los edificios GAZA siguen siendo referencia pública hasta disponer de geometría autorizada.</p></div>
 </aside>
 </main>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+<script src="runtime/demo/import-map.js?release=gaza-live-20261012-v1"></script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -43,5 +43,7 @@ document.getElementById('top').onclick=()=>{camera.position.set(0,720,.1);contro
 document.getElementById('toggleGrid').onclick=()=>grid.visible=!grid.visible;
 function resize(){const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2.5);if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr))renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 function animate(){requestAnimationFrame(animate);resize();controls.update();renderer.render(scene,camera);window.__GAZA_GIS_3D_RENDER__={calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,dpr:renderer.getPixelRatio()}}animate();
+
+import {mountContextStatus} from './runtime/living/context-status.mjs';mountContextStatus({scene,THREE,kind:'gis'});
 </script>
 </body></html>

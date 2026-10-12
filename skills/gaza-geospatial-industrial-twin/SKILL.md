@@ -53,3 +53,30 @@ Check road-following headings, labels, provenance legend, mobile UI, render budg
 - Scene asset gates: source and license; glTF validation; performant LOD/instancing; procedural fallback; deterministic camera + screenshots; trainable interaction smoke QA. Avoid expensive generative-video services by default.
 - Public weather must not be labelled as on-site instrumentation; synthetic traffic must remain distinct from DGT road events.
 - Do not merge a new feature PR before browser QA is green, including original Plant 3D and Mission Control regressions.
+
+## LIVE OPS · operator-first experience (2026-10-12)
+
+This section supersedes earlier instructions naming Plant 3D as the active campus entry.
+
+### Canonical workspace
+- `mission-control.html` is the integrated operator workspace. `view=plant` is a compatibility alias to `view=site` and the current `site-real-preview.html`. The earlier `plant-3d.html` is retained only as historical source/regression coverage, never loaded by active navigation or Matrix.
+- Use five primary concepts in Spanish: Planta, Granja, Laboratorio, Flujo/Calidad and Territorio. Keep diagnostic/GIS/integration detail secondary. Never add a separate application for a visual refinement.
+- Put the shared lot, clock, run/pause, day/night and staffing controls above the maps. Make scope (working or isolated demo), simulation provenance and pending quality reviews visible. Preserve keyboard navigation and touch targets.
+
+### One time and material system
+- The validated Process Ledger V2 remains the ONLY writer of litres, genealogy, samples and decisions. Scenes project it read-only. All views share a scope-specific selected lot, clock and illumination configuration.
+- `LIVING_SETTINGS` may change the lighting preview and the staffing policy, never quantities, the clock epoch or approvals. The operational epoch belongs to scenario creation. Previewing night does not move the operation to another shift: label it as a lighting preview.
+- Shift windows and staff roles are synthetic configurable scenario inputs, not GAZA attendance records. Optional staffing policy gates NEW tasks/assays/quality reviews. Already-running operations are completed/handed over; do not stop heating or a moving truck merely because the employee shift ends. Holds/equipment/quality restrictions remain authoritative.
+- Maintain both species, exact mass conservation and exclusive equipment booking. No auto-release in the company presentation. Simulation durations stay compressed until an authorized timing dataset exists; do not label them measured production cycle times.
+
+### Visual craft
+- Darken ambient illumination at night. Use physical PointLights with a fixed small budget, emissive fixture meshes and bounded light-pool approximations. Preserve topographic/building coordinates. No claims of lux compliance, real lamp locations or electrical design.
+- Upgrade existing worker and vehicle objects rather than spawning duplicates. Reuse anatomy and uniform assets; staff identities remain fictitious roles, never inferred real employees.
+- GAZA cartons must appear only against the corresponding stock, process sample or authorized shipment. A raw-milk tanker does not transport retail cartons. Visible packs are glyphs; factors and quantities are explicit. Do not duplicate the same inventory between rack, dock and truck.
+- Keep logos facing outwards. Treat carton graphics, dimensions, colours and truck capacity as illustrated unless backed by a product/manufacturer source. Do not fabricate nutritional labels or claim an official packaging artwork.
+- Keep the cattle cubicle alignment correction, independently oriented pasture sheep/cows, species separation and shared bookkeeping.
+
+### Proof of completion
+- Test legacy-state loading, common clock/lot propagation, midnight/shift boundaries, no new off-shift task start, no mid-operation abandonment, light-preview immutability, shipping mass and quantity-derived glyphs.
+- Screenshot actual WebGL for plant night, farm night, laboratory night, operator controls and loaded trailer. Verify that no request loads the old active plant. Check mobile overflow and draw budget.
+- Merge only after CI and visual review. Separately verify the public Pages deployment. A successful build or a generated image does not prove the user's application renders.
