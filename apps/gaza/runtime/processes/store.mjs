@@ -1,8 +1,12 @@
-import {KEY,initialState,reduce,validateState,visualSnapshot,lotSummary} from './ledger.mjs';
+import {initialState,reduce,validateState,visualSnapshot,lotSummary} from './ledger.mjs';
 import {TASKS} from './catalog.mjs';
+import {sessionScope} from '../demo/session.mjs';
+import {createDemonstration} from '../demo/scenario.mjs';
+const scope=sessionScope(typeof location!=='undefined'?location.search:'');
+const KEY=scope.key;
 const listeners=new Set();
 let snapshot=null,error=null,selected=null,closed=false,busyClock=false;
-const LEGACY='gaza:operations-thread:v1';
+const LEGACY=scope.legacy;
 const locks=globalThis.navigator?.locks;
 const qa=typeof location!=='undefined'&&new URLSearchParams(location.search).get('qa')==='1';
 function read(){
@@ -33,7 +37,7 @@ function project(s){
   departments:names.map((name,i)=>({name,status:i<stage?'DONE':i===stage?'ACTIVE':'PENDING'})),analyses:lot.tests,
   inventory:{rawMilkL:m.producedL,processedL,packedL,pallets:Math.floor(packedL/s.config.palletCapacityL),dispatchedPallets:(m.shippingL+m.deliveredL)/s.config.palletCapacityL},events:s.events};
 }
-const channel=typeof BroadcastChannel==='function'?new BroadcastChannel('gaza-process-v2'):null;
+const channel=typeof BroadcastChannel==='function'?new BroadcastChannel(scope.channel):null;
 function commit(s){
  localStorage.setItem(KEY,JSON.stringify(s));
  try{localStorage.setItem(LEGACY,JSON.stringify(project(s)))}catch{/* The canonical v2 remains intact; projection is optional. */}
@@ -46,12 +50,14 @@ async function transaction(fn){
  return locks.request(KEY,async()=>{const current=read(),next=fn(current);if(!next)return current;if(!validateState(next))throw new Error('Invariantes incumplidas; no se guardó la acción');return commit(next)});
 }
 function archive(){
- for(const key of [KEY,LEGACY,'gaza:quality-training:v1']){const raw=localStorage.getItem(key);if(raw)localStorage.setItem(key+':archive:'+Date.now(),raw)}
+ for(const key of (scope.demo?[KEY,LEGACY]:[KEY,LEGACY,'gaza:quality-training:v1'])){const raw=localStorage.getItem(key);if(raw)localStorage.setItem(key+':archive:'+Date.now(),raw)}
 }
 export const processStore={
+ get scope(){return scope},
  get state(){return snapshot},get error(){return error},get selected(){return selected},get writable(){return !!locks},
  setLot(id){if(!snapshot?.lots[id])return;selected=id;notify()},
  subscribe(fn){listeners.add(fn);fn({state:snapshot,error,selected});return()=>listeners.delete(fn)},
+ restartDemonstration(){if(!scope.demo)return Promise.reject(new Error('Reinicio de presentación no disponible en trabajo.'));return transaction(()=>{const n=createDemonstration({running:!qa});n.clock.wallAt=Date.now();return n})},
  start(config={}){return transaction(s=>{if(s)return s;archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  reset(config={}){return transaction(()=>{archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  dispatch(action){return transaction(s=>{if(!s)throw new Error('Inicia el escenario compartido');const n=reduce(s,action);if(action.type==='CLOCK')n.clock.wallAt=Date.now();return n})},
@@ -69,3 +75,5 @@ channel&&(channel.onmessage=()=>notify());
 window.addEventListener('storage',e=>{if(e.key===KEY)notify()});
 window.addEventListener('pageshow',notify);window.addEventListener('pagehide',e=>{if(!e.persisted)processStore.close()});
 notify();const timer=setInterval(()=>processStore.pulse(),250);
+// Only the explicit ?demo=company session may bootstrap itself. Corrupt records fail closed.
+if(scope.demo&&!snapshot&&!error)transaction(current=>{if(current)return current;const n=createDemonstration({running:!qa});n.clock.wallAt=Date.now();return n}).catch(e=>{error=e.message;window.__GAZA_PROCESS_ERROR__=error;window.dispatchEvent(new CustomEvent('gaza-demo-error',{detail:error}))});
