@@ -1,6 +1,7 @@
 import {DEFAULTS,EVIDENCE,validateAssumptions,publicReferenceInputs} from './herd-model.mjs';
 const node=(tag,text,attrs={})=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n};
-const SETTINGS_KEY='gaza:farm-life:assumptions:v1';
+const COMPANY_DEMO=new URLSearchParams(globalThis.location?.search||'').get('demo')==='company';
+const SETTINGS_KEY=COMPANY_DEMO?'gaza:company-demo:farm-life-assumptions:v1':'gaza:farm-life:assumptions:v1';
 export function mountFarmLifeControls({parent,life,getView,setCamera,onSelect,getRevision}){
  let assumptions={...DEFAULTS};try{const saved=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'null');if(saved)assumptions={...validateAssumptions(saved)}}catch{}
  const section=node('section',null,{id:'farmLifePanel',class:'farm-master'});parent.insertBefore(section,parent.firstChild);
