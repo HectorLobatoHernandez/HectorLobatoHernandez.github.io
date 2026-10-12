@@ -1,0 +1,51 @@
+name: GAZA company demonstration QA
+on:
+  pull_request:
+    paths: ['apps/gaza/**', '.github/workflows/gaza-company-demo-qa.yml']
+  push:
+    branches: [main]
+    paths: ['apps/gaza/**', '.github/workflows/gaza-company-demo-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: company-demo-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  company-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/gaza
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - run: npm install --no-audit --no-fund
+      - name: Partition and existing ledger tests
+        run: node --test tests/company-demo.test.mjs tests/process-ledger.test.mjs tests/farm-life.test.mjs tests/lab-detail.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Start existing app
+        run: |
+          npm run dev >/tmp/gaza-company-demo.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/demostracion.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Real navigation link and preserved working state
+        run: node tests/company-demo-browser-qa.mjs
+      - name: Public deployed Pages smoke with live CDN
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: node tests/company-demo-public-smoke.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-company-demo-${{ github.run_number }}
+          path: |
+            apps/gaza/.qa/company-demo/
+            apps/gaza/.qa/company-public/
+          include-hidden-files: true
+          retention-days: 14
