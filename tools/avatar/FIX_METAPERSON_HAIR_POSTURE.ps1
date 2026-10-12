@@ -3,7 +3,7 @@ $ErrorActionPreference="Stop"
 $Repo="$env:USERPROFILE\Desktop\HectorLobatoHernandez.github.io"
 $AvatarDir=Join-Path $Repo "assets\models\avatar"
 $Input=Join-Path $AvatarDir "hector-metaperson.glb"
-$Output=Join-Path $AvatarDir "hector-metaperson-fixed-v2.glb"
+$Output=Join-Path $AvatarDir "hector-metaperson-fixed-v3.glb"
 $Backup=Join-Path $AvatarDir "hector-metaperson.backup-before-hair-v2.glb"
 $Script=Join-Path $Repo "tools\avatar\FIX_METAPERSON_HAIR_POSTURE.py"
 
@@ -22,10 +22,10 @@ if(Test-Path $TripPython){
 }
 
 & $Python $Script $Input $Output
-if($LASTEXITCODE -ne 0){ throw "METAPERSON_HAIR_V2_FAILED_$LASTEXITCODE" }
-if(-not (Test-Path $Output)){ throw "METAPERSON_FIXED_V2_NOT_CREATED" }
+if($LASTEXITCODE -ne 0){ throw "METAPERSON_HAIR_V3_FAILED_$LASTEXITCODE" }
+if(-not (Test-Path $Output)){ throw "METAPERSON_FIXED_V3_NOT_CREATED" }
 
 Write-Host ""
-Write-Host "RHB_METAPERSON_FIXED_V2_READY=True" -ForegroundColor Green
+Write-Host "RHB_METAPERSON_FIXED_V3_READY=True" -ForegroundColor Green
 Write-Host "OUTPUT=$Output" -ForegroundColor Green
 Write-Host "BACKUP=$Backup" -ForegroundColor DarkGray
