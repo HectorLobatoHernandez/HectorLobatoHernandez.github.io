@@ -1,82 +1,85 @@
 ---
 name: gaza-geospatial-industrial-twin
-description: Build and validate the GAZA Coreses geospatial/industrial digital twin using public evidence, OSM/OSRM/DGT, Blender/glTF/Three.js and read-only industrial integration.
+description: Build GAZA LIVE OPS as one intuitive operator workspace: geospatial scenes, traceable material, simulated staffing, day/night environments and verified browser delivery.
 ---
 
-# GAZA Geospatial + Industrial Twin
+# GAZA LIVE OPS · Architecture and experience contract
 
-## Mission
-Turn public geospatial/industrial evidence into a reproducible twin without inventing as-built geometry, private farm locations, OT tags, employee tracking or vendor software.
+Revision: 2026-10-12. This document replaces earlier instructions that named the historical Plant 3D scene or training counters as the canonical workspace.
 
-## Evidence classes
-- PUBLIC_REFERENCE: directly supported by a cited public source.
-- INFERRED_RECONSTRUCTION: geometry reconstructed from public imagery/maps; never call it surveyed/as-built.
-- SIMULATED: people, vehicle tasks, internal routes, process states, KPIs, schedules and topology not publicly documented.
-- REAL_AUTHORIZED: reserved for future customer-authorized feeds.
+## 1. Product and primary navigation
 
-## GIS workflow
-1. Prefer authoritative/open sources: official company/government, OSM, DGT NAP, IGN/CNIG when usable.
-2. Record source URL, retrieval date, CRS and precision.
-3. Use WGS84 for interchange; use a metric CRS for distance/area analysis.
-4. Route vehicles on road graph geometry, not straight lines.
-5. Never publish an exact farm pin unless it is publicly confirmed and necessary. Municipality-level references are preferred.
-6. Keep the public '<50 km' milk proximity claim separate from calculated route distance.
-7. Traffic-sign placement in 3D is contextual unless a georeferenced survey/photo confirms the exact sign position.
+Work inside the existing GAZA app and repository. Never answer an implementation request with a generated image, disconnected mock-up or replacement application. Read the current branch and open PRs before editing. Preserve concurrent portfolio/avatar work.
 
-## Vehicle orientation
-- Every vehicle asset declares its local forward axis.
-- Align that axis to the normalized road tangent using a quaternion.
-- Test heading at start, turns and reverse route.
-- Tractor/trailer articulation is a future enhancement; do not fake it as measured kinematics.
+`apps/gaza/mission-control.html` is the integrated operator workspace. The detailed campus is `site-real-preview.html` (`view=site`). `view=plant` is a compatibility alias to the same current campus, including Matrix. The older `plant-3d.html` remains historical/regression source only and must not load in active navigation.
 
-## Industrial systems workflow
-Publicly supported anchors currently include GAZACONTROL, INTERGAZA, Solmicro customer reference, Tetra Pak equipment reference, Esnova + Signode StorFast ASRS and Veolia utilities.
-Do not infer product versions, PLC/SCADA/MES/WMS software or protocols without evidence.
+Primary concepts: **Planta y logística, Granja, Laboratorio, Flujo y calidad**. Keep Territorio, GIS, references and diagnostics secondary. Use short Spanish action labels, labelled selects, visible selected lot and scope, keyboard access and touch targets. Put the shared clock, run/pause, speed, lighting and staffing drawer above the maps. Provide loading, first-real-frame and failure states; never leave an unexplained blank viewport.
 
-## Integration boundary
-Real systems -> read-only adapter -> canonical event -> quality/provenance -> twin.
-Browser must never receive PLC/DB credentials or direct safety/control write endpoints.
-Writes remain disabled until a separately authorized, audited control project exists.
+Stable presentation entry: `apps/gaza/demostracion.html`, linked from `start/gaza.html`. The company presentation and working ledger have distinct storage/lock/channel identities. Never clear normal work to make a demo look active.
 
-## Visual acceptance
-Required cameras: exterior, roads/access, process, ASRS, docks, farm-network/territory.
-Check road-following headings, labels, provenance legend, mobile UI, render budget and deterministic QA.
+## 2. One time and material model
 
+Process Ledger V2 is the ONLY writer of litres, samples, genealogy, tasks and quality decisions. Farm, Labs, campus, stock, trucks, documents, GIS context and UI are projections of that state, not independent ledgers.
 
-## Farm master scene + in-plant laboratory (2026-10-09)
+- Preserve mass, species, origin ancestry, partial pallets and exclusive equipment use.
+- Preserve separate decisions for receipt acceptance, manufacturing eligibility and finished-product dispatch. No auto-release to keep an animation moving.
+- Adverse results and audit events are retained. Retesting needs justification; correction is not the same as release.
+- Camera moves, cutaways, animal counts, day/night previews and frame rates never produce milk, complete a test or approve a shipment.
+- `LIVING_SETTINGS` changes only supported display/staffing policy, not the epoch, amounts or approvals. Scenario creation determines the epoch.
+- Shared selected lot, clock and illumination propagate within the current scope. Record elapsed simulation time independently from render frequency.
+- The clock is a browser simulation with compressed durations. No server process runs when all clients are closed. Do not describe it as actual GAZA telemetry or measured production cycle time.
 
-- Campus 3D `apps/gaza/plant-3d.html` is the canonical entry point. Virtual farm node expands to `mission-control.html?view=farm` and the laboratory (physically in the plant campus **only as a proposed location until validated**) expands to `?view=labs`. Never relocate the laboratory to the Zamora virtual farm.
-- The Zamora farm is a **fictional consolidation of the dairy procurement network**. The old site, Zamora castle, cathedral and historical buildings are reference context, not confirmation of a current farm. Treat facade/photo impressions as inferred without surveying their dimensions or orientation.
-- Use `runtime/master-farm-contract.js` for aggregate training parameters. No real GAZA production throughput, number of active farms per period or raw volumes are available; require scenario inputs and label outputs `SIMULATED`.
-- One canonical lot lifecycle: animal/welfare → milking → bulk cold tank → collection → tanker → plant reception → quality lab → production → warehouse → dispatch. Only allow simulated decisions; never infer an authorization to release a real batch.
-- Visual targets: station-level cutaway, named equipment, staff avatars as fictional roles, animals with non-identifying states, tankers following valid route geometry, quality incidents, weather sourced separately, castle/cathedral silhouette with geometry provenance and explicit conceptual status.
-- Scene asset gates: source and license; glTF validation; performant LOD/instancing; procedural fallback; deterministic camera + screenshots; trainable interaction smoke QA. Avoid expensive generative-video services by default.
-- Public weather must not be labelled as on-site instrumentation; synthetic traffic must remain distinct from DGT road events.
-- Do not merge a new feature PR before browser QA is green, including original Plant 3D and Mission Control regressions.
+## 3. Staffing and operations
 
-## LIVE OPS · operator-first experience (2026-10-12)
+Role identities, uniforms and shift windows are synthetic proposals. A role is not proof of an individual employee or contractual schedule. Show working, available, off-shift, held and handover states with readable explanations.
 
-This section supersedes earlier instructions naming Plant 3D as the active campus entry.
+Optional scheduling gates the start of new tasks/assays/reviews. Already-running operations must not abandon heating, refrigeration, incubation or a moving vehicle just because the shift changes. Holds, equipment validity and quality remain authoritative. Test midnight, shift boundaries, queues, continuous coverage and handover.
 
-### Canonical workspace
-- `mission-control.html` is the integrated operator workspace. `view=plant` is a compatibility alias to `view=site` and the current `site-real-preview.html`. The earlier `plant-3d.html` is retained only as historical source/regression coverage, never loaded by active navigation or Matrix.
-- Use five primary concepts in Spanish: Planta, Granja, Laboratorio, Flujo/Calidad and Territorio. Keep diagnostic/GIS/integration detail secondary. Never add a separate application for a visual refinement.
-- Put the shared lot, clock, run/pause, day/night and staffing controls above the maps. Make scope (working or isolated demo), simulation provenance and pending quality reviews visible. Preserve keyboard navigation and touch targets.
+Sub-process choreography is explanatory, not a veterinary, microbiological or industrial SOP. A label and state should identify what is moving and why. Avoid arbitrary motion unrelated to the selected lot.
 
-### One time and material system
-- The validated Process Ledger V2 remains the ONLY writer of litres, genealogy, samples and decisions. Scenes project it read-only. All views share a scope-specific selected lot, clock and illumination configuration.
-- `LIVING_SETTINGS` may change the lighting preview and the staffing policy, never quantities, the clock epoch or approvals. The operational epoch belongs to scenario creation. Previewing night does not move the operation to another shift: label it as a lighting preview.
-- Shift windows and staff roles are synthetic configurable scenario inputs, not GAZA attendance records. Optional staffing policy gates NEW tasks/assays/quality reviews. Already-running operations are completed/handed over; do not stop heating or a moving truck merely because the employee shift ends. Holds/equipment/quality restrictions remain authoritative.
-- Maintain both species, exact mass conservation and exclusive equipment booking. No auto-release in the company presentation. Simulation durations stay compressed until an authorized timing dataset exists; do not label them measured production cycle times.
+## 4. Realism and evidence
 
-### Visual craft
-- Darken ambient illumination at night. Use physical PointLights with a fixed small budget, emissive fixture meshes and bounded light-pool approximations. Preserve topographic/building coordinates. No claims of lux compliance, real lamp locations or electrical design.
-- Upgrade existing worker and vehicle objects rather than spawning duplicates. Reuse anatomy and uniform assets; staff identities remain fictitious roles, never inferred real employees.
-- GAZA cartons must appear only against the corresponding stock, process sample or authorized shipment. A raw-milk tanker does not transport retail cartons. Visible packs are glyphs; factors and quantities are explicit. Do not duplicate the same inventory between rack, dock and truck.
-- Keep logos facing outwards. Treat carton graphics, dimensions, colours and truck capacity as illustrated unless backed by a product/manufacturer source. Do not fabricate nutritional labels or claim an official packaging artwork.
-- Keep the cattle cubicle alignment correction, independently oriented pasture sheep/cows, species separation and shared bookkeeping.
+Classify source-backed content separately:
 
-### Proof of completion
-- Test legacy-state loading, common clock/lot propagation, midnight/shift boundaries, no new off-shift task start, no mid-operation abandonment, light-preview immutability, shipping mass and quantity-derived glyphs.
-- Screenshot actual WebGL for plant night, farm night, laboratory night, operator controls and loaded trailer. Verify that no request loads the old active plant. Check mobile overflow and draw budget.
-- Merge only after CI and visual review. Separately verify the public Pages deployment. A successful build or a generated image does not prove the user's application renders.
+- `PUBLIC_REFERENCE`: directly supported by a named, dated public source.
+- `INFERRED_RECONSTRUCTION`: traced or inferred geometry, never surveyed/as-built.
+- `SIMULATED`: people, shifts, equipment, routing, process inputs or scene content not publicly verified.
+- `REAL_AUTHORIZED`: reserved for future customer-approved read-only feeds.
+
+Record URL, retrieval date, source date when known, CRS and limits. Prefer official company/government/manufacturer sources. A direct interview may support its dated quotation, not current operation. Preserve disagreements rather than silently reconciling them.
+
+Public milk collection references and their caveats are recorded in `runtime/farm/life/herd-model.mjs`. Do not replace dated declarations with invented live amounts, nor claim all throughput is unknown. Rendering hundreds of group-weighted animals does not establish the true census, animal yield, site capacity or land-use authorization.
+
+GAZACONTROL, INTERGAZA, Solmicro client reference, Tetra Pak equipment references, Esnova/Signode and Veolia are evidence anchors, not proof of installed software versions, APIs or control protocols. The laboratory is associated with Coreses functionally; its exact room remains proposed.
+
+The Zamora farm is a fictional consolidation of the procurement network in the historical factory parcel. Roofs and roads use the recorded PNOA trace and photographs. Do not move geographic footprints to solve a visual problem. The castle/cathedral relief and vertical dimensions are simplified, not LiDAR. Failed OSM queries must never be labelled successful geometry imports. Keep metre coordinates for calculations and WGS84 for interchange.
+
+## 5. Scene craft
+
+Improve the existing animals, workers, machinery and vehicles, not duplicate fleets or employees. Keep stable scene IDs and task bindings. Reuse licensed/attributed geometry and the same-origin Three r180 assets. Use original procedural assets where appropriate and identify illustrative branding; do not invent official uniforms or exact packaging artwork.
+
+Cattle must occupy the common cubicle geometry with correct heading and clearances. Pasture orientations are independent. The number of representative symbols and their weights remain explicit; it is not a livestock accommodation calculation.
+
+Vehicles declare a local forward axis and follow route tangents. Test bends, reversals, holds and cargo placement. Local routes remain proposed until surveyed/routed evidence exists. Never claim validated turning envelopes from a rough visual spline.
+
+GAZA carton glyphs belong on compatible finished-product pallets or authorized outbound cargo, not in raw-milk tankers. Quantities derive from stock/shipping registers. Avoid representing the same inventory twice in rack, dock and truck. Carton labels must not fabricate nutritional data, exact commercial artwork or vehicle capacity.
+
+## 6. Night and performance
+
+Night should have low ambient light with readable silhouettes and localized street/interior lighting. Use a bounded count of real lights, emissive fixtures and explicitly illustrative light pools. No claim of measured lux, electrical installation or exact lamp placement.
+
+Use instancing/LOD and dirty-frame rendering. Static maps must not repaint continuously while another department compiles its shaders. Invalidate on actual state, camera, viewport, loaded textures or font changes. Suspend hidden views while preserving ledger observers. Maintain one logical clock across views.
+
+Prepare shader compilation where supported, show its real status, and only publish ready after a successful real frame. Report startup timings/render counts to diagnose slow devices; do not mark a mock renderer as ready. Keep quality and inventory logic independent of any rendering budget.
+
+## 7. Verification and publication
+
+Before merge: unit invariants, exact upstream vendor integrity, browser WebGL of each changed scene, cross-map lot/time/hold behavior, default and night views, cargo inspection, mobile overflow, preserved cubicle fix and navigation with no old active plant requests.
+
+Retain deterministic regression criteria. Diagnose failed tests with their reports and captures; do not delete assertions or simulate successful graphics to make CI pass. A changed artistic camera may require a deliberate screenshot update, not a false claim about real geometry.
+
+After merge: verify GitHub Pages head AND actual browser navigation against the public domain through the dossier. Confirm the release, visible animals, new campus, Labs, night mode and protected normal ledger. A successful build alone is not proof of working public graphics. No installer is required when repository write tools are available.
+
+## 8. Future real integrations
+
+Customer-authorized systems → read-only adapter → canonical provenance-tagged events → validation → twin. Never expose PLC/DB secrets in the browser or infer authority to send commands. Any future write/control path needs separate explicit authorization, audit and safety design. Today's scenario does not constitute OT/ERP integration or a multiuser operational server.

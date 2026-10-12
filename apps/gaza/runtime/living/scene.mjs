@@ -10,12 +10,18 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
  let renderDirty=true,renderAt=-Infinity,renderCamera='',draws=0,skippedDraws=0,parentActive=true;
  const invalidate=()=>{renderDirty=true;};
  const activation=e=>{if(e.source===window.parent&&e.origin===location.origin&&e.data?.type==='GAZA_VIEW_VISIBILITY_V1'){parentActive=!!e.data.active;if(parentActive)invalidate();}};
+ // Redraw when actual resources finish loading, not once per second forever.
+ // A single paused farm redraw can block a software GPU for seconds while Labs/Plant boot.
+ const manager=T.DefaultLoadingManager,previousLoad=manager.onLoad;
+ const resourcesLoaded=(...args)=>{if(typeof previousLoad==='function')previousLoad(...args);invalidate();dirty();};
+ manager.onLoad=resourcesLoaded;
+ document.fonts?.ready.then(()=>{invalidate();dirty();});
  const originalRender=renderer?.render;
  if(renderer){
   renderer.render=function(s,c){
    const now=performance.now(),key=[...c.position.toArray(),...c.quaternion.toArray(),c.zoom,...c.projectionMatrix.elements,renderer.domElement.width,renderer.domElement.height].join(',');
    const shown=parentActive&&!document.hidden&&renderer.domElement.getClientRects().length>0;
-   if(draws&&(!shown||now-renderAt<1000/30||(!renderDirty&&key===renderCamera&&now-renderAt<1000))){skippedDraws++;return;}
+   if(draws&&(!shown||now-renderAt<1000/30||(!renderDirty&&key===renderCamera))){skippedDraws++;return;}
    originalRender.call(this,s,c);draws++;renderAt=now;renderCamera=key;renderDirty=false;
   };
   for(const type of ['click','input','change','pointerdown','pointerup'])document.addEventListener(type,invalidate,true);
@@ -71,7 +77,7 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
   const cargo=cargoOf(s,lot),stockPlan=cargoOf(s,lot,'stock',8);
   if(cartons){cartons.setCount(cargo.visible);const out=world.moving.find(v=>v.id==='SIM-TRAILER-1');const body=out.load.getObjectByName('OUTBOUND_CLOSED_BODY');if(body)body.visible=!cargoOpen;for(const panel of outboundPanels)panel.visible=!cargoOpen;cartons.g.visible=cargoOpen&&cargo.visible>0;}
   for(const item of stockDetails)item.before.forEach(o=>o.visible=false);
-  window[sceneKey]={release:LIVE_RELEASE,kind,clockSeconds:s?.clock?.seconds||0,environment:env,streetAndIndoorFixtures:fixtureCount,actualLights:lights.length,staff,cargo,stock:stockPlan,cargoOpen,cartonsRendered:cartons&&cargoOpen?cargo.visible*24:0,assetProvenance:'SIMULATED_ASSET_DETAILS',renderBudget:renderer?'DIRTY_30FPS_IDLE_1HZ_HIDDEN_SUSPENDED':'HOST_MANAGED',inspection};dirty();return true;
+  window[sceneKey]={release:LIVE_RELEASE,kind,clockSeconds:s?.clock?.seconds||0,environment:env,streetAndIndoorFixtures:fixtureCount,actualLights:lights.length,staff,cargo,stock:stockPlan,cargoOpen,cartonsRendered:cartons&&cargoOpen?cargo.visible*24:0,assetProvenance:'SIMULATED_ASSET_DETAILS',renderBudget:renderer?'DIRTY_30FPS_NO_IDLE_REPAINT_HIDDEN_SUSPENDED':'HOST_MANAGED',inspection};dirty();return true;
  }
  const bar=document.createElement('div');bar.className='living-scene-bar';bar.innerHTML='<span data-env>Horario del registro común</span>'+(kind==='site'?'<button type="button" id="livingCargo">Ver carga de briks</button>':'');
  const mount=document.getElementById(kind==='site'?'viewport':'world');mount?.append(bar);
@@ -79,5 +85,5 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
  const style=document.createElement('style');style.textContent='.living-scene-bar{position:absolute;z-index:5;right:12px;bottom:8px;display:flex;gap:8px;align-items:center;background:#071926ee;border:1px solid #4a716f;border-radius:5px;padding:5px 9px;max-width:88%;font:11px system-ui;color:#dbe9e4}.living-scene-bar button{font:11px system-ui;padding:5px;background:#20463e;color:#e2ece5;border:1px solid #5c8b7d;cursor:pointer}@media(max-width:600px){.living-scene-bar{bottom:4px;font-size:9px;right:4px}}';document.head.append(style);
  if(kind==='site')bar.querySelector('button').onclick=()=>{cargoOpen=!cargoOpen;bar.querySelector('button').textContent=cargoOpen?'Cerrar transporte':'Ver carga de briks';if(cargoOpen&&camera&&controls){const p=world.moving.find(v=>v.id==='SIM-TRAILER-1').load.position;camera.position.copy(p).add(new T.Vector3(-12,7,12));controls.target.copy(p).add(new T.Vector3(0,1.5,0));controls.update()}refresh(true)};
  const update=()=>{const changed=refresh();if(changed)bar.querySelector('[data-env]').textContent=last.text+' SIM · '+last.phase+(last.preview?' · vista lumínica':'');return changed};update();
- return {update,snapshot:()=>window[sceneKey],openCargo(value=true){cargoOpen=!!value;refresh(true)},dispose(){if(renderer){renderer.render=originalRender;for(const type of ['click','input','change','pointerdown','pointerup'])document.removeEventListener(type,invalidate,true);window.removeEventListener('message',activation);document.removeEventListener('visibilitychange',invalidate)}uniforms.forEach(u=>u.g.removeFromParent());instances.forEach(o=>{o.dispose();o.removeFromParent()});cartons?.dispose();stock?.dispose();stockDetails.forEach(i=>i.detail.dispose());pools.forEach(o=>o.removeFromParent());lights.forEach(o=>o.light.removeFromParent());root.removeFromParent();assets.dispose();bar.remove();style.remove()}};
+ return {update,snapshot:()=>window[sceneKey],openCargo(value=true){cargoOpen=!!value;refresh(true)},dispose(){if(manager.onLoad===resourcesLoaded)manager.onLoad=previousLoad;if(renderer){renderer.render=originalRender;for(const type of ['click','input','change','pointerdown','pointerup'])document.removeEventListener(type,invalidate,true);window.removeEventListener('message',activation);document.removeEventListener('visibilitychange',invalidate)}uniforms.forEach(u=>u.g.removeFromParent());instances.forEach(o=>{o.dispose();o.removeFromParent()});cartons?.dispose();stock?.dispose();stockDetails.forEach(i=>i.detail.dispose());pools.forEach(o=>o.removeFromParent());lights.forEach(o=>o.light.removeFromParent());root.removeFromParent();assets.dispose();bar.remove();style.remove()}};
 }
