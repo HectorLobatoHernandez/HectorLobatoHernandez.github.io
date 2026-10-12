@@ -36,7 +36,8 @@ export function placements(species){
  const cubicleCenters=[];
  if(cow)for(let x=-f.w/2+3;x<f.w/2-3;x+=3.2)cubicleCenters.push(x);
  for(const sign of [-1,1])for(let x=-f.w/2+3;x<f.w/2-3;x+=spacing){
-  const z=sign*f.d*.32;
+  // Keep the full animal behind the existing front rail, inside the bedding depth.
+  const z=sign*(f.d*.32+(cow?1.5:0));
   const centeredX=cow?cubicleCenters.reduce((best,c)=>Math.abs(c-x)<Math.abs(best-x)?c:best,cubicleCenters[0]):x;
   // Anatomical forward is +X. The cubicle runs along barn-local Z, not along the aisle (X).
   // Opposite rows face inward: +Z row -> -Z; -Z row -> +Z. Include the barn's world rotation.
