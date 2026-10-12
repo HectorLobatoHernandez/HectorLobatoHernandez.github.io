@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createGazaWorld } from './gaza/gaza-scene.js?v=9';
 import { createRhbWorld } from './rhb/rhb-scene.js?v=9';
-import { createHLAvatarRuntime } from './avatar/hl-avatar-runtime.js?v=17';
+import { createHLAvatarRuntime } from './avatar/hl-avatar-runtime.js?v=15';
 import { createKnowledgeFall } from './intro/knowledge-fall.js?v=9';
 import { createLandingImpact } from './intro/landing-impact.js?v=9';
 import { createZamoraWall } from './zamora/zamora-wall.js?v=9';
