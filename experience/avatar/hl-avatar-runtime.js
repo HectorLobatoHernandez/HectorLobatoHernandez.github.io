@@ -3,15 +3,15 @@ import { createHLAvatar as createFallbackAvatar } from './hl-avatar.js?v=11';
 
 export function createHLAvatarRuntime(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_RUNTIME_V23_HAIR_FRINGE';
-  root.userData.source='HECTOR_METAPERSON_FIXED_V2';
+  root.name='HL_AVATAR_RUNTIME_V24_HAIR_FRINGE_SOFT';
+  root.userData.source='HECTOR_METAPERSON_FIXED_V3';
 
   const fallback=createFallbackAvatar(THREE);
   fallback.visible=false;
   root.add(fallback);
 
   const modelRoot=new THREE.Group();
-  modelRoot.name='HL_METAPERSON_FIXED_V2';
+  modelRoot.name='HL_METAPERSON_FIXED_V3';
   modelRoot.visible=false;
   root.add(modelRoot);
 
@@ -118,7 +118,7 @@ export function createHLAvatarRuntime(THREE){
 
   const loader=new GLTFLoader();
   loader.load(
-    '../assets/models/avatar/hector-metaperson-fixed-v2.glb?v=23',
+    '../assets/models/avatar/hector-metaperson-fixed-v3.glb?v=24',
     gltf=>{
       const scene=gltf.scene;
 
@@ -140,8 +140,8 @@ export function createHLAvatarRuntime(THREE){
       state.model=scene;
       state.ready=true;
       root.userData.ready=true;
-      root.userData.model='hector-metaperson-fixed-v2.glb';
-      root.userData.revision='V23_HAIR_FRINGE';
+      root.userData.model='hector-metaperson-fixed-v3.glb';
+      root.userData.revision='V24_HAIR_FRINGE_SOFT';
     },
     undefined,
     err=>{
