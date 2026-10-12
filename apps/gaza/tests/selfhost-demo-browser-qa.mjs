@@ -33,7 +33,8 @@ try{
  await site.waitForFunction(()=>window.__GAZA_SITE_REAL__?.render?.calls>0&&window.__GAZA_SITE_REAL__?.processScope==='company-demo',{},{timeout:90000});assert.equal(await site.evaluate(()=>window.__GAZA_ENGINE_DELIVERY__),'SAME_ORIGIN_R180');checks.push('plant-renders-from-same-origin-in-demo-namespace');
  await page.screenshot({path:path.join(out,'03-linked-plant.png')});
  assert.equal(await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2')),working);checks.push('working-ledger-preserved-byte-for-byte');
- assert(engineResponses.some(r=>r.url().includes('three.module.min.js')));assert(engineResponses.some(r=>r.url().includes('three.core.min.js')));assert(engineResponses.some(r=>r.url().includes('OrbitControls.js')));
+ // engineResponses stores plain JSON records, not Playwright Response objects.
+ assert(engineResponses.some(r=>r.url.includes('three.module.min.js')));assert(engineResponses.some(r=>r.url.includes('three.core.min.js')));assert(engineResponses.some(r=>r.url.includes('OrbitControls.js')));
  assert(engineResponses.every(r=>r.status>=200&&r.status<400));assert.deepEqual(cdnRequests,[]);assert.deepEqual(errors,[]);assert.deepEqual(failedLocal,[]);checks.push('no-cdn-requests-no-page-errors-no-failed-local-modules');
  await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,publicOrigin:remote||null,release:RELEASE,checks,errors,cdnRequests,failedLocal,engineResponses},null,2));console.log('SELFHOST DEMO QA PASS',checks);
 }catch(e){if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,publicOrigin:remote||null,release:RELEASE,checks,errors,cdnRequests,failedLocal,engineResponses,error:String(e)},null,2));throw e}finally{await browser.close()}
