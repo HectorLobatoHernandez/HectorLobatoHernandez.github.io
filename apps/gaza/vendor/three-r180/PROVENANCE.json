@@ -1,0 +1,17 @@
+{
+  "package": "three",
+  "version": "0.180.0",
+  "license": "MIT",
+  "source": "https://github.com/mrdoob/three.js/tree/r180",
+  "registrySource": "https://registry.npmjs.org/three/-/three-0.180.0.tgz",
+  "integrity": "sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w==",
+  "verifiedPreparationRun": 38192526676,
+  "files": {
+    "build/three.module.min.js": {"gitBlob":"20d3c112761a519c7780a5ccc9f72a40937fa83b","sha256":"e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6","bytes":338908},
+    "build/three.core.min.js": {"gitBlob":"70c40977daa0f6e1e312c6b58e9bfe49cb5a87a4","sha256":"61ba0df005b05991361d040d8ff670e1aadfd0ce7aeebd1fdb0725957a8957de","bytes":381124},
+    "examples/jsm/controls/OrbitControls.js": {"gitBlob":"eea26706dae735dade19367026185f6e68f5cf55","sha256":"b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c","bytes":38703},
+    "examples/jsm/loaders/GLTFLoader.js": {"gitBlob":"38f8c14fb500631f01d39cd54c202eefddcf0987","sha256":"67ac5551fdafa6e349bd80c8f8e5e39c136d6b2fb1ad647db9abb21dc86f9e4a","bytes":114739},
+    "examples/jsm/utils/BufferGeometryUtils.js": {"gitBlob":"c84dc7b2bbc99849373e17a6efae609e326f9536","sha256":"fda7e946b8e0b5ab39b779206589e7a1079a22eb24efb89d7223e03fdfb1f751","bytes":35539},
+    "LICENSE": {"gitBlob":"cf781430404b0ae0ba7d8dea3457a3515dd7c9b9","sha256":"bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601","bytes":1081}
+  }
+}

@@ -1,0 +1,52 @@
+name: GAZA same-origin demonstration QA
+on:
+  pull_request:
+    paths: ['apps/gaza/**', 'start/gaza.html', '.github/workflows/gaza-selfhosted-demo-qa.yml']
+  push:
+    branches: [main]
+    paths: ['apps/gaza/**', 'start/gaza.html', '.github/workflows/gaza-selfhosted-demo-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: selfhost-demo-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  local-and-public-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    defaults:
+      run:
+        working-directory: apps/gaza
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - run: npm install --no-audit --no-fund
+      - name: Vendor integrity and import identity
+        run: node --test tests/selfhost-engine.test.mjs tests/company-demo.test.mjs tests/process-ledger.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Serve real repository paths including dossier
+        run: |
+          npx http-server ../.. -p 4173 -c-1 --cors >/tmp/gaza-selfhost.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/start/gaza.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/gaza-selfhost.log
+          exit 1
+      - name: Actual dossier to Farm Labs Plant with CDN deliberately blocked
+        run: node tests/selfhost-demo-browser-qa.mjs
+      - name: Verify published app through the same real dossier link
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        env:
+          GAZA_PUBLIC_ORIGIN: https://hectorlobatohernandez.github.io
+        run: node tests/selfhost-demo-browser-qa.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-same-origin-demo-${{ github.run_number }}
+          path: apps/gaza/.qa/selfhost-demo/
+          include-hidden-files: true
+          retention-days: 14

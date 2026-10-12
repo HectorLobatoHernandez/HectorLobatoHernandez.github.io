@@ -1,0 +1,16 @@
+/* Compact, readable presentation controls; no change to the process state. */
+@media(max-width:600px){
+ .top .metric,.top #fullscreenBtn{display:none!important}
+ .top .brand{max-width:130px;font-size:10px;line-height:1.4}
+ .top #demoLaunch{margin-left:auto;max-width:200px;white-space:normal;text-align:center}
+ .farm-detail>header,.lab-detail-mode>header{gap:6px;padding:8px 10px}
+ .farm-detail>header strong,.lab-detail-mode>header strong{font-size:11px}
+ .farm-detail>header>span,.lab-detail-mode>header>span{font-size:9px;white-space:normal;max-width:100%;margin-left:0!important}
+ .farm-detail #label b{font-size:11px;white-space:normal}
+ .farm-detail #label span{font-size:9px;white-space:normal}
+ #farmSceneHealth{box-sizing:border-box;overflow-wrap:anywhere;font-size:10px!important}
+ #companyDemoDock .demo-nav{gap:5px}
+ #companyDemoDock .demo-nav strong{font-size:10px}
+ #companyDemoDock .demo-nav button{font-size:10px;padding:7px;max-width:100%;white-space:normal}
+ #companyDemoDock #demoStatus{display:block;width:100%;font-size:10px}
+}
