@@ -3,15 +3,15 @@ import { createHLAvatar as createFallbackAvatar } from './hl-avatar.js?v=11';
 
 export function createHLAvatarRuntime(THREE){
   const root=new THREE.Group();
-  root.name='HL_AVATAR_RUNTIME_V21_SAFE_METAPERSON';
-  root.userData.source='HECTOR_METAPERSON_SAFE';
+  root.name='HL_AVATAR_RUNTIME_V22_FIXED_METAPERSON';
+  root.userData.source='HECTOR_METAPERSON_FIXED_V1';
 
   const fallback=createFallbackAvatar(THREE);
   fallback.visible=false;
   root.add(fallback);
 
   const modelRoot=new THREE.Group();
-  modelRoot.name='HL_METAPERSON_SAFE';
+  modelRoot.name='HL_METAPERSON_FIXED_V1';
   modelRoot.visible=false;
   root.add(modelRoot);
 
@@ -118,7 +118,7 @@ export function createHLAvatarRuntime(THREE){
 
   const loader=new GLTFLoader();
   loader.load(
-    '../assets/models/avatar/hector-metaperson.glb?v=21',
+    '../assets/models/avatar/hector-metaperson-fixed-v1.glb?v=22',
     gltf=>{
       const scene=gltf.scene;
 
@@ -140,8 +140,8 @@ export function createHLAvatarRuntime(THREE){
       state.model=scene;
       state.ready=true;
       root.userData.ready=true;
-      root.userData.model='hector-metaperson.glb';
-      root.userData.revision='V21_SAFE';
+      root.userData.model='hector-metaperson-fixed-v1.glb';
+      root.userData.revision='V22_HAIR_POSTURE';
     },
     undefined,
     err=>{
