@@ -124,66 +124,69 @@ def main():
     hy=max(mx[1]-mn[1],1e-6)
     hz=max((mx[2]-mn[2])*0.5,1e-6)
 
-    # Hair V2:
-    # curly medium-length top/crown, short sides, and a real curly fringe
-    # falling over the forehead. Front of this MetaPerson is +Z.
+    # Hair V3:
+    # curly medium top, short sides, lighter fringe parted and falling softly on the forehead
     for i in range(len(pos)):
         x,y,z=[float(v) for v in pos[i]]
         h=np.clip((y-mn[1])/hy,0.0,1.0)
         side=abs(x-cx)/hx
         front=(z-cz)/hz
 
-        # Shorter, tighter sides/temples.
+        # Tighter / shorter sides.
         side_t=smooth(0.48,0.98,side)
-        lower=1.0-smooth(0.42,0.78,h)
+        lower=1.0-smooth(0.40,0.78,h)
         if side>0.48 and h<0.80:
-            shrink=0.07+0.17*side_t*lower
+            shrink=0.07+0.15*side_t*lower
             x=cx+(x-cx)*(1.0-shrink)
 
-        # Curly volume through crown/top.
-        top=smooth(0.32,0.94,h)
-        side_control=1.0-0.48*side_t*(1.0-0.72*top)
-        front_control=1.0-0.18*smooth(0.30,0.78,front)
-        if h>0.30:
+        # Crown / top volume.
+        top=smooth(0.34,0.95,h)
+        side_control=1.0-0.48*side_t*(1.0-0.70*top)
+        if h>0.32:
             rx=(x-cx)/hx
             rz=(z-cz)/hz
             rr=max(math.hypot(rx,rz),1e-6)
             ux,uz=rx/rr,rz/rr
 
-            curl1=math.sin((x-cx)*108.0+(z-cz)*91.0+y*53.0)
-            curl2=math.cos((x-cx)*79.0-(z-cz)*97.0+y*47.0)
+            curl1=math.sin((x-cx)*102.0+(z-cz)*88.0+y*51.0)
+            curl2=math.cos((x-cx)*74.0-(z-cz)*93.0+y*45.0)
 
-            volume=(0.0030+0.0130*top)*side_control*front_control
-            curl_amp=(0.0018+0.0058*top)*side_control
+            volume=(0.003+0.012*top)*side_control
+            curl_amp=(0.0018+0.0052*top)*side_control
 
             x+=ux*(volume+curl_amp*curl1)
-            z+=uz*(volume+0.76*curl_amp*curl2)
-            y+=0.0010+0.0080*top+0.0020*curl1
+            z+=uz*(volume+0.72*curl_amp*curl2)
+            y+=0.001+0.0075*top+0.0018*curl1
 
-        # Main central curly fringe.
-        center=1.0-smooth(0.34,0.80,side)
-        forward=smooth(0.18,0.78,front)
-        middle=smooth(0.48,0.64,h)*(1.0-smooth(0.89,0.98,h))
-        fringe=center*forward*middle
+        # Lighter fringe: narrower, softer, slightly side-swept.
+        center=1.0-smooth(0.18,0.52,side)
+        forward=smooth(0.20,0.72,front)
+        band=smooth(0.54,0.66,h)*(1.0-smooth(0.84,0.94,h))
+        fringe=center*forward*band
 
         if fringe>0.0:
-            lock=0.5+0.5*math.sin((x-cx)*84.0+y*39.0)
-            y-=fringe*(0.050+0.012*lock)
-            z+=fringe*(0.010+0.010*(0.5+0.5*math.cos((x-cx)*68.0+y*33.0)))
-            x+=fringe*0.0045*math.sin((x-cx)*102.0+y*31.0)
+            side_bias=-0.012 if x<cx else 0.006
+            strand=0.5+0.5*math.sin((x-cx)*135.0+y*44.0)
+            strand2=0.5+0.5*math.cos((x-cx)*96.0+z*37.0)
 
-        # Secondary locks coming from the upper crown.
-        fringe2=(
-            center*
-            smooth(0.48,0.90,front)*
-            smooth(0.66,0.82,h)*
-            (1.0-smooth(0.94,1.0,h))
+            y-=fringe*(0.020+0.012*strand)
+            z+=fringe*(0.004+0.006*strand2)
+            x+=side_bias*fringe
+            x+=fringe*0.003*math.sin((x-cx)*120.0+y*29.0)
+
+        # A few separated front curls instead of one solid block.
+        lock_zone=(
+            h>0.60 and h<0.82 and
+            front>0.26 and
+            side<0.34
         )
-        if fringe2>0.0:
-            wave=0.5+0.5*math.sin((x-cx)*122.0+z*76.0)
-            y-=fringe2*(0.020+0.020*wave)
-            z+=fringe2*(0.006+0.007*wave)
-            x+=fringe2*0.0035*math.cos((x-cx)*116.0+y*43.0)
+        if lock_zone:
+            wave=math.sin((x-cx)*160.0)
+            if wave>0.35:
+                strength=(wave-0.35)/0.65
+                y-=0.010*strength
+                z+=0.004*strength
+                x+=0.003*math.sin((x-cx)*70.0+y*32.0)*strength
 
         # Neat nape.
         if h<0.25 and front<0.0:
@@ -237,10 +240,10 @@ def main():
     dst.parent.mkdir(parents=True,exist_ok=True)
     save_glb(js,chunks,order,dst)
 
-    print("RHB_METAPERSON_HAIR_V2_OK=True")
+    print("RHB_METAPERSON_HAIR_V3_OK=True")
     print(f"OUTPUT={dst}")
     print(f"HAIR_VERTICES={len(pos)}")
-    print("HAIR=CURly_MEDIUM_TOP_SHORT_SIDES_FOREHEAD_FRINGE")
+    print("HAIR=CURLY_MEDIUM_TOP_SHORT_SIDES_SOFT_FRINGE")
     print("POSTURE=PRESERVED_V1")
 
 if __name__=="__main__":
