@@ -12,6 +12,25 @@ concurrency:
   group: gaza-live-ops-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  review-source:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Archive tracked application sources only
+        run: |
+          mkdir -p /tmp/gaza-review
+          git archive --format=tar HEAD apps/gaza skills/gaza-geospatial-industrial-twin .github/workflows start/gaza.html > /tmp/gaza-review/source.tar
+          git rev-parse HEAD > /tmp/gaza-review/commit.txt
+          sha256sum /tmp/gaza-review/source.tar > /tmp/gaza-review/source.sha256
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gaza-live-reviewed-source-${{ github.run_number }}
+          path: /tmp/gaza-review/
+          retention-days: 1
   integrated-night:
     runs-on: ubuntu-latest
     timeout-minutes: 16
