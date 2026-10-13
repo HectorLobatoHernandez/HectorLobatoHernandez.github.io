@@ -28,7 +28,7 @@ jobs:
         run: |
           node --check runtime/mobile/scene.mjs
           node --check runtime/mobile/shell.mjs
-          node --test tests/mobile-motion.test.mjs tests/process-ledger.test.mjs tests/farm-stall-alignment.test.mjs tests/live-ops.test.mjs
+          node --test tests/*.test.mjs
       - run: npx playwright install --with-deps chromium
       - name: Serve full project tree
         run: |
