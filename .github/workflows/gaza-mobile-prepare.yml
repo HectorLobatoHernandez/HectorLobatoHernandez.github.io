@@ -1,0 +1,33 @@
+name: Prepare reviewed GAZA mobile sources
+on:
+  push:
+    branches: [feat/gaza-mobile-motion-20261013]
+    paths: ['tools/gaza/mobile-preparation/**', '.github/workflows/gaza-mobile-prepare.yml']
+permissions:
+  contents: read
+jobs:
+  prepare:
+    if: github.repository == 'HectorLobatoHernandez/HectorLobatoHernandez.github.io' && github.ref == 'refs/heads/feat/gaza-mobile-motion-20261013'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 12
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Reconstruct verified source and run tests; store blobs only
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/gaza/mobile-preparation/prepare.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gaza-mobile-preparation-${{ github.run_number }}
+          path: .qa/mobile-preparation/
+          include-hidden-files: true
+          retention-days: 2
