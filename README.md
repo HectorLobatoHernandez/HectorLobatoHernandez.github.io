@@ -2,6 +2,8 @@
 <p align="center"><strong>Ingeniería de sistemas · Acústica · Audio / AV · Automatización · Software aplicado</strong></p>
 <p align="center">Del diseño técnico y la integración física al desarrollo de herramientas digitales.</p>
 
+**Desde el teléfono:** [Abrir proyectos en vista móvil](https://hectorlobatohernandez.github.io/start/mobile.html)
+
 <table>
 <tr>
 <td width="34%" align="center"><br><a href="https://hectorlobatohernandez.github.io/"><strong>DOSSIER PROFESIONAL ↗</strong></a><br><sub>Perfil, competencias y proyectos</sub><br><br></td>

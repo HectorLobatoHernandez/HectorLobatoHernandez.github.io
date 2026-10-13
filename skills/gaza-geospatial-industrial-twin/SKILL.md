@@ -83,3 +83,14 @@ After merge: verify GitHub Pages head AND actual browser navigation against the 
 ## 8. Future real integrations
 
 Customer-authorized systems → read-only adapter → canonical provenance-tagged events → validation → twin. Never expose PLC/DB secrets in the browser or infer authority to send commands. Any future write/control path needs separate explicit authorization, audit and safety design. Today's scenario does not constitute OT/ERP integration or a multiuser operational server.
+
+## 9. Phone and tablet contract · 2026-10-13
+
+The same application must adapt to phones: no scaled desktop layout, no secondary balance or isolated mock-up. `ui=mobile` forces the touch layout; `ui=desktop` opts out. Automatic mode follows viewport/coarse-pointer media queries and must react to orientation changes.
+
+- Prioritise the canvas (at least 65% of a 390×844 display in normal map view), four bottom department tabs, a compact shared clock/run control and a persistent Options button.
+- Existing inspectors become native modal sheets. All existing station, assay, quality and source controls must remain reachable. A hidden toolbar must have an accessible Vistas equivalent. Preserve page zoom; only the canvas captures map gestures. Use 44 CSS px touch targets and safe-area/dynamic-viewport sizing.
+- Pinch/pan/rotate and explicit +/− buttons operate on the existing scene camera. Reframe by department on entry; do not change geographical coordinates for portrait framing. Avoid Matrix thumbnails on a phone.
+- Keep mobile DPR bounded. Pause rendering of inactive maps but preserve their ledger listeners. Never call a headless emulation a tested physical iPhone/Android. Verify both orientations, inspector close/reopen, normal record integrity and screenshot readability.
+- `start/mobile.html` is a launcher, not another app. Shared reading CSS is opt-in on public project pages; never apply GAZA colours or data to other projects.
+- Smooth motion interpolates only a read-only copy for display, with bounded lookahead. The reducer remains the sole writer. Held/unavailable tasks cannot be visually completed. People on available-duty rounds and cars without cargo are labelled SIM; they are not production, delivery, staff-location or attendance data. Respect the existing synthetic shifts and quality gates.

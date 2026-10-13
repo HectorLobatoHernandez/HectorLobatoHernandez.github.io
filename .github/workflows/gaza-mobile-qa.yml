@@ -1,27 +1,55 @@
 name: GAZA mobile and activity QA
 on:
+  pull_request:
+    paths: ['apps/gaza/**', 'assets/css/mobile-projects.css', 'start/**', 'cv/**', '.github/workflows/gaza-mobile-qa.yml']
   push:
-    branches: [feat/gaza-mobile-motion-20261013]
-    paths: ['.github/workflows/gaza-mobile-qa.yml']
+    branches: [main]
+    paths: ['apps/gaza/**', 'assets/css/mobile-projects.css', 'start/**', 'cv/**', '.github/workflows/gaza-mobile-qa.yml']
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: gaza-mobile-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  baseline:
+  mobile-motion:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 18
+    defaults:
+      run:
+        working-directory: apps/gaza
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          persist-credentials: false
-      - name: Archive reviewed source only
+          node-version: '24'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Responsive policy and motion invariants
         run: |
-          git rev-parse HEAD > /tmp/source-commit.txt
-          git archive --format=tar HEAD > /tmp/gaza-mobile-source.tar
+          node --check runtime/mobile/scene.mjs
+          node --check runtime/mobile/shell.mjs
+          node --test tests/mobile-motion.test.mjs tests/process-ledger.test.mjs tests/farm-stall-alignment.test.mjs tests/live-ops.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Serve full project tree
+        run: |
+          npx http-server ../.. -p 4173 -c-1 --cors >/tmp/gaza-mobile-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/start/mobile.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/gaza-mobile-http.log
+          exit 1
+      - name: Touch, orientation, all scenes and live movement
+        run: node tests/mobile-browser-qa.mjs
+      - name: Verify deployed mobile entry
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        env:
+          GAZA_PUBLIC_ORIGIN: https://hectorlobatohernandez.github.io
+        run: node tests/mobile-browser-qa.mjs
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
-          name: gaza-mobile-baseline
-          path: |
-            /tmp/gaza-mobile-source.tar
-            /tmp/source-commit.txt
-          retention-days: 2
+          name: gaza-mobile-motion-${{ github.run_number }}
+          path: apps/gaza/.qa/mobile/
+          include-hidden-files: true
+          retention-days: 14

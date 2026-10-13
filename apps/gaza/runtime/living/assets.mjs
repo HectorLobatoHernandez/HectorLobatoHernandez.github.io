@@ -21,11 +21,11 @@ export function livingAssets(T){
  cartonArtwork=cartonLabel;paintReferenceLogo(logo);
  const labelMat=keepM(new T.MeshStandardMaterial({map:cartonLabel,roughness:.85,emissive:0xffffff,emissiveMap:cartonLabel,emissiveIntensity:.035}));
  function worker(old,role,profile='farm'){
-  const hidden=[...old.children],g=new T.Group();g.name='LIVING_UNIFORM_'+role;g.userData={role,provenance:'SIMULATED_EMPLOYEE'};old.add(g);const a=anatomy.human(profile),arms=[];
+  const hidden=[...old.children],g=new T.Group();g.name='LIVING_UNIFORM_'+role;g.userData={role,provenance:'SIMULATED_EMPLOYEE'};old.add(g);const a=anatomy.human(profile),arms=[],legs=[];
   part(g,a.body,anatomy.material,[0,0,0]);part(g,a.head,anatomy.material,[0,1.71,0]);
-  for(const sign of [-1,1]){const upper=new T.Group();upper.position.set(sign*.27,1.46,0);g.add(upper);part(upper,a.upperArm,anatomy.material,[0,0,0]);const lower=new T.Group();lower.position.y=-.29;upper.add(lower);part(lower,a.lowerArm,anatomy.material,[0,0,0]);arms.push({upper,lower,sign});part(g,a.thigh,anatomy.material,[sign*.12,.92,0]);part(g,a.shin,anatomy.material,[sign*.12,.48,0]);part(g,a.boot,anatomy.material,[sign*.12,.08,0]);}
+  for(const sign of [-1,1]){const upper=new T.Group();upper.position.set(sign*.27,1.46,0);g.add(upper);part(upper,a.upperArm,anatomy.material,[0,0,0]);const lower=new T.Group();lower.position.y=-.29;upper.add(lower);part(lower,a.lowerArm,anatomy.material,[0,0,0]);arms.push({upper,lower,sign});const thigh=new T.Group();thigh.position.set(sign*.12,.92,0);g.add(thigh);part(thigh,a.thigh,anatomy.material,[0,0,0]);const shin=new T.Group();shin.position.y=-.44;thigh.add(shin);part(shin,a.shin,anatomy.material,[0,0,0]);part(shin,a.boot,anatomy.material,[0,-.4,0]);legs.push({thigh,shin,sign});}
   logoPlate(g,[.09,1.4,.18],.15,.075);hidden.forEach(o=>o.visible=false);
-  return {old,g,hidden,arms,role};
+  return {old,g,hidden,arms,legs,role};
  }
  function transport(v){const g=new T.Group();g.name='LIVE_TRANSPORT_DETAILS';v.tractor.add(g);box(g,[3.01,.65,0],[.18,.19,2.55]);box(g,[3.02,1.45,0],[.06,.6,1.1],m.dark);
   for(let j=0;j<5;j++)box(g,[3.06,1.2+j*.09,0],[.025,.03,1],m.metal);

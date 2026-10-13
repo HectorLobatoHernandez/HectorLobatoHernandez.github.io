@@ -1,3 +1,4 @@
+import {mountMobileScene} from './mobile/scene.mjs';
 import {processStore} from './processes/store.mjs';
 import {mountLivingScene} from './living/scene.mjs';
 import {propagateMode} from './demo/session.mjs';
@@ -53,18 +54,22 @@ $('export').onclick=()=>{if(!geo)return;const payload={...geo.original,siteReal:
 function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,startup:{...startup},processScope:processStore.scope.id,living:living?.snapshot()||null,state:startup.phase==='ready'?'ready':startup.phase,mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
 // Bound visual work independently of ledger writes. A paused scene renders on demand.
 // Shader compilation is prepared asynchronously below; no readiness is published before a real draw.
-function frame(now){
+const mobile=mountMobileScene({T:THREE,kind:'site',renderer,controls,mount:$('viewport'),side:document.querySelector('aside'),getState:()=>processState,onOverview:()=>cameraTo('overview'),onDetail:()=>plantDetail.open('process')});
+ document.addEventListener('gaza-scene-invalidate',()=>dirty=true);
+ function frame(now){
  requestAnimationFrame(frame);
- if(document.hidden){last=now;return;}
+ if(!mobile.visible){last=now;return;}
  if(now-last<1000/30)return;
  const raw=Math.min(.08,(now-last)/1000);last=now;
  const dt=(!paused&&!frozen&&mode==='study')?raw*Number($('speed').value):0;elapsed+=dt;
+ if(processState?.clock.running&&!qa&&!frozen)dirty=true;
+ const displayState=living?.displayState()||processState;
  const processDt=processState?(processState.clock.running?dt*processState.clock.rate:0):dt;
  // UI handlers and the process observer invalidate the scene. Idle frames must not traverse
  // hundreds of machines and materials while another GAZA map is compiling/rendering.
  if(dirty||dt>0){
-  plantDetail.update();
-  world.update(processDt,{held:!!processError||(processView?processView.held:!!ledger?.held),process:processState?{state:processState,lotId:processStore.selected}:null});
+  plantDetail.update();if(displayState!==processState)plantDetail.animate(displayState);
+  world.update(processDt,{held:!!processError||(processView?processView.held:!!ledger?.held),process:processState?{state:displayState,lotId:processStore.selected}:null});
   living?.update();
   if(rain.visible&&dt){for(let i=1;i<rainArray.length;i+=3)rainArray[i]=(rainArray[i]-dt*35+90)%90;rainGeo.attributes.position.needsUpdate=true}
  }

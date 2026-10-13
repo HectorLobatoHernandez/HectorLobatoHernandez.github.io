@@ -1,4 +1,6 @@
 import {environmentOf,roleActivity,cargoOf,LIVE_RELEASE} from './model.mjs';
+import {createActivityMotion} from './motion.mjs';
+import {interpolateForDisplay} from './motion-model.mjs';
 import {livingAssets} from './assets.mjs';
 import {PARCEL,BUILDINGS,point,frame as farmFrame} from '../farm/site.mjs';
 import {DEPARTMENTS} from '../plant/model.mjs';
@@ -24,7 +26,7 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
    if(draws&&(!shown||now-renderAt<1000/30||(!renderDirty&&key===renderCamera))){skippedDraws++;return;}
    originalRender.call(this,s,c);draws++;renderAt=now;renderCamera=key;renderDirty=false;
   };
-  for(const type of ['click','input','change','pointerdown','pointerup'])document.addEventListener(type,invalidate,true);
+  for(const type of ['click','input','change','pointerdown','pointerup','gaza-scene-invalidate'])document.addEventListener(type,invalidate,true);
   window.addEventListener('message',activation);document.addEventListener('visibilitychange',invalidate);
  }
  const assets=livingAssets(T),root=new T.Group();root.name='LIVING_SCENE_'+kind;(kind==='farm'?world.site:world.root).add(root);
@@ -65,6 +67,8 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
   assets.board(root,'ACCESOS · PLANTA / CALIDAD',[-54,2.5,104],4).rotation.y=-Math.PI/2;
  }
  const dummy=new T.Object3D(),instances=[];for(const b of batches.values()){const o=new T.InstancedMesh(b.geo,b.material,b.items.length);b.items.forEach((p,i)=>{dummy.position.set(...p.pos);dummy.scale.set(...p.scale);dummy.rotation.set(...p.rotation);dummy.updateMatrix();o.setMatrixAt(i,dummy.matrix)});o.castShadow=false;o.receiveShadow=true;o.instanceMatrix.needsUpdate=true;b.parent.add(o);instances.push(o);}
+ const activityMotion=createActivityMotion({kind,world,uniforms});let tickRevision=null,tickSeenAt=0,lastMotionKey='';
+ function displayState(){const s=getState();if(s?.revision!==tickRevision){tickRevision=s?.revision;tickSeenAt=performance.now()}return interpolateForDisplay(s,(performance.now()-tickSeenAt)/1000)}
  const sceneKey='__GAZA_LIVING_'+kind.toUpperCase()+'__';
  function refresh(force=false){const s=getState(),lot=getLotId(),key=JSON.stringify([s?.revision,lot,cargoOpen]);if(!force&&key===lastKey)return false;lastKey=key;invalidate();const env=environmentOf(s),dark=env.darkness;last=env;
   const bg=new T.Color(0x07101f).lerp(new T.Color(0x839da9),env.daylight);scene.background=bg;if(scene.fog)scene.fog.color.copy(bg);
@@ -84,6 +88,6 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
  if(kind==='site')for(const a of document.querySelectorAll('header a'))if(a.textContent==='Planta original')a.textContent='Vista de planta';
  const style=document.createElement('style');style.textContent='.living-scene-bar{position:absolute;z-index:5;right:12px;bottom:8px;display:flex;gap:8px;align-items:center;background:#071926ee;border:1px solid #4a716f;border-radius:5px;padding:5px 9px;max-width:88%;font:11px system-ui;color:#dbe9e4}.living-scene-bar button{font:11px system-ui;padding:5px;background:#20463e;color:#e2ece5;border:1px solid #5c8b7d;cursor:pointer}@media(max-width:600px){.living-scene-bar{bottom:4px;font-size:9px;right:4px}}';document.head.append(style);
  if(kind==='site')bar.querySelector('button').onclick=()=>{cargoOpen=!cargoOpen;bar.querySelector('button').textContent=cargoOpen?'Cerrar transporte':'Ver carga de briks';if(cargoOpen&&camera&&controls){const p=world.moving.find(v=>v.id==='SIM-TRAILER-1').load.position;camera.position.copy(p).add(new T.Vector3(-12,7,12));controls.target.copy(p).add(new T.Vector3(0,1.5,0));controls.update()}refresh(true)};
- const update=()=>{const changed=refresh();if(changed)bar.querySelector('[data-env]').textContent=last.text+' SIM · '+last.phase+(last.preview?' · vista lumínica':'');return changed};update();
- return {update,snapshot:()=>window[sceneKey],openCargo(value=true){cargoOpen=!!value;refresh(true)},dispose(){if(manager.onLoad===resourcesLoaded)manager.onLoad=previousLoad;if(renderer){renderer.render=originalRender;for(const type of ['click','input','change','pointerdown','pointerup'])document.removeEventListener(type,invalidate,true);window.removeEventListener('message',activation);document.removeEventListener('visibilitychange',invalidate)}uniforms.forEach(u=>u.g.removeFromParent());instances.forEach(o=>{o.dispose();o.removeFromParent()});cartons?.dispose();stock?.dispose();stockDetails.forEach(i=>i.detail.dispose());pools.forEach(o=>o.removeFromParent());lights.forEach(o=>o.light.removeFromParent());root.removeFromParent();assets.dispose();bar.remove();style.remove()}};
+ const update=()=>{const changed=refresh(),pose=displayState(),key=(pose?.revision??'none')+':'+(pose?.clock.seconds??0).toFixed(2);const motionChanged=key!==lastMotionKey;if(motionChanged){lastMotionKey=key;activityMotion.update(pose);invalidate();dirty()}window['__GAZA_ACTIVITY_'+kind.toUpperCase()+'__']=activityMotion.snapshot();if(changed)bar.querySelector('[data-env]').textContent=last.text+' SIM · '+last.phase+(last.preview?' · vista lumínica':'');return changed||motionChanged};update();
+ return {update,displayState,snapshot:()=>window[sceneKey],openCargo(value=true){cargoOpen=!!value;refresh(true)},dispose(){if(manager.onLoad===resourcesLoaded)manager.onLoad=previousLoad;if(renderer){renderer.render=originalRender;for(const type of ['click','input','change','pointerdown','pointerup','gaza-scene-invalidate'])document.removeEventListener(type,invalidate,true);window.removeEventListener('message',activation);document.removeEventListener('visibilitychange',invalidate)}uniforms.forEach(u=>u.g.removeFromParent());instances.forEach(o=>{o.dispose();o.removeFromParent()});cartons?.dispose();stock?.dispose();stockDetails.forEach(i=>i.detail.dispose());pools.forEach(o=>o.removeFromParent());lights.forEach(o=>o.light.removeFromParent());root.removeFromParent();assets.dispose();bar.remove();style.remove()}};
 }
