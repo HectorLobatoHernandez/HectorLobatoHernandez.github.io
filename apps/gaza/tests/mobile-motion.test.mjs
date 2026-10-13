@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import * as T from 'three';
+import {createActivityMotion} from '../runtime/living/motion.mjs';
 import {useMobile,pixelRatio,PRIMARY_VIEWS} from '../runtime/mobile/policy.mjs';
 import {walkingCycle,routePose,operationActivity,interpolateForDisplay,activeOperations} from '../runtime/living/motion-model.mjs';
 import {initialState,reduce,validateState} from '../runtime/processes/ledger.mjs';
@@ -18,3 +20,11 @@ test('invalid equipment stops pose interpolation',()=>{let s=reduce(initialState
 test('staff availability follows synthetic shift and full operation coverage is catalog-based',()=>{const s=initialState({living:{startMinute:23*60,environment:'auto',schedule:true}});assert.equal(operationActivity(s,'SIM-ADMIN-DEMO').status,'OFF_SHIFT');assert.equal(operationActivity(s,'SIM-PROD-01').onDuty,true);let v=reduce(initialState(),{type:'START_TASK',lotId:id,taskId:'FARM.BIOSECURITY'});v=reduce(v,{type:'TICK',seconds:1});for(const a of activeOperations(v))assert(TASKS.some(t=>t.id===a.id));});
 test('mobile tools do not disable page zoom, add another ledger or introduce CDN',()=>{const source=fs.readFileSync(new URL('../runtime/mobile/scene.mjs',import.meta.url),'utf8');assert(!source.includes('dispatch({'));assert(!source.includes('https://cdn'));for(const p of ['farm-labs.html','mission-control.html','site-real-preview.html']){const text=fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');assert(text.includes('viewport-fit=cover'));assert(!text.includes('user-scalable=no'));}});
 test('all three live scenes mount the same mobile adaptation without a duplicate viewer',()=>{for(const p of ['farm/viewer.mjs','labs/viewer.mjs','site-real-app.mjs']){const t=fs.readFileSync(new URL('../runtime/'+p,import.meta.url),'utf8');assert(t.includes('mountMobileScene({'));}});
+test('retained station worker preserves the last displayed transform and gait',()=>{
+ const old=new T.Group();old.name='SIM-PLANT-STAFF-0';old.position.set(2,0,4);const u={old,role:'SIM-FARM-03',g:new T.Group(),hidden:[],arms:[{upper:new T.Group(),lower:new T.Group(),sign:1}],legs:[{thigh:new T.Group(),shin:new T.Group(),sign:1}]};
+ const world={actors:new T.Group()},motion=createActivityMotion({kind:'site',world,uniforms:[u]});let state=initialState();state=reduce(state,{type:'AUTO',enabled:true});
+ for(let i=0;i<120&&state.lots['SIM-BOV-001'].tasks['FARM.MILKING'].status!=='RUNNING';i++)state=reduce(state,{type:'TICK',seconds:1});
+ state=reduce(state,{type:'TICK',seconds:2});motion.update(state);const p=old.position.toArray(),rx=u.legs[0].thigh.rotation.x;
+ state=reduce(state,{type:'INCIDENT',lotId:'SIM-BOV-001',reason:'Test retained worker'});motion.update(state);assert.deepEqual(old.position.toArray(),p);assert.equal(u.legs[0].thigh.rotation.x,rx);assert.equal(motion.snapshot().people[0].status,'HELD');
+ state=reduce(state,{type:'TICK',seconds:10});motion.update(state);assert.deepEqual(old.position.toArray(),p);
+});

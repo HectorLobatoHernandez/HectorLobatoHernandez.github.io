@@ -9,7 +9,7 @@ const base=process.env.GAZA_URL||'http://127.0.0.1:4173',out=path.resolve('.qa/s
 const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});const checks=[],errors=[];
 try{
  const context=await browser.newContext({viewport:{width:1440,height:1000}});
- // Deterministic dependency delivery: exercise the real import map against the pinned npm package.
+ // Exercise the real import map against the pinned package.
  await context.route('https://cdn.jsdelivr.net/npm/three@0.180.0/**',async route=>{const rel=route.request().url().split('/three@0.180.0/')[1];if(!rel||rel.includes('..'))return route.abort();await route.fulfill({body:await fs.readFile(path.join(threeRoot,rel)),contentType:'text/javascript'})});
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('503'))errors.push(m.text())});
@@ -30,6 +30,7 @@ try{
  await page.locator('#importFile').setInputFiles({name:'qa-context.geojson',mimeType:'application/geo+json',buffer:Buffer.from(JSON.stringify(fixture))});await page.waitForFunction(()=>window.__GAZA_SITE_REAL__.buildings===1);const imported=await page.evaluate(()=>window.__GAZA_SITE_REAL__);assert.equal(imported.roads,1);assert(imported.geometryQA[0].max[2]<0,'North building must be north/negative-Z like the road');checks.push('GeoJSON-import/alignment');
  await page.route('https://overpass-api.de/**',r=>r.fulfill({status:503,contentType:'application/json',body:'{}'}));await page.locator('#load').click();await page.waitForFunction(()=>document.getElementById('status').textContent.includes('503'));assert.equal(await page.evaluate(()=>window.__GAZA_SITE_REAL__.buildings),1);checks.push('provider-failure-preserves-scene');
  await page.locator('#importFile').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{bad')});await page.waitForFunction(()=>document.getElementById('status').textContent.includes('rechazada'));assert.equal(await page.evaluate(()=>window.__GAZA_SITE_REAL__.buildings),1);checks.push('invalid-import-preserves-scene');
- await page.setViewportSize({width:390,height:844});await page.locator('#study').click();await page.waitForTimeout(350);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'06-mobile.png'),fullPage:true});checks.push('mobile/no-horizontal-overflow');
+ // On mobile the original study control is in the native inspector, not on the map.
+ await page.setViewportSize({width:390,height:844});await page.locator('#touchPanel').click();assert(await page.locator('#touchScenePanel').evaluate(d=>d.open));await page.locator('#study').click();await page.locator('#touchScenePanel .touch-dialog-head button').click();await page.waitForTimeout(350);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(out,'06-mobile.png'),fullPage:true});checks.push('mobile/no-horizontal-overflow');
  assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:true,checks,errors,render:initial.render,network:'Pinned Three.js; fixture/import tests, live OSM availability not tested'},null,2));console.log('SITE REAL BROWSER QA PASS',checks);
 }catch(error){await fs.writeFile(path.join(out,'report.json'),JSON.stringify({ok:false,checks,errors,error:String(error)},null,2));throw error}finally{await browser.close()}
