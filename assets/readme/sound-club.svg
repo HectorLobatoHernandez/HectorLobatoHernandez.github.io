@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="220" viewBox="0 0 480 220" role="img" aria-labelledby="title description">
+  <title id="title">SOUND CLUB</title>
+  <desc id="description">and restaurant · (CLUB del MAR) · Palma. CASO DE INTEGRACIÓN.</desc>
+  <rect x="0.5" y="0.5" width="479" height="219" rx="4" fill="#141918" stroke="#424a44"/>
+  <path d="M28 53H452M28 175H452" stroke="#424a44"/>
+  <text x="28" y="34" fill="#c9b995" font-family="monospace" font-size="11" letter-spacing="1.5">03 / AUDIOVISUAL</text>
+  <text x="28" y="107" fill="#f2efe4" font-family="Georgia,serif" font-size="38">SOUND CLUB</text>
+  <text x="28" y="139" fill="#bfc9c1" font-family="Arial,sans-serif" font-size="14">and restaurant · (CLUB del MAR) · Palma</text>
+  <text x="28" y="200" fill="#c9b995" font-family="monospace" font-size="10" letter-spacing="0.8">CASO DE INTEGRACIÓN</text>
+  <path d="M427 199L446 180M434 180H446V192" fill="none" stroke="#e6e0cc" stroke-width="1.5"/>
+</svg>

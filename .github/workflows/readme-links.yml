@@ -1,0 +1,65 @@
+name: README Links
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'README.md'
+      - 'assets/readme/**'
+      - 'tools/check_readme_links.py'
+      - '.github/workflows/readme-links.yml'
+      - 'index.html'
+      - 'cv/ats.html'
+      - 'cv/present.html'
+      - 'projects/*.html'
+      - 'apps/gaza/demostracion.html'
+      - 'apps/gaza/mission-control.html'
+      - 'apps/rhb/index.html'
+      - 'experience/index.html'
+      - 'docs/README_NAVIGATION.md'
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'assets/readme/**'
+      - 'tools/check_readme_links.py'
+      - '.github/workflows/readme-links.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: readme-links-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /README.md
+            /index.html
+            /assets/readme/
+            /tools/check_readme_links.py
+            /docs/*.md
+            /apps/gaza/*.html
+            /apps/gaza/*.md
+            /apps/rhb/index.html
+            /experience/index.html
+            /cv/*.html
+            /projects/*.html
+            /start/*.html
+      - name: Validate repository targets
+        run: python3 tools/check_readme_links.py
+      - name: Verify public links and audit previous README
+        if: github.event_name != 'pull_request'
+        run: python3 tools/check_readme_links.py --live --previous HEAD^
+      - name: Upload navigation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readme-links
+          path: .qa/readme-links.json
+          if-no-files-found: error
+          retention-days: 15
