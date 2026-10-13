@@ -10,7 +10,7 @@ replace('apps/gaza/runtime/living/scene.mjs','const update=()=>{const changed=re
 const site='apps/gaza/runtime/site-real-app.mjs';
 replace(site,"scene.background=new THREE.Color(night?'#172333'","if(!processState){scene.background=new THREE.Color(night?'#172333'");
 replace(site,"Math.cos(hour/24*Math.PI*2)*170);rain.visible=weather==='rain'","Math.cos(hour/24*Math.PI*2)*170);}else living?.update(true);rain.visible=weather==='rain'");
-replace(site,"living:living?.snapshot()||null,startup:","living:living?.snapshot()||null,lighting:{background:scene.background?.getHexString(),sunIntensity:sun.intensity},startup:");
+replace(site,"living:living?.snapshot()||null,state:","living:living?.snapshot()||null,lighting:{background:scene.background?.getHexString(),sunIntensity:sun.intensity},state:");
 const css='apps/gaza/runtime/mobile/mobile.css';
 replace(css,'grid-template-columns:145px minmax(0,1fr)','grid-template-columns:175px minmax(0,1fr)');
 replace(css,'grid-template-rows:42px minmax(0,1fr)','grid-template-rows:46px minmax(0,1fr)');
