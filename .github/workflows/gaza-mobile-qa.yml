@@ -1,0 +1,27 @@
+name: GAZA mobile and activity QA
+on:
+  push:
+    branches: [feat/gaza-mobile-motion-20261013]
+    paths: ['.github/workflows/gaza-mobile-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Archive reviewed source only
+        run: |
+          git rev-parse HEAD > /tmp/source-commit.txt
+          git archive --format=tar HEAD > /tmp/gaza-mobile-source.tar
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gaza-mobile-baseline
+          path: |
+            /tmp/gaza-mobile-source.tar
+            /tmp/source-commit.txt
+          retention-days: 2
