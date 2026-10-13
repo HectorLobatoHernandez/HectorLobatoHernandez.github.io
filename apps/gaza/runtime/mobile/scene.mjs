@@ -1,0 +1,33 @@
+import {MOBILE_QUERY,useMobile,pixelRatio,MOBILE_RELEASE} from './policy.mjs';
+const node=(tag,text,attrs={})=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);return e};
+/** Adapt an existing scene. Retain its camera, inspector, controls and state listeners. */
+export function mountMobileScene({T,kind,renderer,controls,mount,side,getState,onOverview,onDetail}){
+ const query=matchMedia(MOBILE_QUERY);let mobile=false,initialized=false,active=true;
+ const originMarker=document.createComment('inspector-original-position');side.before(originMarker);
+ const panel=node('dialog',null,{id:'touchScenePanel',class:'touch-dialog','aria-label':'Inspector del departamento'}),views=node('dialog',null,{id:'touchSceneViews',class:'touch-dialog','aria-label':'Vistas y herramientas'});
+ function body(dialog,title){const h=node('div',null,{class:'touch-dialog-head'}),c=node('button','Cerrar',{type:'button'});h.append(node('h2',title),c);dialog.append(h);c.onclick=()=>dialog.close();const b=node('div',null,{class:'touch-dialog-body'});dialog.append(b);document.body.append(dialog);dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientY<r.top||e.clientX<r.left)dialog.close()}});return b;}
+ const panelBody=body(panel,'Panel del departamento'),viewBody=body(views,'Cámaras y herramientas');
+ const tool=node('div',null,{id:'touchSceneTools',class:'touch-only','aria-label':'Controles táctiles del mapa'}),status=node('div',null,{id:'touchSceneStatus',class:'touch-only','aria-live':'off'});mount.append(tool,status);
+ function button(id,text,fn,label=text){const b=node('button',text,{type:'button',id,'aria-label':label});tool.append(b);b.onclick=fn;return b;}
+ const open=dialog=>{if(!dialog.open)dialog.showModal()};
+ const zoom=scale=>{const camera=controls.object;if(camera.isOrthographicCamera){camera.zoom=Math.max(.25,Math.min(12,camera.zoom/scale));camera.updateProjectionMatrix()}else{const offset=camera.position.clone().sub(controls.target),d=offset.length(),next=Math.max(controls.minDistance,Math.min(controls.maxDistance,d*scale));camera.position.copy(controls.target).add(offset.setLength(next))}controls.update();document.dispatchEvent(new CustomEvent('gaza-scene-invalidate'))};
+ button('touchPanel','Panel',()=>open(panel));button('touchViews','Vistas',()=>{fillViews();open(views)});button('touchZoomIn','+',()=>zoom(.8),'Acercar mapa');button('touchZoomOut','−',()=>zoom(1.25),'Alejar mapa');button('touchOverview','Centrar',()=>{onOverview();document.dispatchEvent(new CustomEvent('gaza-scene-invalidate'))},'Centrar el mapa completo');
+ function fillViews(){viewBody.replaceChildren(node('p','Un dedo: girar. Dos dedos: acercar y desplazar. Los botones + y − también controlan el zoom.',{class:'touch-gestures'}));
+  const stations=document.querySelectorAll('#steps button'),department=document.querySelector('#plantDepartment');
+  if(stations.length||department){const label=node('label','Ir directamente a un área'),select=node('select',null,{'aria-label':'Área a inspeccionar'});select.append(node('option','Selecciona un área',{value:''}));
+   if(department)for(const o of department.options)select.append(node('option',o.textContent,{value:o.value}));else stations.forEach((b,i)=>select.append(node('option',b.textContent,{value:String(i)})));
+   select.onchange=()=>{if(select.value==='')return;if(department){department.value=select.value;department.dispatchEvent(new Event('change'));document.querySelector('#plantEnter')?.click()}else{stations[Number(select.value)].click();document.querySelector(kind==='farm'?'#farmEnter':'#labZoom')?.click()}views.close()};label.append(select);viewBody.append(label);}
+  const grid=node('div',null,{class:'touch-actions'});const candidates=document.querySelectorAll('.farm-tools button,.lab-tools button,#viewTools button,#lifeCow,#lifeSheep,#lifeMilking,#lifeTruck,#livingCargo,#plantPlan,#plantEnter,#labZoom');
+  for(const existing of candidates){const b=node('button',existing.textContent,{type:'button'});b.disabled=existing.disabled;b.onclick=()=>{existing.click();views.close();document.dispatchEvent(new CustomEvent('gaza-scene-invalidate'))};grid.append(b)}viewBody.append(grid);
+  const activity=node('button','Ver actividad de todos los departamentos',{type:'button'});activity.onclick=()=>{views.close();if(parent!==window)parent.postMessage({type:'GAZA_MOBILE_ACTIVITY'},location.origin);else document.querySelector('[data-process-panel]')?.scrollIntoView()};viewBody.append(activity);
+ }
+ const update=()=>{mobile=useMobile(location.search,query.matches);document.body.classList.toggle('mobile-scene',mobile);document.body.dataset.mobileVersion=MOBILE_RELEASE;
+  if(mobile){panelBody.append(side);renderer.setPixelRatio(pixelRatio(true,devicePixelRatio));controls.touches.ONE=T.TOUCH.ROTATE;controls.touches.TWO=T.TOUCH.DOLLY_PAN;controls.rotateSpeed=.65;controls.panSpeed=.8;if(!initialized){initialized=true;onDetail?.()}}
+  else{panel.close();views.close();originMarker.after(side);renderer.setPixelRatio(pixelRatio(false,devicePixelRatio));}
+  window.dispatchEvent(new Event('resize'));document.dispatchEvent(new CustomEvent('gaza-scene-invalidate'));};
+ query.addEventListener('change',update);
+ const visibility=e=>{if(e.source===parent&&e.origin===location.origin&&e.data?.type==='GAZA_VIEW_VISIBILITY_V1'){active=!!e.data.active;if(active)document.dispatchEvent(new CustomEvent('gaza-scene-invalidate'))}};window.addEventListener('message',visibility);
+ let previous='';const timer=setInterval(()=>{if(!mobile||!active)return;const s=getState(),busy=s?Object.values(s.lots).flatMap(l=>Object.entries(l.tasks).filter(([,t])=>t.status==='RUNNING').map(([id])=>id)):[];const text=(kind==='farm'?'Granja':kind==='labs'?'Laboratorio':'Planta')+' · '+(s?.clock?.running?'En marcha':'En pausa')+' · SIM'+(busy.length?' · '+busy.length+' tareas':'');if(text!==previous){previous=text;status.textContent=text}const r=renderer.domElement.getBoundingClientRect();window.__GAZA_MOBILE_SCENE__={release:MOBILE_RELEASE,kind,active:mobile,visible:active,canvas:{width:r.width,height:r.height},pixelRatio:renderer.getPixelRatio(),inspectorOpen:panel.open,cameraDistance:controls.object.position.distanceTo(controls.target),cameraPosition:controls.object.position.toArray()};},400);
+ update();
+ return {get visible(){return active&&!document.hidden},get enabled(){return mobile},dispose(){clearInterval(timer);query.removeEventListener('change',update);window.removeEventListener('message',visibility);panel.close();views.close();originMarker.after(side);originMarker.remove();panel.remove();views.remove();tool.remove();status.remove()}};
+}

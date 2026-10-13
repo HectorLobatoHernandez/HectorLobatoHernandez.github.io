@@ -1,3 +1,4 @@
+import {mountMobileScene} from './mobile/scene.mjs';
 import {processStore} from './processes/store.mjs';
 import {mountLivingScene} from './living/scene.mjs';
 import {propagateMode} from './demo/session.mjs';
@@ -32,7 +33,7 @@ $('follow').onclick=()=>{if(mode!=='study')setMode('study');follow=!follow;$('fo
 $('cutaway').onchange=()=>{world.setCutaway($('cutaway').checked);dirty=true};$('labels').onchange=()=>{world.labels.visible=$('labels').checked;dirty=true};$('routes').onchange=()=>{world.routes.visible=$('routes').checked;dirty=true};
 function pauseUI(){$('pause').textContent=paused?'Reanudar':'Pausar';$('pause').setAttribute('aria-pressed',String(paused))}pauseUI();$('pause').onclick=()=>{paused=!paused;pauseUI();publish()};$('reset').onclick=()=>{world.moving.forEach((v,i)=>{v.elapsed=i?8:0;v.previousDistance=0});elapsed=0;world.update(0,{held:ledger?.held});dirty=true;publish()};
 const rainGeo=new THREE.BufferGeometry(),rainArray=new Float32Array(1500*3);for(let i=0;i<1500;i++){rainArray[i*3]=Math.sin(i*13.37)*155;rainArray[i*3+1]=(i*7.91)%90;rainArray[i*3+2]=Math.cos(i*8.37)*183}rainGeo.setAttribute('position',new THREE.BufferAttribute(rainArray,3));const rain=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:'#bed3df',size:.32,transparent:true,opacity:.65}));scene.add(rain);
-function ambience(){const hour=Number($('hour').value),night=hour<7||hour>19,weather=$('weather').value;$('hourLabel').textContent=String(hour).padStart(2,'0')+':00';scene.background=new THREE.Color(night?'#172333':weather==='clear'?'#aabfcb':'#8a9aa3');scene.fog=new THREE.Fog(scene.background,750,3600);sun.intensity=night?.23:weather==='clear'?3:1.4;sun.position.set(-160,night?35:180+Math.sin(hour/24*Math.PI)*80,Math.cos(hour/24*Math.PI*2)*170);rain.visible=weather==='rain';dirty=true;publish()}
+function ambience(){const hour=Number($('hour').value),night=hour<7||hour>19,weather=$('weather').value;$('hourLabel').textContent=String(hour).padStart(2,'0')+':00';if(!processState){scene.background=new THREE.Color(night?'#172333':weather==='clear'?'#aabfcb':'#8a9aa3');scene.fog=new THREE.Fog(scene.background,750,3600);sun.intensity=night?.23:weather==='clear'?3:1.4;sun.position.set(-160,night?35:180+Math.sin(hour/24*Math.PI)*80,Math.cos(hour/24*Math.PI*2)*170);}else living?.update(true);rain.visible=weather==='rain';dirty=true;publish()}
 $('hour').oninput=()=>{if(processState){const h=Number($('hour').value);processStore.dispatch({type:'LIVING_SETTINGS',environment:h<7||h>=20?'night':h>=18?'dusk':'day'}).catch(e=>$('status').textContent=e.message)}else ambience()};$('weather').onchange=ambience;
 function syncLedger(){try{ledger=readLedger(JSON.parse(localStorage.getItem(LEGACY_KEY)||'null'))}catch{ledger=null}$('ledger').textContent=ledger?`${processStore.scope.label}\n${ledger.lotId}\n${ledger.department} · ${ledger.status}\n${ledger.quality} · SIMULADO`:'Sin lote de Workflow. Circulación escénica autónoma; no son entregas reales.';dirty=true;publish()}
 addEventListener('storage',e=>{if(e.key===LEGACY_KEY)syncLedger()});addEventListener('focus',syncLedger);syncLedger();
@@ -50,21 +51,25 @@ let busy=false;
 $('load').onclick=async()=>{if(busy)return;busy=true;$('load').disabled=true;$('status').textContent='Consultando Overpass… (límite 30 s; sin reintentos automáticos)';const box='41.5163635,-5.6095288,41.5307365,-5.5903312',query=`[out:json][timeout:25];(way["highway"](${box});way["building"](${box}););out geom;`;try{const response=await fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query),{signal:AbortSignal.timeout(30000)});if(!response.ok)throw new Error('HTTP '+response.status);applyGeo(overpassToGeoJSON(await response.json()),'OSM_PUBLIC_REFERENCE')}catch(e){$('status').textContent='OSM no disponible: '+e.message+'. Se conserva lo que ya estaba cargado. Puedes importar GeoJSON local.'}finally{busy=false;$('load').disabled=false;publish()}};
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>10*1024*1024)throw new Error('Archivo mayor de 10 MB');applyGeo(JSON.parse(await f.text()),'IMPORTED_GEOJSON_SOURCE_TO_VALIDATE')}catch(err){$('status').textContent='Importación rechazada: '+err.message}finally{e.target.value=''}};
 $('export').onclick=()=>{if(!geo)return;const payload={...geo.original,siteReal:{anchor:ORIGIN,source:geo.source,geometryCRS:'EPSG:4326',renderAxes:'X_EAST_Y_UP_Z_SOUTH',derivedWidthsAndHeights:'INFERRED_NOT_SURVEYED',attribution:geo.source==='OSM_PUBLIC_REFERENCE'?'© OpenStreetMap contributors / ODbL':'See original file; source not verified'}},url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/geo+json'})),a=document.createElement('a');a.href=url;a.download='gaza-site-context.geojson';a.click();setTimeout(()=>URL.revokeObjectURL(url),500)};
-function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,startup:{...startup},processScope:processStore.scope.id,living:living?.snapshot()||null,state:startup.phase==='ready'?'ready':startup.phase,mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
+function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,startup:{...startup},processScope:processStore.scope.id,living:living?.snapshot()||null,lighting:{background:scene.background?.getHexString(),sunIntensity:sun.intensity},state:startup.phase==='ready'?'ready':startup.phase,mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
 // Bound visual work independently of ledger writes. A paused scene renders on demand.
 // Shader compilation is prepared asynchronously below; no readiness is published before a real draw.
-function frame(now){
+const mobile=mountMobileScene({T:THREE,kind:'site',renderer,controls,mount:$('viewport'),side:document.querySelector('aside'),getState:()=>processState,onOverview:()=>cameraTo('overview'),onDetail:()=>plantDetail.open('process')});
+ document.addEventListener('gaza-scene-invalidate',()=>dirty=true);
+ function frame(now){
  requestAnimationFrame(frame);
- if(document.hidden){last=now;return;}
+ if(!mobile.visible){last=now;return;}
  if(now-last<1000/30)return;
  const raw=Math.min(.08,(now-last)/1000);last=now;
  const dt=(!paused&&!frozen&&mode==='study')?raw*Number($('speed').value):0;elapsed+=dt;
+ if(processState?.clock.running&&!qa&&!frozen)dirty=true;
+ const displayState=living?.displayState()||processState;
  const processDt=processState?(processState.clock.running?dt*processState.clock.rate:0):dt;
  // UI handlers and the process observer invalidate the scene. Idle frames must not traverse
  // hundreds of machines and materials while another GAZA map is compiling/rendering.
  if(dirty||dt>0){
-  plantDetail.update();
-  world.update(processDt,{held:!!processError||(processView?processView.held:!!ledger?.held),process:processState?{state:processState,lotId:processStore.selected}:null});
+  plantDetail.update();if(displayState!==processState)plantDetail.animate(displayState);
+  world.update(processDt,{held:!!processError||(processView?processView.held:!!ledger?.held),process:processState?{state:displayState,lotId:processStore.selected}:null});
   living?.update();
   if(rain.visible&&dt){for(let i=1;i<rainArray.length;i+=3)rainArray[i]=(rainArray[i]-dt*35+90)%90;rainGeo.attributes.position.needsUpdate=true}
  }

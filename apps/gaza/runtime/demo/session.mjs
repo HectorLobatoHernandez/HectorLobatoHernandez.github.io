@@ -1,5 +1,5 @@
 /** Work and presentation use the same reducer, but NEVER the same persisted record. */
-export const RELEASE='gaza-live-20261012-v1';
+export const RELEASE='gaza-mobile-20261013-v1';
 export const DEMO_KEY='gaza:company-demo:processes:v1';
 export function sessionScope(search='') {
  const demo=new URLSearchParams(search).get('demo')==='company';

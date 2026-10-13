@@ -1,0 +1,17 @@
+{
+  "base": "0575cd2b3d5376185c250fe5494c35a75cdd5228",
+  "description": "Existing legacy expectation conflicts; not a passing visual test or waiver",
+  "preparationRun": 38448566549,
+  "artifact": 11838588652,
+  "unchangedFiles": {
+    "xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json": "dcad9f170e622ba2dda01c3cfc84f3018bffaa243f65e20d608fcd5714522dc8",
+    "cv/present.html": "4183f3909542697f4c1ce9022582b7322e1dbb4f5ad5e21d28ea1c600bed3b60",
+    "cv/tests/visual-qa.mjs": "e67a48fb63a24019328bdc0d7612ad43d3f611c7a2d054a3d73697b86cfa9461",
+    ".github/workflows/sound-club-visuals-qa.yml": "cf03620fd065ea7d95056ee905c53cba0de8f194072635aaf946d9b825139847"
+  },
+  "actualSoundProjectId": "SOUND_CLUB_CDM",
+  "legacySoundExpectedId": "MAR_SALADA_CDM",
+  "actualPresentationPalette": "OBSIDIAN_EDITORIAL",
+  "legacyPresentationExpectedPalette": "IVORY_ATLAS",
+  "testsWeakened": false
+}

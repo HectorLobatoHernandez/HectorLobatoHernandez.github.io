@@ -1,0 +1,27 @@
+import {MOBILE_QUERY,useMobile,PRIMARY_VIEWS,MOBILE_RELEASE} from './policy.mjs';
+const el=(tag,text,attrs={})=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n};
+/** Mobile shell reuses the real controls, rather than maintaining another operational UI/state. */
+export function mountMobileShell(show,store){
+ const media=matchMedia(MOBILE_QUERY),shell=document.querySelector('.shell'),top=document.querySelector('.top'),main=document.querySelector('.stage');let mobile=false;
+ const options=el('button','Opciones',{id:'touchOptions',class:'touch-only',type:'button','aria-haspopup':'dialog'});top.append(options);
+ const mini=el('section',null,{id:'touchMini',class:'touch-only','aria-label':'Estado y ejecución'});mini.innerHTML='<div class="touch-status"><span class="touch-time" id="touchClock">SIM</span><small id="touchTask">Escenario compartido</small></div><button id="touchActivity" type="button">Actividad</button><button id="touchRun" type="button">Iniciar</button>';main.before(mini);
+ const dialog=el('dialog',null,{id:'touchShellOptions',class:'touch-dialog','aria-label':'Opciones de GAZA OPS'});dialog.innerHTML='<div class="touch-dialog-head"><h2>GAZA OPS · móvil</h2><button id="touchOptionsClose" type="button">Cerrar</button></div><div class="touch-dialog-body"><p>Un mapa ocupa la pantalla. Los otros departamentos conservan su estado.</p><div id="touchControlSlot"></div><h3>Todos los módulos</h3><div id="touchMoreModules" class="touch-actions"></div><div id="touchTourSlot"></div><p id="touchVersion"></p><a href="../../start/mobile.html" target="_top">Otros proyectos · acceso móvil</a></div>';document.body.append(dialog);
+ document.getElementById('touchVersion').textContent=MOBILE_RELEASE+' · SIM, no telemetría';
+ const modules=store.scope.demo?[...PRIMARY_VIEWS]:[...PRIMARY_VIEWS,['territory','Territorio'],['gis','Cartografía'],['tower','Datos'],['systems','Integraciones']];
+ for(const[id,title]of modules){const b=el('button',title,{type:'button'});b.onclick=()=>{dialog.close();show(id)};document.getElementById('touchMoreModules').append(b)}
+ const placements=[];function move(id,target){const n=document.getElementById(id);if(!n)return;const marker=document.createComment(id+' home');n.before(marker);placements.push([n,marker]);target.append(n)}
+ options.onclick=()=>{if(dialog.open)return;move('livingSummary',document.getElementById('touchControlSlot'));move('companyDemoDock',document.getElementById('touchTourSlot'));dialog.showModal()};
+ dialog.addEventListener('close',()=>{for(const[n,m]of placements.splice(0)){m.after(n);m.remove()}options.focus()});document.getElementById('touchOptionsClose').onclick=()=>dialog.close();
+ document.getElementById('touchRun').onclick=()=>document.getElementById('livingRun').click();document.getElementById('touchActivity').onclick=()=>document.getElementById('livingDetails').click();
+ document.addEventListener('click',e=>{if(e.target.closest('#livingDetails')&&dialog.open)dialog.close()});
+ const brand=top.querySelector('.brand'),brandMarkup=brand.innerHTML;
+ const labels=new Map([...document.querySelectorAll('.tabs [data-view]')].map(b=>[b,b.textContent]));
+ function apply(){mobile=useMobile(location.search,media.matches);document.body.classList.toggle('mobile-shell',mobile);if(mobile)brand.textContent='GAZA OPS';else brand.innerHTML=brandMarkup;for(const[b,text]of labels)b.textContent=mobile?(PRIMARY_VIEWS.find(x=>x[0]===b.dataset.view)?.[1]||text):text;if(!mobile)dialog.close();if(mobile&&document.getElementById('matrixView').classList.contains('on'))show('site');document.body.dataset.mobileVersion=MOBILE_RELEASE;}
+ media.addEventListener('change',apply);apply();
+ const off=store.subscribe(({state,selected})=>{document.getElementById('touchRun').textContent=state?.clock.running?'Pausar':'Continuar';const h=document.getElementById('livingClock');document.getElementById('touchClock').textContent=h?.textContent||'SIM';document.getElementById('touchTask').textContent=(selected||'Sin lote')+' · '+(state?.clock.running?'En marcha':'En pausa');window.__GAZA_MOBILE_SHELL__={release:MOBILE_RELEASE,active:mobile,scope:store.scope.id,selected,normalWorkPreserved:true};});
+ const messages=e=>{if(e.origin!==location.origin||![...document.querySelectorAll('.pane iframe')].some(f=>f.contentWindow===e.source))return;if(e.data?.type==='GAZA_MOBILE_ACTIVITY')document.getElementById('livingDetails').click()};window.addEventListener('message',messages);
+ // Active views receive visibility after loading, not only after a later tab click.
+ const observer=new MutationObserver(()=>{for(const pane of document.querySelectorAll('.pane'))pane.querySelector('iframe').contentWindow?.postMessage({type:'GAZA_VIEW_VISIBILITY_V1',active:pane.classList.contains('on')},location.origin)});observer.observe(main,{attributes:true,subtree:true,attributeFilter:['class']});
+ for(const pane of document.querySelectorAll('.pane'))pane.querySelector('iframe').addEventListener('load',()=>pane.querySelector('iframe').contentWindow?.postMessage({type:'GAZA_VIEW_VISIBILITY_V1',active:pane.classList.contains('on')},location.origin));
+ return {dispose(){off();observer.disconnect();media.removeEventListener('change',apply);window.removeEventListener('message',messages);dialog.close();dialog.remove();mini.remove();options.remove()}};
+}

@@ -1,0 +1,19 @@
+/* Reading and navigation on the phone. Brand/content remain owned by each project. */
+@media screen and (max-width:760px){
+ html{scroll-padding-top:90px}body{min-width:0;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+ button,select,input:not([type=checkbox]):not([type=range]){min-height:44px;font-size:16px}
+ .dos-btn,.btn,.toolbar a,.toolbar button,.rhb-btn,.ms-btn{min-height:44px;font-size:14px;line-height:1.35}
+ .dos-nav .inner{height:auto;min-height:58px;flex-wrap:wrap;padding-block:8px;gap:8px}
+ .dos-nav nav{width:100%;margin-left:0;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:4px}
+ .dos-nav nav a,.dos-nav nav a:nth-child(n){display:inline-flex!important;align-items:center;min-height:44px;padding:4px 10px;font-size:13px}
+ .dos-shell{max-width:calc(100% - 28px);min-width:0}
+ .hero .lead,.project-copy>p,.cap p,.archive p,.method p,.fact,.ms-card p,.rhb-card p{font-size:15px;line-height:1.6}
+ .hero-index span,.plate-caption,.project-no,.ms-media-cap,.rhb-eyebrow,.ms-eyebrow{font-size:11px}
+ .hero-plate,.project-visual,.project-copy{min-width:0}
+ .toolbar{width:calc(100% - 24px)}.cv{width:calc(100% - 24px);padding:24px 18px}
+ .top .shell{flex-wrap:wrap;gap:8px;padding-block:8px}.top{height:auto;min-height:58px}
+ .nav{flex-wrap:wrap;gap:5px}.nav a:not(.primary),.nav a.primary{display:inline-flex;align-items:center;min-height:44px;font-size:13px}
+ .route a{font-size:15px;min-height:44px;display:inline-flex;align-items:center}.route p,.sector p,.mini p,.step span{font-size:14px}
+ .sectionHead,.launchPanel{min-width:0}.launchMain{position:relative}.shell{max-width:100%}
+ .project-links,.hero-actions{gap:8px}.project-links a{max-width:100%;overflow-wrap:anywhere}
+}
