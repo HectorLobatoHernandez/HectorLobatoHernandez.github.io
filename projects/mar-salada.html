@@ -8,7 +8,6 @@
 <title>Mar Salada / Club del Mar — Immersive Technical Presentation</title>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/css/project-atlas.css?v=1">
-<link rel="stylesheet" href="../assets/css/mar-salada-immersive-v3.css?v=1">
 </head>
 <body>
 <div id="projectAtlasRoot"></div>
@@ -49,12 +48,32 @@ window.PROJECT_ATLAS_DATA={
   {kind:"stills",title:"3D + construction sequences",detail:"Supplied visual archive for architecture, cabina, bars, subs and furniture.",status:"ARCHIVE READY"},
   {kind:"drawings",title:"CAD + system visuals",detail:"Public-safe diagrams backed by the project archive.",status:"PUBLIC SAFE"}
  ],
+ sourceArchive:{
+  package:"MAR SALADA / CLUB DEL MAR — supplied project archive",
+  title:"9 source groups / technical evidence chain",
+  intro:"This perspective view uses only actual file names from the supplied project archive. The depth arrangement is a navigation device; it does not represent room geometry.",
+  note:"The source package spans acoustics, installation, KNX, CAD, visual sequences, fabrication media and technical component documentation.",
+  stats:[
+   {value:"9",label:"source groups"},{value:"2",label:"MP4 masters"},{value:"KNX + GPA",label:"control sources"},{value:"DWG / reports",label:"technical docs"}
+  ],
+  boundary:"Passwords, KNX Secure material, commercial records and editable private automation files remain private.",
+  items:[
+   {type:"ACOUSTICS",name:"INFORME ACUSTICA.odt",role:"Acoustic diagnosis, reference RT values, treatment objectives and quantities.",status:"PREDICTED / SOURCE"},
+   {type:"INSTALLATION",name:"INFORME DE INSTALACIÓN(1).odt",role:"Suspended Ø48.3 mm audio/lighting structure, anchoring and resilient decoupling.",status:"INSTALLED"},
+   {type:"AUTOMATION",name:"PROYECTO KNX.zip",role:"ETS6 / Gira project material and KNX/DALI configuration archive.",status:"PRIVATE SOURCE"},
+   {type:"CAD",name:"PLANOS CAD PARA GPT.zip",role:"Architectural base, tube structure, suspension details and subwoofer-tower drawings.",status:"SOURCE"},
+   {type:"VIDEO",name:"CLUB_DEL_MAR_VIDEO_DOSSIER_01.mp4",role:"1920×1080 / 30 fps long-form 3D project presentation.",status:"MASTER"},
+   {type:"FABRICATION",name:"BARRA GRANDE.zip",role:"Bar, DJ booth, sub furniture, acoustic wall and custom furniture breakdown media.",status:"SOURCE"},
+   {type:"VISUAL",name:"71.zip",role:"71-project-image sequence supplied with the project.",status:"SOURCE"},
+   {type:"VISUAL",name:"002.zip",role:"Cabina exterior and additional project image sequence.",status:"SOURCE"},
+   {type:"TECHNICAL",name:"FICHAS TECNICAS E INFORMES.zip",role:"Component datasheets, installation reports, acoustic furniture and material documentation.",status:"SOURCE"}
+  ]
+ },
  boundary:"Estimated acoustic values are labelled as estimates. Passwords, KNX secure data, private commercial information and editable control-project files remain excluded.",
  prev:{href:"./index.html",label:"Project Atlas"},next:{href:"./casa-alain.html",label:"Casa Alain — Residential Cinema"},
  footer:"MAR SALADA / CLUB DEL MAR · source-backed immersive rebuild"
 };
 </script>
 <script src="../assets/js/project-atlas.js?v=1"></script>
-<script type="module" src="../assets/js/mar-salada-immersive-v3.js?v=1"></script>
 </body>
 </html>
