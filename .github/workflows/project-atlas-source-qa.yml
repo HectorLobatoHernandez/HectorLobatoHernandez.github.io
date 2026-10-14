@@ -1,0 +1,143 @@
+name: Project Atlas Source Archive QA
+on:
+  pull_request:
+    paths:
+      - 'projects/atlas-3d.html'
+      - 'projects/index.html'
+      - 'projects/mar-salada.html'
+      - 'projects/casa-alain.html'
+      - 'projects/can-furnet-club.html'
+      - 'projects/playa-soleil-bora-bora.html'
+      - 'projects/private-production-studio-canada.html'
+      - 'projects/private-production-studio-sta-eulalia.html'
+      - 'projects/acoustic-studio-italy.html'
+      - 'projects/private-producer-acoustic-concept.html'
+      - 'assets/css/project-atlas.css'
+      - 'assets/js/project-atlas.js'
+      - 'assets/css/atlas-3d.css'
+      - 'assets/js/atlas-3d.js'
+      - 'tools/project-atlas/**'
+      - '.github/workflows/project-atlas-source-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'projects/atlas-3d.html'
+      - 'projects/**.html'
+      - 'assets/css/project-atlas.css'
+      - 'assets/js/project-atlas.js'
+      - 'assets/css/atlas-3d.css'
+      - 'assets/js/atlas-3d.js'
+      - 'tools/project-atlas/**'
+permissions:
+  contents: read
+jobs:
+  source-atlas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Syntax and source-policy checks
+        run: |
+          node --check assets/js/project-atlas.js
+          node --check assets/js/atlas-3d.js
+          python3 -m py_compile tools/project-atlas/build_source_media.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, json
+
+          pages={
+            'projects/mar-salada.html':9,
+            'projects/casa-alain.html':8,
+            'projects/can-furnet-club.html':8,
+            'projects/playa-soleil-bora-bora.html':8,
+            'projects/private-production-studio-canada.html':8,
+            'projects/private-production-studio-sta-eulalia.html':8,
+            'projects/acoustic-studio-italy.html':8,
+            'projects/private-producer-acoustic-concept.html':6,
+          }
+          for p,count in pages.items():
+              s=Path(p).read_text(encoding='utf-8')
+              assert 'sourceArchive' in s,p
+              assert s.count('status:')+s.count('"status":') >= count,p
+              assert 'PROJECT_ATLAS_DATA' in s,p
+
+          mar=Path('projects/mar-salada.html').read_text(encoding='utf-8')
+          assert 'mar-salada-immersive-v3.js' not in mar
+          assert 'DIAGRAMMATIC 3D' not in mar
+          assert 'PROYECTO KNX.zip' in mar
+          assert 'CLUB_DEL_MAR_VIDEO_DOSSIER_01.mp4' in mar
+
+          a3=Path('projects/atlas-3d.html').read_text(encoding='utf-8')
+          assert 'NO GENERATED PROJECT IMAGERY' in a3
+          assert 'UI depth' in a3 or 'UI DEPTH' in a3
+          assert all(f'P0{i}' in a3 for i in range(1,9))
+
+          policy=Path('tools/project-atlas/build_source_media.py').read_text(encoding='utf-8')
+          assert 'Never generate synthetic project imagery' in policy
+          assert 'SOURCE_DERIVATIVES_ONLY_NO_GENERATED_PROJECT_IMAGERY' in policy
+
+          print('Source archive policy / page contracts PASS')
+          PY
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Serve
+        run: |
+          python3 -m http.server 4198 --directory . >/tmp/atlas-source-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4198/projects/atlas-3d.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/atlas-source-http.log
+          exit 1
+
+      - name: Browser smoke and interaction QA
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          const base='http://127.0.0.1:4198';
+          const paths=[
+            '/projects/atlas-3d.html',
+            '/projects/mar-salada.html',
+            '/projects/casa-alain.html',
+            '/projects/can-furnet-club.html',
+            '/projects/playa-soleil-bora-bora.html',
+            '/projects/private-production-studio-canada.html',
+            '/projects/private-production-studio-sta-eulalia.html',
+            '/projects/acoustic-studio-italy.html',
+            '/projects/private-producer-acoustic-concept.html'
+          ];
+          for(const path of paths){
+            const page=await browser.newPage({viewport:{width:1365,height:900}});
+            const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            const r=await page.goto(base+path,{waitUntil:'networkidle',timeout:30000});
+            if(!r?.ok())throw new Error(path+' HTTP '+r?.status());
+            const state=await page.evaluate(()=>({
+              overflow:document.documentElement.scrollWidth-innerWidth,
+              broken:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src),
+              source3d:window.__PROJECT_ATLAS_SOURCE3D__||null,
+              atlas3d:window.__PROJECT_ATLAS_3D__||null
+            }));
+            if(state.overflow>4)throw new Error(path+' horizontal overflow '+state.overflow);
+            if(state.broken.length)throw new Error(path+' broken images '+state.broken.join(','));
+            if(errors.length)throw new Error(path+' JS '+errors.join(' | '));
+            if(path.endsWith('atlas-3d.html')){
+              if(state.atlas3d?.projects!==8||state.atlas3d?.projectGeometry!==false)throw new Error('atlas3d contract mismatch');
+              await page.keyboard.press('ArrowRight');
+            }else{
+              if(!state.source3d?.mounted||state.source3d.geometryClaim!==false||state.source3d.sourceCount<6)throw new Error(path+' source3d contract mismatch');
+              const btn=page.locator('[data-source-jump]').first(); if(await btn.count())await btn.click();
+            }
+            await page.close();
+          }
+          await browser.close();
+          console.log('Project Atlas source-backed browser QA PASS');
+          JS
