@@ -27,12 +27,12 @@
 </tr>
 <tr>
 <td width="50%" valign="top">
-<a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><img src="assets/readme/sound-club.svg" width="100%" alt="SOUND CLUB and restaurant (CLUB del MAR), Palma de Mallorca — abrir caso de integración audiovisual"></a>
+<a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><img src="assets/projects/mar-salada/hero.webp" width="100%" alt="MAR SALADA / Club del Mar — frame real del proyecto, abrir caso de integración audiovisual"></a>
 <p><a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><strong>Explorar SOUND CLUB ↗</strong></a><br><sub>Acústica, audio, iluminación y automatización.</sub></p>
 </td>
 <td width="50%" valign="top">
-<a href="https://hectorlobatohernandez.github.io/projects/atlas-3d.html"><img src="assets/readme/experience.svg" width="100%" alt="Project Atlas 3D — índice navegable y source-backed de proyectos técnicos"></a>
-<p><a href="https://hectorlobatohernandez.github.io/projects/atlas-3d.html"><strong>Entrar al Project Atlas 3D ↗</strong></a><br><sub>Interfaz 3D basada en archivos reales; la profundidad es UI, no geometría inventada del proyecto.</sub></p>
+<a href="https://hectorlobatohernandez.github.io/projects/experience.html"><img src="assets/projects/casa-alain/hero.webp" width="100%" alt="Project Atlas visual 3D — proyectos reales y media source-backed"></a>
+<p><a href="https://hectorlobatohernandez.github.io/projects/experience.html"><strong>Entrar al Atlas visual 3D ↗</strong></a><br><sub>Imágenes reales y previews de vídeo source-backed; sin geometría inventada.</sub></p>
 </td>
 </tr>
 </table>
