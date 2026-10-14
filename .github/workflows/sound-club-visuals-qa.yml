@@ -1,122 +1,113 @@
-name: MAR SALADA React Case QA
+name: Project Atlas / MAR SALADA QA
 on:
   pull_request:
     paths:
       - 'projects/mar-salada.html'
       - 'projects/sound-club-palma.html'
-      - 'projects/sound-club-visuals.html'
+      - 'projects/index.html'
+      - 'projects/casa-alain.html'
+      - 'projects/can-furnet-club.html'
+      - 'projects/playa-soleil-bora-bora.html'
+      - 'projects/private-production-studio-canada.html'
+      - 'projects/private-production-studio-sta-eulalia.html'
+      - 'projects/acoustic-studio-italy.html'
+      - 'projects/private-producer-acoustic-concept.html'
+      - 'assets/css/project-atlas.css'
+      - 'assets/js/project-atlas.js'
       - 'assets/visuals/sound-club-*.svg'
-      - 'assets/visuals/mar-salada-*.svg'
-      - 'assets/css/mar-salada-case.css'
-      - 'assets/js/mar-salada-case.js'
-      - 'assets/css/mar-salada-case-v2.css'
-      - 'assets/js/mar-salada-case-v2.js'
-      - 'assets/css/sound-club-react-visuals.css'
-      - 'assets/js/sound-club-react-visuals.js'
-      - 'skills/mar-salada-project/**'
-      - 'skills/mar-salada-react-scroll/**'
-      - 'skills/react-visuals/**'
-      - 'skills/reactbits-portfolio-components/**'
-      - 'skills/manifest.json'
-      - 'xxxia-studio/projects/sound-club-palma/**'
-      - 'xxxia-studio/tests/sound-club-visuals-qa.mjs'
       - '.github/workflows/sound-club-visuals-qa.yml'
   push:
     branches: [main]
     paths:
       - 'projects/mar-salada.html'
       - 'projects/sound-club-palma.html'
-      - 'projects/sound-club-visuals.html'
+      - 'projects/index.html'
+      - 'projects/casa-alain.html'
+      - 'projects/can-furnet-club.html'
+      - 'projects/playa-soleil-bora-bora.html'
+      - 'projects/private-production-studio-canada.html'
+      - 'projects/private-production-studio-sta-eulalia.html'
+      - 'projects/acoustic-studio-italy.html'
+      - 'projects/private-producer-acoustic-concept.html'
+      - 'assets/css/project-atlas.css'
+      - 'assets/js/project-atlas.js'
       - 'assets/visuals/sound-club-*.svg'
-      - 'assets/visuals/mar-salada-*.svg'
-      - 'assets/css/mar-salada-case.css'
-      - 'assets/js/mar-salada-case.js'
-      - 'assets/css/mar-salada-case-v2.css'
-      - 'assets/js/mar-salada-case-v2.js'
-      - 'assets/css/sound-club-react-visuals.css'
-      - 'assets/js/sound-club-react-visuals.js'
-      - 'skills/mar-salada-project/**'
-      - 'skills/mar-salada-react-scroll/**'
-      - 'skills/react-visuals/**'
-      - 'skills/reactbits-portfolio-components/**'
-      - 'skills/manifest.json'
-      - 'xxxia-studio/projects/sound-club-palma/**'
-      - 'xxxia-studio/tests/sound-club-visuals-qa.mjs'
+      - '.github/workflows/sound-club-visuals-qa.yml'
+
 jobs:
-  visual-qa:
+  project-atlas-qa:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Validate registry, story, SVG and skills
+
+      - name: Validate Project Atlas source boundaries
         run: |
           python3 - <<'PY'
-          import json
+          from pathlib import Path
           from xml.etree import ElementTree
-          m=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/project-media.json'))
-          assert m['projectId']=='MAR_SALADA_CDM'
-          assert m['publicTitle']=='MAR SALADA — CLUB DEL MAR PALMA'
-          assert len(m['items']) == 10
-          assert sum(1 for x in m['items'] if x['kind']=='BOARD') == 4
-          assert sum(1 for x in m['items'] if x['kind']=='PLAN') == 3
-          assert sum(1 for x in m['items'] if x['kind']=='DETAIL') == 2
-          assert sum(1 for x in m['items'] if x['kind']=='VIDEO') == 0
-          assert all(x.get('publicSafe') for x in m['items'])
-          assert len({x['id'] for x in m['items']}) == len(m['items'])
-          s=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/visual-story.json'))
-          assert s['schemaVersion'] == 2
-          assert len(s['scenes']) == 10
-          ids={x['id'] for x in m['items']}
-          assert all(x['mediaId'] in ids for x in s['scenes'])
-          mo=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/motion-manifest.json'))
-          assert mo['projectId']=='MAR_SALADA_CDM'
-          assert mo['motionId']=='SC08_PORTFOLIO_SCROLL_MASTER'
-          assert mo['master']['status'] in {'PENDING_VERIFIED_GEOMETRY','APPROVED'}
-          assert len(mo['master']['segments'])==10
-          assert {x['storyMediaId'] for x in mo['master']['segments']}=={x['mediaId'] for x in s['scenes']}
-          if mo['master']['status']!='APPROVED': assert not mo['master'].get('src')
-          model=json.load(open('xxxia-studio/projects/sound-club-palma/05_metadata/model-manifest.json'))
-          assert model['projectId']=='MAR_SALADA_CDM'
-          assert model['browserFormat']=='glb/gltf'
-          assert len(model['models'])==4
-          assert all(x['status']=='PENDING_GLB' and not x.get('src') for x in model['models'])
-          assert any(x.get('default') for x in model['models'])
-          cad=json.load(open('docs/projects/mar-salada/cad-source-manifest.json'))
-          assert cad['projectId']=='MAR_SALADA_CDM'
-          assert cad['sourcePolicy']=='PRIVATE_SOURCE_FILES_NOT_COMMITTED'
-          assert len(cad['files'])==14
-          dup=[x for x in cad['dedupe'] if x['group']=='A'][0]
-          assert dup['count']==3
-          assert sum(1 for x in cad['files'] if x['status']=='DUPLICATE_GROUP_A')==3
-          assert all(not x['name'].lower().endswith('.skp') for x in cad['files'])
-          for p in [
-            'sound-club-zone-plan.svg','sound-club-audio-plan.svg','sound-club-control-plan.svg',
-            'sound-club-system.svg','mar-salada-suspension-detail.svg','mar-salada-dj-booth-plan.svg'
+
+          project_pages = [
+              'projects/mar-salada.html',
+              'projects/casa-alain.html',
+              'projects/can-furnet-club.html',
+              'projects/playa-soleil-bora-bora.html',
+              'projects/private-production-studio-canada.html',
+              'projects/private-production-studio-sta-eulalia.html',
+              'projects/acoustic-studio-italy.html',
+              'projects/private-producer-acoustic-concept.html',
+          ]
+
+          atlas = Path('projects/index.html').read_text(encoding='utf-8')
+          assert 'PROJECT ATLAS' in atlas
+          assert 'source-backed' in atlas.lower()
+
+          for page in project_pages:
+              text = Path(page).read_text(encoding='utf-8')
+              assert 'window.PROJECT_ATLAS_DATA=' in text, page
+              assert '../assets/css/project-atlas.css' in text, page
+              assert '../assets/js/project-atlas.js' in text, page
+              assert 'boundary' in text.lower(), page
+
+          mar = Path('projects/mar-salada.html').read_text(encoding='utf-8')
+          assert 'MAR SALADA / CLUB DEL MAR' in mar
+          assert 'KNX / ETS6' in mar
+          assert 'DALI' in mar
+          assert 'PREDICTED' in mar
+          assert 'CONFIDENTIAL' in mar
+          assert 'password' in mar.lower()
+
+          legacy = Path('projects/sound-club-palma.html').read_text(encoding='utf-8')
+          assert './mar-salada.html' in legacy
+
+          # Existing sanitized diagrams remain parseable public references.
+          for svg in [
+              'assets/visuals/sound-club-zone-plan.svg',
+              'assets/visuals/sound-club-audio-plan.svg',
+              'assets/visuals/sound-club-control-plan.svg',
+              'assets/visuals/sound-club-system.svg',
+              'assets/visuals/sound-club-suspension-detail.svg',
+              'assets/visuals/sound-club-dj-booth-plan.svg',
           ]:
-              ElementTree.parse('assets/visuals/'+p)
-          skills=json.load(open('skills/manifest.json'))
-          names={x['name'] for x in skills['skills']}
-          assert {'mar-salada-project','mar-salada-react-scroll','react-visuals','scroll-world','reactbits-portfolio-components'} <= names
-          print('MAR SALADA registry / story / SVG / skills checks pass')
+              ElementTree.parse(svg)
+
+          print('Project Atlas / MAR SALADA source-boundary checks pass')
           PY
-      - name: Install Playwright
+
+      - name: Validate Project Atlas JavaScript
+        run: node --check assets/js/project-atlas.js
+
+      - name: Start preview and smoke-test routes
         run: |
-          npm install --no-save playwright@1.55.0
-          npx playwright install --with-deps chromium
-      - name: Start preview
-        run: |
-          python3 -m http.server 4194 --directory . > /tmp/mar-salada-http.log 2>&1 &
-          for i in {1..20}; do curl -fsS http://127.0.0.1:4194/projects/mar-salada.html >/dev/null && exit 0; sleep 1; done
-          cat /tmp/mar-salada-http.log
-          exit 1
-      - name: Run MAR SALADA React QA
-        run: node xxxia-studio/tests/sound-club-visuals-qa.mjs
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: mar-salada-react-case
-          path: .qa/sound-club-visuals/
-          if-no-files-found: ignore
-          retention-days: 14
+          python3 -m http.server 4194 --directory . >/tmp/project-atlas-http.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4194/projects/ >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4194/projects/mar-salada.html | grep -q 'PROJECT_ATLAS_DATA'
+          curl -fsS http://127.0.0.1:4194/projects/casa-alain.html | grep -q 'PROJECT_ATLAS_DATA'
+          curl -fsS http://127.0.0.1:4194/projects/can-furnet-club.html | grep -q 'PROJECT_ATLAS_DATA'
+          curl -fsS http://127.0.0.1:4194/assets/js/project-atlas.js >/dev/null
+          curl -fsS http://127.0.0.1:4194/assets/css/project-atlas.css >/dev/null

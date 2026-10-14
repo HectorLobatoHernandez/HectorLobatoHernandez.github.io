@@ -27,8 +27,8 @@
 </tr>
 <tr>
 <td width="50%" valign="top">
-<a href="https://hectorlobatohernandez.github.io/projects/sound-club-palma.html"><img src="assets/readme/sound-club.svg" width="100%" alt="SOUND CLUB and restaurant (CLUB del MAR), Palma de Mallorca — abrir caso de integración audiovisual"></a>
-<p><a href="https://hectorlobatohernandez.github.io/projects/sound-club-palma.html"><strong>Explorar SOUND CLUB ↗</strong></a><br><sub>Acústica, audio, iluminación y automatización.</sub></p>
+<a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><img src="assets/readme/sound-club.svg" width="100%" alt="SOUND CLUB and restaurant (CLUB del MAR), Palma de Mallorca — abrir caso de integración audiovisual"></a>
+<p><a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><strong>Explorar SOUND CLUB ↗</strong></a><br><sub>Acústica, audio, iluminación y automatización.</sub></p>
 </td>
 <td width="50%" valign="top">
 <a href="https://hectorlobatohernandez.github.io/experience/"><img src="assets/readme/experience.svg" width="100%" alt="Experiencia 3D — abrir el prototipo en desarrollo del recorrido inmersivo por los proyectos"></a>
@@ -36,6 +36,10 @@
 </td>
 </tr>
 </table>
+
+### Project Atlas técnico
+
+[**Abrir Project Atlas**](https://hectorlobatohernandez.github.io/projects/) · [**Casa Alain**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**Studio Canada**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
 
 ### Otros proyectos
 
