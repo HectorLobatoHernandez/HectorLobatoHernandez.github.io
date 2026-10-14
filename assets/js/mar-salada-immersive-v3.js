@@ -13,7 +13,7 @@ const pick=(id,fallbackSrc=fallback)=>byId(id)?.src||fallbackSrc;
 const html=document.createElement('section');
 html.className='msi-wrap';
 html.id='virtual';
-html.innerHTML=\`
+html.innerHTML=`
 <div class="msi-shell">
   <div class="msi-head">
     <div><p class="msi-kicker">VIRTUAL TECHNICAL PRESENTATION / V1</p><h2>Space, systems, sound.</h2></div>
@@ -84,7 +84,7 @@ html.innerHTML=\`
 <div class="msi-shell msi-cta">
   <div><p class="msi-kicker">NEXT MEDIA PASS</p><h2>Source models → web derivatives.</h2><p>The next build step is to publish optimized derivatives of the user-supplied videos and SketchUp/CAD sources, then replace the diagrammatic model with a browser-safe GLB where the geometry passes QA.</p></div>
   <div class="msi-actions"><a class="msi-btn primary" href="#systems">Technical case ↑</a><a class="msi-btn" href="./index.html">Project Atlas ↗</a></div>
-</div>\`;
+</div>`;
 const anchor=host.querySelector('.pa-section');
 if(anchor)host.insertBefore(html,anchor);else host.appendChild(html);
 
