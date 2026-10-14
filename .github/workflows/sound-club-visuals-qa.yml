@@ -1,45 +1,33 @@
-name: Project Atlas / MAR SALADA QA
+name: Project Atlas / real source media QA
 on:
   pull_request:
     paths:
-      - 'projects/mar-salada.html'
-      - 'projects/sound-club-palma.html'
-      - 'projects/index.html'
-      - 'projects/casa-alain.html'
-      - 'projects/can-furnet-club.html'
-      - 'projects/playa-soleil-bora-bora.html'
-      - 'projects/private-production-studio-canada.html'
-      - 'projects/private-production-studio-sta-eulalia.html'
-      - 'projects/acoustic-studio-italy.html'
-      - 'projects/private-producer-acoustic-concept.html'
+      - 'projects/**'
+      - 'assets/projects/**'
       - 'assets/css/project-atlas.css'
+      - 'assets/css/project-source-room.css'
       - 'assets/js/project-atlas.js'
-      - 'assets/css/mar-salada-immersive-v3.css'
-      - 'assets/js/mar-salada-immersive-v3.js'
-      - 'assets/visuals/sound-club-*.svg'
+      - 'assets/js/project-source-room.js'
+      - 'index.html'
+      - 'cv/dossier.html'
+      - 'README.md'
       - '.github/workflows/sound-club-visuals-qa.yml'
   push:
     branches: [main]
     paths:
-      - 'projects/mar-salada.html'
-      - 'projects/sound-club-palma.html'
-      - 'projects/index.html'
-      - 'projects/casa-alain.html'
-      - 'projects/can-furnet-club.html'
-      - 'projects/playa-soleil-bora-bora.html'
-      - 'projects/private-production-studio-canada.html'
-      - 'projects/private-production-studio-sta-eulalia.html'
-      - 'projects/acoustic-studio-italy.html'
-      - 'projects/private-producer-acoustic-concept.html'
+      - 'projects/**'
+      - 'assets/projects/**'
       - 'assets/css/project-atlas.css'
+      - 'assets/css/project-source-room.css'
       - 'assets/js/project-atlas.js'
-      - 'assets/css/mar-salada-immersive-v3.css'
-      - 'assets/js/mar-salada-immersive-v3.js'
-      - 'assets/visuals/sound-club-*.svg'
+      - 'assets/js/project-source-room.js'
+      - 'index.html'
+      - 'cv/dossier.html'
+      - 'README.md'
       - '.github/workflows/sound-club-visuals-qa.yml'
 
 jobs:
-  project-atlas-qa:
+  project-atlas-real-source-qa:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,76 +35,86 @@ jobs:
         with:
           node-version: 24
 
-      - name: Validate Project Atlas source boundaries
+      - name: Validate real-source Project Atlas
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          from xml.etree import ElementTree
 
-          project_pages = [
-              'projects/mar-salada.html',
-              'projects/casa-alain.html',
-              'projects/can-furnet-club.html',
-              'projects/playa-soleil-bora-bora.html',
-              'projects/private-production-studio-canada.html',
-              'projects/private-production-studio-sta-eulalia.html',
-              'projects/acoustic-studio-italy.html',
-              'projects/private-producer-acoustic-concept.html',
+          pages = [
+            'projects/mar-salada.html',
+            'projects/casa-alain.html',
+            'projects/can-furnet-club.html',
+            'projects/playa-soleil-bora-bora.html',
+            'projects/private-production-studio-canada.html',
+            'projects/private-production-studio-london.html',
+            'projects/acoustic-studio-italy.html',
+            'projects/private-producer-acoustic-concept.html',
+          ]
+          assets = [
+            'assets/projects/mar-salada/source.webp',
+            'assets/projects/casa-alain/source.webp',
+            'assets/projects/casa-alain/preview.mp4',
+            'assets/projects/can-furnet/source.webp',
+            'assets/projects/playa-soleil/source.webp',
+            'assets/projects/studio-canada/source.webp',
+            'assets/projects/studio-london/source.webp',
+            'assets/projects/studio-italy/source.webp',
+            'assets/projects/producer-concept/source.webp',
           ]
 
           atlas = Path('projects/index.html').read_text(encoding='utf-8')
           assert 'PROJECT ATLAS' in atlas
-          assert 'source-backed' in atlas.lower()
+          assert 'private-production-studio-london.html' in atlas
+          assert 'private-production-studio-sta-eulalia.html' not in atlas
+          assert 'source.webp' in atlas
 
-          for page in project_pages:
-              text = Path(page).read_text(encoding='utf-8')
-              assert 'window.PROJECT_ATLAS_DATA=' in text, page
-              assert '../assets/css/project-atlas.css' in text, page
-              assert '../assets/js/project-atlas.js' in text, page
-              assert 'boundary' in text.lower(), page
+          for page in pages:
+            text=Path(page).read_text(encoding='utf-8')
+            assert 'window.PROJECT_ATLAS_DATA=' in text, page
+            assert 'window.PROJECT_SOURCE_MEDIA=' in text, page
+            assert 'project-source-room.css' in text, page
+            assert 'project-source-room.js' in text, page
+            assert 'boundary' in text.lower(), page
 
-          mar = Path('projects/mar-salada.html').read_text(encoding='utf-8')
+          mar=Path('projects/mar-salada.html').read_text(encoding='utf-8')
           assert 'MAR SALADA / CLUB DEL MAR' in mar
-          assert 'KNX / ETS6' in mar
-          assert 'DALI' in mar
-          assert 'PREDICTED' in mar
-          assert 'CONFIDENTIAL' in mar
-          assert 'password' in mar.lower()
+          assert 'KNX / ETS6' in mar and 'DALI' in mar
+          assert 'mar-salada-immersive-v3' not in mar
+          assert 'DIAGRAMMATIC_3D' not in mar
 
-          legacy = Path('projects/sound-club-palma.html').read_text(encoding='utf-8')
-          assert './mar-salada.html' in legacy
+          assert not Path('assets/css/mar-salada-immersive-v3.css').exists()
+          assert not Path('assets/js/mar-salada-immersive-v3.js').exists()
 
-          # Existing sanitized diagrams remain parseable public references.
-          for svg in [
-              'assets/visuals/sound-club-zone-plan.svg',
-              'assets/visuals/sound-club-audio-plan.svg',
-              'assets/visuals/sound-club-control-plan.svg',
-              'assets/visuals/sound-club-system.svg',
-              'assets/visuals/sound-club-suspension-detail.svg',
-              'assets/visuals/sound-club-dj-booth-plan.svg',
-          ]:
-              ElementTree.parse(svg)
+          london=Path('projects/private-production-studio-london.html').read_text(encoding='utf-8')
+          assert 'London' in london and 'Santa Eulalia' not in london
+          legacy=Path('projects/private-production-studio-sta-eulalia.html').read_text(encoding='utf-8')
+          assert 'private-production-studio-london.html' in legacy
 
-          print('Project Atlas / MAR SALADA source-boundary checks pass')
+          for asset in assets:
+            p=Path(asset)
+            assert p.exists() and p.stat().st_size>100, asset
+
+          source_js=Path('assets/js/project-source-room.js').read_text(encoding='utf-8')
+          assert "REAL_SOURCE_MEDIA_ONLY" in source_js
+          assert "UI_ONLY_NOT_PROJECT_GEOMETRY" in source_js
+
+          print('REAL SOURCE PROJECT ATLAS checks pass')
           PY
 
-      - name: Validate Project Atlas JavaScript
+      - name: JavaScript syntax
         run: |
           node --check assets/js/project-atlas.js
-          node --check assets/js/mar-salada-immersive-v3.js
-          grep -q 'mar-salada-immersive-v3.css' projects/mar-salada.html
-          grep -q 'mar-salada-immersive-v3.js' projects/mar-salada.html
-          grep -q 'VIRTUAL TECHNICAL PRESENTATION' assets/js/mar-salada-immersive-v3.js
+          node --check assets/js/project-source-room.js
 
-      - name: Start preview and smoke-test routes
+      - name: Static route smoke test
         run: |
           python3 -m http.server 4194 --directory . >/tmp/project-atlas-http.log 2>&1 &
           for i in {1..20}; do
-            if curl -fsS http://127.0.0.1:4194/projects/ >/dev/null; then break; fi
+            curl -fsS http://127.0.0.1:4194/projects/ >/dev/null && break
             sleep 1
           done
-          curl -fsS http://127.0.0.1:4194/projects/mar-salada.html | grep -q 'PROJECT_ATLAS_DATA'
-          curl -fsS http://127.0.0.1:4194/projects/casa-alain.html | grep -q 'PROJECT_ATLAS_DATA'
-          curl -fsS http://127.0.0.1:4194/projects/can-furnet-club.html | grep -q 'PROJECT_ATLAS_DATA'
-          curl -fsS http://127.0.0.1:4194/assets/js/project-atlas.js >/dev/null
-          curl -fsS http://127.0.0.1:4194/assets/css/project-atlas.css >/dev/null
+          for p in mar-salada casa-alain can-furnet-club playa-soleil-bora-bora private-production-studio-canada private-production-studio-london acoustic-studio-italy private-producer-acoustic-concept; do
+            curl -fsS "http://127.0.0.1:4194/projects/$p.html" | grep -q 'PROJECT_SOURCE_MEDIA'
+          done
+          curl -fsS http://127.0.0.1:4194/assets/projects/casa-alain/preview.mp4 >/dev/null
+          curl -fsS http://127.0.0.1:4194/assets/projects/mar-salada/source.webp >/dev/null
