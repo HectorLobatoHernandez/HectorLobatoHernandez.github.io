@@ -39,7 +39,7 @@ document.querySelectorAll('.pa-reveal').forEach(el=>io.observe(el));
 const stage=document.getElementById('paStage');
 if(stage&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
  let raf=0,rx=0,ry=0;
- const paint=()=>{raf=0;stage.querySelectorAll('.pa-stage-card').forEach((el,i)=>{const m=i===1?1:i===0?.45:.28;el.style.translate=(rx*m)+'px '+(ry*m)+'px';});};
+ const paint=()=>{raf=0;stage.querySelectorAll('.pa-stage-card').forEach((el,i)=>{const m=i===1?1:(i===0 ? .45 : .28);el.style.translate=(rx*m)+'px '+(ry*m)+'px';});};
  stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();rx=(e.clientX-r.left-r.width/2)/r.width*20;ry=(e.clientY-r.top-r.height/2)/r.height*14;if(!raf)raf=requestAnimationFrame(paint)});
  stage.addEventListener('pointerleave',()=>{rx=ry=0;if(!raf)raf=requestAnimationFrame(paint)});
 }
