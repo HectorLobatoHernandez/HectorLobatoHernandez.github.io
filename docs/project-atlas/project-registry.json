@@ -21,7 +21,8 @@
       "Do not expose private client identities where permission is not established.",
       "Do not present predictions or design values as measured final performance.",
       "Do not present interface depth or card placement as real project geometry.",
-      "Public image/video derivatives must be direct transforms of supplied source files and keep SHA-256 provenance."
+      "Public image/video derivatives must be direct transforms of supplied source files and keep SHA-256 provenance.",
+      "The public Atlas may use motion derivatives created only from supplied project imagery; these are labelled as derivatives, not original project videos."
     ],
     "mediaPipeline": "tools/project-atlas/build_source_media.py"
   },
@@ -58,7 +59,11 @@
         "71.zip",
         "002.zip",
         "FICHAS TECNICAS E INFORMES.zip"
-      ]
+      ],
+      "hero": "/assets/projects/mar-salada/hero.webp",
+      "heroClass": "USER_SUPPLIED_VIDEO_FRAME",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/83784906-1708-45a3-a436-d4ee93de6f77.mp4",
+      "reelClass": "SOURCE_FRAME_DERIVATIVE"
     },
     {
       "id": "P02",
@@ -88,7 +93,11 @@
         "acustica finalizada/1.png … 26.png",
         "I_06_ELECTRICIDAD_CASA ALAIN_page-0001.jpg",
         "FICHAS TEC.pdf"
-      ]
+      ],
+      "hero": "/assets/projects/casa-alain/hero.webp",
+      "heroClass": "USER_SUPPLIED_FINAL_RENDER",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/8f05102f-accf-43b5-a803-5de46d74ce17.mp4",
+      "reelClass": "SOURCE_RENDER_DERIVATIVE"
     },
     {
       "id": "P03",
@@ -119,7 +128,11 @@
         "CABLEADO/ESQUEMA CABLEADO AUDIO1…7.pdf",
         "Nueva carpeta/LAYER 1.png … LAYER 5.png",
         "REMODELACION FINAL/RENDER 1.png … 14.png"
-      ]
+      ],
+      "hero": "/assets/projects/can-furnet/hero.webp",
+      "heroClass": "USER_SUPPLIED_PROJECT_RENDER",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/69c07769-56f0-49f4-9276-7ed4e40987d0.mp4",
+      "reelClass": "SOURCE_RENDER_DERIVATIVE"
     },
     {
       "id": "P04",
@@ -150,7 +163,11 @@
         "20220815 Bora Bora Ibiza-Plano - 01 - plano de la 1ª planta.dwg",
         "PLAYA SOLEIL, ZONA 1 _2_3_&_4 DISEÑO ACUSTICO Y SONORO.skp",
         "FOTOS ZONA CLUB CON L-Acoustics/*.jpeg"
-      ]
+      ],
+      "hero": "/assets/projects/playa-soleil/hero.webp",
+      "heroClass": "USER_SUPPLIED_FIELD_PHOTO",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/9180c534-ce64-42cb-9e76-83117a61b178.mp4",
+      "reelClass": "FIELD_RENDER_ARCHIVE_DERIVATIVE"
     },
     {
       "id": "P05",
@@ -180,7 +197,11 @@
         "SKETCHUP/001.png … 031.png",
         "segunda fase/01.png … 16.png",
         "Imagen de WhatsApp 2025-04-25 … .jpg"
-      ]
+      ],
+      "hero": "/assets/projects/studio-canada/hero.webp",
+      "heroClass": "USER_SUPPLIED_STUDIO_RENDER",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/c070a62a-198a-42ca-a4e1-4b551c1bc906.mp4",
+      "reelClass": "SOURCE_RENDER_DERIVATIVE"
     },
     {
       "id": "P06",
@@ -211,7 +232,11 @@
         "Imagenes estudio antiguas/*.jpeg",
         "renders ANTIGUO UNDERS/*.layout",
         "BUDGET + MATERIAL.pdf"
-      ]
+      ],
+      "hero": "/assets/projects/studio-sta-eulalia/hero.webp",
+      "heroClass": "USER_SUPPLIED_VRAY_RENDER",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/a3c37346-1123-4f13-a954-dc8273601c30.mp4",
+      "reelClass": "SOURCE_VRAY_DERIVATIVE"
     },
     {
       "id": "P07",
@@ -242,7 +267,11 @@
         "RENDERS/1.png … 24.png",
         "VIDEO-2025-06-03-20-15-54.mp4",
         "Sin título 1.odt"
-      ]
+      ],
+      "hero": "/assets/projects/studio-italy/hero.webp",
+      "heroClass": "USER_SUPPLIED_PROJECT_RENDER",
+      "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/406a55b6-a402-43a6-8d5c-52e14f8203f1.mp4",
+      "reelClass": "SOURCE_RENDER_DERIVATIVE"
     },
     {
       "id": "P08",
@@ -271,7 +300,11 @@
         "PREPROYECTO ACUSTICO I(NGLÉS).odt",
         "PREPROYECTO ACUSTICO español.odt",
         "PREPROYECTO ACUSTICO.odt"
-      ]
+      ],
+      "hero": null,
+      "heroClass": "NO_PUBLIC_VISUAL_CONFIDENTIAL",
+      "reel": null,
+      "reelClass": "NO_PUBLIC_VIDEO_SOURCE"
     }
   ],
   "connectedSystems": [
