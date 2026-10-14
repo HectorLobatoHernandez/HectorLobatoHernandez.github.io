@@ -14,6 +14,8 @@ on:
       - 'projects/private-producer-acoustic-concept.html'
       - 'assets/css/project-atlas.css'
       - 'assets/js/project-atlas.js'
+      - 'assets/css/mar-salada-immersive-v3.css'
+      - 'assets/js/mar-salada-immersive-v3.js'
       - 'assets/visuals/sound-club-*.svg'
       - '.github/workflows/sound-club-visuals-qa.yml'
   push:
@@ -31,6 +33,8 @@ on:
       - 'projects/private-producer-acoustic-concept.html'
       - 'assets/css/project-atlas.css'
       - 'assets/js/project-atlas.js'
+      - 'assets/css/mar-salada-immersive-v3.css'
+      - 'assets/js/mar-salada-immersive-v3.js'
       - 'assets/visuals/sound-club-*.svg'
       - '.github/workflows/sound-club-visuals-qa.yml'
 
@@ -97,7 +101,12 @@ jobs:
           PY
 
       - name: Validate Project Atlas JavaScript
-        run: node --check assets/js/project-atlas.js
+        run: |
+          node --check assets/js/project-atlas.js
+          node --check assets/js/mar-salada-immersive-v3.js
+          grep -q 'mar-salada-immersive-v3.css' projects/mar-salada.html
+          grep -q 'mar-salada-immersive-v3.js' projects/mar-salada.html
+          grep -q 'VIRTUAL TECHNICAL PRESENTATION' assets/js/mar-salada-immersive-v3.js
 
       - name: Start preview and smoke-test routes
         run: |
