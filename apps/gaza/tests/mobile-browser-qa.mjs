@@ -9,7 +9,7 @@ if(publicRun){let ready=false;for(let i=0;i<40;i++){try{const r=await fetch(base
 const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']}),checks=[],errors=[];let page;
 try{
  const ctx=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});page=await ctx.newPage();page.on('pageerror',e=>errors.push(e.message));
- await page.goto(base+'/operations-thread.html?qa=1');await page.locator('[data-process-panel] #start').click();const normal=await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2'));
+ await page.goto(base+'/operations-thread.html?qa=1');await page.locator('[data-process-panel] #start').click();await page.waitForFunction(()=>window.__GAZA_PROCESS_STATE__?.schemaVersion===2);const normal=await page.evaluate(()=>localStorage.getItem('gaza:process-ledger:v2'));
  await page.goto(origin+'/start/mobile.html');await page.locator('#mobile-gaza-entry').tap();await page.waitForURL('**/mission-control.html?**');
  async function frameFor(part){for(let i=0;i<300;i++){const f=page.frames().find(f=>f.url().includes(part));if(f)return f;await page.waitForTimeout(50)}throw Error('Missing frame '+part)}
  const farm=await frameFor('mode=farm');await farm.waitForFunction(()=>window.__GAZA_FARM_DETAIL__?.render.calls>0&&window.__GAZA_MOBILE_SCENE__?.active,null,{timeout:90000});

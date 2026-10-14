@@ -94,3 +94,24 @@ The same application must adapt to phones: no scaled desktop layout, no secondar
 - Keep mobile DPR bounded. Pause rendering of inactive maps but preserve their ledger listeners. Never call a headless emulation a tested physical iPhone/Android. Verify both orientations, inspector close/reopen, normal record integrity and screenshot readability.
 - `start/mobile.html` is a launcher, not another app. Shared reading CSS is opt-in on public project pages; never apply GAZA colours or data to other projects.
 - Smooth motion interpolates only a read-only copy for display, with bounded lookahead. The reducer remains the sole writer. Held/unavailable tasks cannot be visually completed. People on available-duty rounds and cars without cargo are labelled SIM; they are not production, delivery, staff-location or attendance data. Respect the existing synthetic shifts and quality gates.
+
+## 8. Presentation-first interaction contract
+
+GAZA OPS must be understandable in less than 30 seconds on desktop and phone. Keep five permanent actions available in the active 3D scene: **Interior/tejados, Vista general, Actividad, Noche/Automático and Panel**. On mobile these are touch controls over the full-size map; on desktop they are quick actions in Mission Control. Never require hunting through a technical inspector merely to remove a roof.
+
+Show two clocks without conflating them: **Hora España** is a wall-clock reference using Europe/Madrid, synchronized from a public time service when available and falling back visibly to the device/IANA clock; **SIM** is the process clock that drives compressed task durations. A deliberate “Alinear horario SIM con España” action may change only the scenario start minute, preserving elapsed task time, material, samples and approvals. The wall clock must never tick litres or complete work.
+
+## 9. Visible operational choreography
+
+Every primary module should look active for a reason:
+
+- **Farm:** representative outdoor animals may wander slowly from SIM time; indoor cows remain aligned to their cubicles; feeding, milking, cleaning, cooling and collection intensify the relevant actors. Never use wandering to imply a real census or welfare capacity.
+- **Labs:** staff movement follows received samples/tests; GAZA reference branding, sample/carton props and room signs are illustrative. Analytical results still originate only in the ledger.
+- **Plant/logistics:** staff rounds, process equipment, stock glyphs, vehicles and loading move from the shared task clock. Headlights and work lights respond to darkness. A visible vehicle is not a delivery unless the corresponding task and ledger quantity say so.
+- **Night:** internal work lights stay present where operations continue; road lamps, vehicle lights and the Zamora heritage backdrop may illuminate artistically. Mark heritage/factory lighting as simulated, never measured lux or installed lighting design.
+
+Pause and HOLD must freeze or retain the last pose. Hidden scenes must not run an independent simulation or repaint continuously.
+
+## 10. Demonstration route
+
+Recommended presentation route: **Granja viva → Ordeño/recogida → Laboratorio → Planta/logística → Carga → Workflow/calidad**. Keep a stable company-demo entry and a separate working entry. The demo may preconfigure a scenario but must not alter the normal browser ledger. On phone, prioritize one large map, bottom department tabs, touch-safe 44 px controls, collapsible inspectors and landscape support. Matrix is secondary and desktop-only.
