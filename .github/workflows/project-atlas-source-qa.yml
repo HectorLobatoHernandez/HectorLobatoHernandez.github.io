@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'projects/atlas-3d.html'
+      - 'projects/experience.html'
       - 'projects/promo.html'
       - 'projects/index.html'
       - 'projects/mar-salada.html'
@@ -19,6 +20,9 @@ on:
       - 'assets/js/atlas-3d.js'
       - 'assets/css/atlas-promo.css'
       - 'assets/js/atlas-promo.js'
+      - 'assets/css/project-atlas-experience.css'
+      - 'assets/js/project-atlas-experience.js'
+      - 'assets/projects/**'
       - 'docs/project-atlas/project-registry.json'
       - 'tools/project-atlas/**'
       - '.github/workflows/project-atlas-source-qa.yml'
@@ -49,6 +53,7 @@ jobs:
           node --check assets/js/project-atlas.js
           node --check assets/js/atlas-3d.js
           node --check assets/js/atlas-promo.js
+          node --check assets/js/project-atlas-experience.js
           python3 -m py_compile tools/project-atlas/build_source_media.py
           python3 - <<'PY'
           from pathlib import Path
@@ -80,6 +85,10 @@ jobs:
           assert 'NO GENERATED PROJECT IMAGERY' in a3
           assert 'UI depth' in a3 or 'UI DEPTH' in a3
           assert all(f'P0{i}' in a3 for i in range(1,9))
+          exp=Path('projects/experience.html').read_text(encoding='utf-8')
+          assert 'Real media' in exp or 'Real-media' in exp or 'REAL MEDIA' in exp
+          for img in ['mar-salada','casa-alain','can-furnet','playa-soleil','studio-canada','studio-sta-eulalia','studio-italy']:
+              assert (Path('assets/projects')/img/'hero.webp').exists(), img
 
           promo=Path('projects/promo.html').read_text(encoding='utf-8')
           assert 'NO GENERATED PROJECT IMAGERY' in promo
@@ -120,6 +129,7 @@ jobs:
           const base='http://127.0.0.1:4198';
           const paths=[
             '/projects/atlas-3d.html',
+            '/projects/experience.html',
             '/projects/promo.html',
             '/projects/mar-salada.html',
             '/projects/casa-alain.html',
@@ -139,12 +149,18 @@ jobs:
               overflow:document.documentElement.scrollWidth-innerWidth,
               broken:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src),
               source3d:window.__PROJECT_ATLAS_SOURCE3D__||null,
-              atlas3d:window.__PROJECT_ATLAS_3D__||null
+              atlas3d:window.__PROJECT_ATLAS_3D__||null,
+              experience:window.__PROJECT_ATLAS_EXPERIENCE__||null
             }));
             if(state.overflow>4)throw new Error(path+' horizontal overflow '+state.overflow);
             if(state.broken.length)throw new Error(path+' broken images '+state.broken.join(','));
             if(errors.length)throw new Error(path+' JS '+errors.join(' | '));
-            if(path.endsWith('atlas-3d.html')){
+            if(path.endsWith('experience.html')){
+              if(state.experience?.projects!==8||state.experience?.visualProjects!==7||state.experience?.videoProjects!==7||state.experience?.realMediaOnly!==true)throw new Error('experience contract mismatch');
+              const play=page.locator('#xpPlay');if(await play.count())await play.click();
+              await page.waitForTimeout(300);
+              if(!await page.locator('.xp-player.open').count())throw new Error('experience video player did not open');
+            }else if(path.endsWith('atlas-3d.html')){
               if(state.atlas3d?.projects!==8||state.atlas3d?.projectGeometry!==false)throw new Error('atlas3d contract mismatch');
               await page.keyboard.press('ArrowRight');
             }else if(path.endsWith('promo.html')){
