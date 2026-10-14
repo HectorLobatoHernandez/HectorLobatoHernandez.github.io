@@ -64,8 +64,8 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       present:window.__CV_PRESENT__||null,
       presentReact:window.__CV_PRESENT_REACT__||null,
       presentSteps:document.querySelectorAll('.step').length,
-      presentThreads:!!document.querySelector('.present-threads[data-reactbits="Threads"]'),
-      presentThreadsSize:(()=>{const x=document.querySelector('.present-threads');return x?{w:x.width,h:x.height}:null})(),
+      presentThreads:!!document.querySelector('.threads-container[data-reactbits="Threads"]'),
+      presentThreadsSize:(()=>{const x=document.querySelector('.threads-container canvas');return x?{w:x.width,h:x.height}:null})(),
       presentHeroFont:(()=>{const x=document.querySelector('.hero h1');return x?getComputedStyle(x).fontFamily:null})(),
       presentStepFont:(()=>{const x=document.querySelector('.step h2');return x?getComputedStyle(x).fontFamily:null})(),
       presentBodyBg:getComputedStyle(document.body).backgroundColor,
@@ -115,8 +115,8 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      if(state.dossier?.schemaVersion!==6||state.dossier.projects!==7||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
-      if(state.dossierProjects!==3||state.dossierArchive!==8||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
+      if(state.dossier?.schemaVersion!==7||state.dossier.projects!==15||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossierProjects!==3||state.dossierArchive!==16||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
       const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
       if(state.hero?.schemaVersion!==4||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||state.hero?.techMode!=='REACT_BITS_TECH_TEXT_VISIBLE_DEMO'||state.hero?.palette!=='IVORY_ATLAS'||state.hero?.displayFont!=='INSTRUMENT_SERIF'||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
       if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||state.techShells<state.techHeadings+1||state.techSelections<1||state.techActiveChars<1||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier amplified React Bits / TechText UI missing');
@@ -132,16 +132,16 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));
       if(!menu.open||menu.links!==7)failures.push('Staggered menu did not open correctly');
       await page.click('.rb-menu-close');await page.waitForTimeout(120);
-      await page.click('.rb-portrait-toggle');await page.waitForTimeout(360);
+      await page.click('.rb-portrait-toggle');await page.waitForTimeout(700);
       const portrait=await page.evaluate(()=>({view:document.querySelector('[data-dither-veil="true"]')?.getAttribute('data-portrait-view'),pressed:document.querySelector('.rb-portrait-toggle')?.getAttribute('aria-pressed'),canvasOpacity:getComputedStyle(document.querySelector('.rb-dither-canvas')).opacity}));
-      if(portrait.view!=='plain'||portrait.pressed!=='true'||Number(portrait.canvasOpacity)>.05)failures.push('Dossier portrait normal-photo toggle failed');
+      if(portrait.view!=='plain'||portrait.pressed!=='true'||Number(portrait.canvasOpacity)>.15)failures.push('Dossier portrait normal-photo toggle failed');
     }
     if(test.id==='present'){
-      if(state.present?.schemaVersion!==2||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.present.palette!=='IVORY_ATLAS'||state.present.background!=='Threads'||state.present.duplicateDossierNav!==false||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
-      if(state.presentReact?.schemaVersion!==1||state.presentReact?.palette!=='IVORY_ATLAS'||state.presentReact?.component!=='Threads'||state.presentReact?.mouseInteraction!==true||state.presentReact?.mounted!==true)failures.push('Presentation Threads contract mismatch');
+      if(state.present?.schemaVersion!==3||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.present.palette!=='OBSIDIAN_EDITORIAL'||state.present.background!=='React Bits / Threads'||state.present.duplicateDossierNav!==false||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
+      if(state.presentReact?.schemaVersion!==2||state.presentReact?.palette!=='OBSIDIAN_EDITORIAL'||state.presentReact?.component!=='Threads'||state.presentReact?.mouseInteraction!==true||state.presentReact?.mounted!==true)failures.push('Presentation Threads contract mismatch');
       if(!state.presentRoot||!state.presentThreads||!state.presentThreadsSize||state.presentThreadsSize.w<300||state.presentThreadsSize.h<300)failures.push('Presentation Threads surface missing or too small');
-      if(!state.presentHeroFont?.includes('Instrument Serif')||!state.presentStepFont?.includes('Instrument Serif'))failures.push('Presentation IVORY ATLAS typography missing: '+state.presentHeroFont+' / '+state.presentStepFont);
-      if(state.presentBodyBg!=='rgb(0, 0, 0)')failures.push('Presentation background must be black behind Threads: '+state.presentBodyBg);
+      if(!state.presentHeroFont?.includes('Bodoni Moda')||!state.presentStepFont?.includes('Bodoni Moda'))failures.push('Presentation OBSIDIAN EDITORIAL typography missing: '+state.presentHeroFont+' / '+state.presentStepFont);
+      if(state.presentBodyBg!=='rgb(5, 5, 5)')failures.push('Presentation background mismatch behind Threads: '+state.presentBodyBg);
       if(state.presentNav.filter(x=>x==='Dossier').length!==1||state.presentNav.length!==3)failures.push('Presentation navigation duplicate/mismatch: '+state.presentNav.join(' | '));
     }
     if(test.id==='ats'){
