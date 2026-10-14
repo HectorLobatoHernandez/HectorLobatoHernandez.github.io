@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 2,
+  "title": "Héctor Lobato — Project Atlas Registry",
+  "updatedAt": "2026-10-15",
+  "provenancePolicy": {
+    "principle": "Source-backed project presentation. No generated project imagery or invented project geometry.",
+    "classifications": [
+      "MEASURED",
+      "FIELD_ARCHIVE",
+      "SOURCE_DRAWING",
+      "SOURCE_MODEL",
+      "RENDERED",
+      "DESIGNED",
+      "PREDICTED",
+      "INSTALLED",
+      "COMMISSIONED",
+      "CONFIDENTIAL_SOURCE"
+    ],
+    "publicBoundary": [
+      "Do not expose passwords, KNX Secure material or private automation project credentials.",
+      "Do not expose private client identities where permission is not established.",
+      "Do not present predictions or design values as measured final performance.",
+      "Do not present interface depth or card placement as real project geometry.",
+      "Public image/video derivatives must be direct transforms of supplied source files and keep SHA-256 provenance."
+    ],
+    "mediaPipeline": "tools/project-atlas/build_source_media.py"
+  },
+  "projects": [
+    {
+      "id": "P01",
+      "slug": "mar-salada",
+      "name": "Mar Salada / Club del Mar",
+      "location": "Palma de Mallorca · Spain",
+      "href": "/projects/mar-salada.html",
+      "domain": [
+        "Professional AV",
+        "Acoustics",
+        "KNX / ETS6",
+        "DALI",
+        "Gira X1",
+        "CAD",
+        "Fabrication",
+        "Commissioning"
+      ],
+      "sourcePackage": "Multiple supplied files / ZIPs",
+      "sourceCount": "9 source groups",
+      "media": "2 MP4 masters + multiple visual ZIPs",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "PUBLIC_SAFE_WITH_PRIVATE_AUTOMATION_SOURCES",
+      "references": [
+        "INFORME ACUSTICA.odt",
+        "INFORME DE INSTALACIÓN(1).odt",
+        "PROYECTO KNX.zip",
+        "PLANOS CAD PARA GPT.zip",
+        "CLUB_DEL_MAR_VIDEO_DOSSIER_01.mp4",
+        "MUEBLE SUBS.mp4",
+        "BARRA GRANDE.zip",
+        "71.zip",
+        "002.zip",
+        "FICHAS TECNICAS E INFORMES.zip"
+      ]
+    },
+    {
+      "id": "P02",
+      "slug": "casa-alain",
+      "name": "Casa Alain",
+      "location": "Private residential cinema",
+      "href": "/projects/casa-alain.html",
+      "domain": [
+        "Residential cinema",
+        "Acoustic treatment",
+        "Cinema audio",
+        "SketchUp",
+        "Renders",
+        "Electrical coordination"
+      ],
+      "sourcePackage": "RENDERS.zip + RENDERS FINALES.zip",
+      "sourceCount": "95 files",
+      "media": "30 final renders + 26 acoustic-finish images + project video",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "PUBLIC_SAFE",
+      "references": [
+        "CASA ALAIN ACUSTIC CINEMA_2_1_2.skp",
+        "PROYECTO VIDEO ACUSTICA.mp4",
+        "ACOUSTIC_2 CASA ALAIN.odt",
+        "CASA ALLAIN IMAGENS AUDIO.pdf",
+        "RENDERS FINALES/01.png … 30.png",
+        "acustica finalizada/1.png … 26.png",
+        "I_06_ELECTRICIDAD_CASA ALAIN_page-0001.jpg",
+        "FICHAS TEC.pdf"
+      ]
+    },
+    {
+      "id": "P03",
+      "slug": "can-furnet-club",
+      "name": "Can Furnet Club",
+      "location": "Private club",
+      "href": "/projects/can-furnet-club.html",
+      "domain": [
+        "Sound isolation",
+        "Box-in-box",
+        "Structural decoupling",
+        "HVAC silencers",
+        "Acoustic doors",
+        "Audio cabling",
+        "CAD / SketchUp"
+      ],
+      "sourcePackage": "CAN FURNET CLUB.zip",
+      "sourceCount": "156 files",
+      "media": "105 PNG + 26 PDF + 6 SKP + 4 SKB",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "PUBLIC_SAFE",
+      "references": [
+        "INFORME INSONORIZACION.pdf",
+        "INFORME INSONORIZACION + puertas acusticas.pdf",
+        "Estudio acustico, insonorizacion + Iluminacion ambiental..pdf",
+        "01716-05_p-1 - PFO - modif.dwg",
+        "MODELADO PLANO SKETCHUP 2.skp",
+        "CABLEADO/ESQUEMA CABLEADO AUDIO1…7.pdf",
+        "Nueva carpeta/LAYER 1.png … LAYER 5.png",
+        "REMODELACION FINAL/RENDER 1.png … 14.png"
+      ]
+    },
+    {
+      "id": "P04",
+      "slug": "playa-soleil-bora-bora",
+      "name": "Playa Soleil / Bora Bora",
+      "location": "Platja d'en Bossa · Ibiza",
+      "href": "/projects/playa-soleil-bora-bora.html",
+      "domain": [
+        "Professional AV",
+        "Cable book",
+        "CAT6a",
+        "Power",
+        "CAD",
+        "SketchUp",
+        "Lighting interfaces"
+      ],
+      "sourcePackage": "Planos.zip",
+      "sourceCount": "65 files",
+      "media": "24 PDF + 22 field JPEG + 4 SKP + 4 SKB",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "PUBLIC_SAFE",
+      "references": [
+        "230308 V1.0 - BoraBora - DETAILED CABLE BOOK.pdf",
+        "SOUND CABLES POSITIONS - CLUB 1.pdf",
+        "SOUND CABLES POSITIONS - CLUB 2.pdf",
+        "LIGHT CABLES POSITIONS - CLUB 1.pdf",
+        "230808 - Bora Bora - Power lines V2.5 GOOD.pdf",
+        "20220815 Bora Bora Ibiza-Plano - 01 - plano de la 1ª planta.dwg",
+        "PLAYA SOLEIL, ZONA 1 _2_3_&_4 DISEÑO ACUSTICO Y SONORO.skp",
+        "FOTOS ZONA CLUB CON L-Acoustics/*.jpeg"
+      ]
+    },
+    {
+      "id": "P05",
+      "slug": "private-production-studio-canada",
+      "name": "Private Production Studio",
+      "location": "Canada",
+      "href": "/projects/private-production-studio-canada.html",
+      "domain": [
+        "Production studio",
+        "Acoustic treatment",
+        "Diffusion",
+        "CAD",
+        "SketchUp",
+        "Critical listening"
+      ],
+      "sourcePackage": "PROYECTO FINAL.zip",
+      "sourceCount": "89 files",
+      "media": "73 PNG + 6 PDF + 1 DWG + 1 SKP",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "ANONYMIZED",
+      "references": [
+        "CAN XUMEU PRE PROYECTO3.pdf",
+        "ACOUSTIC 2_E250115 Sawyer Wildgen.pdf",
+        "refuerzo.pdf",
+        "Dibujo1.dwg",
+        "diseño estudio can xumeu2_2.skp",
+        "SKETCHUP/001.png … 031.png",
+        "segunda fase/01.png … 16.png",
+        "Imagen de WhatsApp 2025-04-25 … .jpg"
+      ]
+    },
+    {
+      "id": "P06",
+      "slug": "private-production-studio-sta-eulalia",
+      "name": "Private Producer Studio",
+      "location": "Confidential private studio",
+      "href": "/projects/private-production-studio-sta-eulalia.html",
+      "domain": [
+        "Studio acoustics",
+        "First reflections",
+        "Absorbent ceiling",
+        "Custom furniture",
+        "CAD",
+        "SketchUp",
+        "V-Ray"
+      ],
+      "sourcePackage": "UNDERS (ESTUDIO PROD).zip + VRAY RENDERS.zip",
+      "sourceCount": "104 files",
+      "media": "11 V-Ray PNG + field photos + editable Layout files",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "ANONYMIZED",
+      "references": [
+        "UNDERS Project (Acoustics) - Inglés.pdf",
+        "Project music studio Unders .pdf",
+        "plano studio.dwg",
+        "Under Studio 05.skp",
+        "VRAY RENDERS/001.png … 011.png",
+        "Imagenes estudio antiguas/*.jpeg",
+        "renders ANTIGUO UNDERS/*.layout",
+        "BUDGET + MATERIAL.pdf"
+      ]
+    },
+    {
+      "id": "P07",
+      "slug": "acoustic-studio-italy",
+      "name": "Acoustic Production Room",
+      "location": "Italy · private project",
+      "href": "/projects/acoustic-studio-italy.html",
+      "domain": [
+        "Room acoustics",
+        "RT60 prediction",
+        "Bass control",
+        "First reflections",
+        "Diffusion",
+        "Ceiling cloud",
+        "3D"
+      ],
+      "sourcePackage": "ACUSTICA ITALIANA.zip",
+      "sourceCount": "32 files",
+      "media": "24 PNG + 3 PDF + 1 MP4 + 2 SKP",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "PUBLIC_SAFE_WITH_PREDICTION_LABELS",
+      "references": [
+        "acustica.pdf",
+        "progetto 4.pdf",
+        "progetto 4_2.pdf",
+        "acustica italianos.skp",
+        "acustica italianos 1.skp",
+        "RENDERS/1.png … 24.png",
+        "VIDEO-2025-06-03-20-15-54.mp4",
+        "Sin título 1.odt"
+      ]
+    },
+    {
+      "id": "P08",
+      "slug": "private-producer-acoustic-concept",
+      "name": "Private Producer Acoustic Concept",
+      "location": "Confidential international client",
+      "href": "/projects/private-producer-acoustic-concept.html",
+      "domain": [
+        "Sound isolation",
+        "Acoustic treatment",
+        "Low frequencies",
+        "3D planning",
+        "Materials",
+        "Monitoring",
+        "Lighting"
+      ],
+      "sourcePackage": "TEDDY.zip",
+      "sourceCount": "6 files",
+      "media": "Bilingual document set",
+      "status": "SOURCE_BACKED_CASE",
+      "privacy": "CONFIDENTIAL_ANONYMIZED",
+      "references": [
+        "PREPROYECTO ACUSTICO inglés.pdf",
+        "PREPROYECTO ACUSTICO.pdf",
+        "PREPROYECTO ACUSTICO I(NGLÉS).docx",
+        "PREPROYECTO ACUSTICO I(NGLÉS).odt",
+        "PREPROYECTO ACUSTICO español.odt",
+        "PREPROYECTO ACUSTICO.odt"
+      ]
+    }
+  ],
+  "connectedSystems": [
+    {
+      "name": "GAZA Operations Intelligence",
+      "href": "/apps/gaza/mission-control.html?guide=1",
+      "classification": "DIGITAL_PRODUCT_DEMONSTRATOR"
+    },
+    {
+      "name": "RHB Studio",
+      "href": "/apps/rhb/",
+      "classification": "LOCAL_FIRST_ENGINEERING_PLATFORM"
+    },
+    {
+      "name": "Professional dossier",
+      "href": "/",
+      "classification": "PRIMARY_PORTFOLIO"
+    }
+  ]
+}
