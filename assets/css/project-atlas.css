@@ -46,3 +46,9 @@ a{color:inherit}.pa-progress{position:fixed;inset:0 auto auto 0;height:2px;width
 @media(max-width:980px){.pa-hero{grid-template-columns:1fr}.pa-hero-stage{min-height:520px}.pa-head{grid-template-columns:1fr}.pa-metrics{grid-template-columns:1fr 1fr}.pa-chapter{grid-template-columns:1fr}.pa-chapter>aside{border-right:0;border-bottom:1px solid var(--line);min-height:150px}.pa-chapter>aside b{margin-top:35px}.pa-evidence{grid-template-columns:1fr 1fr}.pa-atlas-grid{grid-template-columns:1fr}.pa-top nav a:nth-child(n+4){display:none}}
 @media(max-width:620px){.pa-shell{width:91vw}.pa-top nav a:not(:first-child){display:none}.pa-hero{padding-top:45px}.pa-hero-stage{min-height:400px}.pa-stage-card.main{inset:4% 2% 9% 4%}.pa-metrics,.pa-evidence,.pa-media{grid-template-columns:1fr}.pa-media article.video{grid-column:auto}.pa-chapter ul{grid-template-columns:1fr}.pa-next{grid-template-columns:1fr}.pa-next a+a{border-left:0;border-top:1px solid var(--line)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pa-reveal{opacity:1;transform:none;transition:none}.pa-stage-card{transition:none}}
+
+/* SOURCE-BACKED ATLAS THUMBNAILS — images are derivatives of user-supplied project media. */
+.pa-atlas-card{background-color:var(--panel);background-size:cover;background-position:center;isolation:isolate}
+.pa-atlas-card:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,8,6,.32),rgba(5,8,6,.88) 54%,rgba(5,8,6,.98));backdrop-filter:saturate(.8)}
+.pa-atlas-card small,.pa-atlas-card h2,.pa-atlas-card p,.pa-atlas-card .tags{position:relative;z-index:1}
+.pa-atlas-card:hover:before{background:linear-gradient(180deg,rgba(5,8,6,.22),rgba(5,8,6,.78) 52%,rgba(5,8,6,.96))}
