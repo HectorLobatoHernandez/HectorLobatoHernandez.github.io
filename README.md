@@ -31,15 +31,15 @@
 <p><a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><strong>Explorar SOUND CLUB ↗</strong></a><br><sub>Acústica, audio, iluminación y automatización.</sub></p>
 </td>
 <td width="50%" valign="top">
-<a href="https://hectorlobatohernandez.github.io/experience/"><img src="assets/readme/experience.svg" width="100%" alt="Experiencia 3D — abrir el prototipo en desarrollo del recorrido inmersivo por los proyectos"></a>
-<p><a href="https://hectorlobatohernandez.github.io/experience/"><strong>Entrar al recorrido 3D ↗</strong></a><br><sub>Prototipo en desarrollo; el dossier sigue siendo la entrada principal.</sub></p>
+<a href="https://hectorlobatohernandez.github.io/projects/atlas-3d.html"><img src="assets/readme/experience.svg" width="100%" alt="Project Atlas 3D — índice navegable y source-backed de proyectos técnicos"></a>
+<p><a href="https://hectorlobatohernandez.github.io/projects/atlas-3d.html"><strong>Entrar al Project Atlas 3D ↗</strong></a><br><sub>Interfaz 3D basada en archivos reales; la profundidad es UI, no geometría inventada del proyecto.</sub></p>
 </td>
 </tr>
 </table>
 
 ### Project Atlas técnico
 
-[**Abrir Project Atlas**](https://hectorlobatohernandez.github.io/projects/) · [**Casa Alain**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**Studio Canada**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
+[**Abrir Project Atlas 3D**](https://hectorlobatohernandez.github.io/projects/atlas-3d.html) · [Índice técnico](https://hectorlobatohernandez.github.io/projects/) · [**Casa Alain**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**Studio Canada**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
 
 ### Otros proyectos
 
@@ -47,7 +47,7 @@
 
 ---
 
-**Alcance de las demostraciones.** GAZA es un demostrador independiente: combina información pública, reconstrucciones conceptuales y procesos simulados; no es el software interno de la empresa ni controla sus equipos. RHB STUDIO ofrece aquí una demo en navegador, separada del runtime local. La experiencia 3D continúa en desarrollo.
+**Alcance de las demostraciones.** GAZA es un demostrador independiente: combina información pública, reconstrucciones conceptuales y procesos simulados; no es el software interno de la empresa ni controla sus equipos. RHB STUDIO ofrece aquí una demo en navegador, separada del runtime local. El Project Atlas 3D utiliza únicamente metadatos y referencias de archivos reales; no presenta geometría de proyecto inventada.
 
 <details>
 <summary><strong>Documentación técnica y mantenimiento</strong></summary>
