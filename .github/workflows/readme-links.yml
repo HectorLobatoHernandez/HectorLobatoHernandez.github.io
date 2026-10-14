@@ -17,6 +17,7 @@ on:
       - 'apps/rhb/index.html'
       - 'experience/index.html'
       - 'docs/README_NAVIGATION.md'
+      - 'docs/project-atlas/README.md'
   pull_request:
     paths:
       - 'README.md'
@@ -45,6 +46,7 @@ jobs:
             /tools/check_readme_links.py
             /tools/project-atlas/README.md
             /docs/*.md
+            /docs/project-atlas/README.md
             /apps/gaza/*.html
             /apps/gaza/*.md
             /apps/rhb/index.html

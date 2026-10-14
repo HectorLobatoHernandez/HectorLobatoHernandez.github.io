@@ -39,7 +39,7 @@
 
 ### Project Atlas técnico
 
-[**Abrir Project Atlas 3D**](https://hectorlobatohernandez.github.io/projects/atlas-3d.html) · [Índice técnico](https://hectorlobatohernandez.github.io/projects/) · [**Casa Alain**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**Studio Canada**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
+[**Abrir Project Atlas 3D**](https://hectorlobatohernandez.github.io/projects/atlas-3d.html) · [**Promo técnica**](https://hectorlobatohernandez.github.io/projects/promo.html) · [Índice técnico](https://hectorlobatohernandez.github.io/projects/) · [**Casa Alain**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**Studio Canada**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
 
 ### Otros proyectos
 
@@ -56,6 +56,7 @@
 - [GAZA · procedencia de datos y límites del demostrador](apps/gaza/PUBLIC_EVIDENCE.md).
 - [RHB STUDIO · manual de la demo y del entorno local](docs/MANUAL_RHB_STUDIO.md).
 - [Mapa de accesos actuales y cambios de esta portada](docs/README_NAVIGATION.md).
+- [Project Atlas · arquitectura, rutas y política de evidencia](docs/project-atlas/README.md).
 - [Project Atlas · ingestión de media real y política de procedencia](tools/project-atlas/README.md).
 
 La comprobación de enlaces está en `tools/check_readme_links.py` y en el workflow **README Links**. Valida destinos del repositorio y, al ejecutarse en `main`, respuestas HTTP de las páginas enlazadas. No sustituye las pruebas funcionales de las aplicaciones.

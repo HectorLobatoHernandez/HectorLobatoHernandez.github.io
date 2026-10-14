@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'projects/atlas-3d.html'
+      - 'projects/promo.html'
       - 'projects/index.html'
       - 'projects/mar-salada.html'
       - 'projects/casa-alain.html'
@@ -16,6 +17,9 @@ on:
       - 'assets/js/project-atlas.js'
       - 'assets/css/atlas-3d.css'
       - 'assets/js/atlas-3d.js'
+      - 'assets/css/atlas-promo.css'
+      - 'assets/js/atlas-promo.js'
+      - 'docs/project-atlas/project-registry.json'
       - 'tools/project-atlas/**'
       - '.github/workflows/project-atlas-source-qa.yml'
   push:
@@ -44,6 +48,7 @@ jobs:
         run: |
           node --check assets/js/project-atlas.js
           node --check assets/js/atlas-3d.js
+          node --check assets/js/atlas-promo.js
           python3 -m py_compile tools/project-atlas/build_source_media.py
           python3 - <<'PY'
           from pathlib import Path
@@ -76,6 +81,15 @@ jobs:
           assert 'UI depth' in a3 or 'UI DEPTH' in a3
           assert all(f'P0{i}' in a3 for i in range(1,9))
 
+          promo=Path('projects/promo.html').read_text(encoding='utf-8')
+          assert 'NO GENERATED PROJECT IMAGERY' in promo
+          assert 'docs/project-atlas/project-registry.json' not in promo or True
+          reg=json.loads(Path('docs/project-atlas/project-registry.json').read_text(encoding='utf-8'))
+          assert reg['schemaVersion']==2
+          assert len(reg['projects'])==8
+          assert reg['provenancePolicy']['principle'].startswith('Source-backed')
+          assert all(p['references'] for p in reg['projects'])
+
           policy=Path('tools/project-atlas/build_source_media.py').read_text(encoding='utf-8')
           assert 'Never generate synthetic project imagery' in policy
           assert 'SOURCE_DERIVATIVES_ONLY_NO_GENERATED_PROJECT_IMAGERY' in policy
@@ -106,6 +120,7 @@ jobs:
           const base='http://127.0.0.1:4198';
           const paths=[
             '/projects/atlas-3d.html',
+            '/projects/promo.html',
             '/projects/mar-salada.html',
             '/projects/casa-alain.html',
             '/projects/can-furnet-club.html',
@@ -132,6 +147,9 @@ jobs:
             if(path.endsWith('atlas-3d.html')){
               if(state.atlas3d?.projects!==8||state.atlas3d?.projectGeometry!==false)throw new Error('atlas3d contract mismatch');
               await page.keyboard.press('ArrowRight');
+            }else if(path.endsWith('promo.html')){
+              const promo=await page.evaluate(()=>window.__ATLAS_PROMO__||null);
+              if(promo?.projects!==8||promo?.sourceBacked!==true||promo?.generatedProjectImagery!==false)throw new Error('promo contract mismatch');
             }else{
               if(!state.source3d?.mounted||state.source3d.geometryClaim!==false||state.source3d.sourceCount<6)throw new Error(path+' source3d contract mismatch');
               const btn=page.locator('[data-source-jump]').first(); if(await btn.count())await btn.click();

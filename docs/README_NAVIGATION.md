@@ -1,6 +1,6 @@
 # Navegación pública del repositorio
 
-Revisión editorial: 13 de octubre de 2026. Fuente inicial: `main` en `a3b9e813c2aafbf38b83e7e09779f924ec453979`.
+Revisión editorial: 15 de octubre de 2026. Fuente inicial: `main` en `a3b9e813c2aafbf38b83e7e09779f924ec453979`.
 
 ## Entradas actuales
 
@@ -13,8 +13,11 @@ Revisión editorial: 13 de octubre de 2026. Fuente inicial: `main` en `a3b9e813c
 | GAZA · planta actual | https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?view=site | Vista `site` vigente; evita la antigua guía de pestañas. |
 | RHB STUDIO · demo | https://hectorlobatohernandez.github.io/apps/rhb/ | Demo browser-only. No implica que el runtime local esté desplegado. |
 | RHB STUDIO · caso | https://hectorlobatohernandez.github.io/projects/rhb-studio.html | Presentación del proyecto. |
-| SOUND CLUB | https://hectorlobatohernandez.github.io/projects/sound-club-palma.html | SOUND CLUB and restaurant (CLUB del MAR), Palma de Mallorca. |
-| Experiencia 3D | https://hectorlobatohernandez.github.io/experience/ | Prototipo en desarrollo, no sustituto del dossier. |
+| Project Atlas 3D | https://hectorlobatohernandez.github.io/projects/atlas-3d.html | Índice 3D de archivos reales. La profundidad pertenece a la interfaz; no afirma geometría real de proyecto. |
+| Project Atlas · promo | https://hectorlobatohernandez.github.io/projects/promo.html | Recorrido combinado por arquitectura, acústica, AV, automatización, CAD/fabricación y estudios. |
+| Project Atlas · índice | https://hectorlobatohernandez.github.io/projects/ | Índice técnico de los ocho casos source-backed. |
+| Mar Salada / Club del Mar | https://hectorlobatohernandez.github.io/projects/mar-salada.html | Caso reconstruido sobre archivo de acústica, AV, KNX/DALI, CAD, fabricación y vídeo master. |
+| Experiencia 3D legacy | https://hectorlobatohernandez.github.io/experience/ | Prototipo anterior conservado por compatibilidad; el Project Atlas 3D es ahora el acceso recomendado. |
 
 Casa NOAH, Las Dalias / Akasha y la residencia tecnológica conservan sus casos públicos. No se han borrado aplicaciones, proyectos, recursos 3D, rutas de compatibilidad ni contenido profesional.
 
@@ -45,4 +48,4 @@ Las tarjetas SVG son recursos locales, sin servicios de badges, fuentes remotas 
 
 ## Mantenimiento
 
-Mantener un destino principal por función, diferenciar caso documentado / demo / prototipo y conservar la distinción PUBLIC / LIVE PUBLIC / SYNTHETIC / TO VALIDATE de los proyectos. Antes de promocionar una ruta nueva, comprobar su contenido, sus parámetros y su estado publicado. Un HTTP 200 por sí solo no demuestra que el enlace sea el más actual.
+Para proyectos físicos, priorizar `projects/atlas-3d.html` como índice inmersivo, `projects/promo.html` como recorrido combinado y las páginas individuales como evidencia técnica. Mantener un destino principal por función, diferenciar caso documentado / demo / prototipo y conservar la distinción PUBLIC / LIVE PUBLIC / SYNTHETIC / TO VALIDATE de los proyectos. Antes de promocionar una ruta nueva, comprobar su contenido, sus parámetros y su estado publicado. Un HTTP 200 por sí solo no demuestra que el enlace sea el más actual.
