@@ -1,6 +1,6 @@
 # Mapa maestro · Héctor Lobato / CV / GAZA / RHB STUDIO
 
-**Versión:** 2026-10-07 · **Naturaleza:** catálogo de información y rutas, no certificado de producción ni de commissioning.
+**Versión:** 2026-10-15 · **Naturaleza:** catálogo de información y rutas, no certificado de producción ni de commissioning.
 
 ## Visión general
 
@@ -10,7 +10,8 @@ flowchart TD
   A --> GA["GAZA / Operations Intelligence"]
   A --> R["RHB STUDIO / ingeniería local-first"]
   A --> LA["Labs / demostradores"]
-  CV --> CS["Casos verificados en portfolio"]
+  CV --> PA["Project Atlas 3D / promo / casos"]
+  PA --> CS["8 casos source-backed"]
   CS --> GA
   CS --> R
   GA --> M["Mission Control: Plant 3D + Tower + GIS + Territory + Systems"]
@@ -30,12 +31,12 @@ flowchart TD
 1. Portada editorial (Atelier + jerarquía Swiss).
 2. Perfil profesional y trayectoria. Revisar fechas, roles, empleadores y formación antes de publicar afirmaciones nuevas.
 3. Competencias: integración AV/DSP, KNX/DALI, redes/IT-OT, CAD y fabricación, desarrollo web/GIS, automatización y agentes.
-4. Archivo de proyectos: **Sound Club, Palma, GAZA, RHB STUDIO, Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada, XXXIA STUDIO**, con ficha fuente.
-5. Storytelling por scroll: imágenes existentes de **cada proyecto**, planos y diagramas reales etiquetados. No sustituir fotografías pendientes por imágenes fotorrealistas ficticias.
+4. Project Atlas source-backed: **Mar Salada / Club del Mar, Casa Alain, Can Furnet Club, Playa Soleil / Bora Bora, estudio privado Canadá, estudio privado de productor, sala acústica Italia y preproyecto confidencial**, además de GAZA, RHB STUDIO, Casa NOAH, Las Dalias/Akasha, residencia tecnológica privada y XXXIA STUDIO.
+5. Project Atlas 3D y promo combinada: navegación por archivos reales, referencias, planos, renders, fotos y vídeos. La profundidad 3D de navegación es UI; **no se interpreta como geometría real de proyecto**. No sustituir fotografías o modelos pendientes por imágenes ficticias.
 6. Método: levantamiento → proyecto → ejecución → commissioning → documentación.
 7. Contacto y un CV imprimible ATS (pendiente; no confundir una web narrativa con un CV ATS).
 
-**Presentación actual:** `/cv/dossier.html` es el dossier web integrado recomendado; `/cv/` conserva Atelier, Swiss, Monograph y storyboard Scroll World como estudios; `/apps/presentation-lab/` conserva el experimento anterior. **El dossier web no se presenta como CV ATS/PDF; ese entregable sigue separado.**
+**Presentación actual:** `/projects/atlas-3d.html` es el índice inmersivo source-backed y `/projects/promo.html` la promo técnica combinada. `/cv/dossier.html` es el dossier web integrado recomendado; `/cv/` conserva Atelier, Swiss, Monograph y storyboard Scroll World como estudios; `/apps/presentation-lab/` conserva el experimento anterior. **El dossier web no se presenta como CV ATS/PDF; ese entregable sigue separado.**
 
 ## 2. GAZA / Digital Twin
 
@@ -82,6 +83,7 @@ flowchart LR
 
 | Sector | Guía | Qué debe comprobarse |
 | --- | --- | --- |
+| Project Atlas | `docs/project-atlas/README.md` | source registry, privacidad, clasificación de evidencia, 3D UI, media real y QA |
 | CV | `docs/MANUAL_CV.md` | navegación, conservación de fuentes, responsive, movimiento reducido, ATS |
 | GAZA | `docs/MANUAL_GAZA.md` | modo demo, procedencia, mapas/clima, falta de datos, render y seguridad |
 | RHB | `docs/MANUAL_RHB_STUDIO.md` | servicios locales, pruebas, no pérdida de archivos, CAD/BOM/QA |
@@ -93,7 +95,9 @@ flowchart LR
 
 **P0 — confianza y accesibilidad:** conservar el inventario factual del CV; mapear desde la portada sectorial a manuales; QA de enlaces; etiquetas PUBLIC/DEMO/LOCAL.
 
-**P1 — CV editorial final:** dossier web integrado publicado; siguiente fase: completar archivo visual real por proyecto y generar/exportar CV ATS/PDF aparte, sujeto a revisión factual.
+**P1 — Project Atlas:** índice 3D, promo combinada, casos y registro canónico publicados. La ingestión de derivados visuales reales se ejecuta mediante el pipeline `tools/project-atlas` contra los ZIP/MP4 fuente; no se permite generación sustitutiva.
+
+**P1 — CV editorial final:** dossier web integrado publicado y conectado al Atlas; generar/exportar CV ATS/PDF aparte, sujeto a revisión factual.
 
 **P1 — GAZA integración:** validar geometría as-built, accesos, sistemas e interfaces oficiales; no pasar datos sintéticos a reales. Mejorar manual contextual y visuales actuales.
 
@@ -103,4 +107,4 @@ flowchart LR
 
 ## Política de imágenes y scroll
 
-Una experiencia tipo Apple puede usar `position:sticky`, `IntersectionObserver` y secuencias de imágenes/diagramas **reales o rotulados como conceptuales**. Para vídeos seamless de `scroll-world`, consultar licencia, presupuesto y pipeline de frames; el storyboard gratuito actual no es un vuelo cinematográfico. No iniciar servicios de generación de pago sin autorización.
+La experiencia del Project Atlas puede usar profundidad, scroll, sticky panels y secuencias audiovisuales, pero el contenido del proyecto debe proceder de fuentes reales. Los renders se etiquetan RENDERED, las fotografías FIELD_ARCHIVE y los valores acústicos PREDICTED / MEASURED según evidencia. La geometría 3D inventada queda prohibida como representación del proyecto. El pipeline público debe preferir derivados directos de los originales con SHA-256.
