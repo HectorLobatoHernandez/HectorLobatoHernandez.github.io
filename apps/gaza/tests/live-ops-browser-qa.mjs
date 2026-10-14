@@ -2,7 +2,8 @@ import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-const publicBase=process.env.GAZA_PUBLIC_BASE||'',base=(publicBase||'http://127.0.0.1:4173').replace(/\/$/,''),release='gaza-mobile-20261013-v1',out=path.resolve('.qa/live-ops',publicBase?'public':'local');await fs.mkdir(out,{recursive:true});
+import {RELEASE} from '../runtime/demo/session.mjs';
+const publicBase=process.env.GAZA_PUBLIC_BASE||'',base=(publicBase||'http://127.0.0.1:4173').replace(/\/$/,''),release=RELEASE,out=path.resolve('.qa/live-ops',publicBase?'public':'local');await fs.mkdir(out,{recursive:true});
 if(publicBase){let ok=false;for(let i=0;i<45;i++){try{const r=await fetch(base+'/runtime/demo/import-map.js?verify='+Date.now(),{signal:AbortSignal.timeout(10000)});if(r.ok&&(await r.text()).includes(release)){ok=true;break}}catch{}await new Promise(r=>setTimeout(r,3000))}assert(ok,'Published live release absent')}
 const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']}),errors=[],legacy=[],checks=[];let page;
 try{

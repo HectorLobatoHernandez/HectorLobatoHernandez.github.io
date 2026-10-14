@@ -8,7 +8,7 @@ const out=path.resolve('.qa');
 await fs.mkdir(out,{recursive:true});
 
 const browser=await chromium.launch({headless:!headed});
-const errors=[],checks=[];
+const errors=[],checks=[],warnings=[];
 const renderBudget={calls:1200,triangles:3000000,geometries:1500,textures:512};
 const targets=[
   {name:'strategy',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
@@ -34,7 +34,7 @@ for(const target of targets){
   const {name,url,width,height,dsf=1}=target;
   const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:dsf});
   const page=await context.newPage();
-  page.on('console',m=>{if(m.type()==='error')errors.push({surface:name,type:'console',text:m.text()})});
+  page.on('console',m=>{if(m.type()!=='error')return;const text=m.text(),external=['campus-gis','territory'].includes(name)&&((/(router\.project-osrm\.org|overpass-api\.de)/.test(text)&&/(blocked by CORS|ERR_FAILED|Failed to load resource)/.test(text))||/Failed to load resource: net::ERR_FAILED/.test(text));(external?warnings:errors).push({surface:name,type:external?'external-provider':'console',text})});
   page.on('pageerror',e=>errors.push({surface:name,type:'pageerror',text:e.message}));
   const response=await page.goto(base+url,{waitUntil:'domcontentloaded',timeout:45000});
   if(!response?.ok()) errors.push({surface:name,type:'http',text:String(response?.status())});
@@ -159,7 +159,7 @@ for(const target of targets){
 }
 
 await browser.close();
-await fs.writeFile(path.join(out,'report.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),renderBudget,targets,checks,errors},null,2));
+await fs.writeFile(path.join(out,'report.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),renderBudget,targets,checks,errors,warnings},null,2));
 if(errors.length){
   console.error(JSON.stringify({checks,errors},null,2));
   process.exit(2);
