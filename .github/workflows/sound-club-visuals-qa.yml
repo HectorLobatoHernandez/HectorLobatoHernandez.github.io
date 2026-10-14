@@ -12,6 +12,12 @@ on:
       - 'projects/private-production-studio-sta-eulalia.html'
       - 'projects/acoustic-studio-italy.html'
       - 'projects/private-producer-acoustic-concept.html'
+      - 'projects/experience.html'
+      - 'projects/project-atlas-manifest.json'
+      - 'assets/projects/**'
+      - 'assets/css/project-atlas-experience.css'
+      - 'assets/js/project-atlas-experience.js'
+      - 'docs/projects/PROJECT_ATLAS_SOURCE_POLICY.md'
       - 'assets/css/project-atlas.css'
       - 'assets/js/project-atlas.js'
       - 'assets/css/mar-salada-immersive-v3.css'
@@ -31,6 +37,12 @@ on:
       - 'projects/private-production-studio-sta-eulalia.html'
       - 'projects/acoustic-studio-italy.html'
       - 'projects/private-producer-acoustic-concept.html'
+      - 'projects/experience.html'
+      - 'projects/project-atlas-manifest.json'
+      - 'assets/projects/**'
+      - 'assets/css/project-atlas-experience.css'
+      - 'assets/js/project-atlas-experience.js'
+      - 'docs/projects/PROJECT_ATLAS_SOURCE_POLICY.md'
       - 'assets/css/project-atlas.css'
       - 'assets/js/project-atlas.js'
       - 'assets/css/mar-salada-immersive-v3.css'
@@ -51,6 +63,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import json
           from xml.etree import ElementTree
 
           project_pages = [
@@ -74,6 +87,7 @@ jobs:
               assert '../assets/css/project-atlas.css' in text, page
               assert '../assets/js/project-atlas.js' in text, page
               assert 'boundary' in text.lower(), page
+              assert 'sourceRegistry' in text, page
 
           mar = Path('projects/mar-salada.html').read_text(encoding='utf-8')
           assert 'MAR SALADA / CLUB DEL MAR' in mar
@@ -85,6 +99,20 @@ jobs:
 
           legacy = Path('projects/sound-club-palma.html').read_text(encoding='utf-8')
           assert './mar-salada.html' in legacy
+
+          manifest=json.loads(Path('projects/project-atlas-manifest.json').read_text(encoding='utf-8'))
+          assert manifest['schemaVersion']==1
+          assert len(manifest['projects'])==8
+          assert manifest['policy']['generatedConceptArtAsPrimary'] is False
+          assert sum(1 for x in manifest['projects'] if x.get('hero'))==7
+          for x in manifest['projects']:
+              if x.get('hero'):
+                  assert Path(x['hero'].lstrip('/')).stat().st_size > 500, x['id']
+
+          experience=Path('projects/experience.html').read_text(encoding='utf-8')
+          assert 'source-backed spatial archive' in experience.lower()
+          expjs=Path('assets/js/project-atlas-experience.js').read_text(encoding='utf-8')
+          assert 'generatedProjectImages:false' in expjs
 
           # Existing sanitized diagrams remain parseable public references.
           for svg in [
@@ -104,9 +132,13 @@ jobs:
         run: |
           node --check assets/js/project-atlas.js
           node --check assets/js/mar-salada-immersive-v3.js
+          node --check assets/js/project-atlas-experience.js
           grep -q 'mar-salada-immersive-v3.css' projects/mar-salada.html
           grep -q 'mar-salada-immersive-v3.js' projects/mar-salada.html
-          grep -q 'VIRTUAL TECHNICAL PRESENTATION' assets/js/mar-salada-immersive-v3.js
+          grep -q 'SOURCE_MEDIA_PLANES_3D' assets/js/mar-salada-immersive-v3.js
+          ! grep -q 'SC-BOARD-01\|SC-BOARD-04\|SC-BOARD-05' assets/js/mar-salada-immersive-v3.js
+          grep -q 'realMediaOnly:true' assets/js/project-atlas-experience.js
+          ! grep -q 'd2ol7oe51mr4n9' projects/index.html
 
       - name: Start preview and smoke-test routes
         run: |
@@ -118,5 +150,10 @@ jobs:
           curl -fsS http://127.0.0.1:4194/projects/mar-salada.html | grep -q 'PROJECT_ATLAS_DATA'
           curl -fsS http://127.0.0.1:4194/projects/casa-alain.html | grep -q 'PROJECT_ATLAS_DATA'
           curl -fsS http://127.0.0.1:4194/projects/can-furnet-club.html | grep -q 'PROJECT_ATLAS_DATA'
+          curl -fsS http://127.0.0.1:4194/projects/experience.html | grep -q 'xpCanvas'
+          curl -fsS http://127.0.0.1:4194/assets/projects/mar-salada/hero.webp >/dev/null
+          curl -fsS http://127.0.0.1:4194/assets/projects/casa-alain/hero.webp >/dev/null
+          curl -fsS http://127.0.0.1:4194/assets/projects/playa-soleil/hero.webp >/dev/null
+          curl -fsS http://127.0.0.1:4194/assets/projects/studio-italy/hero.webp >/dev/null
           curl -fsS http://127.0.0.1:4194/assets/js/project-atlas.js >/dev/null
           curl -fsS http://127.0.0.1:4194/assets/css/project-atlas.css >/dev/null
