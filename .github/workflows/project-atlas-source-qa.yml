@@ -82,12 +82,15 @@ jobs:
               assert 'PROJECT_ATLAS_DATA' in s,p
 
           casa=Path('projects/casa-alain.html').read_text(encoding='utf-8')
-          assert '__CASA_ALAIN_V2__' not in casa
+          assert 'ca-track' in casa
+          assert 'PLAN-DERIVED CONSTRUCTION' in casa
           assert 'KEF Ci4100QL-THX' in casa
           assert 'Denon AVR-X2800H' in casa
-          assert '6 bass traps' in casa
-          assert '5 diffusers + 8 clouds' in casa
-          assert 'source-backed' in casa.lower()
+          assert 'PROJECT ATLAS / ARRIVAL' in casa
+          assert 'PLAN-DERIVED CONSTRUCTION' in casa
+          assert 'ca-footprint' in casa
+          assert 'CASA ALAIN ACUSTIC CINEMA_2_1_2.skp' in casa
+          assert 'SOURCE-RENDER DERIVATIVE' in casa
           systems=Path('projects/systems.html').read_text(encoding='utf-8')
           assert 'KEF architectural cinema' in systems
           assert 'VOID Acoustics' in systems
@@ -177,7 +180,7 @@ jobs:
               source3d:window.__PROJECT_ATLAS_SOURCE3D__||null,
               atlas3d:window.__PROJECT_ATLAS_3D__||null,
               experience:window.__PROJECT_ATLAS_EXPERIENCE__||null,
-              casa:window.__CASA_ALAIN_V2__||null
+              casa:window.__CASA_ALAIN_CINEMATIC__||null
             }));
             if(state.overflow>4)throw new Error(path+' horizontal overflow '+state.overflow);
             if(state.broken.length)throw new Error(path+' broken images '+state.broken.join(','));
@@ -194,7 +197,11 @@ jobs:
               const promo=await page.evaluate(()=>window.__ATLAS_PROMO__||null);
               if(promo?.projects!==8||promo?.sourceBacked!==true||promo?.generatedProjectImagery!==false)throw new Error('promo contract mismatch');
             }else if(path.endsWith('casa-alain.html')){
-              if(state.casa?.sourceBacked!==true||state.casa?.syntheticProjectGeometry!==false||state.casa?.acousticSupplierBrandHidden!==true)throw new Error('casa alain contract mismatch');
+              if(state.casa?.sourceBacked!==true||state.casa?.syntheticProjectImagery!==false||state.casa?.projectGeometry!=='PLAN_DERIVED_FOOTPRINT_ONLY'||state.casa?.acousticSupplierBrandHidden!==true||state.casa?.chapters?.length!==5)throw new Error('casa alain cinematic contract mismatch');
+              await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight*.63));
+              await page.waitForTimeout(350);
+              const footprint=await page.locator('#caFootprint').count();
+              if(!footprint)throw new Error('Casa Alain footprint layer missing');
             }else if(path.endsWith('systems.html')||path.endsWith('acoustic-library.html')){
               const txt=(await page.textContent('body')||'').toLowerCase();
               const forbidden=String.fromCharCode(101,108,105,97,99,111,117,115,116,105,99);

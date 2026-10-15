@@ -3,99 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050607">
-<meta name="description" content="Casa Alain — private residential cinema, DJ listening room and acoustic engineering by Studio Ingenia.">
-<title>Casa Alain — Private Cinema / Acoustic Engineering</title>
+<meta name="theme-color" content="#01030F">
+<meta name="description" content="Casa Alain — private residential cinema club: real-plan spatial sequence, acoustic engineering, KEF cinema system, renders and project film.">
+<title>Casa Alain — Private Cinema / Project Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../assets/css/casa-alain-v2.css?v=1">
+<link rel="stylesheet" href="../assets/css/casa-alain-v2.css?v=2">
 </head>
 <body>
-<div class="ca-progress" id="caProgress"></div>
-<header class="ca-top"><div class="ca-top-in">
-  <a class="ca-brand" href="../index.html">HÉCTOR LOBATO<small>Studio Ingenia / Project Atlas</small></a>
-  <nav class="ca-nav"><a href="./index.html">Atlas</a><a href="./systems.html">Systems</a><a href="./acoustic-library.html">Acoustic library</a><a href="#film">Film</a></nav>
-</div></header>
+<div class="ca-track" aria-hidden="true"></div>
+<div class="ca-fixed">
+  <div class="ca-progress" id="caProgress"></div>
+  <header class="ca-header">
+    <a class="ca-brand" href="./index.html" aria-label="Project Atlas — return to projects">PROJECT ATLAS<small>CASA ALAIN / P02</small></a>
+    <nav aria-label="Casa Alain chapters">
+      <a href="#plan" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.12,behavior:'smooth'});return false;">PLAN</a>
+      <a href="#acoustics" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.54,behavior:'smooth'});return false;">ACOUSTICS</a>
+      <a href="#cinema" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.64,behavior:'smooth'});return false;">CINEMA</a>
+      <a href="#film" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.87,behavior:'smooth'});return false;">FILM</a>
+    </nav>
+    <a class="ca-close" href="./index.html">ALL PROJECTS ↗</a>
+  </header>
 
-<main class="ca-main">
-<section class="ca-shell ca-hero">
-  <div>
-    <p class="ca-kicker">P02 / PRIVATE RESIDENTIAL CINEMA / SOURCE-BACKED CASE</p>
-    <h1>Casa Alain<span>Cinema · DJ listening · acoustic engineering</span></h1>
-    <p class="ca-lead">A private cinema room designed as a dual-use listening environment: cinematic playback, immersive audio and occasional DJ use. The project combines room-acoustic design, architectural integration, loudspeaker specification, electrical coordination, SketchUp development and final visualization.</p>
-    <div class="ca-actions"><a class="ca-btn primary" href="#plan">Start with the plan ↓</a><a class="ca-btn" href="./systems.html">Cinema systems ↗</a></div>
-  </div>
-  <figure class="ca-hero-media">
-    <img src="../assets/projects/casa-alain/hero.webp" alt="Casa Alain user-supplied final cinema render">
-    <figcaption class="ca-hero-caption"><span>USER-SUPPLIED FINAL RENDER</span><span>CASA ALAIN / PRIVATE CINEMA</span></figcaption>
-  </figure>
-</section>
+  <main class="ca-stage">
+    <div class="ca-media">
+      <div class="ca-city" id="caCity" aria-hidden="true">
+        <div class="ca-city-grid">
+          <div class="ca-city-node n1"><span>Mar Salada</span></div>
+          <div class="ca-city-node n2"><span>Can Furnet</span></div>
+          <div class="ca-city-node alain"><span>Casa Alain<br>Private Cinema</span></div>
+          <div class="ca-city-node n4"><span>Playa Soleil</span></div>
+          <div class="ca-city-node n5"><span>Studio Canada</span></div>
+          <div class="ca-city-node n6"><span>Private Studio</span></div>
+          <div class="ca-city-node n7"><span>Italy Room</span></div>
+        </div>
+        <div class="ca-city-title"><b>PROJECT ATLAS / NAVIGATION MODEL</b><br>INTERFACE CITY · NOT A GEOGRAPHIC MAP</div>
+      </div>
+      <div class="ca-plan-source" id="caPlan" aria-hidden="true"></div>
+      <div class="ca-plan-grid" id="caPlanGrid" aria-hidden="true"></div>
+      <div class="ca-plan-mask" id="caPlanMask" aria-hidden="true"></div>
+      <div class="ca-footprint" id="caFootprint" aria-hidden="true"></div>
+      <div class="ca-footprint-label" id="caFootprintLabel">PROJECT ZONE / SOURCE PLAN</div>
+      <div class="ca-room-build" id="caRoomBuild" aria-hidden="true">
+        <div class="ca-room-floor"></div><div class="ca-wall n"></div><div class="ca-wall e"></div><div class="ca-wall s"></div><div class="ca-wall w"></div>
+        <div class="ca-room-label" id="caRoomLabel">PLAN-DERIVED<br>ROOM PERIMETER</div>
+      </div>
+      <div class="ca-render-source" id="caRender" aria-hidden="true"></div>
+      <div class="ca-acoustic-source" id="caAcoustic" aria-hidden="true"></div>
 
-<section class="ca-shell ca-section" id="plan">
-  <div class="ca-head ca-reveal"><div><p class="ca-kicker">01 / PLAN → ROOM</p><h2 class="ca-title">Locate. Raise. Enter.</h2></div><p>The story begins with the real house drawing, isolates the exact room footprint, then moves from architectural context into the supplied SketchUp / render sequence. No substitute building geometry is introduced.</p></div>
-  <div class="ca-plan-story">
-    <figure class="ca-frame ratio contain ca-reveal"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/5d2cdf5c-42f4-4ad4-9707-cf87b1c849db.jpg" alt="Casa Alain electrical-plan source and acoustic project material"><figcaption>HOUSE / ELECTRICAL PLAN · SOURCE-DERIVED FROM SUPPLIED PROJECT FILES</figcaption></figure>
-    <figure class="ca-frame ratio ca-reveal"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/3ae0229c-71c2-4359-a777-095b30f70f9d.jpg" alt="Casa Alain source-render contact sheet"><figcaption>ROOM DEVELOPMENT · USER-SUPPLIED RENDER ARCHIVE</figcaption></figure>
-  </div>
-  <div class="ca-sequence" style="margin-top:14px">
-    <article class="ca-step ca-reveal"><span>01</span><b>House plan</b><p>Start from the complete source drawing so the room is read in its real residential context.</p></article>
-    <article class="ca-step ca-reveal"><span>02</span><b>Project footprint</b><p>Focus on the exact room zone selected in the house plan rather than inventing a separate location map.</p></article>
-    <article class="ca-step ca-reveal"><span>03</span><b>Source model</b><p>Use the existing SketchUp room model as the basis for architectural and acoustic development.</p></article>
-    <article class="ca-step ca-reveal"><span>04</span><b>Finished room</b><p>Transition into the selected final renders and project film as the visual result.</p></article>
-  </div>
-</section>
+      <div class="ca-gallery" id="caGallery" aria-hidden="true">
+        <div class="ca-gallery-frame montage" data-pos="0,0"></div>
+        <div class="ca-gallery-frame montage" data-pos="50,0"></div>
+        <div class="ca-gallery-frame acoustic" data-pos="0,0"></div>
+        <div class="ca-gallery-frame montage" data-pos="0,50"></div>
+        <div class="ca-gallery-frame acoustic" data-pos="100,0"></div>
+        <div class="ca-gallery-frame montage" data-pos="0,100"></div>
+      </div>
+      <div class="ca-film" id="caFilm">
+        <video muted playsinline loop preload="metadata" poster="../assets/projects/casa-alain/hero.webp">
+          <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/8f05102f-accf-43b5-a803-5de46d74ce17.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
 
-<section class="ca-shell ca-section">
-  <div class="ca-head ca-reveal"><div><p class="ca-kicker">02 / DESIGN BRIEF</p><h2 class="ca-title">Cinema first. Music capable.</h2></div><p>The acoustic report defines a private cinema optimized for cinematic listening and occasional DJ-set use, with the objective of achieving a faithful, neutral sound field without temporal or modal artefacts that degrade the listening experience.</p></div>
-  <div class="ca-dual">
-    <article class="ca-card ca-reveal"><small>CINEMA</small><h3>Immersive architectural audio</h3><p>Concealed loudspeakers, dedicated LCR, surround and overhead channels are integrated with the room architecture, screen wall and acoustic treatment.</p><ul><li>Architectural in-wall / in-ceiling integration</li><li>Large-format cinema wall</li><li>Subwoofer integration</li><li>AVR configuration and calibration</li></ul></article>
-    <article class="ca-card ca-reveal"><small>DJ / CRITICAL LISTENING</small><h3>Second listening position</h3><p>The room is also developed around an occasional DJ listening position, which requires its own reflection-control strategy rather than treating the room as a single-seat cinema only.</p><ul><li>DJ booth listening position</li><li>Local absorptive treatment</li><li>Compact parametric elements</li><li>Variable acoustic curtains</li></ul></article>
-  </div>
-</section>
+    <div class="ca-vignette" aria-hidden="true"></div><div class="ca-topveil" aria-hidden="true"></div>
 
-<section class="ca-shell ca-section">
-  <div class="ca-head ca-reveal"><div><p class="ca-kicker">03 / CINEMA SYSTEM</p><h2 class="ca-title">KEF architectural cinema.</h2></div><p>The documented Casa Alain proposal uses KEF architectural loudspeakers, including the Ci4100QL-THX front stage, with Denon processing/amplification. The system is designed around the room first; product selection follows coverage, SPL, integration and listening requirements.</p></div>
-  <div class="ca-system-table">
-    <div class="ca-system-row ca-reveal"><span>LCR / 3×</span><b>KEF Ci4100QL-THX</b><span>Architectural front stage · THX Certified Select</span><span>In-wall</span></div>
-    <div class="ca-system-row ca-reveal"><span>SURROUND / 2×</span><b>KEF Ci160QL</b><span>Architectural surround channels</span><span>In-wall</span></div>
-    <div class="ca-system-row ca-reveal"><span>HEIGHT / 2×</span><b>KEF Ci130QS</b><span>Overhead / Atmos channels</span><span>In-ceiling</span></div>
-    <div class="ca-system-row ca-reveal"><span>SUB / 1×</span><b>KEF Kube 12 MIE</b><span>Low-frequency reinforcement</span><span>Floor</span></div>
-    <div class="ca-system-row ca-reveal"><span>AVR</span><b>Denon AVR-X2800H</b><span>AV processing / amplification</span><span>Rack / equipment</span></div>
-    <div class="ca-system-row ca-reveal"><span>INTEGRATION</span><b>Back-cans / RIF · KW1 · Sonos Port</b><span>Architectural installation and source integration</span><span>System</span></div>
-  </div>
-  <div class="ca-boundary ca-reveal" style="margin-top:18px"><b>Specification boundary.</b> KEF THX certification is stated only for products that carry that certification. Studio Ingenia does not present itself as the certification body or claim third-party manufacturer status.</div>
-</section>
+    <section class="ca-stage-copy hero" data-scene="hero">
+      <div class="eyebrow">PROJECT ATLAS / ARRIVAL</div>
+      <h1>Enter Casa Alain.<br>Then build it from the <em>real plan.</em></h1>
+      <p>A real-plan, source-backed sequence through architecture, acoustic treatment, KEF cinema integration and the project render archive.</p>
+      <div class="meta"><span>Residential cinema</span><span>DJ listening</span><span>Acoustic engineering</span></div>
+      <a class="ca-cta" href="#plan" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.115,behavior:'smooth'});return false;">ENTER PROJECT <i>↗</i></a>
+    </section>
 
-<section class="ca-shell ca-section">
-  <div class="ca-head ca-reveal"><div><p class="ca-kicker">04 / ACOUSTIC ENGINEERING</p><h2 class="ca-title">Treatment by function.</h2></div><p>The room is not treated from a decorative catalogue. Each treatment is positioned according to low-frequency behaviour, reflection paths, listening positions, temporal control and architectural constraints.</p></div>
-  <div class="ca-acoustic-grid">
-    <article class="ca-acoustic ca-reveal"><small>LOW FREQUENCY</small><h3>6 bass traps</h3><p>Six high-performance low-frequency units distributed across the front and rear corners to control modal build-up below approximately 125 Hz.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>REAR WALL</small><h3>Parametric hybrid surface</h3><p>Full-surface rear treatment combining diffusion and absorption to improve temporal coherence and reduce interfering early reflections.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>SIDE WALLS</small><h3>4 QRD + 2 broadband</h3><p>Four QRD diffusers address mid/high-frequency reflection behaviour while two broadband panels reduce primary reflections without over-damping.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>DJ POSITION</small><h3>Local reflection control</h3><p>Compact parametric treatment and broadband absorption are positioned around the DJ listening area as a dedicated secondary listening condition.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>SCREEN WALL</small><h3>98-inch cinema wall</h3><p>Absorptive treatment is placed below the large cinema display to reduce unwanted vertical reflection toward the listening area.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>CEILING</small><h3>5 diffusers + 8 clouds</h3><p>Quadratic diffusers and broadband ceiling absorbers control flutter and early ceiling reflections while retaining spatial perception.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>OPENINGS</small><h3>Variable acoustic curtains</h3><p>High-density curtains are proposed over the three openings so absorption and isolation behaviour can be adjusted between cinema and music use.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>CONSTRUCTION</small><h3>Ceiling + impact layer strategy</h3><p>The project development also considers resilient ceiling build-up, high-mass layers, acoustic plasterboard and an impact-control layer below the final floor finish.</p></article>
-    <article class="ca-acoustic ca-reveal"><small>BESPOKE</small><h3>Calculated in-situ design</h3><p>Where standard elements are insufficient, treatment geometry is developed specifically for the room from modal behaviour, reflection control and target response.</p></article>
-  </div>
-</section>
+    <section class="ca-stage-copy" data-scene="locate" id="plan">
+      <div class="eyebrow">01 / SOURCE PLAN</div>
+      <h1>The room begins<br>inside the <em>house plan.</em></h1>
+      <p>The sequence locates the exact Casa Alain project zone in the supplied house drawing before any spatial build appears.</p>
+    </section>
 
-<section class="ca-shell ca-section" id="film">
-  <div class="ca-head ca-reveal"><div><p class="ca-kicker">05 / PROJECT FILM</p><h2 class="ca-title">Room development in motion.</h2></div><p>This web preview is derived only from the supplied Casa Alain project media. It is not synthetic replacement imagery.</p></div>
-  <div class="ca-film ca-reveal"><video controls playsinline preload="metadata" poster="../assets/projects/casa-alain/hero.webp"><source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/8f05102f-accf-43b5-a803-5de46d74ce17.mp4" type="video/mp4"></video><div class="ca-film-note">SOURCE-RENDER MOTION DERIVATIVE · ORIGINAL PROJECT VIDEO RETAINED IN SOURCE ARCHIVE</div></div>
-</section>
+    <section class="ca-stage-copy" data-scene="build">
+      <div class="eyebrow">02 / PLAN-DERIVED CONSTRUCTION</div>
+      <h1>Walls rise from<br>the marked <em>footprint.</em></h1>
+      <p>Only the project perimeter is extruded for the transition. Door, window and interior details remain sourced from the actual model and render archive rather than invented in the browser.</p>
+    </section>
 
-<section class="ca-shell ca-section">
-  <a class="ca-library-link ca-reveal" href="./acoustic-library.html"><div><p class="ca-kicker">06 / STUDIO INGENIA ACOUSTIC SYSTEMS</p><h3>Calculated acoustic library + bespoke room design</h3><p>Absorption, diffusion, low-frequency control, ceiling systems, variable acoustics, sound isolation and custom geometries — specified by acoustic function, never by catalogue branding.</p></div><strong>OPEN LIBRARY ↗</strong></a>
-  <a class="ca-library-link ca-reveal" href="./systems.html" style="margin-top:12px"><div><p class="ca-kicker">07 / AUDIO SYSTEMS</p><h3>Cinema, custom loudspeakers and club systems</h3><p>KEF architectural cinema and THX-certified options where required; Studio Ingenia custom loudspeaker solutions; VOID Acoustics proposed for international club / hospitality work when technically appropriate.</p></div><strong>OPEN SYSTEMS ↗</strong></a>
-</section>
+    <section class="ca-stage-copy" data-scene="enter">
+      <div class="eyebrow">03 / ENTER THE ROOM</div>
+      <h1>Architecture becomes<br><em>listening space.</em></h1>
+      <p>The browser leaves the plan and moves into real project imagery: DJ booth, cinema wall, acoustic surfaces and the developed room.</p>
+    </section>
 
-<section class="ca-shell ca-section">
-  <div class="ca-boundary ca-reveal"><b>Evidence boundary.</b> This public case is built from the supplied Casa Alain acoustic report, project quotes, source drawings, SketchUp archive, renders and project video. Acoustic supplier branding is intentionally excluded from the public dossier. No unverified measured isolation or final-room response is claimed.</div>
-</section>
-</main>
+    <div class="ca-plan-orbit" id="caPlanOrbit" aria-hidden="true"><div class="sheet"></div></div>
+    <div class="ca-gallery-label" id="caGalleryLabel"></div>
+    <div class="ca-gallery-index" id="caGalleryIndex"></div>
 
-<footer class="ca-shell ca-footer"><span>© 2026 Héctor Lobato · Studio Ingenia</span><span>Casa Alain · private cinema / acoustic engineering</span></footer>
-<script src="../assets/js/casa-alain-v2.js?v=1"></script>
+    <div class="ca-system-band" id="caSystemBand">
+      <div><small>LCR / 3×</small><b>KEF Ci4100QL-THX</b></div>
+      <div><small>SURROUND / 2×</small><b>KEF Ci160QL</b></div>
+      <div><small>HEIGHT / 2×</small><b>KEF Ci130QS</b></div>
+      <div><small>SUB</small><b>KEF Kube 12 MIE</b></div>
+      <div><small>AVR</small><b>Denon AVR-X2800H</b></div>
+    </div>
+
+    <div class="ca-film-title" id="caFilmTitle"><small>PROJECT FILM / SOURCE-RENDER DERIVATIVE</small><h2>Room development in motion.</h2></div>
+
+    <section class="ca-archive" id="caArchive">
+      <div><div class="eyebrow">08 / TECHNICAL ARCHIVE</div><h2>Evidence behind the images.</h2><p>The public case exposes the document chain without publishing editable private sources. Each item remains classified by what it actually proves.</p></div>
+      <div class="ca-archive-list">
+        <div class="ca-archive-row"><small>SOURCE PLAN</small><b>I_06_ELECTRICIDAD_CASA ALAIN_page-0001.jpg</b><span>HOUSE / ELECTRICAL</span></div>
+        <div class="ca-archive-row"><small>SOURCE MODEL</small><b>CASA ALAIN ACUSTIC CINEMA_2_1_2.skp</b><span>SKETCHUP</span></div>
+        <div class="ca-archive-row"><small>ACOUSTICS</small><b>ACOUSTIC_2 CASA ALAIN.pdf</b><span>TECHNICAL REPORT</span></div>
+        <div class="ca-archive-row"><small>AUDIO</small><b>CASA ALLAIN IMAGENS AUDIO.pdf</b><span>SYSTEM OPTIONS</span></div>
+        <div class="ca-archive-row"><small>FILM</small><b>PROYECTO VIDEO ACUSTICA.mp4</b><span>PROJECT MASTER</span></div>
+      </div>
+    </section>
+
+    <div class="ca-technical"><b>REAL PROJECT SOURCES</b><br>HOUSE PLAN · SKETCHUP · RENDERS · ACOUSTIC REPORT · VIDEO</div>
+    <div class="ca-scrollhint">Scroll to build the room ↓</div>
+
+    <section class="ca-end" id="caEnd">
+      <div><div class="eyebrow">CASA ALAIN / TECHNICAL CASE</div><h2>Plan. Room.<br><em>Sound.</em></h2><p>The case remains tied to the supplied project archive. Acoustic supplier branding is excluded; cinema products are named only where documented.</p><a href="./systems.html">CINEMA SYSTEMS ↗</a><a href="./acoustic-library.html">ACOUSTIC METHODS ↗</a><a href="./index.html">NEXT PROJECTS ↗</a></div>
+    </section>
+  </main>
+</div>
+<script src="../assets/js/casa-alain-v2.js?v=2"></script>
 </body>
 </html>
