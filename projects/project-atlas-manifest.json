@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-14",
+  "policy": {
+    "projectImages": "USER_SUPPLIED_OR_SOURCE_DERIVED_ONLY",
+    "generatedConceptArtAsPrimary": false,
+    "asBuiltClaims": "ONLY_WHEN_SOURCE_SUPPORTS",
+    "acousticPerformance": "LABEL_MEASURED_PREDICTED_OR_DESIGNED",
+    "confidentialClients": "ANONYMIZE_UNLESS_PUBLIC_AUTHORIZATION",
+    "credentials": "NEVER_PUBLIC"
+  },
+  "projects": [
+    {
+      "id": "mar-salada",
+      "title": "Mar Salada / Club del Mar",
+      "page": "/projects/mar-salada.html",
+      "hero": "/assets/projects/mar-salada/hero.webp",
+      "heroClass": "USER_SUPPLIED_VIDEO_FRAME",
+      "domains": [
+        "AV",
+        "acoustics",
+        "KNX",
+        "DALI",
+        "CAD",
+        "fabrication",
+        "commissioning"
+      ],
+      "sources": [
+        "INFORME ACUSTICA.odt",
+        "INFORME DE INSTALACIÓN(1).odt",
+        "PLANOS CAD PARA GPT.zip",
+        "PROYECTO KNX.zip",
+        "CLUB_DEL_MAR_VIDEO_DOSSIER_01.mp4",
+        "BARRA GRANDE.zip"
+      ]
+    },
+    {
+      "id": "casa-alain",
+      "title": "Casa Alain",
+      "page": "/projects/casa-alain.html",
+      "hero": "/assets/projects/casa-alain/hero.webp",
+      "heroClass": "USER_SUPPLIED_RENDER",
+      "domains": [
+        "residential cinema",
+        "acoustics",
+        "AV",
+        "SketchUp",
+        "finishes"
+      ],
+      "sources": [
+        "CASA ALAIN ACUSTIC CINEMA_2_1_2.skp",
+        "PROYECTO VIDEO ACUSTICA.mp4",
+        "CASA ALLAIN IMAGENS AUDIO.pdf",
+        "ACOUSTIC_2 CASA ALAIN.odt",
+        "RENDERS FINALES",
+        "acustica finalizada"
+      ]
+    },
+    {
+      "id": "can-furnet-club",
+      "title": "Can Furnet Club",
+      "page": "/projects/can-furnet-club.html",
+      "hero": "/assets/projects/can-furnet/hero.webp",
+      "heroClass": "USER_SUPPLIED_RENDER",
+      "domains": [
+        "sound isolation",
+        "box-in-box",
+        "HVAC silencers",
+        "acoustics",
+        "CAD",
+        "audio cabling"
+      ],
+      "sources": [
+        "INFORME INSONORIZACION.pdf",
+        "INFORME INSONORIZACION + puertas acusticas.pdf",
+        "Estudio acustico, insonorizacion + Iluminacion ambiental..pdf",
+        "CABLEADO CLUB_CAN FURNET.pdf",
+        "ESQUEMA CABLEADO AUDIO*.pdf"
+      ]
+    },
+    {
+      "id": "playa-soleil",
+      "title": "Playa Soleil / Bora Bora",
+      "page": "/projects/playa-soleil-bora-bora.html",
+      "hero": "/assets/projects/playa-soleil/hero.webp",
+      "heroClass": "USER_SUPPLIED_FIELD_PHOTO",
+      "domains": [
+        "professional AV",
+        "cable book",
+        "CAT6a",
+        "power",
+        "CAD",
+        "SketchUp"
+      ],
+      "sources": [
+        "230308 V1.0 - BoraBora - DETAILED CABLE BOOK.pdf",
+        "SOUND CABLES POSITIONS - CLUB 1.pdf",
+        "SOUND CABLES POSITIONS - CLUB 2.pdf",
+        "LIGHT CABLES POSITIONS - CLUB 1.pdf",
+        "230308 - BORA BORA - Synoptique V2.0.drawio.pdf"
+      ]
+    },
+    {
+      "id": "studio-canada",
+      "title": "Private Production Studio / Canada",
+      "page": "/projects/private-production-studio-canada.html",
+      "hero": "/assets/projects/studio-canada/hero.webp",
+      "heroClass": "USER_SUPPLIED_RENDER",
+      "domains": [
+        "studio acoustics",
+        "diffusion",
+        "CAD",
+        "SketchUp"
+      ],
+      "sources": [
+        "ACOUSTIC 2_E250115 Sawyer Wildgen.pdf",
+        "refuerzo.pdf",
+        "Dibujo1.dwg",
+        "diseño estudio can xumeu2_2.skp",
+        "SKETCHUP sequences",
+        "segunda fase"
+      ]
+    },
+    {
+      "id": "studio-ibiza",
+      "title": "Private Producer Studio / Ibiza",
+      "page": "/projects/private-production-studio-sta-eulalia.html",
+      "hero": "/assets/projects/studio-sta-eulalia/hero.webp",
+      "heroClass": "USER_SUPPLIED_VRAY_RENDER",
+      "domains": [
+        "studio acoustics",
+        "first reflections",
+        "CAD",
+        "SketchUp",
+        "V-Ray"
+      ],
+      "sources": [
+        "UNDERS Project (Acoustics) - Inglés.pdf",
+        "Unders acoustics.pdf",
+        "Studio plan DWG + PDF",
+        "Under Studio 05.skp",
+        "VRAY RENDERS"
+      ]
+    },
+    {
+      "id": "studio-italy",
+      "title": "Acoustic Production Room / Italy",
+      "page": "/projects/acoustic-studio-italy.html",
+      "hero": "/assets/projects/studio-italy/hero.webp",
+      "heroClass": "USER_SUPPLIED_RENDER",
+      "domains": [
+        "room acoustics",
+        "RT60 prediction",
+        "bass control",
+        "diffusion",
+        "SketchUp"
+      ],
+      "sources": [
+        "acustica.pdf",
+        "progetto 4.pdf",
+        "progetto 4_2.pdf",
+        "RENDERS / 1.png … 24.png",
+        "VIDEO-2025-06-03-20-15-54.mp4"
+      ]
+    },
+    {
+      "id": "producer-concept",
+      "title": "Private Producer Acoustic Concept",
+      "page": "/projects/private-producer-acoustic-concept.html",
+      "hero": null,
+      "heroClass": "NO_PUBLIC_VISUAL_CONFIDENTIAL",
+      "domains": [
+        "acoustic pre-design",
+        "isolation",
+        "treatment",
+        "materials",
+        "3D planning"
+      ],
+      "sources": [
+        "PREPROYECTO ACUSTICO I(NGLÉS).docx / PDF / ODT",
+        "PREPROYECTO ACUSTICO español.odt / PDF"
+      ]
+    }
+  ]
+}
