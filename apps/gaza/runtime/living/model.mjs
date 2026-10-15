@@ -1,6 +1,6 @@
 /** One operational projection. No telemetry, animal census or employee shift is claimed as real. */
 import {TASKS,TESTS,ROLES} from '../processes/catalog.mjs';
-export const LIVE_RELEASE='gaza-vida-20261015-v14';
+export const LIVE_RELEASE='gaza-vida-20261015-v15';
 export const DEFAULT_LIVING=Object.freeze({startMinute:480,environment:'auto',weather:'auto',schedule:false});
 export const EXTRA_ROLES=Object.freeze({'SIM-ADMIN-DEMO':'Administración y planificación','SIM-RECEPTION-DESK':'Recepción de personas','SIM-MAINT-DEMO':'Mantenimiento','SIM-MATERIALS-DEMO':'Materiales de envase','SIM-ACCESS-DEMO':'Accesos','SIM-STAFF-DEMO':'Personal y vestuarios'});
 const continuous=new Set(['SIM-CLEAN-01','SIM-CLEAN-02','SIM-PROD-01','SIM-PACK-01','SIM-WMS-01','SIM-RECEPTION-01','SIM-MAINT-DEMO','SIM-ACCESS-DEMO']);
