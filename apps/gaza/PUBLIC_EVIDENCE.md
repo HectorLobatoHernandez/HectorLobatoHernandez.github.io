@@ -102,3 +102,9 @@ La vista de flota 3D acerca la cámara al camión seleccionado y dibuja calzada,
 La banda de avisos de flota solo muestra el número agregado de coincidencias geométricas DGT del estado público de Territorio si se recibió con éxito hace menos de cinco minutos. Una coincidencia a 1,5 km no demuestra afección de la ruta. Si el feed no se ha consultado o ha fallado, aparece «sin dato reciente».
 
 Dos vehículos de acceso en la granja y los movimientos ambientales de rebaños son **simulación visual independiente** del reloj del lote. No representan entregas reales, censos, circulación autorizada ni acciones de ordeño; pausa visual y movimiento reducido se respetan. El vehículo de recogida ligado a una tarea continúa sujeto al registro común.
+
+## Cubiertas, animales y flota — 2026-10-15 v16
+
+El botón de cubierta de la planta está ahora directamente sobre la escena. Al abrir, conserva paredes de perímetro ilustrativas y deja a la vista departamentos y máquinas propuestos; el Canvas sin WebGL ofrece el mismo control. La granja tiene un ciclo visual lento de desplazamiento, comida, agua y descanso, con pastores y perros ilustrativos. Los dos animales de la sala de ordeño usan puestos separados por especie en una distribución **propuesta**; no describe una explotación operativa real ni un protocolo de ordeño.
+
+La flota inicia en plano general de diez trayectos SIM, deja seleccionar un camión y ofrece una cámara próxima a la cabina. Identidad del conductor, carga, velocidad, paradas y combustible son datos de escenario, nunca GPS, tacógrafo, albaranes ni facturas. La velocidad ilustrativa no se obtiene derivando la reproducción acelerada. Se han ocultado los eventos de peaje hipotéticos: OSRM no valida tarifas ni barreras de pago. El recordatorio de seguridad vial enlaza a referencias generales de DGT y Ministerio de Transportes, pero no sustituye las señales, restricciones de cada tramo ni los registros reglamentarios.

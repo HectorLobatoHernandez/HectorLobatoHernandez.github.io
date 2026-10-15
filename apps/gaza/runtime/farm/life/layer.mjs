@@ -1,6 +1,7 @@
 import {createAnatomy,createHerdBatch} from './anatomy.mjs';
 import {DEFAULTS,herdPlan,operationPhase,inside,placements,weights} from './herd-model.mjs';
 import {PADDOCKS,point} from '../site.mjs';
+import {animalRoutine} from './animal-routine.mjs';
 /** Visual layer: no access to store.dispatch, no automatic quality review, no counted milk created here. */
 export function buildFarmLife(T,world){
  const root=new T.Group();root.name='FARM_LIFE_V2';world.site.add(root);
@@ -66,9 +67,8 @@ export function buildFarmLife(T,world){
  function update(view,a=assumptions,visualSeconds=null){latest=view;const key=JSON.stringify([view?.ready,view?.lots?.map(l=>[l.id,l.plannedL]),a]);if(key!==configurationKey){configurationKey=key;configure(view,a)}
   const milking=view?.tasks?.['FARM.MILKING'];phase=operationPhase(milking);const snapshot=world.snapshot(),time=visualSeconds??view?.seconds??0;animalCount=0;
   birdFlock.visible=!snapshot.isolated;const meadowCenter=[(Math.min(...xs)+Math.max(...xs))/2,(Math.min(...zs)+Math.max(...zs))/2];for(const b of birds){const a=time*.055+b.phase;b.g.position.set(meadowCenter[0]+Math.cos(a)*b.radius,b.height+Math.sin(a*1.7)*.8,meadowCenter[1]+Math.sin(a)*b.radius);b.g.rotation.y=-a+Math.PI/2;const flap=Math.sin(time*3.2+b.phase)*.7;b.left.rotation.z=flap;b.right.rotation.z=-flap;}
-  for(const b of batches){const enabled=!(snapshot.isolated&&snapshot.station!==(b.species==='BOVINE'?1:2)),same=view?.species===b.species,feeding=same&&view?.tasks?.['FARM.FEED'],feedActive=['RUNNING','HELD','UNAVAILABLE'].includes(feeding?.status);
-   b.root.visible=enabled;const poses=b.members.map((a,i)=>{const yard=a.zone.includes('yard'),routine=yard&&(a.index%3===0),routinePhase=time*.26+a.index*.73,feedWalk=feedActive&&yard&&a.index%3===0,limit=a.space<3?.58:1.05,dx=yard?Math.sin(routinePhase)*(routine?limit:.08):0,dz=yard?Math.cos(routinePhase*.83)*(routine?limit*.6:.05):0,moving=feedWalk||routine;return {x:a.position[0]+dx,y:yard?.33:.38,z:a.position[1]+dz,yaw:a.yaw+(moving?Math.sin(routinePhase)*.22:0),
-    phase:(feedActive?feeding.elapsed*1.8:time*.8)+a.index,walk:moving?(feedWalk?.58:.38):0,headTilt:feedActive?-.48+Math.sin((feeding.elapsed||0)*.7+a.index)*.08:(yard?Math.sin(time*.4+a.index*5)*.13:Math.sin(time*.22+a.index*5)*.07),headTurn:yard?Math.sin(time*.21+a.index*2)*.18:Math.sin(time*.15+a.index*2)*.09,tail:(feedActive||yard)?Math.sin(time*1.1+a.index)*.22:Math.sin(time*.55+a.index)*.08}});
+  for(const b of batches){const enabled=!(snapshot.isolated&&snapshot.station!==(b.species==='BOVINE'?1:2));
+   b.root.visible=enabled;const trough=waterPoints.find(p=>p.species===b.species)?.position;const poses=b.members.map(a=>{const routine=animalRoutine(a,time,trough);return {...routine,y:a.zone.includes('yard')?.33:.38,phase:time*.55+a.index}});
    b.update(poses);animalCount+=b.members.length;
   }
   for(const species of ['BOVINE','OVINE']){const b=representativeBatches[species],old=milestones[species],active=milking&&['RUNNING','HELD','UNAVAILABLE'].includes(milking.status)&&view.species===species;b.root.visible=!!active&&(!snapshot.isolated||snapshot.station===3);

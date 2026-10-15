@@ -1,8 +1,8 @@
 import {makePath,samplePath,sampleTrip,ribbon} from './site-real-core.mjs';
 /** Photographic interpretation; dimensions and internal traffic are editable scenario parameters, NOT surveyed geometry. */
 export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
-  const root=new THREE.Group(),shell=new THREE.Group(),interior=new THREE.Group(),labels=new THREE.Group(),routes=new THREE.Group(),actors=new THREE.Group();
-  root.name='COResES_PHOTO_STUDY_NOT_GEOREREFERENCED';root.add(shell,interior,labels,routes,actors);interior.visible=false;
+  const root=new THREE.Group(),shell=new THREE.Group(),cutawayWalls=new THREE.Group(),interior=new THREE.Group(),labels=new THREE.Group(),routes=new THREE.Group(),actors=new THREE.Group();
+  root.name='COResES_PHOTO_STUDY_NOT_GEOREREFERENCED';root.add(shell,cutawayWalls,interior,labels,routes,actors);interior.visible=false;cutawayWalls.visible=false;
   const selectable=[],moving=[],barriers=[],materials=new Map(),cube=new THREE.BoxGeometry(1,1,1),geoCylinder=new THREE.CylinderGeometry(1,1,1,10),geoSphere=new THREE.SphereGeometry(1,10,7),boxColliders=[];
   function mat(color,metalness=0,roughness=.8){const key=[color,metalness,roughness].join('/');if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({color,metalness,roughness}));return materials.get(key)}
   const steel=mat('#abb5b9',.48,.42),grey=mat('#91999c',.18,.7),red=mat('#b94149',.1,.65),white=mat('#e6e7df'),blue=mat('#204c83'),black=mat('#243039'),rubber=mat('#17212a'),glass=mat('#354f5c',.35,.28),yellow=mat('#ddbd59'),grass=mat('#63784d'),asphalt=mat('#5b6264'),wood=mat('#a96d3c');
@@ -23,6 +23,11 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   box(-80,.2,0,5,.3,320,mat('#c1c0b4'));box(-43,.23,30,3,.25,240,mat('#c5c3b8'));
   for(let z=-178;z<180;z+=13)box(-94,.22,z,.18,.025,5,white);
   tag(box(17,7.5,0,66,15,220,grey,shell),'main','Nave longitudinal · gris metálico','Aspecto exterior observado en las capturas. Huella, altura y posición de este estudio no están medidas.');
+  // Cutaway keeps a recognisable perimeter while exposing the proposed stations.
+  for(const [x,z,w,d,h,m] of [[17,0,66,220,15,grey],[17,-76,66,68,29,red],[-26,-13,20,48,8,grey],[-26,72,20,70,5.4,red]]){
+    box(x-w/2,h/2,z,.36,h,d,m,cutawayWalls);box(x+w/2,h/2,z,.36,h,d,m,cutawayWalls);
+    box(x,h/2,z-d/2,w,h,.36,m,cutawayWalls);box(x,h/2,z+d/2,w,h,.36,m,cutawayWalls);
+  }
   tag(box(17,22,-76,66,14,68,red,shell),'highbay','Volumen elevado rojo','Coronación roja observada; correspondencia funcional con almacén pendiente de validación.');
   box(17,15.25,25,66.6,.5,170,steel,shell);box(17,29.3,-76,66.6,.4,68.5,red,shell);
   // Corrugation/ribs rendered with instancing, not hundreds of draw calls.
@@ -106,7 +111,7 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   update(0);
   return {root,shell,interior,labels,routes,actors,selectable,update,moving,boxColliders,
     meta:{version:2,geometry:'PHOTO_INFERRED_STUDY',alignment:'NOT_GEOREREFERENCED',vehicles:2,workers:8,access1:'MUELLES_OFICINAS_AULA',access2:'LECHE_BASCULA_SERVICIOS'},
-    setCutaway(value){shell.visible=!value;interior.visible=value},
+    setCutaway(value){shell.visible=!value;cutawayWalls.visible=!!value;interior.visible=!!value},
     dispose(){const geometries=new Set(),mats=new Set(),textures=new Set();root.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of [].concat(o.material||[])){mats.add(m);if(m.map)textures.add(m.map)}});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose())}
   };
 }
