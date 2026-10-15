@@ -119,3 +119,5 @@ En Flota SIM, «Seguir vehículo» acerca el corredor 3D/Canvas a la carretera O
 **v14:** la flota lee el estado inicial de «Vida SIM» del control principal al arrancar. El botón ya no puede mostrar «Reanudar» mientras el control principal indica animación activa. Las marcas discontinuas del corredor WebGL se agrupan en una sola geometría para limitar draw calls. Sin WebGL, el selector dice «Isométrico 2D».
 
 **v15:** el fallback Canvas de granja retira rótulos/estado de carga del visor WebGL fallido; deja visible su propia cabecera y la procedencia SIM.
+
+**v18:** el plano de flota inicia en Canvas legible y mantiene diez marcadores seleccionables incluso cuando WebGL termina de cargar. El 3D queda como vista de recorrido seleccionado; un panel lee del mismo registro los litros de entrada (granja, cisterna y recepción) y de salida (almacén, expedición y entrega). Las rutas de camión no se asignan a lotes sin fuente autorizada. En la granja, los animales reducen paso y las dos especies usan carriles y puestos separados en la sala de ordeño propuesta, también en el respaldo Canvas.
