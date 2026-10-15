@@ -97,3 +97,7 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 - Major OSM roads are rendered separately from contextual building extrusions; GAZA-tagged OSM candidates are highlighted but remain `NOT AS-BUILT`.
 - A deterministic local QA fixture makes visual tests independent of Overpass availability.
 - This page is intentionally separate from the production Plant 3D until public GIS alignment is reviewed; after approval, the same runtime can replace contextual road/building geometry incrementally.
+
+## Seguimiento de flota SIM (2026-10-15)
+
+`mission-control.html?view=fleet` abre `fleet-tracking.html`. Las rutas públicas se calculan con OSRM cuando responde; el trazado alternativo es esquemático y se marca así. Identidades, coordenadas instantáneas, paradas, combustible, peajes, pagos y retrasos son eventos de demostración, sin conexión GPS ni prueba de peajes o restricciones HGV. La vista de Site Real ofrece Día, Noche + luces y Horario SIM independientemente del reloj real. El tráfico escénico continúa cuando no hay una tarea de transporte activa en el ledger, sin alterar el estado del lote.
