@@ -11,11 +11,11 @@ const browser=await chromium.launch({headless:!headed});
 const errors=[],checks=[],warnings=[];
 const renderBudget={calls:1200,triangles:3000000,geometries:1500,textures:512};
 const targets=[
-  {name:'strategy',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
-  {name:'strategy-plant',url:'/game.html?camera=plant&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
-  {name:'strategy-process',url:'/game.html?camera=process&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
-  {name:'strategy-asrs',url:'/game.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
-  {name:'strategy-docks',url:'/game.html?camera=dock&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy',url:'/game-legacy.html?camera=overview&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-plant',url:'/game-legacy.html?camera=plant&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-process',url:'/game-legacy.html?camera=process&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-asrs',url:'/game-legacy.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
+  {name:'strategy-docks',url:'/game-legacy.html?camera=dock&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant',url:'/plant-3d.html?camera=exterior&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-process',url:'/plant-3d.html?camera=process&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
   {name:'plant-asrs',url:'/plant-3d.html?camera=asrs&freeze=1&debug=1&qa=1',width:1600,height:900,dsf:2},
@@ -27,7 +27,7 @@ const targets=[
   {name:'farm-network',url:'/farm-network.html?qa=1',width:1600,height:900,dsf:1},
   {name:'systems',url:'/systems.html?qa=1',width:1600,height:900,dsf:1},
   {name:'territory',url:'/territory.html?qa=1',width:1600,height:900,dsf:1},
-  {name:'strategy-mobile',url:'/game.html?camera=overview&freeze=1&debug=1&qa=1',width:390,height:844,dsf:2}
+  {name:'strategy-mobile',url:'/game-legacy.html?camera=overview&freeze=1&debug=1&qa=1',width:390,height:844,dsf:2}
 ];
 
 for(const target of targets){
@@ -40,8 +40,8 @@ for(const target of targets){
   if(!response?.ok()) errors.push({surface:name,type:'http',text:String(response?.status())});
   await page.waitForTimeout(1600);
 
-  if(url.includes('game.html')||url.includes('plant-3d.html')){
-    const canvasSelector=url.includes('game.html')?'#scene':'#twin3d';
+  if(url.includes('game-legacy.html')||url.includes('plant-3d.html')){
+    const canvasSelector=url.includes('game-legacy.html')?'#scene':'#twin3d';
     const metrics=await page.locator(canvasSelector).evaluate((canvas)=>{
       const r=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
       return {cssW:r.width,cssH:r.height,bufferW:canvas.width,bufferH:canvas.height,dpr,ratioX:r.width?canvas.width/r.width:0,ratioY:r.height?canvas.height/r.height:0};
@@ -75,7 +75,7 @@ for(const target of targets){
     const twinStateOk=!!twinState&&twinState.schemaVersion===1&&['strategy','plant'].includes(twinState.surface)&&!!twinState.simulation&&!!twinState.environment&&!!twinState.provenance;
     checks.push({surface:name,check:'machine-readable-twin-state',ok:twinStateOk,metrics:twinState});
     if(!twinStateOk)errors.push({surface:name,type:'telemetry',text:'Twin telemetry snapshot unavailable or invalid'});
-    if(url.includes('game.html')){
+    if(url.includes('game-legacy.html')){
       const vehicle=await page.evaluate(()=>window.__GAZA_VEHICLE_CONTEXT__||null);
       const vehicleOk=vehicle?.forwardAxis==='-X'&&vehicle?.heading==='PATH_TANGENT';
       checks.push({surface:name,check:'vehicle-path-heading',ok:vehicleOk,metrics:vehicle});
