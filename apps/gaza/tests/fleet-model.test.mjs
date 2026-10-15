@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {motion,pathAt,pathPrefix,TRIPS} from '../runtime/fleet/model.mjs';
+import {motion,pathAt,pathPrefix,TRIPS,REGION_NODES} from '../runtime/fleet/model.mjs';
 test('stops hold the vehicle at a fixed road position and the simulation loops',()=>{
  assert.equal(motion(30).progress,motion(42).progress);
  assert.equal(motion(85).progress,motion(89).progress);
@@ -16,6 +16,8 @@ test('route interpolation respects endpoints and a midpoint',()=>{
  const uneven=[[41,-6],[41,-5.9],[41,-4]];assert.deepEqual(pathPrefix(uneven,.5).at(-1),pathAt(uneven,.5));assert.equal(pathPrefix(uneven,.5).length,3);
 });
 test('all fleet events carry explicit simulation identities',()=>{
- assert.equal(TRIPS.length,8);
+ assert.equal(TRIPS.length,10);
  for(const trip of TRIPS){assert.match(trip.id,/^SIM-/);assert.ok(trip.events.every(e=>e.at>0&&e.at<240&&e.duration>0&&motion(e.at+1).dwell));}
 });
+
+test('regional supply markers are municipality references, never farm pins',()=>{assert(REGION_NODES.some(x=>x.name.includes('Fresno')));assert(REGION_NODES.some(x=>x.type==='supplier_area'));assert(REGION_NODES.every(x=>x.type!=='farm'))});

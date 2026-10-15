@@ -75,7 +75,7 @@ for route in data['routes']:
 
 samplers=[{'input':a,'output':b,'interpolation':'LINEAR'} for _,a,b in animations]
 channels=[{'sampler':i,'target':{'node':root,'path':'translation'}} for i,(root,_,_) in enumerate(animations)]
-gltf={'asset':{'version':'2.0','generator':'GAZA Operations · public OSRM and synthetic fleet'},'scene':0,'scenes':[{'nodes':list(range(len(nodes)))}],'nodes':nodes,'meshes':meshes,'materials':materials,'buffers':[{'byteLength':len(binary)}],'bufferViews':views,'accessors':accessors,'animations':[{'name':'20s · eight synthetic trips','samplers':samplers,'channels':channels}],'extras':{'roadProvenance':'PUBLIC OSM/OSRM 2026-10-15','operationalProvenance':'SYNTHETIC','license':'© OpenStreetMap contributors · ODbL','asBuilt':False}}
+gltf={'asset':{'version':'2.0','generator':'GAZA Operations · public OSRM and synthetic fleet'},'scene':0,'scenes':[{'nodes':list(range(len(nodes)))}],'nodes':nodes,'meshes':meshes,'materials':materials,'buffers':[{'byteLength':len(binary)}],'bufferViews':views,'accessors':accessors,'animations':[{'name':f'20s · {len(data["routes"])} synthetic trips','samplers':samplers,'channels':channels}],'extras':{'roadProvenance':'PUBLIC OSM/OSRM 2026-10-15','operationalProvenance':'SYNTHETIC','license':'© OpenStreetMap contributors · ODbL','asBuilt':False}}
 # Child nodes cannot also be roots of the scene.
 children={c for node in nodes for c in node.get('children',[])};gltf['scenes'][0]['nodes']=[i for i in range(len(nodes)) if i not in children]
 json_bytes=json.dumps(gltf,ensure_ascii=False,separators=(',',':')).encode('utf-8');json_bytes+=b' ' * (-len(json_bytes)%4)
