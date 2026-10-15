@@ -26,6 +26,7 @@ const galleryIndex=el('#caGalleryIndex');
 const systemBand=el('#caSystemBand');
 const film=el('#caFilm');
 const filmTitle=el('#caFilmTitle');
+const archive=el('#caArchive');
 const end=el('#caEnd');
 const copies=els('.ca-stage-copy[data-scene]');
 const video=film?.querySelector('video');
@@ -42,8 +43,9 @@ const scenes=[
   {a:.605,b:.695,id:'cinema'},
   {a:.695,b:.775,id:'dj'},
   {a:.775,b:.845,id:'ceiling'},
-  {a:.845,b:.915,id:'film'},
-  {a:.915,b:1.001,id:'end'}
+  {a:.845,b:.905,id:'film'},
+  {a:.905,b:.965,id:'archive'},
+  {a:.965,b:1.001,id:'end'}
 ];
 const galleryData=[
   {id:'architecture',frame:0,title:'Architecture / room organization',copy:'The private cinema is developed from the actual house plan and supplied SketchUp / render archive, preserving the relationship between access, DJ booth, screen wall and listening zone.',index:'01 / 05'},
@@ -127,13 +129,14 @@ function paint(p){
  setOpacity(systemBand,ramp(p,.615,.655)*(1-ramp(p,.688,.71)));
 
  // project film
- const fo=ramp(p,.835,.875)*(1-ramp(p,.915,.945));setOpacity(film,fo);setOpacity(filmTitle,ramp(p,.855,.89)*(1-ramp(p,.91,.94)));
+ const fo=ramp(p,.835,.87)*(1-ramp(p,.905,.93));setOpacity(film,fo);setOpacity(filmTitle,ramp(p,.85,.885)*(1-ramp(p,.90,.925)));
  if(video){
    if(fo>.04 && video.paused && !reduced)video.play().catch(()=>{});
    if(fo<=.02 && !video.paused)video.pause();
  }
 
- setOpacity(end,ramp(p,.925,.98));
+ setOpacity(archive,ramp(p,.905,.93)*(1-ramp(p,.958,.975)));
+ setOpacity(end,ramp(p,.968,.992));
 }
 function loop(now){
  const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
