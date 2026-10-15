@@ -18,7 +18,7 @@ test('simulated weather is visual state and preserves lots/quality',()=>{
 });
 
 test('release and presentation controls are upgraded',()=>{
- assert.equal(LIVE_RELEASE,'gaza-vida-20261015-v14');
+ assert.equal(LIVE_RELEASE,'gaza-vida-20261015-v15');
  const mission=read('../mission-control.html');
  assert(mission.includes('zTemp'));assert(mission.includes('zWind'));assert(mission.includes('Quitar cubiertas / ver interior'));
  assert(mission.includes('CORESES · PLANTA'));assert(mission.includes('ZAMORA · GRANJA'));

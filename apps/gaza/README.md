@@ -117,3 +117,5 @@ El control «Luz real · España» usa la hora civil Europe/Madrid para el aspec
 En Flota SIM, «Seguir vehículo» acerca el corredor 3D/Canvas a la carretera OSRM y «OSM 2D» permite cotejar la ruta. Los letreros son recreaciones contextuales; una referencia de vía aparece solo cuando OSRM devuelve el `ref` de los pasos. El enlace «Avisos DGT en Territorio» abre el estado oficial cuando está disponible. En Granja, «Vida SIM» anima los rebaños y dos vehículos de acceso propuestos aun si el proceso está en pausa. El movimiento visual no altera el registro de lotes ni supone telemetría.
 
 **v14:** la flota lee el estado inicial de «Vida SIM» del control principal al arrancar. El botón ya no puede mostrar «Reanudar» mientras el control principal indica animación activa. Las marcas discontinuas del corredor WebGL se agrupan en una sola geometría para limitar draw calls. Sin WebGL, el selector dice «Isométrico 2D».
+
+**v15:** el fallback Canvas de granja retira rótulos/estado de carga del visor WebGL fallido; deja visible su propia cabecera y la procedencia SIM.
