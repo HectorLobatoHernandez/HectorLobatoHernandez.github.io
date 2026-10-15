@@ -144,7 +144,7 @@ export function reduce(input,action){
  const s=clone(input);s.revision++;
  const fail=(reason)=>{event(s,'ACTION_BLOCKED',action.lotId||null,reason,{action:action.type});return s};
  if(action.type==='LIVING_SETTINGS'){
-  const previous=settingsOf(s),allowed=['environment','schedule','startMinute'],changes=Object.fromEntries(allowed.filter(k=>Object.hasOwn(action,k)).map(k=>[k,action[k]]));
+  const previous=settingsOf(s),allowed=['environment','weather','schedule','startMinute'],changes=Object.fromEntries(allowed.filter(k=>Object.hasOwn(action,k)).map(k=>[k,action[k]]));
   assert(Object.keys(action).every(k=>k==='type'||allowed.includes(k)),'Parámetro no admitido');
   s.config.living=validateLiving({...previous,...changes});event(s,'LIVING_SETTINGS',null,'Iluminación / turnos de escenario actualizados; cantidades conservadas',{settings:s.config.living});assertState(s);return s;
  }
