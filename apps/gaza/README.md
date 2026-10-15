@@ -101,3 +101,9 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 ## Seguimiento de flota SIM (2026-10-15)
 
 `mission-control.html?view=fleet` abre `fleet-tracking.html`. Las rutas públicas se calculan con OSRM cuando responde; el trazado alternativo es esquemático y se marca así. Identidades, coordenadas instantáneas, paradas, combustible, peajes, pagos y retrasos son eventos de demostración, sin conexión GPS ni prueba de peajes o restricciones HGV. La vista de Site Real ofrece Día, Noche + luces y Horario SIM independientemente del reloj real. El tráfico escénico continúa cuando no hay una tarea de transporte activa en el ledger, sin alterar el estado del lote.
+
+## Flota SIM · vista isométrica y exportación Blender (v7)
+
+La vista Flota funciona sin WebGL: el Canvas 2D proyecta en perspectiva los ejes obtenidos de OSRM cuando responde y dibuja ocho vehículos sintéticos con paradas sincronizadas. El botón OSM 2D usa Leaflet como capa opcional. Si OSRM o Leaflet no responden, los ejes restantes se marcan como esquemáticos; nunca se presentan como carreteras validadas. Planta Site Real abre una representación isométrica operativa de respaldo cuando no hay WebGL. La selección Día/Noche y el movimiento funcionan también en este modo.
+
+Para preparar una escena editable en Blender, abre Flota SIM, espera a que las rutas indiquen OSRM y pulsa «Exportar rutas para Blender». Con Blender 4.x: `blender -b --python apps/gaza/tools/blender/generate_fleet_scene.py -- gaza-fleet-routes-sim.json gaza-fleet-scene.blend`. El script crea vías a partir del JSON exportado, ocho camiones de maqueta, animación y cámara ortográfica. Las geometrías escénicas son inferidas; no representan datos internos de GAZA.

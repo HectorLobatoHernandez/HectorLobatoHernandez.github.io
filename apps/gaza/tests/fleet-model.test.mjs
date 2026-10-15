@@ -16,6 +16,6 @@ test('route interpolation respects endpoints and a midpoint',()=>{
  const uneven=[[41,-6],[41,-5.9],[41,-4]];assert.deepEqual(pathPrefix(uneven,.5).at(-1),pathAt(uneven,.5));assert.equal(pathPrefix(uneven,.5).length,3);
 });
 test('all fleet events carry explicit simulation identities',()=>{
- assert.equal(TRIPS.length,3);
+ assert.equal(TRIPS.length,8);
  for(const trip of TRIPS){assert.match(trip.id,/^SIM-/);assert.ok(trip.events.every(e=>e.at>0&&e.at<240&&e.duration>0&&motion(e.at+1).dwell));}
 });
