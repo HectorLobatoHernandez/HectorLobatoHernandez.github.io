@@ -86,9 +86,11 @@ jobs:
           assert 'PLAN-DERIVED CONSTRUCTION' in casa
           assert 'KEF Ci4100QL-THX' in casa
           assert 'Denon AVR-X2800H' in casa
-          assert '6 bass traps' in casa
-          assert '5 diffusers + 8 clouds' in casa
-          assert 'source-backed' in casa.lower()
+          assert 'PROJECT ATLAS / ARRIVAL' in casa
+          assert 'PLAN-DERIVED CONSTRUCTION' in casa
+          assert 'ca-footprint' in casa
+          assert 'CASA ALAIN ACUSTIC CINEMA_2_1_2.skp' in casa
+          assert 'SOURCE-RENDER DERIVATIVE' in casa
           systems=Path('projects/systems.html').read_text(encoding='utf-8')
           assert 'KEF architectural cinema' in systems
           assert 'VOID Acoustics' in systems
@@ -195,7 +197,7 @@ jobs:
               const promo=await page.evaluate(()=>window.__ATLAS_PROMO__||null);
               if(promo?.projects!==8||promo?.sourceBacked!==true||promo?.generatedProjectImagery!==false)throw new Error('promo contract mismatch');
             }else if(path.endsWith('casa-alain.html')){
-              if(state.casa?.sourceBacked!==true||state.casa?.syntheticProjectImagery!==false||state.casa?.projectGeometry!=='PLAN_DERIVED_FOOTPRINT_ONLY'||state.casa?.acousticSupplierBrandHidden!==true)throw new Error('casa alain cinematic contract mismatch');
+              if(state.casa?.sourceBacked!==true||state.casa?.syntheticProjectImagery!==false||state.casa?.projectGeometry!=='PLAN_DERIVED_FOOTPRINT_ONLY'||state.casa?.acousticSupplierBrandHidden!==true||state.casa?.chapters?.length!==5)throw new Error('casa alain cinematic contract mismatch');
               await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight*.63));
               await page.waitForTimeout(350);
               const footprint=await page.locator('#caFootprint').count();
