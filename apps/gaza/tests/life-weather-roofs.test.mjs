@@ -6,10 +6,10 @@ import {environmentOf,LIVE_RELEASE,settingsOf} from '../runtime/living/model.mjs
 
 const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
 
-test('artificial lighting is enabled only in the Noche phase',()=>{
+test('artificial lighting switches on at dusk and remains on at night',()=>{
  let s=initialState();
  s=reduce(s,{type:'LIVING_SETTINGS',environment:'day'});assert.equal(environmentOf(s).lamps,false);assert.equal(environmentOf(s).phase,'Día');
- s=reduce(s,{type:'LIVING_SETTINGS',environment:'dusk'});assert.equal(environmentOf(s).lamps,false);assert.equal(environmentOf(s).phase,'Crepúsculo');
+ s=reduce(s,{type:'LIVING_SETTINGS',environment:'dusk'});assert.equal(environmentOf(s).lamps,true);assert.equal(environmentOf(s).phase,'Crepúsculo');
  s=reduce(s,{type:'LIVING_SETTINGS',environment:'night'});assert.equal(environmentOf(s).lamps,true);assert.equal(environmentOf(s).phase,'Noche');
 });
 
