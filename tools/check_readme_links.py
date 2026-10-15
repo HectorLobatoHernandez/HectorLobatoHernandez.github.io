@@ -65,8 +65,9 @@ def source_result(url: str, root: Path = ROOT) -> dict:
     row["local_ok"] = target.is_file()
     if not row["local_ok"]:
         return dict(row, error="Missing repository target")
-    text = target.read_text(encoding="utf-8")
-    if target.suffix.lower() == ".html":
+    suffix = target.suffix.lower()
+    text = target.read_text(encoding="utf-8") if suffix in {".html", ".svg"} else ""
+    if suffix == ".html":
         title = re.search(r"<title[^>]*>(.*?)</title>", text, re.I | re.S)
         row["source_title"] = html.unescape(title.group(1).strip()) if title else ""
         if not row["source_title"]:
@@ -75,7 +76,7 @@ def source_result(url: str, root: Path = ROOT) -> dict:
             ids = re.findall(r'\b(?:id|name)=[\"\']([^\"\']+)', text)
             if urllib.parse.unquote(parsed.fragment) not in ids:
                 return dict(row, local_ok=False, error="HTML fragment not found in source")
-    if target.suffix.lower() == ".svg":
+    if suffix == ".svg":
         try:
             svg = ET.fromstring(text)
             for element in svg.iter():
