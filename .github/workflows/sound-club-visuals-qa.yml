@@ -74,9 +74,9 @@ jobs:
           assert '../assets/css/casa-alain-v2.css' in casa
           assert '../assets/js/casa-alain-v2.js' in casa
           assert 'KEF Ci4100QL-THX' in casa
-          assert 'PLAN-DERIVED CONSTRUCTION' in casa
+          assert 'NO CONTACT-SHEET CROPS USED AS FULLSCREEN IMAGES' in casa
           assert 'CASA ALAIN ACUSTIC CINEMA_2_1_2.skp' in casa
-          assert 'INTERFACE CITY · NOT A GEOGRAPHIC MAP' in casa
+          assert 'INTERFACE ONLY · NOT A GEOGRAPHIC MAP' in casa
 
           mar = Path('projects/mar-salada.html').read_text(encoding='utf-8')
           assert 'MAR SALADA / CLUB DEL MAR' in mar

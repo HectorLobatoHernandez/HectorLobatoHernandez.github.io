@@ -1,133 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#01030F">
-<meta name="description" content="Casa Alain — private residential cinema club: real-plan spatial sequence, acoustic engineering, KEF cinema system, renders and project film.">
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#01030F">
+<meta name="description" content="Casa Alain — cinematic private cinema case built from the real house plan, source project media and technical archive.">
 <title>Casa Alain — Private Cinema / Project Atlas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../assets/css/casa-alain-v2.css?v=2">
-</head>
-<body>
-<div class="ca-track" aria-hidden="true"></div>
-<div class="ca-fixed">
-  <div class="ca-progress" id="caProgress"></div>
-  <header class="ca-header">
-    <a class="ca-brand" href="./index.html" aria-label="Project Atlas — return to projects">PROJECT ATLAS<small>CASA ALAIN / P02</small></a>
-    <nav aria-label="Casa Alain chapters">
-      <a href="#plan" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.12,behavior:'smooth'});return false;">PLAN</a>
-      <a href="#acoustics" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.54,behavior:'smooth'});return false;">ACOUSTICS</a>
-      <a href="#cinema" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.64,behavior:'smooth'});return false;">CINEMA</a>
-      <a href="#film" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.87,behavior:'smooth'});return false;">FILM</a>
-    </nav>
-    <a class="ca-close" href="./casa-alain-r3f.html">R3F SCROLL STUDY ↗</a>
-  </header>
-
-  <main class="ca-stage">
-    <div class="ca-media">
-      <div class="ca-city" id="caCity" aria-hidden="true">
-        <div class="ca-city-grid">
-          <div class="ca-city-node n1"><span>Mar Salada</span></div>
-          <div class="ca-city-node n2"><span>Can Furnet</span></div>
-          <div class="ca-city-node alain"><span>Casa Alain<br>Private Cinema</span></div>
-          <div class="ca-city-node n4"><span>Playa Soleil</span></div>
-          <div class="ca-city-node n5"><span>Studio Canada</span></div>
-          <div class="ca-city-node n6"><span>Private Studio</span></div>
-          <div class="ca-city-node n7"><span>Italy Room</span></div>
-        </div>
-        <div class="ca-city-title"><b>PROJECT ATLAS / NAVIGATION MODEL</b><br>INTERFACE CITY · NOT A GEOGRAPHIC MAP</div>
-      </div>
-      <div class="ca-plan-source" id="caPlan" aria-hidden="true"></div>
-      <div class="ca-plan-grid" id="caPlanGrid" aria-hidden="true"></div>
-      <div class="ca-plan-mask" id="caPlanMask" aria-hidden="true"></div>
-      <div class="ca-footprint" id="caFootprint" aria-hidden="true"></div>
-      <div class="ca-footprint-label" id="caFootprintLabel">PROJECT ZONE / SOURCE PLAN</div>
-      <div class="ca-room-build" id="caRoomBuild" aria-hidden="true">
-        <div class="ca-room-floor"></div><div class="ca-wall n"></div><div class="ca-wall e"></div><div class="ca-wall s"></div><div class="ca-wall w"></div>
-        <div class="ca-room-label" id="caRoomLabel">PLAN-DERIVED<br>ROOM PERIMETER</div>
-      </div>
-      <div class="ca-render-source" id="caRender" aria-hidden="true"></div>
-      <div class="ca-acoustic-source" id="caAcoustic" aria-hidden="true"></div>
-
-      <div class="ca-gallery" id="caGallery" aria-hidden="true">
-        <div class="ca-gallery-frame montage" data-pos="0,0"></div>
-        <div class="ca-gallery-frame montage" data-pos="50,0"></div>
-        <div class="ca-gallery-frame acoustic" data-pos="0,0"></div>
-        <div class="ca-gallery-frame montage" data-pos="0,50"></div>
-        <div class="ca-gallery-frame acoustic" data-pos="100,0"></div>
-        <div class="ca-gallery-frame montage" data-pos="0,100"></div>
-      </div>
-      <div class="ca-film" id="caFilm">
-        <video muted playsinline loop preload="metadata" poster="../assets/projects/casa-alain/hero.webp">
-          <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/8f05102f-accf-43b5-a803-5de46d74ce17.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-
-    <div class="ca-vignette" aria-hidden="true"></div><div class="ca-topveil" aria-hidden="true"></div>
-
-    <section class="ca-stage-copy hero" data-scene="hero">
-      <div class="eyebrow">PROJECT ATLAS / ARRIVAL</div>
-      <h1>Enter Casa Alain.<br>Then build it from the <em>real plan.</em></h1>
-      <p>A real-plan, source-backed sequence through architecture, acoustic treatment, KEF cinema integration and the project render archive.</p>
-      <div class="meta"><span>Residential cinema</span><span>DJ listening</span><span>Acoustic engineering</span></div>
-      <a class="ca-cta" href="#plan" onclick="window.scrollTo({top:document.documentElement.scrollHeight*.115,behavior:'smooth'});return false;">ENTER PROJECT <i>↗</i></a>
-    </section>
-
-    <section class="ca-stage-copy" data-scene="locate" id="plan">
-      <div class="eyebrow">01 / SOURCE PLAN</div>
-      <h1>The room begins<br>inside the <em>house plan.</em></h1>
-      <p>The sequence locates the exact Casa Alain project zone in the supplied house drawing before any spatial build appears.</p>
-    </section>
-
-    <section class="ca-stage-copy" data-scene="build">
-      <div class="eyebrow">02 / PLAN-DERIVED CONSTRUCTION</div>
-      <h1>Walls rise from<br>the marked <em>footprint.</em></h1>
-      <p>Only the project perimeter is extruded for the transition. Door, window and interior details remain sourced from the actual model and render archive rather than invented in the browser.</p>
-    </section>
-
-    <section class="ca-stage-copy" data-scene="enter">
-      <div class="eyebrow">03 / ENTER THE ROOM</div>
-      <h1>Architecture becomes<br><em>listening space.</em></h1>
-      <p>The browser leaves the plan and moves into real project imagery: DJ booth, cinema wall, acoustic surfaces and the developed room.</p>
-    </section>
-
-    <div class="ca-plan-orbit" id="caPlanOrbit" aria-hidden="true"><div class="sheet"></div></div>
-    <div class="ca-gallery-label" id="caGalleryLabel"></div>
-    <div class="ca-gallery-index" id="caGalleryIndex"></div>
-
-    <div class="ca-system-band" id="caSystemBand">
-      <div><small>LCR / 3×</small><b>KEF Ci4100QL-THX</b></div>
-      <div><small>SURROUND / 2×</small><b>KEF Ci160QL</b></div>
-      <div><small>HEIGHT / 2×</small><b>KEF Ci130QS</b></div>
-      <div><small>SUB</small><b>KEF Kube 12 MIE</b></div>
-      <div><small>AVR</small><b>Denon AVR-X2800H</b></div>
-    </div>
-
-    <div class="ca-film-title" id="caFilmTitle"><small>PROJECT FILM / SOURCE-RENDER DERIVATIVE</small><h2>Room development in motion.</h2></div>
-
-    <section class="ca-archive" id="caArchive">
-      <div><div class="eyebrow">08 / TECHNICAL ARCHIVE</div><h2>Evidence behind the images.</h2><p>The public case exposes the document chain without publishing editable private sources. Each item remains classified by what it actually proves.</p></div>
-      <div class="ca-archive-list">
-        <div class="ca-archive-row"><small>SOURCE PLAN</small><b>I_06_ELECTRICIDAD_CASA ALAIN_page-0001.jpg</b><span>HOUSE / ELECTRICAL</span></div>
-        <div class="ca-archive-row"><small>SOURCE MODEL</small><b>CASA ALAIN ACUSTIC CINEMA_2_1_2.skp</b><span>SKETCHUP</span></div>
-        <div class="ca-archive-row"><small>ACOUSTICS</small><b>ACOUSTIC_2 CASA ALAIN.pdf</b><span>TECHNICAL REPORT</span></div>
-        <div class="ca-archive-row"><small>AUDIO</small><b>CASA ALLAIN IMAGENS AUDIO.pdf</b><span>SYSTEM OPTIONS</span></div>
-        <div class="ca-archive-row"><small>FILM</small><b>PROYECTO VIDEO ACUSTICA.mp4</b><span>PROJECT MASTER</span></div>
-      </div>
-    </section>
-
-    <div class="ca-technical"><b>REAL PROJECT SOURCES</b><br>HOUSE PLAN · SKETCHUP · RENDERS · ACOUSTIC REPORT · VIDEO</div>
-    <div class="ca-scrollhint">Scroll to build the room ↓</div>
-
-    <section class="ca-end" id="caEnd">
-      <div><div class="eyebrow">CASA ALAIN / TECHNICAL CASE</div><h2>Plan. Room.<br><em>Sound.</em></h2><p>The case remains tied to the supplied project archive. Acoustic supplier branding is excluded; cinema products are named only where documented.</p><a href="./casa-alain-r3f.html">R3F SCROLL STUDY ↗</a><a href="./systems.html">CINEMA SYSTEMS ↗</a><a href="./acoustic-library.html">ACOUSTIC METHODS ↗</a><a href="./index.html">NEXT PROJECTS ↗</a></div>
-    </section>
-  </main>
-</div>
-<script src="../assets/js/casa-alain-v2.js?v=2"></script>
-</body>
-</html>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/casa-alain-v2.css?v=4">
+</head><body>
+<div class="cq-track"></div><div class="cq-fixed"><div class="cq-progress" id="cqProgress"></div>
+<header class="cq-header"><a class="cq-brand" href="./index.html">PROJECT ATLAS<small>CASA ALAIN / P02</small></a><nav><a href="./index.html">ATLAS</a><a href="./systems.html">SYSTEMS</a><a href="./acoustic-library.html">ACOUSTICS</a></nav><a class="cq-back" href="./index.html">ALL PROJECTS ↗</a></header>
+<main class="cq-stage">
+<section class="cq-scene city" id="cqCity"><div class="cq-grid"><div class="cq-node n1"><span>Mar Salada</span></div><div class="cq-node n2"><span>Can Furnet</span></div><div class="cq-node alain"><span>Casa Alain<br>Private Cinema</span></div><div class="cq-node n4"><span>Playa Soleil</span></div><div class="cq-node n5"><span>Studio Canada</span></div><div class="cq-node n6"><span>Private Studio</span></div><div class="cq-node n7"><span>Italy Room</span></div></div><div class="cq-city-note"><b>PROJECT ATLAS / NAVIGATION MODEL</b><br>INTERFACE ONLY · NOT A GEOGRAPHIC MAP</div></section>
+<section class="cq-scene" id="cqPlan"><div class="cq-board"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/5d2cdf5c-42f4-4ad4-9707-cf87b1c849db.jpg" alt="Casa Alain supplied source board containing acoustic render references and the house electrical plan"></div><div class="cq-focus" id="cqFocus"></div><div class="cq-focus-label" id="cqFocusLabel">PROJECT ZONE / SOURCE PLAN</div><div class="cq-wire" id="cqWire"><div class="floor"></div><i class="n"></i><i class="e"></i><i class="s"></i><i class="w"></i></div></section>
+<section class="cq-scene cq-mediaStage" id="cqMedia"><video id="cqVideo" muted playsinline preload="metadata" poster="../assets/projects/casa-alain/hero.webp"><source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/8f05102f-accf-43b5-a803-5de46d74ce17.mp4" type="video/mp4"></video></section>
+<div class="cq-copy"><div class="cq-kicker">PROJECT ATLAS / CASA ALAIN</div><h1>From real plan<br>to <em>private cinema.</em></h1><p>A cinematic scroll through the actual house plan, room footprint, project render archive, acoustic strategy and documented cinema system.</p><div class="cq-tags"><span>Residential cinema</span><span>DJ listening</span><span>Acoustic engineering</span></div></div>
+<div class="cq-still" id="cqStill"><img src="../assets/projects/casa-alain/hero.webp" alt="Casa Alain source project board"><small>USER-SUPPLIED PROJECT RENDER</small></div><div class="cq-chapter" id="cqChapter"></div>
+<div class="cq-plan-thumb" id="cqPlanThumb"></div>
+<div class="cq-system" id="cqSystem"><div><small>LCR / 3×</small><b>KEF Ci4100QL-THX</b></div><div><small>SURROUND / 2×</small><b>KEF Ci160QL</b></div><div><small>HEIGHT / 2×</small><b>KEF Ci130QS</b></div><div><small>SUB</small><b>KEF Kube 12 MIE</b></div><div><small>AVR</small><b>Denon AVR-X2800H</b></div></div>
+<section class="cq-archive" id="cqArchive"><div><div class="cq-kicker">09 / TECHNICAL ARCHIVE</div><h2>Evidence behind the images.</h2><p>Public presentation stays tied to the supplied source chain. Editable private project files remain private.</p></div><div class="cq-archive-list"><div class="cq-row"><small>SOURCE PLAN</small><b>I_06_ELECTRICIDAD_CASA ALAIN_page-0001.jpg</b><span>HOUSE / ELECTRICAL</span></div><div class="cq-row"><small>SOURCE MODEL</small><b>CASA ALAIN ACUSTIC CINEMA_2_1_2.skp</b><span>SKETCHUP</span></div><div class="cq-row"><small>ACOUSTICS</small><b>ACOUSTIC_2 CASA ALAIN.pdf</b><span>TECHNICAL REPORT</span></div><div class="cq-row"><small>AUDIO</small><b>CASA ALLAIN IMAGENS AUDIO.pdf</b><span>SYSTEM OPTIONS</span></div><div class="cq-row"><small>FILM</small><b>PROYECTO VIDEO ACUSTICA.mp4</b><span>PROJECT MASTER</span></div></div></section>
+<div class="cq-quality"><b>QUALITY RULE</b><br>NO CONTACT-SHEET CROPS USED AS FULLSCREEN IMAGES<br>BOARDS DISPLAYED CONTAINED / SOURCE VIDEO SCROLL-SEEKED</div><div class="cq-hint">SCROLL TO BUILD THE PROJECT ↓</div>
+</main></div><script src="../assets/js/casa-alain-v2.js?v=4"></script></body></html>
