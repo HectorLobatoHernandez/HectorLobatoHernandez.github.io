@@ -4,7 +4,7 @@ export function createActivityMotion({kind,world,uniforms}){
  const homes=new Map(uniforms.map(u=>[u.old.uuid,u.old.position.clone()])),lastPoses=new Map();
  function capture(u){return {position:u.old.position.clone(),rotation:u.old.rotation.clone(),arms:u.arms.map(j=>[j.upper.rotation.x,j.lower.rotation.x]),legs:(u.legs||[]).map(j=>[j.thigh.rotation.x,j.shin.rotation.x])}}
  function restore(u,p){u.old.position.copy(p.position);u.old.rotation.copy(p.rotation);u.arms.forEach((j,i)=>{j.upper.rotation.x=p.arms[i][0];j.lower.rotation.x=p.arms[i][1]});(u.legs||[]).forEach((j,i)=>{j.thigh.rotation.x=p.legs[i][0];j.shin.rotation.x=p.legs[i][1]})}
- const cars=kind==='site'?world.actors.children.filter(o=>/^SIM-STAFF-CAR-[01]$/.test(o.name)):[];
+ const cars=kind==='site'?world.actors.children.filter(o=>/^SIM-STAFF-CAR-\d+$/.test(o.name)):[];
  const road=[[-97,-175],[-97,175],[-94,178],[-91,175],[-91,-175],[-94,-178],[-97,-175]];
  let snapshot={kind,people:[],traffic:[],source:'READ_ONLY_SIM_CLOCK',routeProvenance:'PROPOSED_NOT_SURVEYED'};
  function update(s){const t=s?.clock?.seconds||0,people=[],traffic=[];
@@ -25,7 +25,7 @@ export function createActivityMotion({kind,world,uniforms}){
    u.hidden.forEach(o=>o.visible=false);u.g.visible=!s||a.onDuty||a.tasks.length>0;
    people.push({id:u.old.name,role:u.role,status:a.status,action:walking?(task?'Desplazamiento de tarea SIM':'Ronda de puesto SIM'):task?'Trabajo de puesto':blocked?'Retenido':a.onDuty?'Disponible':'Fuera de turno',position:u.old.position.toArray(),walk:walking});
   }
-  for(const [i,c]of cars.entries()){if(!s)continue;const p=routePose(road,t,6,i*340);c.position.set(p.x,0,p.z);c.rotation.y=p.yaw;c.userData.motionKind='TRAFFIC_SCENARIO_NO_CARGO';traffic.push({id:c.name,position:c.position.toArray(),yaw:p.yaw,provenance:'SIMULATED_ROAD_TRAFFIC_NO_CARGO'});}
+  for(const [i,c]of cars.entries()){if(!s)continue;const p=routePose(road,t,4.8,i*115);c.position.set(p.x,0,p.z);c.rotation.y=p.yaw;c.userData.motionKind='TRAFFIC_SCENARIO_NO_CARGO';traffic.push({id:c.name,position:c.position.toArray(),yaw:p.yaw,provenance:'SIMULATED_ROAD_TRAFFIC_NO_CARGO'});}
   snapshot={...snapshot,seconds:t,people,traffic};return snapshot;
  }
  return {update,snapshot:()=>snapshot};
