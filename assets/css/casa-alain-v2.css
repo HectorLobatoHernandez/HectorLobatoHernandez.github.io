@@ -96,3 +96,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offs
   .ca-stage-copy{top:76px}.ca-stage-copy p,.ca-technical,.ca-footprint-label,.ca-plan-orbit{display:none}.ca-stage-copy h1{font-size:clamp(30px,7vh,44px)}.ca-cta{height:42px}.ca-gallery-label{bottom:28px}.ca-gallery-label p{display:none}
 }
 @media(prefers-reduced-motion:reduce){.ca-track{height:640vh}.ca-gallery-frame,.ca-stage-copy{transition:none!important}}
+
+.ca-city{position:absolute;inset:0;z-index:5;perspective:1200px;opacity:1;transform-style:preserve-3d;overflow:hidden;background:radial-gradient(circle at 68% 56%,rgba(0,113,255,.07),transparent 22%),var(--ink)}
+.ca-city-grid{position:absolute;left:50%;top:56%;width:min(920px,78vw);height:min(560px,62vh);transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-10deg);transform-style:preserve-3d}
+.ca-city-grid:before{content:"";position:absolute;inset:-6%;background-image:linear-gradient(rgba(255,255,255,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.065) 1px,transparent 1px);background-size:52px 52px;border:1px solid rgba(255,255,255,.12)}
+.ca-city-node{position:absolute;width:110px;height:80px;border:1px solid rgba(255,255,255,.26);background:rgba(236,232,222,.09);box-shadow:0 22px 45px rgba(0,0,0,.42);transform-style:preserve-3d}
+.ca-city-node:before{content:"";position:absolute;left:8px;right:8px;bottom:100%;height:var(--h,44px);background:linear-gradient(180deg,rgba(229,226,216,.28),rgba(128,137,137,.13));border:1px solid rgba(255,255,255,.22);transform-origin:bottom;transform:skewX(-18deg)}
+.ca-city-node span{position:absolute;left:8px;bottom:7px;font:500 7px/1.15 var(--mono);letter-spacing:.06em;color:rgba(255,255,255,.7);text-transform:uppercase}
+.ca-city-node.alain{width:150px;height:106px;border-color:var(--blue);background:rgba(0,113,255,.16);box-shadow:0 0 42px rgba(0,113,255,.3)}.ca-city-node.alain:before{background:linear-gradient(180deg,rgba(0,113,255,.72),rgba(0,113,255,.18));border-color:rgba(143,194,255,.62)}.ca-city-node.alain span{color:#fff;font-size:8px}
+.ca-city-node.n1{left:5%;top:15%;--h:54px}.ca-city-node.n2{left:28%;top:5%;--h:76px}.ca-city-node.alain{left:47%;top:31%;--h:115px}.ca-city-node.n4{right:8%;top:14%;--h:64px}.ca-city-node.n5{left:13%;bottom:7%;--h:46px}.ca-city-node.n6{left:38%;bottom:0;--h:66px}.ca-city-node.n7{right:18%;bottom:10%;--h:84px}
+.ca-city-title{position:absolute;left:40px;bottom:42px;z-index:7;font:500 9px/1.5 var(--mono);letter-spacing:.08em;color:rgba(255,255,255,.55);text-transform:uppercase}.ca-city-title b{color:var(--blue);font-weight:600}
+@media(max-width:620px){.ca-city-grid{width:110vw;height:58vh;left:54%;top:58%}.ca-city-node{width:78px;height:60px}.ca-city-node.alain{width:108px;height:78px}.ca-city-title{left:18px;bottom:22px;font-size:7px}}
