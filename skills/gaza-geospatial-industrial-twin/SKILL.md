@@ -115,3 +115,19 @@ Pause and HOLD must freeze or retain the last pose. Hidden scenes must not run a
 ## 10. Demonstration route
 
 Recommended presentation route: **Granja viva → Ordeño/recogida → Laboratorio → Planta/logística → Carga → Workflow/calidad**. Keep a stable company-demo entry and a separate working entry. The demo may preconfigure a scenario but must not alter the normal browser ledger. On phone, prioritize one large map, bottom department tabs, touch-safe 44 px controls, collapsible inspectors and landscape support. Matrix is secondary and desktop-only.
+
+## 11. Life, weather and reversible-building contract · 2026-10-15
+
+Artificial lighting is **night-only**. In Día and Crepúsculo all street lamps, interior work lights, decorative heritage lights, light pools and vehicle headlights must have zero intensity / be hidden. Only the Noche phase may energise those visual fixtures. This is a scene rule, not a photometric or electrical claim.
+
+Every cutaway control is reversible and self-describing. Buttons must say the action they will perform now: **Quitar cubierta(s)** when closed and **Poner cubierta(s)** when open. The desktop quick action and mobile Interior action must operate the same underlying scene state.
+
+Keep two weather concepts visible and separate:
+- **REAL:** public read-only weather for Coreses and Zamora, timestamped and never written into process quantities.
+- **SIM:** visual weather (auto / clear / cloud / rain) stored only as validated living-scene policy. It may change sky/rain rendering but cannot change milk, tests, quality or task completion.
+
+Farm life should visibly include drinking-water points and an ambient bird flock driven by the shared SIM clock. Birds, water troughs and pasture are illustrative environmental detail, not welfare certification, census or site capacity. Indoor cattle alignment remains geometrically strict; only outdoor representative animals receive wandering motion.
+
+Workers and vehicles should show observable routes, pauses and duties. All synthetic staff cars may patrol the proposed plant road network using the shared SIM clock. Trucks remain task-bound to logistics/dispatch. Pausing freezes visual traffic; HOLD retains the last task pose. Never present these paths as real employee tracking, attendance or validated fleet routes.
+
+Branding may improve recognition (GAZA reference marks, role PPE, sample/carton props and signs) but must remain labelled illustrative unless directly supported by a source. Avoid exact claims about official uniforms, packaging artwork, installed signage or internal room finishes.

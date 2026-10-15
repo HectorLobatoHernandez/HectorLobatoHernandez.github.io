@@ -30,7 +30,7 @@ jobs:
           node --check runtime/living/console.mjs
           node --check runtime/living/scene.mjs
           node --check runtime/mobile/scene.mjs
-          node --test tests/presentation-v2.test.mjs tests/process-ledger.test.mjs tests/farm-life.test.mjs tests/lab-detail.test.mjs tests/site-real-core.test.mjs
+          node --test tests/life-weather-roofs.test.mjs tests/presentation-v2.test.mjs tests/process-ledger.test.mjs tests/farm-life.test.mjs tests/lab-detail.test.mjs tests/site-real-core.test.mjs
       - run: npx playwright install --with-deps chromium
       - name: Start application
         run: |

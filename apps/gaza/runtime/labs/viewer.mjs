@@ -46,7 +46,7 @@ export function mountLabViewer({mount,side,onSelect,getState,getLotId}){
  button('labMicro','Microbiología',()=>{onSelect(2);preset('micro')});
  button('labZoom','Acercar al puesto',zoomStation);
  button('labCutaway','Muros bajos',b=>{cutaway=!cutaway;world.setCutaway(cutaway);b.setAttribute('aria-pressed',String(cutaway))},true).setAttribute('aria-pressed','true');
- button('labRoof','Cubierta',b=>{roof=!roof;world.setRoof(roof);b.setAttribute('aria-pressed',String(roof))},true);
+ button('labRoof','Poner cubierta',b=>{roof=!roof;world.setRoof(roof);b.setAttribute('aria-pressed',String(roof));b.textContent=roof?'Quitar cubierta':'Poner cubierta'},true);
  button('labIsolate','Aislar área',b=>{isolate=!isolate;world.setIsolation(isolate);b.setAttribute('aria-pressed',String(isolate));refreshLabels()},true);
  button('labRoutes','Recorrido de muestras',b=>{routes=!routes;world.setRoutes(routes);b.setAttribute('aria-pressed',String(routes))},true).setAttribute('aria-pressed','true');
  const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let down=null;

@@ -5,7 +5,7 @@ export function livingAssets(T){
  const keepG=g=>(geometries.add(g),g),keepM=m=>(materials.add(m),m);
  const cube=keepG(new T.BoxGeometry(1,1,1)),cylinder=keepG(new T.CylinderGeometry(1,1,1,10)),sphere=keepG(new T.SphereGeometry(1,10,7));
  const mat=(color,extra={})=>keepM(new T.MeshStandardMaterial({color,roughness:.65,...extra}));
- const m={metal:mat(0x9cabad,{metalness:.65,roughness:.32}),dark:mat(0x1c2b34),white:mat(0xe1e5dc),wood:mat(0xb49967),glass:mat(0x183c52,{metalness:.3}),lamp:mat(0xffdeab,{emissive:0xffd29b,emissiveIntensity:0}),screen:mat(0x195b77,{emissive:0x258a99,emissiveIntensity:.4}),red:mat(0xb54c3b,{emissive:0xd6512d,emissiveIntensity:0})};
+ const m={metal:mat(0x9cabad,{metalness:.65,roughness:.32}),dark:mat(0x1c2b34),white:mat(0xe1e5dc),wood:mat(0xb49967),glass:mat(0x183c52,{metalness:.3}),lamp:mat(0xffdeab,{emissive:0xffd29b,emissiveIntensity:0}),screen:mat(0x195b77,{emissive:0x258a99,emissiveIntensity:.4}),red:mat(0xb54c3b,{emissive:0xd6512d,emissiveIntensity:0}),hiVis:mat(0xd7c85d),navy:mat(0x173d58),labBlue:mat(0x4c86a4)};
  function part(parent,geo,material,position,scale=[1,1,1],rotation=[0,0,0]){const o=new T.Mesh(geo,material);o.position.set(...position);o.scale.set(...scale);o.rotation.set(...rotation);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
  const box=(p,pos,size,material=m.metal)=>part(p,cube,material,pos,size);
  function tube(p,a,b,r=.035,material=m.metal){const av=new T.Vector3(...a),bv=new T.Vector3(...b),o=part(p,cylinder,material,av.clone().add(bv).multiplyScalar(.5).toArray(),[r,av.distanceTo(bv),r]);o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),bv.sub(av).normalize());return o;}
@@ -24,7 +24,7 @@ export function livingAssets(T){
   const hidden=[...old.children],g=new T.Group();g.name='LIVING_UNIFORM_'+role;g.userData={role,provenance:'SIMULATED_EMPLOYEE'};old.add(g);const a=anatomy.human(profile),arms=[],legs=[];
   part(g,a.body,anatomy.material,[0,0,0]);part(g,a.head,anatomy.material,[0,1.71,0]);
   for(const sign of [-1,1]){const upper=new T.Group();upper.position.set(sign*.27,1.46,0);g.add(upper);part(upper,a.upperArm,anatomy.material,[0,0,0]);const lower=new T.Group();lower.position.y=-.29;upper.add(lower);part(lower,a.lowerArm,anatomy.material,[0,0,0]);arms.push({upper,lower,sign});const thigh=new T.Group();thigh.position.set(sign*.12,.92,0);g.add(thigh);part(thigh,a.thigh,anatomy.material,[0,0,0]);const shin=new T.Group();shin.position.y=-.44;thigh.add(shin);part(shin,a.shin,anatomy.material,[0,0,0]);part(shin,a.boot,anatomy.material,[0,-.4,0]);legs.push({thigh,shin,sign});}
-  logoPlate(g,[.09,1.4,.18],.15,.075);hidden.forEach(o=>o.visible=false);
+  logoPlate(g,[.09,1.4,.18],.15,.075);const stripe=profile==='vet'?m.labBlue:m.hiVis;part(g,cube,stripe,[0,1.18,.158],[.38,.035,.018]);part(g,cube,stripe,[0,1.05,.158],[.38,.028,.018]);const cap=profile==='vet'||profile==='milk'?m.white:m.navy;part(g,cube,cap,[0,1.93,0],[.28,.075,.24]);part(g,cube,cap,[0,1.89,.18],[.28,.025,.15]);hidden.forEach(o=>o.visible=false);
   return {old,g,hidden,arms,legs,role};
  }
  function transport(v){const g=new T.Group();g.name='LIVE_TRANSPORT_DETAILS';v.tractor.add(g);box(g,[3.01,.65,0],[.18,.19,2.55]);box(g,[3.02,1.45,0],[.06,.6,1.1],m.dark);
