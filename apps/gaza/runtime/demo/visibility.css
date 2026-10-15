@@ -1,0 +1,27 @@
+/* Give the simulation the viewport. The guide uses its own reserved footer space. */
+.living-workspace .top{min-height:46px;padding-block:3px}
+.living-workspace .tabs{padding:4px 10px;min-height:42px}
+.living-workspace .tabs button{padding:7px 12px}
+.living-workspace #livingSummary{gap:9px;padding:5px 12px;min-height:53px}
+.living-workspace #livingSummary .live-brand small,.living-workspace #livingStatus{display:none}
+.living-workspace #livingSummary .live-clock small{display:none}
+.living-workspace #livingSummary .live-command{flex-wrap:nowrap;gap:4px}
+.living-workspace #livingSummary select,.living-workspace #livingSummary button{min-height:29px;padding:4px 7px;font-size:11px}
+.living-workspace #companyDemoDock{padding:3px 9px;max-height:115px}
+#companyDemoDock .demo-nav{margin:0;flex-wrap:nowrap;overflow-x:auto}
+#companyDemoDock .demo-nav strong,#companyDemoDock .demo-nav button{white-space:nowrap}
+#companyDemoDock #demoExpand{margin-left:auto;background:#30535a}
+#companyDemoDock.compact .demo-nav:nth-of-type(2),#companyDemoDock.compact #demoMessage:empty{display:none}
+.living-workspace .presentationQuick{display:none}
+.living-workspace.guided-active #companyDemoDock{display:none}
+.living-workspace.guided-active .stage{margin-bottom:82px}
+.living-workspace #guidedTour{position:fixed!important;bottom:0!important;left:0!important;right:0!important;transform:none!important;width:100%!important;min-height:82px;padding:8px 18px!important;border-radius:0!important;display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;gap:2px 15px;box-shadow:0 -8px 30px #05131c9c!important}
+.living-workspace #guidedTour[hidden]{display:none!important}
+.living-workspace #guidedTour .guided-heading{grid-column:1/-1}
+.living-workspace #guidedTour #guidedCopy{margin:1px 0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.living-workspace #guidedTour .guided-footer{grid-column:2;grid-row:2;white-space:nowrap}
+.living-workspace #guidedTour .guided-footer>span{display:none}
+.living-workspace #guidedTour .guided-buttons{margin-left:0}
+.living-workspace #guidedTour .guided-buttons button{padding:5px 8px}
+@media(max-width:1000px){.living-workspace #livingSummary .live-brand,.living-workspace #livingSummary .live-spain{display:none}.living-workspace #livingSummary .live-command{margin-left:auto}.living-workspace #guidedTour #guidedCopy{white-space:normal}}
+@media(max-width:700px){.living-workspace #livingSummary{align-content:center}.living-workspace #livingSummary .live-command{width:100%;overflow-x:auto}.living-workspace.guided-active .stage{margin-bottom:115px}.living-workspace #guidedTour{min-height:115px;grid-template-columns:1fr}.living-workspace #guidedTour #guidedCopy{grid-column:1;grid-row:auto}.living-workspace #guidedTour .guided-footer{grid-column:1;grid-row:auto}.living-workspace #guidedTour .guided-buttons{width:100%;justify-content:space-between}}
