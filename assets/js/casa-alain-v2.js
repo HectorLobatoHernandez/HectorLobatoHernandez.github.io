@@ -7,6 +7,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const el=s=>document.querySelector(s);
 const els=s=>[...document.querySelectorAll(s)];
 const progress=el('#caProgress');
+const city=el('#caCity');
 const plan=el('#caPlan');
 const grid=el('#caPlanGrid');
 const mask=el('#caPlanMask');
@@ -64,15 +65,18 @@ function paint(p){
  progress.style.width=(p*100).toFixed(3)+'%';
  copies.forEach(n=>{n.style.opacity='0';n.style.transform='translateY(20px)'});
 
- // 00 hero / source plan
- const h=1-ramp(p,.045,.115);
+ // 00 abstract Project Atlas city -> real plan. The city is interface, not geography.
+ const cityOut=ease(ramp(p,.045,.105));setOpacity(city,1-cityOut);
+ if(city)city.style.transform='scale('+lerp(1,1.22,cityOut)+') translate('+lerp(0,-5,cityOut)+'%,'+lerp(0,-3,cityOut)+'%)';
+ // hero / source plan
+ const h=1-ramp(p,.06,.125);
  const heroLift=ease(ramp(p,.03,.12));
  showCopy('hero',h,-44*heroLift);
- const locate=ramp(p,.09,.16)*(1-ramp(p,.205,.235));
+ const locate=ramp(p,.095,.16)*(1-ramp(p,.205,.235));
  showCopy('locate',locate,14*(1-locate));
 
  // real source plan crop and camera move
- let planOp=1-ramp(p,.31,.37); setOpacity(plan,planOp);
+ let planOp=ramp(p,.055,.105)*(1-ramp(p,.31,.37)); setOpacity(plan,planOp);
  const zoom=ease(ramp(p,.08,.215));
  const sx=lerp(1,2.25,zoom);
  const tx=lerp(0,-7.2,zoom), ty=lerp(0,6.4,zoom);
