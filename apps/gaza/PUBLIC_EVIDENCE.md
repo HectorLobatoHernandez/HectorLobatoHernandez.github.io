@@ -47,6 +47,7 @@ Textual role references only; never live-location tracking:
 - OpenStreetMap + OSRM are used for map/routing geometry in the demonstrator.
 
 ## Explicitly simulated until authorised discovery
+- The guided tour, truck body dimensions, GAZA illustration on trucks, lamp fixtures and lighting schedule are visual scenarios. The tour reads the shared process ledger but never creates process events. No real GAZA vehicle or driver is represented.
 - Exact internal floor plan and building geometry.
 - Exact location/identity of individual Gaza farms.
 - Milk tanker fleet, collection slots and collection quantities.

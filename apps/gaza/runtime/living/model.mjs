@@ -25,7 +25,7 @@ export function environmentOf(s,{at=new Date(),mode=null}={}){
  const cfg=settingsOf(s),clock=clockOf(s),choice=mode||cfg.environment,hour=choice==='night'?23:choice==='day'?13:choice==='dusk'?19.4:choice==='sim'?clock.hour:spainHour(at);
  // Artistic solar envelope, not astronomical ephemerides or a lux calculation.
  const elevation=Math.sin((hour-6.5)*Math.PI/13),daylight=clamp((elevation+.12)/.62),darkness=1-daylight;
- const phase=daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche';return {...clock,hour,sourceHour:clock.hour,preview:!['auto','sim'].includes(choice)||cfg.weather!=='auto',mode:choice,timeBasis:choice==='auto'?'EUROPE_MADRID_CIVIL':choice==='sim'?'SIM_CLOCK':'FORCED_PREVIEW',weather:cfg.weather,daylight,darkness,lamps:phase==='Noche',sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase,provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
+ const phase=daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche';return {...clock,hour,sourceHour:clock.hour,preview:!['auto','sim'].includes(choice)||cfg.weather!=='auto',mode:choice,timeBasis:choice==='auto'?'EUROPE_MADRID_CIVIL':choice==='sim'?'SIM_CLOCK':'FORCED_PREVIEW',weather:cfg.weather,daylight,darkness,lamps:daylight<.42,sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase,provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
 }
 export function taskState(s,l,def){const t=l?.tasks?.[def.id];if(!t)return 'PENDING';if(t.status==='RUNNING'){if(!s.equipment[def.resource]?.valid)return 'UNAVAILABLE';if(l.holds&&!def.qualityIndependent)return 'HELD';if(def.gate&&l.gates[def.gate]?.status!=='APPROVED')return 'WAIT_GATE';}return t.status;}
 export function roleActivity(s,role){

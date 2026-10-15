@@ -100,6 +100,10 @@ See `ARCHITECTURE.md` for runtime contracts and the read-only-first industrial i
 
 ## Seguimiento de flota SIM (2026-10-15)
 
+### Recorrido integrado y camión 3D · v20
+
+En `mission-control.html?tour=1`, «Recorrido guiado» recorre granja → laboratorio → recepción → proceso → almacén → flota → trazabilidad. «Siguiente», «Anterior» y «Automático» cambian el departamento y enfocan una estación; los controles no avanzan ni aprueban el lote. El reloj y el lote SIM se leen del registro común. La iluminación de granja, laboratorio, planta y flota enciende luminarias al atardecer y de noche y conserva la vista manual Día/Noche. La flota WebGL muestra un camión dimensional de cisterna o tráiler con cabina, ruedas, luces y rotulación GAZA · SIM seleccionable; el plano y la ficha mantienen el respaldo 2D si WebGL falta. Todo vehículo, luz, rótulo, movimiento y trayecto sigue siendo una representación sintética, no la flota real.
+
 `mission-control.html?view=fleet` abre `fleet-tracking.html`. Las rutas públicas se calculan con OSRM cuando responde; el trazado alternativo es esquemático y se marca así. Identidades, coordenadas instantáneas, paradas, combustible, peajes, pagos y retrasos son eventos de demostración, sin conexión GPS ni prueba de peajes o restricciones HGV. La vista de Site Real ofrece Día, Noche + luces y Horario SIM independientemente del reloj real. El tráfico escénico continúa cuando no hay una tarea de transporte activa en el ledger, sin alterar el estado del lote.
 
 ## Flota SIM · vista 3D, respaldo y Blender (v8)
