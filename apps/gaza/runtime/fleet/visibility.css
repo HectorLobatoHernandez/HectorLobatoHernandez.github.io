@@ -1,0 +1,8 @@
+.layout{grid-template-columns:190px minmax(0,1fr) 275px;gap:8px;padding:8px;height:calc(100dvh - 157px);min-height:360px}
+.top{padding:8px 12px;gap:9px}.top .controls{gap:4px}.top .controls button,.top .controls a{padding:7px 8px;font-size:11px}.top h1{font-size:17px}
+.mapBadge{top:48px;max-width:min(420px,57%);padding:4px 7px;font-size:9px}.road-context{top:81px;max-width:min(380px,54%);font-size:9px}
+.route-advisory{bottom:38px;font-size:9px;max-width:65%}.mapModes{top:7px;right:7px}.mapModes button{font-size:10px;padding:5px 7px}
+.vehiclePin{min-width:55px;font-size:9px;padding:4px 5px}.vehiclePin.isStopped::after{display:none}
+#glMode:disabled{opacity:.48;cursor:not-allowed}
+@media(max-width:1100px){.layout{grid-template-columns:180px 1fr;height:auto}.detail{grid-column:1/-1}.mapShell{height:65dvh}.top .controls{margin-left:0;flex-wrap:wrap}}
+@media(max-width:650px){.layout{display:flex;flex-direction:column}.mapShell{height:57dvh}.mapBadge{max-width:85%}.road-context{max-width:85%}.route-advisory{max-width:90%}}

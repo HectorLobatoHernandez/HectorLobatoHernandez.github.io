@@ -1,18 +1,18 @@
-import {spainHour} from './living/model.mjs';
+import {environmentOf} from './living/model.mjs';
 // GPU-free, deterministic isometric operations sketch for browsers without WebGL.
 // Footprint, vehicles and access lanes are SYNTHETIC; no internal floor-plan claim.
 export function mountSiteFallback(){
  const $=id=>document.getElementById(id),viewport=$('viewport'),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');canvas.id='siteCanvasFallback';canvas.setAttribute('aria-label','Planta isométrica simulada sin WebGL');viewport.prepend(canvas);
  let w=1,h=1,dpr=1,elapsed=0,last=performance.now(),paused=false,active=true,light='auto',weather='clear',camera='overview',selected='Nave de proceso',roof=true;
- const isNight=()=>light==='night'||light==='auto'&&(spainHour()<7||spainHour()>=20)||light==='sim'&&(Number($('hour').value)<7||Number($('hour').value)>=20);
- const palette=()=>isNight()?{sky:'#142b44',ground:'#294756',yard:'#35475a',road:'#243546',stripe:'#b1a978',front:'#174a83',side:'#0d3158',top:'#396e9d',white:'#dce9ef',tree:'#315d55',ink:'#eaf4ff',lamp:'#ffe7a0'}:{sky:'#dcecf4',ground:'#d6e5d1',yard:'#b9cdd2',road:'#667b87',stripe:'#ecf0d7',front:'#2171b4',side:'#155389',top:'#94bde1',white:'#f5f8fa',tree:'#4d9a5c',ink:'#183950',lamp:'#f8e8bc'};
+ const isNight=()=>environmentOf(null,{mode:light}).lamps;
+ const palette=()=>isNight()?{sky:'#244159',ground:'#41636a',yard:'#5b6d79',road:'#34495a',stripe:'#f0d58d',front:'#4077a4',side:'#2b547c',top:'#7199b4',white:'#edf5f2',tree:'#58846b',ink:'#f5f9f3',lamp:'#ffe4a0'}:{sky:'#dcecf4',ground:'#d6e5d1',yard:'#b9cdd2',road:'#667b87',stripe:'#ecf0d7',front:'#2171b4',side:'#155389',top:'#94bde1',white:'#f5f8fa',tree:'#4d9a5c',ink:'#183950',lamp:'#f8e8bc'};
  function resize(){const rect=viewport.getBoundingClientRect();w=rect.width;h=rect.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}new ResizeObserver(resize).observe(viewport);resize();
- const P=(x,z,y=0)=>{const zoom=camera==='top'?.75:camera==='facade'?1.22:camera.startsWith('access')?1.27:1,sc=Math.min(w/470,h/330)*zoom;return [w*.49+(x-z)*sc*.91,h*.55+(x+z)*sc*.39-y*sc]};
+ const P=(x,z,y=0)=>{const zoom=camera==='top'?.8:camera==='facade'?1.28:camera.startsWith('access')?1.33:1.12,sc=Math.min(w/470,h/330)*zoom;return [w*.49+(x-z)*sc*.91,h*.48+(x+z)*sc*.39-y*sc]};
  function poly(points,color){ctx.fillStyle=color;ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fill()}
  function box(x,z,sx,sz,tall,front,side,top){const a=P(x,z),b=P(x+sx,z),c=P(x+sx,z+sz),d=P(x,z+sz),aa=P(x,z,tall),bb=P(x+sx,z,tall),cc=P(x+sx,z+sz,tall),dd=P(x,z+sz,tall);poly([a,b,bb,aa],front);poly([b,c,cc,bb],side);poly([aa,bb,cc,dd],top);return {a,b,c,d,aa,bb,cc,dd}}
  function road(coords,width,color){const a=coords.map(([x,z])=>P(x,z));ctx.strokeStyle=color;ctx.lineWidth=width*Math.min(w/470,h/330);ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();a.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke()}
  function truck(x,z,heading,color){ctx.save();const [px,py]=P(x,z);ctx.translate(px,py);ctx.rotate(heading);ctx.fillStyle='#10233855';ctx.beginPath();ctx.ellipse(1,7,24,7,0,0,7);ctx.fill();ctx.fillStyle='#1b2f3c';ctx.fillRect(-20,5,40,5);ctx.fillStyle=color;ctx.fillRect(-23,-8,29,16);ctx.fillStyle='#f7fbff';ctx.fillRect(-22,-12,28,13);ctx.fillStyle='#c4e0ee';ctx.fillRect(8,-8,15,15);ctx.fillStyle='#1b3d58';ctx.fillRect(17,-6,6,8);ctx.fillStyle='#12447a';ctx.fillRect(-17,-5,9,3);if(isNight()){ctx.fillStyle='#ffeabb';ctx.fillRect(22,2,4,4)}ctx.restore()}
- function draw(){const p=palette();ctx.fillStyle=weather==='cloud'?(isNight()?'#172d3c':'#b7cbd6'):p.sky;ctx.fillRect(0,0,w,h);ctx.fillStyle=p.ground;ctx.fillRect(0,h*.37,w,h);poly([P(-135,-115),P(125,-115),P(125,120),P(-135,120)],p.yard);
+ function draw(){const p=palette();ctx.fillStyle=weather==='cloud'?(isNight()?'#385365':'#b7cbd6'):p.sky;ctx.fillRect(0,0,w,h);ctx.fillStyle=p.ground;ctx.fillRect(0,h*.30,w,h);poly([P(-135,-115),P(125,-115),P(125,120),P(-135,120)],p.yard);
  road([[-125,82],[-70,82],[-40,22],[18,22],[105,22]],22,p.road);road([[-125,82],[-70,82],[-40,22],[18,22],[105,22]],1.5,p.stripe);road([[-70,-100],[-70,82]],19,p.road);road([[92,-100],[92,80]],16,p.road);
  const b1=box(-62,-65,92,54,roof?38:4,p.front,p.side,roof?p.top:p.road),b2=box(35,-62,55,64,roof?28:4,p.front,p.side,roof?p.top:p.road);box(-61,3,89,12,7,'#dfe9ec','#b3cedb','#ffffff');box(38,9,50,9,6,'#dbe9f0','#a6c5d5','#f7fbff');
  for(let i=0;i<5;i++){const a=P(-54+i*16,4,4);ctx.fillStyle=isNight()?p.lamp:'#1a4d7c';ctx.fillRect(a[0]-5,a[1]-3,10,8);const b=P(40+i*9,11,4);ctx.fillRect(b[0]-3,b[1]-2,7,6)}
