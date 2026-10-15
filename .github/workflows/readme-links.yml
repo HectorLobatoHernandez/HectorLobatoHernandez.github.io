@@ -5,6 +5,7 @@ on:
     paths:
       - 'README.md'
       - 'assets/readme/**'
+      - 'assets/projects/**'
       - 'tools/check_readme_links.py'
       - 'tools/project-atlas/README.md'
       - '.github/workflows/readme-links.yml'
@@ -43,6 +44,7 @@ jobs:
             /README.md
             /index.html
             /assets/readme/
+            /assets/projects/
             /tools/check_readme_links.py
             /tools/project-atlas/README.md
             /docs/*.md
