@@ -9,7 +9,8 @@ export function mountFleetWorld(canvas,{plant,vehicles,getSelected,getState,onSe
  function draw(){if(!width||!height)return;const selected=getSelected(),pts=selected.coords?.length>1?selected.coords:[plant,selected.to],xy=pts.map(meters);let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;for(const [x,y] of xy){minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y)}const span=Math.max(maxX-minX,maxY-minY,4000),cx=(minX+maxX)/2,cy=(minY+maxY)/2;
  // Rotate ground plane into a stable isometric camera. Keep the whole selected road corridor visible.
  const angle=-.34,co=Math.cos(angle),si=Math.sin(angle);const rotated=xy.map(([x,y])=>[(x-cx)*co-(y-cy)*si,(x-cx)*si+(y-cy)*co]);let bx=Math.max(...rotated.map(p=>Math.abs(p[0])),span*.13),by=Math.max(...rotated.map(p=>Math.abs(p[1])),span*.13);const scale=Math.min(width*.42/bx,height*.65/(by*.58));const originX=width*.5,originY=height*.53;
- const point=p=>{const [x,y]=meters(p),dx=x-cx,dy=y-cy;return [originX+(dx*co-dy*si)*scale,originY+(dx*si+dy*co)*scale*.58]};
+ const focus=follow&&getState(selected)?.point?meters(getState(selected).point):[cx,cy];
+ const point=p=>{const [x,y]=meters(p),dx=x-focus[0],dy=y-focus[1];return [originX+(dx*co-dy*si)*scale,originY+(dx*si+dy*co)*scale*.58]};
  const bg=night?'#142b42':'#dce9df',ground=night?'#213d48':'#e6eddf';ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);ctx.fillStyle=ground;ctx.fillRect(0,46,width,height-46);
  // Parallel parcel contours make a local ground reference; these are purely scenic.
  ctx.strokeStyle=night?'#31564f':'#c6dcc1';ctx.lineWidth=1;for(let i=-15;i<20;i++){const y=i*58+height*.48;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y-width*.13);ctx.stroke()}
@@ -31,5 +32,5 @@ export function mountFleetWorld(canvas,{plant,vehicles,getSelected,getState,onSe
  }
  function drawTruck(x,y,a,color,chosen,dark){ctx.save();ctx.translate(x,y);ctx.rotate(Number.isFinite(a)?a:0);const k=chosen?1.25:1;ctx.scale(k,k);ctx.fillStyle='#13293a55';ctx.beginPath();ctx.ellipse(0,9,19,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#182b39';ctx.fillRect(-15,5,8,4);ctx.fillRect(6,5,8,4);ctx.fillStyle=color;ctx.fillRect(-19,-5,24,11);ctx.fillStyle=dark?'#f5f7f4':'#ffffff';ctx.fillRect(-18,-7,23,11);ctx.fillStyle='#91a9b7';ctx.fillRect(7,-4,11,9);ctx.fillStyle='#e8f4f9';ctx.fillRect(7,-7,11,7);ctx.fillStyle='#254159';ctx.fillRect(14,-5,4,5);ctx.fillStyle='#1763aa';ctx.fillRect(-14,-1,8,2);if(dark){ctx.fillStyle='#ffecb2';ctx.fillRect(17,0,3,3)}ctx.restore();if(chosen){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,25,0,Math.PI*2);ctx.stroke()}}
  canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;const nearest=hit.map(h=>({...h,d:Math.hypot(h.x-x,h.y-y)})).sort((a,b)=>a.d-b.d)[0];if(nearest?.d<30)onSelect(nearest.v)});
- return {draw,setNight(value){night=!!value;draw()},setFollow(value){follow=!!value},get night(){return night},get follow(){return follow}};
+ return {draw,setNight(value){night=!!value;draw()},setFollow(value){follow=!!value;draw()},get night(){return night},get follow(){return follow}};
 }
