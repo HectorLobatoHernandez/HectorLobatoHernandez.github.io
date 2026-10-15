@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {motion,pathAt,pathPrefix,TRIPS,REGION_NODES} from '../runtime/fleet/model.mjs';
+import {motion,pathAt,pathPrefix,TRIPS,REGION_NODES,roadRefsFromSteps} from '../runtime/fleet/model.mjs';
 test('stops hold the vehicle at a fixed road position and the simulation loops',()=>{
  assert.equal(motion(30).progress,motion(42).progress);
  assert.equal(motion(85).progress,motion(89).progress);
@@ -21,3 +21,7 @@ test('all fleet events carry explicit simulation identities',()=>{
 });
 
 test('regional supply markers are municipality references, never farm pins',()=>{assert(REGION_NODES.some(x=>x.name.includes('Fresno')));assert(REGION_NODES.some(x=>x.type==='supplier_area'));assert(REGION_NODES.every(x=>x.type!=='farm'))});
+test('road signs use only OSRM road references and reject invented labels',()=>{
+ assert.deepEqual(roadRefsFromSteps([{ref:'N-122; A-11'},{ref:'N-122'},{ref:'Calle inventada'},{ref:'ZA-710'}]),['N-122','A-11','ZA-710']);
+ assert.deepEqual(roadRefsFromSteps([{name:'Autovía cercana'},{ref:'<script>alert(1)</script>'}]),[]);
+});

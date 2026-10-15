@@ -111,3 +111,7 @@ Para preparar una escena editable en Blender, abre Flota SIM, espera a que las r
 ## Escenas conectadas y horario de España (v12)
 
 El control «Luz real · España» usa la hora civil Europe/Madrid para el aspecto de planta, granja, laboratorio y flota; «Horario SIM» conserva la hora del proceso comprimido. Día, atardecer y noche son vistas manuales independientes de la hora. La iluminación y las rondas visuales no escriben cantidades ni ensayos. Si el registro local antiguo es incompatible, la escena sigue visible y se ofrece archivar el JSON original antes de iniciar un escenario SIM nuevo. La vista de flota añade Fresno de la Ribera y Morales de Toro como trayectos sobre subtramos OSRM conservados; terminan a 267 y 852 m aproximadamente del centro municipal citado, por lo que no constituyen acceso exacto a una granja. Otros puntos de municipio son contexto cartográfico sin identidad de explotación.
+
+### Escena v13 · flota y granja
+
+En Flota SIM, «Seguir vehículo» acerca el corredor 3D/Canvas a la carretera OSRM y «OSM 2D» permite cotejar la ruta. Los letreros son recreaciones contextuales; una referencia de vía aparece solo cuando OSRM devuelve el `ref` de los pasos. El enlace «Avisos DGT en Territorio» abre el estado oficial cuando está disponible. En Granja, «Vida SIM» anima los rebaños y dos vehículos de acceso propuestos aun si el proceso está en pausa. El movimiento visual no altera el registro de lotes ni supone telemetría.

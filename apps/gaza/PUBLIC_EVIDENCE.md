@@ -94,3 +94,11 @@ To replace the functional 3D model with an as-built twin we need at least one au
 ## Contexto territorial 2026-10-15
 
 Los puntos de Fresno de la Ribera, Morales de Toro, Villalpando y Fuentesaúco son referencias de municipio (GeoNames), no ubicaciones de granjas. Dos trayectos adicionales usan prefijos del corredor público OSRM ya guardado y terminan cerca de Fresno (aprox. 267 m) y Morales de Toro (aprox. 852 m) de sus referencias municipales. No se ha validado el acceso final, restricciones HGV ni una relación comercial con estos municipios. SAT ROTE / Toro sigue mostrándose a nivel municipal, sin pin de explotación.
+
+## Flota y movimiento ambiental — 2026-10-15 v13
+
+La vista de flota 3D acerca la cámara al camión seleccionado y dibuja calzada, arcenes, marcas, carrocerías cisterna o tráiler y rótulos contextuales. Los rótulos de vía usan el campo `ref` de pasos OSRM solo si la consulta responde; su posición gráfica es de demostración y **no localiza una señal física**. La geometría de carretera OSRM no prueba carriles, restricciones HGV, peajes ni gálibos. La vista Canvas conserva esos límites.
+
+La banda de avisos de flota solo muestra el número agregado de coincidencias geométricas DGT del estado público de Territorio si se recibió con éxito hace menos de cinco minutos. Una coincidencia a 1,5 km no demuestra afección de la ruta. Si el feed no se ha consultado o ha fallado, aparece «sin dato reciente».
+
+Dos vehículos de acceso en la granja y los movimientos ambientales de rebaños son **simulación visual independiente** del reloj del lote. No representan entregas reales, censos, circulación autorizada ni acciones de ordeño; pausa visual y movimiento reducido se respetan. El vehículo de recogida ligado a una tarea continúa sujeto al registro común.

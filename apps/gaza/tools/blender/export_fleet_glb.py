@@ -43,23 +43,57 @@ def box(name,at,size,mat,parent=None):
 
 def coord(p):return ((p[1]-plant[1])*111.32*math.cos(math.radians(plant[0])),0,(plant[0]-p[0])*111.32)
 
-road=material('Asfalto · eje OSRM','#596b76');white=material('Camión SIM blanco','#f6f8f5');blue=material('GAZA azul · maqueta','#1554a3');roof=material('Cubierta conceptual','#90b8d5')
+def simplify(points,tolerance=.006):
+    keep={0,len(points)-1};stack=[(0,len(points)-1)]
+    while stack:
+        a,b=stack.pop();x0,_,z0=points[a];x1,_,z1=points[b];dx=x1-x0;dz=z1-z0;den=dx*dx+dz*dz
+        best=tolerance;index=None
+        for i in range(a+1,b):
+            x,_,z=points[i];u=max(0,min(1,((x-x0)*dx+(z-z0)*dz)/den)) if den else 0
+            d=math.hypot(x-x0-u*dx,z-z0-u*dz)
+            if d>best:best=d;index=i
+        if index is not None:keep.add(index);stack.extend([(a,index),(index,b)])
+    return [points[i] for i in sorted(keep)]
+
+road=material('Asfalto · eje OSRM','#48515a');shoulder=material('Arcén visual · ancho inferido','#b5bec2');line=material('Marca central visual · inferida','#f1ead2');white=material('Camión SIM blanco','#f6f8f5');blue=material('GAZA azul · maqueta','#1554a3');roof=material('Cubierta conceptual','#90b8d5');rubber=material('Neumáticos','#253039');glass=material('Cristal cabina','#7397ad');steel=material('Acero cisterna','#c1c9ca')
 box('Coreses · volumen inferido',(0,.035,0),(.11,.07,.07),blue)
 box('Coreses · cubierta inferida',(0,.073,0),(.115,.008,.075),roof)
 for route in data['routes']:
     points=[coord(p) for p in route['coordinates']]
     if len(points)<2:continue
-    verts=[];faces=[]
-    for i,(x,_,z) in enumerate(points):
-        a=points[max(0,i-1)];b=points[min(len(points)-1,i+1)];dx=b[0]-a[0];dz=b[2]-a[2];length=math.hypot(dx,dz) or 1
-        ox=-dz/length*.006;oz=dx/length*.006
-        verts.extend([(x-ox,.002,z-oz),(x+ox,.002,z+oz)])
-        if i:faces.extend([(2*i-2,2*i-1,2*i+1),(2*i-2,2*i+1,2*i)])
+    road_points=simplify(points)
+    def strip(width,y):
+        verts=[];faces=[]
+        for i,(x,_,z) in enumerate(road_points):
+            a=road_points[max(0,i-1)];b=road_points[min(len(road_points)-1,i+1)];dx=b[0]-a[0];dz=b[2]-a[2];length=math.hypot(dx,dz) or 1
+            ox=-dz/length*width/2;oz=dx/length*width/2
+            verts.extend([(x-ox,y,z-oz),(x+ox,y,z+oz)])
+            if i:faces.extend([(2*i-2,2*i-1,2*i+1),(2*i-2,2*i+1,2*i)])
+        return verts,faces
     route_mat=material(route['id']+' · SIM',route['color'])
-    nodes.append({'name':route['id']+' · public OSRM road','mesh':mesh(route['id']+' · eje',verts,faces,road),'extras':{'routeSource':route['routeSource'],'distanceMeters':route['distanceMeters']}})
-    root=len(nodes);nodes.append({'name':route['id']+' · VEHÍCULO SINTÉTICO','translation':list(points[0]),'extras':{'provenance':'SYNTHETIC','destination':route['destination']}})
-    box(route['id']+' · remolque',(-.005,.004,0),(.011,.006,.003),white,root)
-    box(route['id']+' · cabina',(.004,.004,0),(.004,.006,.003),blue,root)
+    for title,width,y,finish in [('arcén',.019,.001,shoulder),('asfalto',.015,.002,road),('marca central',.00027,.003,line)]:
+        verts,faces=strip(width,y)
+        nodes.append({'name':route['id']+' · '+title+' · OSRM / dimensiones inferidas','mesh':mesh(route['id']+' · '+title,verts,faces,finish),'extras':{'routeSource':route['routeSource'],'distanceMeters':route['distanceMeters'],'widthInferred':True}})
+    root=len(nodes);nodes.append({'name':route['id']+' · VEHÍCULO SINTÉTICO','translation':list(points[0]),'extras':{'provenance':'SYNTHETIC','destination':route['destination'],'branding':'GAZA demonstration livery'}})
+    tanker='Cisterna' in route['name']
+    box(route['id']+' · chasis',(-.002,.004,0),(.032,.002,.006),rubber,root)
+    if tanker:
+        # Faceted stainless tank aligned with the vehicle +X axis.
+        verts=[];faces=[];segments=12
+        for x in [-.017,.008]:
+            for j in range(segments):
+                angle=j*math.tau/segments;verts.append((x,.014+math.sin(angle)*.004,math.cos(angle)*.004))
+        for j in range(segments):
+            a=j;b=(j+1)%segments;faces.extend([(a,b,segments+b),(a,segments+b,segments+a)])
+        nodes.append({'name':route['id']+' · tanque inoxidable','mesh':mesh(route['id']+' · tanque',verts,faces,steel)})
+        nodes[root].setdefault('children',[]).append(len(nodes)-1)
+    else:
+        box(route['id']+' · remolque',(-.006,.014,0),(.024,.011,.008),white,root)
+    box(route['id']+' · banda azul GAZA SIM',(-.007,.017,.0044),(.020,.002,.0005),blue,root)
+    box(route['id']+' · cabina',(.011,.013,0),(.009,.010,.008),white,root)
+    box(route['id']+' · parabrisas',(.016,.015,0),(.0007,.004,.007),glass,root)
+    for axle in [-.014,.003,.013]:
+        for side in [-.0045,.0045]:box(route['id']+f' · rueda {axle} {side}',(axle,.003,side),(.004,.004,.001),rubber,root)
     distances=[0]
     for a,b in zip(points,points[1:]):distances.append(distances[-1]+math.dist(a,b))
     samples=[]
