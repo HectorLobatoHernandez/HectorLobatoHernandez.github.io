@@ -2,7 +2,7 @@ $ErrorActionPreference="Stop"
 $RepoRoot=Split-Path -Parent $PSScriptRoot
 $GazaRoot=Join-Path $RepoRoot "apps\gaza"
 $BaseUrl="http://127.0.0.1:4173"
-$GameUrl="$BaseUrl/game.html"
+$GameUrl="$BaseUrl/mission-control.html?view=site"
 
 if(!(Test-Path (Join-Path $GazaRoot "node_modules"))){
   Push-Location $GazaRoot
