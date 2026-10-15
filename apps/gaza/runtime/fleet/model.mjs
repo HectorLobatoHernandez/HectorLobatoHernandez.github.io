@@ -24,6 +24,15 @@ export const TRIPS=[
  {id:'SIM-FLT-10',name:'Cisterna 10',kind:'Recogida',destination:'Morales de Toro · entorno municipal',to:[41.53737,-5.30642],color:'#ad7a55',offset:156,events:[{at:28,duration:18,progress:.22,type:'inspection',title:'Control de ruta SIM',detail:'Vial público; explotación y punto de recogida no identificados'}]}
 ];
 export const LOOP=240;
+// OSRM step metadata describes roads traversed; it does not locate a real physical sign.
+export function roadRefsFromSteps(steps){
+ const refs=[];
+ for(const step of steps||[]){for(const part of String(step?.ref||'').split(/[;,]/)){
+  const ref=part.trim().toUpperCase();
+  if(/^(?:A|N|ZA|E)-\d{1,4}[A-Z]?$/.test(ref)&&!refs.includes(ref))refs.push(ref);
+ }}
+ return refs.slice(0,4);
+}
 export function motion(seconds){const t=((seconds%LOOP)+LOOP)%LOOP;
  // Each dwell holds a fixed road position while the scenario clock continues.
  const key=[[0,0],[28,.22],[46,.22],[83,.42],[91,.42],[126,.61],[140,.61],[215,1],[240,1]];
