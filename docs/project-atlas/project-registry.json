@@ -72,17 +72,18 @@
       "location": "Private residential cinema",
       "href": "/projects/casa-alain.html",
       "domain": [
-        "Residential cinema",
-        "Acoustic treatment",
-        "Cinema audio",
+        "Private cinema",
+        "DJ listening",
+        "Acoustic engineering",
+        "KEF architectural cinema",
         "SketchUp",
-        "Renders",
-        "Electrical coordination"
+        "Electrical coordination",
+        "Project film"
       ],
       "sourcePackage": "RENDERS.zip + RENDERS FINALES.zip",
       "sourceCount": "95 files",
       "media": "30 final renders + 26 acoustic-finish images + project video",
-      "status": "SOURCE_BACKED_CASE",
+      "status": "SOURCE_BACKED_BESPOKE_CASE",
       "privacy": "PUBLIC_SAFE",
       "references": [
         "CASA ALAIN ACUSTIC CINEMA_2_1_2.skp",
@@ -97,7 +98,14 @@
       "hero": "/assets/projects/casa-alain/hero.webp",
       "heroClass": "USER_SUPPLIED_FINAL_RENDER",
       "reel": "https://d2ol7oe51mr4n9.cloudfront.net/user_3I3SzGDcpPFtcj4NduumHmHAuKs/8f05102f-accf-43b5-a803-5de46d74ce17.mp4",
-      "reelClass": "SOURCE_RENDER_DERIVATIVE"
+      "reelClass": "SOURCE_RENDER_DERIVATIVE",
+      "capabilities": [
+        "KEF architectural cinema",
+        "THX-certified KEF models where applicable",
+        "Room acoustic treatment",
+        "Variable acoustics",
+        "Electrical / AV coordination"
+      ]
     },
     {
       "id": "P03",
@@ -322,6 +330,16 @@
       "name": "Professional dossier",
       "href": "/",
       "classification": "PRIMARY_PORTFOLIO"
+    },
+    {
+      "name": "Studio Ingenia — Audio Systems",
+      "href": "/projects/systems.html",
+      "classification": "CAPABILITY_SURFACE"
+    },
+    {
+      "name": "Studio Ingenia — Acoustic Systems Library",
+      "href": "/projects/acoustic-library.html",
+      "classification": "BRAND_NEUTRAL_CAPABILITY_LIBRARY"
     }
   ]
 }

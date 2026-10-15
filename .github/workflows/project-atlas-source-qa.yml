@@ -8,6 +8,8 @@ on:
       - 'projects/index.html'
       - 'projects/mar-salada.html'
       - 'projects/casa-alain.html'
+      - 'projects/systems.html'
+      - 'projects/acoustic-library.html'
       - 'projects/can-furnet-club.html'
       - 'projects/playa-soleil-bora-bora.html'
       - 'projects/private-production-studio-canada.html'
@@ -15,6 +17,10 @@ on:
       - 'projects/acoustic-studio-italy.html'
       - 'projects/private-producer-acoustic-concept.html'
       - 'assets/css/project-atlas.css'
+      - 'assets/css/casa-alain-v2.css'
+      - 'assets/js/casa-alain-v2.js'
+      - 'assets/css/systems-capabilities.css'
+      - 'assets/css/acoustic-library.css'
       - 'assets/js/project-atlas.js'
       - 'assets/css/atlas-3d.css'
       - 'assets/js/atlas-3d.js'
@@ -54,6 +60,7 @@ jobs:
           node --check assets/js/atlas-3d.js
           node --check assets/js/atlas-promo.js
           node --check assets/js/project-atlas-experience.js
+          node --check assets/js/casa-alain-v2.js
           python3 -m py_compile tools/project-atlas/build_source_media.py
           python3 - <<'PY'
           from pathlib import Path
@@ -61,7 +68,6 @@ jobs:
 
           pages={
             'projects/mar-salada.html':9,
-            'projects/casa-alain.html':8,
             'projects/can-furnet-club.html':8,
             'projects/playa-soleil-bora-bora.html':8,
             'projects/private-production-studio-canada.html':8,
@@ -74,6 +80,24 @@ jobs:
               assert 'sourceArchive' in s,p
               assert s.count('status:')+s.count('"status":') >= count,p
               assert 'PROJECT_ATLAS_DATA' in s,p
+
+          casa=Path('projects/casa-alain.html').read_text(encoding='utf-8')
+          assert '__CASA_ALAIN_V2__' not in casa
+          assert 'KEF Ci4100QL-THX' in casa
+          assert 'Denon AVR-X2800H' in casa
+          assert '6 bass traps' in casa
+          assert '5 diffusers + 8 clouds' in casa
+          assert 'source-backed' in casa.lower()
+          systems=Path('projects/systems.html').read_text(encoding='utf-8')
+          assert 'KEF architectural cinema' in systems
+          assert 'VOID Acoustics' in systems
+          assert 'Studio Ingenia loudspeaker solutions' in systems
+          acoustic=Path('projects/acoustic-library.html').read_text(encoding='utf-8')
+          assert 'Calculated for the room' in acoustic
+          assert 'BESPOKE' in acoustic
+          forbidden=''.join(chr(x) for x in [101,108,105,97,99,111,117,115,116,105,99])
+          for public_page in [casa,systems,acoustic]:
+              assert forbidden not in public_page.lower()
 
           mar=Path('projects/mar-salada.html').read_text(encoding='utf-8')
           assert 'mar-salada-immersive-v3.js' not in mar
@@ -133,6 +157,8 @@ jobs:
             '/projects/promo.html',
             '/projects/mar-salada.html',
             '/projects/casa-alain.html',
+            '/projects/systems.html',
+            '/projects/acoustic-library.html',
             '/projects/can-furnet-club.html',
             '/projects/playa-soleil-bora-bora.html',
             '/projects/private-production-studio-canada.html',
@@ -150,7 +176,8 @@ jobs:
               broken:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src),
               source3d:window.__PROJECT_ATLAS_SOURCE3D__||null,
               atlas3d:window.__PROJECT_ATLAS_3D__||null,
-              experience:window.__PROJECT_ATLAS_EXPERIENCE__||null
+              experience:window.__PROJECT_ATLAS_EXPERIENCE__||null,
+              casa:window.__CASA_ALAIN_V2__||null
             }));
             if(state.overflow>4)throw new Error(path+' horizontal overflow '+state.overflow);
             if(state.broken.length)throw new Error(path+' broken images '+state.broken.join(','));
@@ -166,6 +193,12 @@ jobs:
             }else if(path.endsWith('promo.html')){
               const promo=await page.evaluate(()=>window.__ATLAS_PROMO__||null);
               if(promo?.projects!==8||promo?.sourceBacked!==true||promo?.generatedProjectImagery!==false)throw new Error('promo contract mismatch');
+            }else if(path.endsWith('casa-alain.html')){
+              if(state.casa?.sourceBacked!==true||state.casa?.syntheticProjectGeometry!==false||state.casa?.acousticSupplierBrandHidden!==true)throw new Error('casa alain contract mismatch');
+            }else if(path.endsWith('systems.html')||path.endsWith('acoustic-library.html')){
+              const txt=(await page.textContent('body')||'').toLowerCase();
+              const forbidden=String.fromCharCode(101,108,105,97,99,111,117,115,116,105,99);
+              if(txt.includes(forbidden))throw new Error(path+' contains forbidden supplier branding');
             }else{
               if(!state.source3d?.mounted||state.source3d.geometryClaim!==false||state.source3d.sourceCount<6)throw new Error(path+' source3d contract mismatch');
               const btn=page.locator('[data-source-jump]').first(); if(await btn.count())await btn.click();
