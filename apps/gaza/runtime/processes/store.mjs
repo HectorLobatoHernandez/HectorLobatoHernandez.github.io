@@ -61,6 +61,7 @@ export const processStore={
  restartDemonstration(living=null){if(!scope.demo)return Promise.reject(new Error('Reinicio de presentación no disponible en trabajo.'));return transaction(()=>{const n=createDemonstration({running:!qa,living});n.clock.wallAt=Date.now();return n})},
  start(config={}){return transaction(s=>{if(s)return s;archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  reset(config={}){return transaction(()=>{archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
+ recoverIncompatible(){if(!error)return Promise.reject(new Error('El registro actual es válido; no requiere recuperación.'));if(!locks)return Promise.reject(new Error('Se necesita Web Locks en un origen seguro.'));return locks.request(KEY,async()=>{const raw=localStorage.getItem(KEY);if(raw){localStorage.setItem(KEY+':archive:incompatible:'+Date.now(),raw);localStorage.removeItem(KEY)}const n=initialState();n.clock.wallAt=Date.now();return commit(n)})},
  dispatch(action){return transaction(s=>{if(!s)throw new Error('Inicia el escenario compartido');const n=reduce(s,action);if(action.type==='CLOCK')n.clock.wallAt=Date.now();return n})},
  view(id=selected){return snapshot?.lots[id]?visualSnapshot(snapshot,id):null},
  summary(id=selected){return snapshot?.lots[id]?lotSummary(snapshot,id):null},

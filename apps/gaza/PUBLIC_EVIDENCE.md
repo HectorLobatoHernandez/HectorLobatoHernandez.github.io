@@ -90,3 +90,7 @@ To replace the functional 3D model with an as-built twin we need at least one au
 - **Solmicro:** current Zucchetti/Solmicro public customer material lists Leche Gaza among ERP customers. This supports a Solmicro ERP customer relationship, but does not establish the exact current product/version/modules/interfaces at Coreses.
 - **Road signage:** a public exterior photograph shows a 20 km/h sign at/near the Gaza access. The 3D sign can therefore be labelled public-reference, but its exact reconstructed coordinate remains contextual until georeferenced evidence or survey is available.
 - **Truck heading:** vehicle local forward axis is explicitly declared and aligned to road tangent by quaternion. Truck routes remain synthetic/contextual until yard/access geometry is surveyed.
+
+## Contexto territorial 2026-10-15
+
+Los puntos de Fresno de la Ribera, Morales de Toro, Villalpando y Fuentesaúco son referencias de municipio (GeoNames), no ubicaciones de granjas. Dos trayectos adicionales usan prefijos del corredor público OSRM ya guardado y terminan cerca de Fresno (aprox. 267 m) y Morales de Toro (aprox. 852 m) de sus referencias municipales. No se ha validado el acceso final, restricciones HGV ni una relación comercial con estos municipios. SAT ROTE / Toro sigue mostrándose a nivel municipal, sin pin de explotación.

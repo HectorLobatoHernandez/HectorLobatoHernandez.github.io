@@ -1,11 +1,11 @@
 /** One operational projection. No telemetry, animal census or employee shift is claimed as real. */
 import {TASKS,TESTS,ROLES} from '../processes/catalog.mjs';
-export const LIVE_RELEASE='gaza-vida-20261015-v11';
+export const LIVE_RELEASE='gaza-vida-20261015-v12';
 export const DEFAULT_LIVING=Object.freeze({startMinute:480,environment:'auto',weather:'auto',schedule:false});
 export const EXTRA_ROLES=Object.freeze({'SIM-ADMIN-DEMO':'Administración y planificación','SIM-RECEPTION-DESK':'Recepción de personas','SIM-MAINT-DEMO':'Mantenimiento','SIM-MATERIALS-DEMO':'Materiales de envase','SIM-ACCESS-DEMO':'Accesos','SIM-STAFF-DEMO':'Personal y vestuarios'});
 const continuous=new Set(['SIM-CLEAN-01','SIM-CLEAN-02','SIM-PROD-01','SIM-PACK-01','SIM-WMS-01','SIM-RECEPTION-01','SIM-MAINT-DEMO','SIM-ACCESS-DEMO']);
 export function validateLiving(v){
- if(!v||!Number.isInteger(v.startMinute)||v.startMinute<0||v.startMinute>=1440||!['auto','day','dusk','night'].includes(v.environment)||!['auto','clear','cloud','rain'].includes(v.weather)||typeof v.schedule!=='boolean')throw Error('Horario o iluminación de escenario inválidos');
+ if(!v||!Number.isInteger(v.startMinute)||v.startMinute<0||v.startMinute>=1440||!['auto','sim','day','dusk','night'].includes(v.environment)||!['auto','clear','cloud','rain'].includes(v.weather)||typeof v.schedule!=='boolean')throw Error('Horario o iluminación de escenario inválidos');
  return {...v};
 }
 export function settingsOf(s){return s?.config?.living?validateLiving(s.config.living):{...DEFAULT_LIVING};}
@@ -19,11 +19,13 @@ export function shiftFor(role,s){
 }
 export function roleEligibility(s,role){const shift=shiftFor(role,s);return !settingsOf(s).schedule||shift.onDuty?{ok:true,reason:''}:{ok:false,reason:'Fuera de turno SIM: '+shift.title+' · próximo relevo en '+Math.ceil(shift.untilNextMinute)+' min'};}
 const clamp=x=>Math.min(1,Math.max(0,x));
-export function environmentOf(s){
- const cfg=settingsOf(s),clock=clockOf(s),hour=cfg.environment==='night'?23:cfg.environment==='day'?13:cfg.environment==='dusk'?19.4:clock.hour;
+const madridTime=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+export function spainHour(at=new Date()){const parts=madridTime.formatToParts(at),hour=Number(parts.find(p=>p.type==='hour')?.value),minute=Number(parts.find(p=>p.type==='minute')?.value);return hour+minute/60;}
+export function environmentOf(s,{at=new Date(),mode=null}={}){
+ const cfg=settingsOf(s),clock=clockOf(s),choice=mode||cfg.environment,hour=choice==='night'?23:choice==='day'?13:choice==='dusk'?19.4:choice==='sim'?clock.hour:spainHour(at);
  // Artistic solar envelope, not astronomical ephemerides or a lux calculation.
  const elevation=Math.sin((hour-6.5)*Math.PI/13),daylight=clamp((elevation+.12)/.62),darkness=1-daylight;
- const phase=daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche';return {...clock,hour,sourceHour:clock.hour,preview:cfg.environment!=='auto'||cfg.weather!=='auto',mode:cfg.environment,weather:cfg.weather,daylight,darkness,lamps:phase==='Noche',sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase,provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
+ const phase=daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche';return {...clock,hour,sourceHour:clock.hour,preview:!['auto','sim'].includes(choice)||cfg.weather!=='auto',mode:choice,timeBasis:choice==='auto'?'EUROPE_MADRID_CIVIL':choice==='sim'?'SIM_CLOCK':'FORCED_PREVIEW',weather:cfg.weather,daylight,darkness,lamps:phase==='Noche',sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase,provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
 }
 export function taskState(s,l,def){const t=l?.tasks?.[def.id];if(!t)return 'PENDING';if(t.status==='RUNNING'){if(!s.equipment[def.resource]?.valid)return 'UNAVAILABLE';if(l.holds&&!def.qualityIndependent)return 'HELD';if(def.gate&&l.gates[def.gate]?.status!=='APPROVED')return 'WAIT_GATE';}return t.status;}
 export function roleActivity(s,role){

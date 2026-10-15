@@ -1,6 +1,6 @@
 // Canvas isometric view: projected public road geometry with synthetic, selectable vehicles.
 // Intentionally works without WebGL, Blender or external map scripts.
-export function mountFleetWorld(canvas,{plant,vehicles,getSelected,getState,onSelect}){
+export function mountFleetWorld(canvas,{plant,vehicles,nodes=[],getSelected,getState,onSelect}){
  const ctx=canvas.getContext('2d',{alpha:false});let width=1,height=1,dpr=1,night=false,follow=true,hit=[];
  const rad=Math.PI/180;
  function resize(){const r=canvas.getBoundingClientRect();width=Math.max(1,r.width);height=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
@@ -19,6 +19,7 @@ export function mountFleetWorld(canvas,{plant,vehicles,getSelected,getState,onSe
  const road=(coords,color,weight,opacity=1,dashed=false)=>{if(!coords?.length)return;ctx.globalAlpha=opacity;ctx.beginPath();coords.forEach((p,i)=>{const [x,y]=point(p);if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y)});ctx.lineJoin='round';ctx.lineCap='round';ctx.setLineDash(dashed?[9,10]:[]);ctx.strokeStyle=color;ctx.lineWidth=weight;ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1};
  for(const v of vehicles){if(v===selected)continue;road(v.coords,night?'#4e7182':'#b5c5c4',7,.65,!v.distance);road(v.coords,v.color,2,.45,!v.distance)}
  road(pts,night?'#0b1827':'#94a7b2',26,1,!selected.distance);road(pts,night?'#536475':'#596975',21,1,!selected.distance);road(pts,night?'#344858':'#657888',16,1,!selected.distance);road(pts,night?'#e6ce86':'#eff6e8',1.6,.85,true);
+ for(const node of nodes){if(node.type==='plant')continue;const [nx,ny]=point(node.at);if(nx<12||nx>width-12||ny<65||ny>height-34)continue;ctx.beginPath();ctx.arc(nx,ny,node.type==='supplier_area'?6:3,0,Math.PI*2);ctx.fillStyle=node.type==='supplier_area'?'#8ebd40':night?'#d3e5e8':'#56839d';ctx.fill();if(node.type==='supplier_area'){ctx.font='10px system-ui';ctx.fillStyle=night?'#e9f4de':'#325143';ctx.fillText('TORO · ZONA PROVEEDORA PÚBLICA',Math.min(width-210,nx+9),ny-7)}}
  const state=getState(selected);road((state?.prefix||[]),selected.color,5,1,false);
  // Isometric terminal buildings and simple contextual streets. Their dimensions are illustrative.
  function block(x,y,w,h,depth,front,side,top){ctx.fillStyle='#0002';ctx.beginPath();ctx.ellipse(x+3,y+depth+8,w*.66,11,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=side;ctx.beginPath();ctx.moveTo(x+w,y);ctx.lineTo(x+w,y+depth);ctx.lineTo(x,y+depth+h);ctx.lineTo(x,y+h);ctx.fill();ctx.fillStyle=front;ctx.fillRect(x-w,y,w*2,h);ctx.fillStyle=top;ctx.beginPath();ctx.moveTo(x-w,y);ctx.lineTo(x,y-depth*.5);ctx.lineTo(x+w,y);ctx.lineTo(x,y+depth*.5);ctx.closePath();ctx.fill()}
