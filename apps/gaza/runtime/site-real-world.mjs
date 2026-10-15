@@ -92,13 +92,13 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
     time=process?process.state.clock.seconds:time+dt;
     for(const m of moving){
       const taskId=m.id==='SIM-TANKER-1'?'LOGISTICS.TRANSIT':'DELIVERY.ARRIVE',task=process?.state.lots[process.lotId]?.tasks[taskId];
-      if(process){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;const fraction=task?.status==='DONE'?1:task?.status==='RUNNING'?task.elapsed/24:0;m.elapsed=Math.max(0,Math.min(1,fraction))*duration;}else if(!held)m.elapsed+=dt;
+      if(task?.status==='RUNNING'){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;m.elapsed=Math.max(0,Math.min(1,task.elapsed/24))*duration;}else if(!held)m.elapsed+=dt;
       let p=sampleTrip(m.path,m.elapsed,{speed:m.speed,stops:m.stops});
-      if(p.complete&&!held&&!process){m.elapsed=0;p=sampleTrip(m.path,0,{speed:m.speed,stops:m.stops});m.previousDistance=0}
+      if(p.complete&&!held&&task?.status!=='RUNNING'){m.elapsed=0;p=sampleTrip(m.path,0,{speed:m.speed,stops:m.stops});m.previousDistance=0}
       m.tractor.position.set(p.x,.15,p.z);m.tractor.rotation.y=p.yaw;
       const rear=samplePath(m.path,Math.max(0,p.distance-6.5));if(p.distance<6.5){rear.x-=rear.tangent[0]*(6.5-p.distance);rear.z-=rear.tangent[1]*(6.5-p.distance)}m.load.position.set(rear.x,.15,rear.z);m.load.rotation.y=rear.yaw;
       const travel=p.distance-m.previousDistance;m.previousDistance=p.distance;for(const w of m.wheels)w.rotation.z=-p.distance/.52;
-      m.phase=held?'HOLD del lote · Workflow':process?(task?.status==='RUNNING'?taskId:task?.status==='DONE'?'Tarea terminada':'Esperando tarea autorizada'):p.phase;m.position=[p.x,p.z];m.heading=p.tangent;
+      m.phase=held?'HOLD del lote · Workflow':task?.status==='RUNNING'?taskId+' · lote SIM':p.phase+' · tráfico escénico SIM';m.position=[p.x,p.z];m.heading=p.tangent;
     }
     for(const [i,b] of barriers.entries()){const m=moving[i===0?1:0],open=!held&&m.previousDistance>m.stops[0].distance+.1&&m.phase!=='Control acceso '+(i+1);b.rotation.x=THREE.MathUtils.damp(b.rotation.x,open?-1.45:0,3,dt)}
     for(const w of walkers){w.g.position.set(-42,0,w.z+Math.sin(time*.025+w.phase)*4);w.g.rotation.y=Math.cos(time*.025+w.phase)>0?0:Math.PI;w.legs.forEach((l,i)=>l.rotation.x=Math.sin(time*3+w.phase+i*Math.PI)*.36);w.arms.forEach((a,i)=>a.rotation.x=-Math.sin(time*3+w.phase+i*Math.PI)*.25)}
