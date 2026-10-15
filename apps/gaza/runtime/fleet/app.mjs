@@ -1,4 +1,4 @@
-import {PLANT,TRIPS,motion,pathAt,pathPrefix} from './model.mjs';
+import {PLANT,TRIPS,motion,pathAt,pathPrefix} from './model.mjs?release=gaza-vida-20261015-v5';
 const $=id=>document.getElementById(id),el=(tag,className,text)=>{const x=document.createElement(tag);if(className)x.className=className;if(text!==undefined)x.textContent=text;return x};
 const profiles=TRIPS.map(x=>({...x,coords:[PLANT,x.to],source:'ESQUEMÁTICO · SIN OSRM',distance:null,baseDuration:null,marker:null,trace:null,completed:null}));
 let selected=profiles[0],map=null,elapsed=0,last=performance.now(),running=!matchMedia('(prefers-reduced-motion: reduce)').matches,renderAt=0,follow=true,active=true;
