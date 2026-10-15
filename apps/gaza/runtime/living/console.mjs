@@ -16,8 +16,8 @@ export function mountLivingConsole(show){
  const error=e=>$('livingStatus').textContent=e.message||String(e);
  async function ensure(){if(!store.state)await store.start();return store.state}
  $('livingRun').onclick=async()=>{try{const s=await ensure();if(s.clock.running)await store.dispatch({type:'CLOCK',running:false,rate:s.clock.rate});else{await store.dispatch({type:'AUTO',enabled:true});await store.dispatch({type:'CLOCK',running:true,rate:s.clock.rate})}}catch(e){error(e)}};
- $('livingSpeed').onchange=async e=>{try{const s=await ensure();await store.dispatch({type:'CLOCK',running:s.clock.running,rate:Number(e.target.value)})}catch(x){error(x)}};
- $('livingEnvironment').onchange=async e=>{try{await ensure();await store.dispatch({type:'LIVING_SETTINGS',environment:e.target.value})}catch(x){error(x)}};$('livingWeather').onchange=async e=>{try{await ensure();await store.dispatch({type:'LIVING_SETTINGS',weather:e.target.value})}catch(x){error(x)}};
+ $('livingSpeed').onchange=async e=>{const rate=Number(e.target.value);try{const s=await ensure();await store.dispatch({type:'CLOCK',running:s.clock.running,rate})}catch(x){error(x)}};
+ $('livingEnvironment').onchange=async e=>{const choice=e.target.value;try{await ensure();await store.dispatch({type:'LIVING_SETTINGS',environment:choice})}catch(x){error(x)}};$('livingWeather').onchange=async e=>{const choice=e.target.value;try{await ensure();await store.dispatch({type:'LIVING_SETTINGS',weather:choice})}catch(x){error(x)}};
  $('livingSchedules').onchange=async e=>{try{await ensure();await store.dispatch({type:'LIVING_SETTINGS',schedule:e.target.checked})}catch(x){error(x)}};
  $('livingLot').onchange=e=>store.setLot(e.target.value);
  $('livingEvening').hidden=!store.scope.demo;$('livingEvening').onclick=()=>store.restartDemonstration({startMinute:1170,schedule:true}).then(()=>{store.setLot('SIM-BOV-001');show('farm')}).catch(error);
