@@ -76,18 +76,18 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
  const activityMotion=createActivityMotion({kind,world,uniforms});let tickRevision=null,tickSeenAt=0,lastMotionKey='';
  function displayState(){const s=getState();if(s?.revision!==tickRevision){tickRevision=s?.revision;tickSeenAt=performance.now()}return interpolateForDisplay(s,(performance.now()-tickSeenAt)/1000)}
  const sceneKey='__GAZA_LIVING_'+kind.toUpperCase()+'__';
- function refresh(force=false){const s=getState(),lot=getLotId(),key=JSON.stringify([s?.revision,lot,cargoOpen]);if(!force&&key===lastKey)return false;lastKey=key;invalidate();const env=environmentOf(s),dark=env.darkness;last=env;
+ function refresh(force=false){const s=getState(),lot=getLotId(),key=JSON.stringify([s?.revision,lot,cargoOpen]);if(!force&&key===lastKey)return false;lastKey=key;invalidate();const env=environmentOf(s),dark=env.darkness,night=env.lamps;last=env;
   const bg=new T.Color(0x07101f).lerp(new T.Color(0x839da9),env.daylight);scene.background=bg;if(scene.fog)scene.fog.color.copy(bg);
   for(const light of priorLights){if(light.isHemisphereLight)light.intensity=env.ambientIntensity;else if(light.isDirectionalLight)light.intensity=(light.castShadow?1:.4)*env.sunIntensity;}
-  assets.m.lamp.emissiveIntensity=dark*3.8;assets.m.red.emissiveIntensity=dark*1.8;assets.poolMaterial.opacity=dark*.9;
-  for(const p of pools)p.visible=dark>.08;
-  for(const {light,inside,cargo:bay,vehicle,heritage}of lights){light.visible=bay?cargoOpen:(inside||dark>.18);light.intensity=bay?(cargoOpen?180:0):heritage?950*dark:vehicle?260*dark:(inside?(28+115*dark):550*dark);}
+  assets.m.lamp.emissiveIntensity=night?3.8:0;assets.m.red.emissiveIntensity=night?1.8:0;assets.poolMaterial.opacity=night?.9:0;
+  for(const p of pools)p.visible=night;
+  for(const {light,inside,cargo:bay,vehicle,heritage}of lights){const allowed=night&&(bay?cargoOpen:true);light.visible=allowed;light.intensity=!allowed?0:bay?180:heritage?950:vehicle?260:inside?143:550;}
   const staff=uniforms.map(u=>{u.hidden.forEach(o=>o.visible=false);const a=roleActivity(s,u.role),active=a.tasks.find(t=>t.status==='RUNNING'),paused=a.tasks.length&&!active;u.g.visible=a.onDuty||a.tasks.length>0||!s;
    const t=active?active.progress*12:0;u.arms.forEach(j=>{j.upper.rotation.x=active?-.4+Math.sin(t+j.sign)*.17:paused?-.4:0;j.lower.rotation.x=active||paused?-.58:0});return {role:u.role,status:a.status,shift:a.shift};});
   const cargo=cargoOf(s,lot),stockPlan=cargoOf(s,lot,'stock',8);
   if(cartons){cartons.setCount(cargo.visible);const out=world.moving.find(v=>v.id==='SIM-TRAILER-1');const body=out.load.getObjectByName('OUTBOUND_CLOSED_BODY');if(body)body.visible=!cargoOpen;for(const panel of outboundPanels)panel.visible=!cargoOpen;cartons.g.visible=cargoOpen&&cargo.visible>0;}
   for(const item of stockDetails)item.before.forEach(o=>o.visible=false);
-  window[sceneKey]={release:LIVE_RELEASE,kind,clockSeconds:s?.clock?.seconds||0,environment:env,streetAndIndoorFixtures:fixtureCount,actualLights:lights.length,staff,cargo,stock:stockPlan,cargoOpen,cartonsRendered:cartons&&cargoOpen?cargo.visible*24:0,brandingDetails:brandedProps.length,heritageLighting:lights.filter(x=>x.heritage).length,vehicleLights:lights.filter(x=>x.vehicle).length,assetProvenance:'SIMULATED_ASSET_DETAILS',renderBudget:renderer?'DIRTY_30FPS_NO_IDLE_REPAINT_HIDDEN_SUSPENDED':'HOST_MANAGED',inspection};dirty();return true;
+  window[sceneKey]={release:LIVE_RELEASE,kind,clockSeconds:s?.clock?.seconds||0,environment:env,streetAndIndoorFixtures:fixtureCount,actualLights:lights.length,lightsOn:night,activeArtificialLights:night?lights.filter(x=>!x.cargo||cargoOpen).length:0,staff,cargo,stock:stockPlan,cargoOpen,cartonsRendered:cartons&&cargoOpen?cargo.visible*24:0,brandingDetails:brandedProps.length,heritageLighting:lights.filter(x=>x.heritage).length,vehicleLights:lights.filter(x=>x.vehicle).length,assetProvenance:'SIMULATED_ASSET_DETAILS',renderBudget:renderer?'DIRTY_30FPS_NO_IDLE_REPAINT_HIDDEN_SUSPENDED':'HOST_MANAGED',inspection};dirty();return true;
  }
  const bar=document.createElement('div');bar.className='living-scene-bar';bar.innerHTML='<span data-env>Horario del registro común</span>'+(kind==='site'?'<button type="button" id="livingCargo">Ver carga de briks</button>':'');
  const mount=document.getElementById(kind==='site'?'viewport':'world');mount?.append(bar);
