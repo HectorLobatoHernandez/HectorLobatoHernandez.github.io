@@ -33,7 +33,7 @@ test('roof controls expose both remove and restore actions',()=>{
 
 test('farm life includes water points and ambient birds without touching census',()=>{
  const src=read('../runtime/farm/life/layer.mjs');
- assert.match(src,/SIM-DRINKING-WATER-BOVINE/);assert.match(src,/SIM-DRINKING-WATER-OVINE/);assert.match(src,/SIM-AMBIENT-BIRDS/);
+ assert.match(src,/SIM-DRINKING-WATER-'\+species/);assert.match(src,/\['BOVINE','OVINE'\]/);assert.match(src,/SIM-AMBIENT-BIRDS/);
  assert.match(src,/waterPoints:waterPoints.length/);assert.match(src,/birds:birds.length/);
 });
 
