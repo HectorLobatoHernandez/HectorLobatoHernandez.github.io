@@ -1,4 +1,4 @@
-import {PLANT,TRIPS,motion,pathAt,pathPrefix} from './model.mjs?release=gaza-vida-20261015-v5';
+import {PLANT,TRIPS,motion,pathAt,pathPrefix} from './model.mjs?release=gaza-vida-20261015-v6';
 const $=id=>document.getElementById(id),el=(tag,className,text)=>{const x=document.createElement(tag);if(className)x.className=className;if(text!==undefined)x.textContent=text;return x};
 const profiles=TRIPS.map(x=>({...x,coords:[PLANT,x.to],source:'ESQUEMÁTICO · SIN OSRM',distance:null,baseDuration:null,marker:null,trace:null,completed:null}));
 let selected=profiles[0],map=null,elapsed=0,last=performance.now(),running=!matchMedia('(prefers-reduced-motion: reduce)').matches,renderAt=0,follow=true,active=true;
@@ -10,7 +10,7 @@ $('follow').onclick=()=>{follow=!follow;$('follow').setAttribute('aria-pressed',
 const list=$('fleet');
 for(const v of profiles){const b=el('button','vehicle');b.type='button';b.innerHTML='<span class="dot"></span><b></b><small></small>';b.querySelector('.dot').style.background=v.color;b.querySelector('b').textContent=v.name;b.querySelector('small').textContent=v.id+' · '+v.kind;b.onclick=()=>choose(v);list.append(b);v.button=b}
 function choose(v){selected=v;profiles.forEach(p=>p.button.setAttribute('aria-pressed',String(p===v)));if(map){const bounds=window.L.latLngBounds(v.coords);map.fitBounds(bounds.pad(.22),{animate:false,maxZoom:12});follow=true}draw(true)}
-function tripState(v){const t=elapsed+v.offset,m=motion(t),events=v.events.filter(e=>e.at<=m.seconds),active=v.events.find(e=>Math.abs(e.at-m.seconds)<8);const status=m.complete?'Destino demo':active?active.title:m.dwell?'Parada programada':'En ruta';return {m,events,active,status,point:pathAt(v.coords,m.progress)}}
+function tripState(v){const t=elapsed+v.offset,m=motion(t),events=v.events.filter(e=>e.at<=m.seconds),active=v.events.find(e=>m.seconds>=e.at&&m.seconds<e.at+e.duration);const status=m.complete?'Destino demo':active?active.title:m.dwell?'Parada programada':'En ruta';return {m,events,active,status,point:pathAt(v.coords,m.progress)}}
 function paintEvents(state){const box=$('events');box.replaceChildren();const start=el('div','event past');start.append(el('b',null,'Salida · planta Coreses'),el('small',null,'Origen aproximado público · salida del vehículo simulada'));box.append(start);
  for(const evt of selected.events){const occurred=state.events.includes(evt),div=el('div','event '+(state.active===evt?'active':occurred?'past':''));div.append(el('b',null,(occurred?'REGISTRADO · ':'PREVISTO · ')+evt.title),el('small',null,evt.detail));box.append(div)}
  const end=el('div','event '+(state.m.complete?'past':''));end.append(el('b',null,'Llegada · '+selected.destination),el('small',null,'Destino de demostración; no es un cliente de GAZA'));box.append(end)}
