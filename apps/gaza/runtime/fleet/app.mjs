@@ -1,6 +1,6 @@
 import {spainHour} from '../living/model.mjs';
 import {PLANT,TRIPS,REGION_NODES,motion,pathAt,pathPrefix,roadRefsFromSteps} from './model.mjs?release=gaza-vida-20261015-v16';
-import {mountFleetWorld} from './world.mjs?release=gaza-vida-20261015-v18';
+import {mountFleetWorld} from './world.mjs?release=gaza-vida-20261015-v18b';
 import {mountMaterialFlow} from './logistics-flow.mjs';
 const $=id=>document.getElementById(id),el=(tag,className,text)=>{const x=document.createElement(tag);if(className)x.className=className;if(text!==undefined)x.textContent=text;return x};
 const profiles=TRIPS.map(x=>({...x,coords:[PLANT,x.to],source:'ESQUEMA · OSRM PENDIENTE',distance:null,baseDuration:null,roadRefs:[],marker:null,trace:null,completed:null}));
