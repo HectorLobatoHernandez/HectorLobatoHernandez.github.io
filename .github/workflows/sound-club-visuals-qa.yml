@@ -51,7 +51,6 @@ jobs:
 
           project_pages = [
               'projects/mar-salada.html',
-              'projects/casa-alain.html',
               'projects/can-furnet-club.html',
               'projects/playa-soleil-bora-bora.html',
               'projects/private-production-studio-canada.html',
@@ -70,6 +69,12 @@ jobs:
               assert '../assets/css/project-atlas.css' in text, page
               assert '../assets/js/project-atlas.js' in text, page
               assert 'boundary' in text.lower(), page
+
+          casa = Path('projects/casa-alain.html').read_text(encoding='utf-8')
+          assert '../assets/css/casa-alain-v2.css' in casa
+          assert '../assets/js/casa-alain-v2.js' in casa
+          assert 'KEF Ci4100QL-THX' in casa
+          assert 'No substitute building geometry is introduced' in casa
 
           mar = Path('projects/mar-salada.html').read_text(encoding='utf-8')
           assert 'MAR SALADA / CLUB DEL MAR' in mar
@@ -99,6 +104,7 @@ jobs:
       - name: Validate Project Atlas JavaScript
         run: |
           node --check assets/js/project-atlas.js
+          node --check assets/js/casa-alain-v2.js
 
       - name: Start preview and smoke-test routes
         run: |
@@ -108,7 +114,7 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:4194/projects/mar-salada.html | grep -q 'PROJECT_ATLAS_DATA'
-          curl -fsS http://127.0.0.1:4194/projects/casa-alain.html | grep -q 'PROJECT_ATLAS_DATA'
+          curl -fsS http://127.0.0.1:4194/projects/casa-alain.html | grep -q 'KEF Ci4100QL-THX'
           curl -fsS http://127.0.0.1:4194/projects/can-furnet-club.html | grep -q 'PROJECT_ATLAS_DATA'
           curl -fsS http://127.0.0.1:4194/assets/js/project-atlas.js >/dev/null
           curl -fsS http://127.0.0.1:4194/assets/css/project-atlas.css >/dev/null
