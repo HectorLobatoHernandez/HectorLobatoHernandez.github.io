@@ -1,6 +1,6 @@
 /** One operational projection. No telemetry, animal census or employee shift is claimed as real. */
 import {TASKS,TESTS,ROLES} from '../processes/catalog.mjs';
-export const LIVE_RELEASE='gaza-presentacion-20261014-v2';
+export const LIVE_RELEASE='gaza-vida-20261015-v3';
 export const DEFAULT_LIVING=Object.freeze({startMinute:480,environment:'auto',schedule:false});
 export const EXTRA_ROLES=Object.freeze({'SIM-ADMIN-DEMO':'Administración y planificación','SIM-RECEPTION-DESK':'Recepción de personas','SIM-MAINT-DEMO':'Mantenimiento','SIM-MATERIALS-DEMO':'Materiales de envase','SIM-ACCESS-DEMO':'Accesos','SIM-STAFF-DEMO':'Personal y vestuarios'});
 const continuous=new Set(['SIM-CLEAN-01','SIM-CLEAN-02','SIM-PROD-01','SIM-PACK-01','SIM-WMS-01','SIM-RECEPTION-01','SIM-MAINT-DEMO','SIM-ACCESS-DEMO']);
@@ -23,7 +23,7 @@ export function environmentOf(s){
  const cfg=settingsOf(s),clock=clockOf(s),hour=cfg.environment==='night'?23:cfg.environment==='day'?13:cfg.environment==='dusk'?19.4:clock.hour;
  // Artistic solar envelope, not astronomical ephemerides or a lux calculation.
  const elevation=Math.sin((hour-6.5)*Math.PI/13),daylight=clamp((elevation+.12)/.62),darkness=1-daylight;
- return {...clock,hour,sourceHour:clock.hour,preview:cfg.environment!=='auto',mode:cfg.environment,daylight,darkness,lamps:darkness>.45,sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase:daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche',provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
+ const phase=daylight>.8?'Día':daylight>.12?'Crepúsculo':'Noche';return {...clock,hour,sourceHour:clock.hour,preview:cfg.environment!=='auto',mode:cfg.environment,daylight,darkness,lamps:phase==='Noche',sunIntensity:.075+1.63*daylight,ambientIntensity:.16+.89*daylight,phase,provenance:'SIMULATED_LIGHTING_NOT_PHOTOMETRY'};
 }
 export function taskState(s,l,def){const t=l?.tasks?.[def.id];if(!t)return 'PENDING';if(t.status==='RUNNING'){if(!s.equipment[def.resource]?.valid)return 'UNAVAILABLE';if(l.holds&&!def.qualityIndependent)return 'HELD';if(def.gate&&l.gates[def.gate]?.status!=='APPROVED')return 'WAIT_GATE';}return t.status;}
 export function roleActivity(s,role){
