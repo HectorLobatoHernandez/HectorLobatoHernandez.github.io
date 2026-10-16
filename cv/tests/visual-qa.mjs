@@ -178,9 +178,10 @@ const rootState=await rootPage.evaluate(()=>({
   path:location.pathname,
   hero:!!document.querySelector('[data-reactbits-hero="true"]'),
   title:document.title,
+  anchorPaths:[...document.querySelectorAll('.rb-actions a[href^="#"],.portfolio-paths a[href^="#"],.rb-brand[href^="#"]')].map(a=>new URL(a.href).pathname),
   oldPortfolioNav:[...document.querySelectorAll('a')].some(a=>/Portfolio actual|Portfolio clásico|Portfolio ↗/.test(a.textContent||''))
 }));
-if(rootState.path!=='/'||!rootState.hero||!rootState.title.includes('Dossier')||rootState.oldPortfolioNav)failures.push('Public root must serve canonical dossier directly without old portfolio links: '+JSON.stringify(rootState));
+if(rootState.path!=='/'||!rootState.hero||!rootState.title.includes('Dossier')||rootState.oldPortfolioNav||rootState.anchorPaths.length<3||rootState.anchorPaths.some(p=>p!=='/cv/dossier.html'))failures.push('Public root must serve canonical dossier with working chapter anchors: '+JSON.stringify(rootState));
 await rootPage.close();
 
 for(const locale of [
