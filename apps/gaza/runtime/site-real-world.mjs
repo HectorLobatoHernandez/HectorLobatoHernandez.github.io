@@ -99,7 +99,7 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   // A vehicle of the selected fleet type is staged at the *same* modelled docks.
   // It is a visual preview, never a transport assignment from the ledger.
   const dockVehicles={Recogida:makeVehicle('tanker','#e0eef2'),Expedición:makeVehicle('box','#e0eef2',true)};
-  for(const v of Object.values(dockVehicles)){v.tractor.position.set(68,.15,-78);v.load.position.set(61,.15,-78);v.tractor.visible=false;v.load.visible=false}
+  for(const v of Object.values(dockVehicles)){v.tractor.position.set(68,-.03,-78);v.load.position.set(61,-.03,-78);v.tractor.visible=false;v.load.visible=false}
   let dockPreview=false,dockKind='Expedición',dockTruckId=null,dockPractice=false;
   const practiceGroup=new THREE.Group();practiceGroup.name='DOCK_PALLETS_PRACTICE_ONLY';interior.add(practiceGroup);practiceGroup.visible=false;
   for(let i=0;i<6;i++){const x=52+(i%2)*2.2,z=-94+Math.floor(i/2)*7;box(x,.525,z,1.45,.35,1.1,wood,practiceGroup);box(x,1.3,z,1.3,1.2,1,mat('#8ec5df'),practiceGroup)}
@@ -122,8 +122,8 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
       if(task?.status==='RUNNING'){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;m.elapsed=Math.max(0,Math.min(1,task.elapsed/24))*duration;}else if(!held)m.elapsed+=dt;
       let p=sampleTrip(m.path,m.elapsed,{speed:m.speed,stops:m.stops});
       if(p.complete&&!held&&task?.status!=='RUNNING'){m.elapsed=0;p=sampleTrip(m.path,0,{speed:m.speed,stops:m.stops});m.previousDistance=0}
-      m.tractor.position.set(p.x,.15,p.z);m.tractor.rotation.y=p.yaw;
-      const rear=samplePath(m.path,Math.max(0,p.distance-6.5));if(p.distance<6.5){rear.x-=rear.tangent[0]*(6.5-p.distance);rear.z-=rear.tangent[1]*(6.5-p.distance)}m.load.position.set(rear.x,.15,rear.z);m.load.rotation.y=rear.yaw;
+      m.tractor.position.set(p.x,-.03,p.z);m.tractor.rotation.y=p.yaw;
+      const rear=samplePath(m.path,Math.max(0,p.distance-6.5));if(p.distance<6.5){rear.x-=rear.tangent[0]*(6.5-p.distance);rear.z-=rear.tangent[1]*(6.5-p.distance)}m.load.position.set(rear.x,-.03,rear.z);m.load.rotation.y=rear.yaw;
       const travel=p.distance-m.previousDistance;m.previousDistance=p.distance;for(const w of m.wheels)w.rotation.z=-p.distance/.52;
       m.phase=held?'HOLD del lote · Workflow':task?.status==='RUNNING'?taskId+' · lote SIM':p.phase+' · tráfico escénico SIM';m.position=[p.x,p.z];m.heading=p.tangent;
     }
