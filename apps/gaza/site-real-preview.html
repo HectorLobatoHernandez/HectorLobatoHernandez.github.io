@@ -20,5 +20,5 @@
 <div id="stats" aria-label="Métricas de render"></div>
 </aside></div>
 <noscript>Activa JavaScript para ejecutar el visor. Los enlaces a los demás departamentos siguen disponibles.</noscript>
-<script type="module">const canvas=document.createElement('canvas');let gpu=false;try{gpu=!!canvas.getContext('webgl2',{powerPreference:'low-power'})}catch{}const fallback=()=>import('./runtime/site-fallback.mjs?release=gaza-site-warehouse-v25d').then(m=>m.mountSiteFallback()).catch(e=>{document.getElementById('loading').textContent='No se pudo iniciar la vista alternativa: '+e.message});if(gpu)import('./runtime/site-real-app.mjs?release=gaza-site-warehouse-v25d').catch(fallback);else fallback();</script>
+<script type="module">const canvas=document.createElement('canvas');let gpu=false;try{gpu=!!canvas.getContext('webgl2',{powerPreference:'low-power'})}catch{}const fallback=()=>import('./runtime/site-fallback.mjs?release=gaza-site-showcase-v26').then(m=>m.mountSiteFallback()).catch(e=>{document.getElementById('loading').textContent='No se pudo iniciar la vista alternativa: '+e.message});if(gpu)import('./runtime/site-real-app.mjs?release=gaza-site-showcase-v26').catch(fallback);else fallback();</script>
 </body></html>

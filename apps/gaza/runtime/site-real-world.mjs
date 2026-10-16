@@ -75,16 +75,21 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   const trailerPath=makePath([[-94,-183],[-94,-111],[-58,-111],[-58,-137],[75,-137],[75,-78],[75,-137],[-58,-137],[-58,-111],[-94,-111],[-94,183]]);
   const carPath=makePath([[-94,-185],[-94,185]]);
   for(const p of [tankerPath,trailerPath])line([p.segments[0].a,...p.segments.map(s=>s.b)],p===tankerPath?'#57aac9':'#d9b366',routes);
-  function makeVehicle(type,color){
+  function makeVehicle(type,color,cutaway=false){
     const tractor=new THREE.Group(),load=new THREE.Group(),wheels=[];actors.add(tractor,load);
     const body=mat('#f5fbff',.06,.39),brand=mat('#126aa2',.12,.45),lamp=new THREE.MeshBasicMaterial({color:'#ffe9b7'});
     box(1.4,1.7,0,3.1,2.6,2.4,mat(color),tractor);box(3.01,2.12,0,.1,1.18,2.05,glass,tractor);box(0,.65,0,6,.3,2,black,tractor);box(2,3.12,0,2.2,.18,2.5,body,tractor);
     box(3.02,1.14,0,.12,.42,1.55,black,tractor);for(const z of [-.91,.91]){box(3.07,1.39,z,.08,.2,.28,lamp,tractor);box(1.65,2.08,z>0?1.23:-1.23,.8,1,.05,glass,tractor)}
-    if(type==='tanker'){const tank=mesh(new THREE.CylinderGeometry(1.35,1.35,8,20),body,0,2,0,1,1,1,load);tank.rotation.z=Math.PI/2;for(let i=-3;i<=3;i+=3)cylinder(i,3.45,0,.35,.15,black,load);for(const z of [-1.29,1.29])box(0,2,z,7.8,.2,.08,brand,load)}else {box(0,2.05,0,9,3,2.65,body,load);for(const z of [-1.34,1.34]){box(0,1.08,z,8.8,.3,.06,brand,load);box(-4.25,2.85,z,.18,.18,.12,lamp,load)}}
+    if(type==='tanker'){const tank=mesh(new THREE.CylinderGeometry(1.35,1.35,8,20),body,0,2,0,1,1,1,load);tank.rotation.z=Math.PI/2;for(let i=-3;i<=3;i+=3)cylinder(i,3.45,0,.35,.15,black,load);for(const z of [-1.29,1.29])box(0,2,z,7.8,.2,.08,brand,load)}else {
+      if(cutaway){box(0,.82,0,9,.22,2.65,body,load);box(0,3.53,0,9,.16,2.65,body,load);box(0,2.15,-1.34,9,2.7,.07,glass,load);for(const x of [-4.43,4.43])for(const z of [-1.31,1.31])box(x,2.05,z,.12,2.9,.12,brand,load);
+        load.userData.cargo=[];for(let i=0;i<12;i++){const pallet=new THREE.Group();pallet.name='SIM-TRAILER-PALLET-'+i;load.add(pallet);const x=-3.45+(i%6)*1.38,z=i<6?-.67:.67;box(x,1.06,z,1.15,.2,1.05,wood,pallet);box(x,1.82,z,1.11,1.3,1.01,mat(i%2?'#e9b76c':'#8bc7e8'),pallet);box(x,2.42,z,.85,.08,.82,white,pallet);pallet.visible=false;load.userData.cargo.push(pallet)}
+      }else box(0,2.05,0,9,3,2.65,body,load);
+      for(const z of [-1.34,1.34]){box(0,1.08,z,8.8,.3,.06,brand,load);box(-4.25,2.85,z,.18,.18,.12,lamp,load)}
+    }
     box(0,.6,0,9,.3,2,black,load);
     const wheelGeometry=new THREE.CylinderGeometry(.52,.52,.3,12);wheelGeometry.rotateX(Math.PI/2);
     for(const [group,xs] of [[tractor,[-1.5,2]],[load,[-2.6,-1.3]]])for(const x of xs)for(const z of [-1.2,1.2]){const w=mesh(wheelGeometry,rubber,x,.55,z,1,1,1,group);wheels.push(w)}
-    const logo=loader.load(logoUrl,tx=>tx.colorSpace=THREE.SRGBColorSpace,undefined,()=>{});const pm=new THREE.MeshBasicMaterial({map:logo,side:THREE.DoubleSide});for(const z of [-1.38,1.38]){const p=new THREE.Mesh(new THREE.PlaneGeometry(3.4,1.3),pm);p.position.set(0,2.1,z);if(z<0)p.rotation.y=Math.PI;load.add(p)}
+    const logo=loader.load(logoUrl,tx=>tx.colorSpace=THREE.SRGBColorSpace,undefined,()=>{});const pm=new THREE.MeshBasicMaterial({map:logo,side:THREE.DoubleSide});for(const z of [-1.38,1.38]){if(cutaway&&z>0)continue;const p=new THREE.Mesh(new THREE.PlaneGeometry(3.4,1.3),pm);p.position.set(0,2.1,z);if(z<0)p.rotation.y=Math.PI;load.add(p)}
     return {tractor,load,wheels};
   }
   for(const [i,path] of [tankerPath,trailerPath].entries()){
@@ -93,7 +98,7 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   }
   // A vehicle of the selected fleet type is staged at the *same* modelled docks.
   // It is a visual preview, never a transport assignment from the ledger.
-  const dockVehicles={Recogida:makeVehicle('tanker','#e0eef2'),Expedición:makeVehicle('box','#e0eef2')};
+  const dockVehicles={Recogida:makeVehicle('tanker','#e0eef2'),Expedición:makeVehicle('box','#e0eef2',true)};
   for(const v of Object.values(dockVehicles)){v.tractor.position.set(68,.15,-78);v.load.position.set(61,.15,-78);v.tractor.visible=false;v.load.visible=false}
   let dockPreview=false,dockKind='Expedición',dockTruckId=null,dockPractice=false;
   const practiceGroup=new THREE.Group();practiceGroup.name='DOCK_PALLETS_PRACTICE_ONLY';interior.add(practiceGroup);practiceGroup.visible=false;
@@ -125,6 +130,7 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
     setCutaway(value){shell.visible=!value;cutawayWalls.visible=false;interior.visible=!!value},
     setDockPreview(value){dockPreview=!!value;for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
     setDockTruck(truck){dockTruckId=truck?.id||null;dockKind=truck?.kind==='Recogida'?'Recogida':'Expedición';for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
+    setDockInventory(view){const pallets=dockVehicles.Expedición.load.userData.cargo||[],capacity=view?.palletCapacityL||720,count=Math.min(pallets.length,(view?.families||[]).reduce((n,f)=>n+Math.floor(f.shippingL/cap)+Math.floor(f.full*f.loadingProgress),0));pallets.forEach((p,i)=>p.visible=i<count)},
     setDockPractice(value){dockPractice=!!value;practiceGroup.visible=dockPractice},
     dispose(){const geometries=new Set(),mats=new Set(),textures=new Set();root.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of [].concat(o.material||[])){mats.add(m);if(m.map)textures.add(m.map)}});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose())}
   };

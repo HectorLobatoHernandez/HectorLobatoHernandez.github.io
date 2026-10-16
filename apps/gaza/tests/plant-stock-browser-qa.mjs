@@ -16,11 +16,15 @@ try{
  await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__.stockGlyphs.rack>0);
  const stored=await page.evaluate(()=>window.__GAZA_PLANT_DETAIL__.stockGlyphs);assert.equal(stored.dock,0);assert.equal(stored.rack,13);assert.equal(stored.stock,12);checks.push('rack-glyphs-include-partial-pallet-position');
  await page.screenshot({path:path.join(out,'07-stock-after-putaway.png')});
+ await page.locator('[data-light="night"]').click();await page.waitForTimeout(500);
+ assert.equal(await page.evaluate(()=>window.__GAZA_SITE_REAL__.lighting.mode),'night');
+ await page.screenshot({path:path.join(out,'09-warehouse-night.png')});
  await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs'),{gateEligibility}=await import('./runtime/processes/ledger.mjs');for(let i=0;i<300;i++){if(gateEligibility(s.state,s.selected,'dispatch').ok){await s.dispatch({type:'REVIEW_GATE',lotId:s.selected,gate:'dispatch',reviewer:'SIM-QA-01'});break}await s.dispatch({type:'TICK',seconds:1})}for(let i=0;i<25;i++){await s.dispatch({type:'TICK',seconds:1});if(s.state.lots[s.selected].tasks['DISPATCH.LOAD'].status==='RUNNING'){await s.dispatch({type:'TICK',seconds:8});return}}throw Error('Loading not reached')});
  await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__.stockGlyphs.dock>0);const loading=await page.evaluate(()=>window.__GAZA_PLANT_DETAIL__.stockGlyphs);assert(loading.represented<=loading.stock+1);checks.push('loading-reallocates-full-and-partial-stock-without-duplicating');
  await page.evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'INCIDENT',lotId:s.selected,reason:'Stock loading hold QA'});await s.dispatch({type:'TICK',seconds:6})});
  await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__.taskStates['DISPATCH.LOAD'].state==='HELD');assert.deepEqual(await page.evaluate(()=>window.__GAZA_PLANT_DETAIL__.stockGlyphs),loading);checks.push('held-loading-preserves-pallet-allocation');
  await page.locator('#plantDepartment').selectOption('shipping');await page.locator('#plantEnter').click();await page.waitForTimeout(200);await page.screenshot({path:path.join(out,'08-stock-held-loading.png')});
+ await page.locator('#dockFocus').click();await page.waitForTimeout(350);await page.screenshot({path:path.join(out,'10-dock-night.png')});
  await page.locator('[data-process-panel] #lot').selectOption('SIM-OVI-001');await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__.lotId==='SIM-OVI-001');
  const afterSpecies=await page.evaluate(()=>window.__GAZA_PLANT_DETAIL__.stockGlyphs);assert.deepEqual(afterSpecies,loading);checks.push('species-selection-keeps-both-families-physical-stock');
  assert.deepEqual(errors,[]);await fs.writeFile(path.join(out,'stock-report.json'),JSON.stringify({ok:true,checks,errors,stored,loading},null,2));console.log('PLANT STOCK BROWSER QA PASS',checks);
