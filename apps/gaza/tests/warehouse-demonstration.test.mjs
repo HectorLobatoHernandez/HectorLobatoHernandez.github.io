@@ -27,4 +27,12 @@ test('stocked demonstration has two traceable families and loading conserves lit
  assert.equal(after.shippingL,8640);
  assert.equal(after.families[0].storedL,555);
  assert.equal(state.lots[lotId].tasks['DISPATCH.LOAD'].status,'DONE');
+ assert.equal(after.canDeliver,true);
+ state=reduce(state,{type:'START_TASK',lotId,taskId:'DELIVERY.ARRIVE'});
+ state=reduce(state,{type:'TICK',seconds:24});
+ const delivered=projectDocks(state);
+ assert.equal(validateState(state),true);
+ assert.equal(delivered.shippingL,0);
+ assert.equal(delivered.deliveredL,8640);
+ assert.equal(delivered.stockL+delivered.deliveredL,before.stockL);
 });

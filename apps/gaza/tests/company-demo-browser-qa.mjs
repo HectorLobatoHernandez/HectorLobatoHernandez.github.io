@@ -42,7 +42,7 @@ try{
  await page.locator('#companyDemoDock [data-focus="cow"]').click();await farm().waitForFunction(()=>window.__GAZA_FARM_DETAIL__.camera==='animal');
  await page.screenshot({path:path.join(out,'02-cow-inside-mission-control.png')});
  await page.locator('#companyDemoDock [data-focus="herds"]').click();await farm().waitForFunction(()=>window.__GAZA_FARM_DETAIL__.camera==='herds'&&!window.__GAZA_FARM_DETAIL__.isolated);checks.push('visible-tour-controls-and-reset-camera');
- await page.locator('#demoRestart').click();await farm().waitForFunction(()=>window.__GAZA_FARM_DETAIL__.camera==='station');
+ await page.locator('#demoExpand').click();await page.locator('#demoRestart').click();await farm().waitForFunction(()=>window.__GAZA_FARM_DETAIL__.camera==='station');
  await farm().evaluate(async()=>{const {processStore:s}=await import('./runtime/processes/store.mjs');await s.dispatch({type:'TICK',seconds:4})});
  await farm().waitForFunction(()=>window.__GAZA_FARM_DETAIL__.life.phase.flow);
  await page.screenshot({path:path.join(out,'03-milking-demo.png')});
