@@ -162,7 +162,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     }
     if(test.id==='ats-en'){
       const required=['Professional profile','Core skills','Professional experience','Selected technical projects',"Higher education and master's studies",'Certifications, manufacturer training and courses','Technology and tools','Applied experience','Languages','Working method'];
-      const content=['Studio Ingenia','2021 – Present','Estudio Áureo','2018 – 2021','In progress','Sound Club, Palma','Las Dalias / Club Akasha','Casa NOAH','GAZA Operations Intelligence','RHB STUDIO','XXXIA Studio','Ecler','Void Acoustics','Lynx Pro Audio'];
+      const content=['Studio Ingenia','2021 – Present','Estudio Áureo','2018 – 2021','IN PROGRESS','Sound Club, Palma','Las Dalias / Club Akasha','Casa NOAH','GAZA Operations Intelligence','RHB STUDIO','XXXIA Studio','Ecler','Void Acoustics','Lynx Pro Audio'];
       if(state.ats?.language!=='en'||state.ats.selectedProjects!==8||state.atsSections<9||!required.every(x=>state.atsH2.includes(x))||!content.every(x=>state.atsText.includes(x)))failures.push('English ATS content incomplete');
       if(!state.atsToolbar.includes('Download PDF')||!state.atsToolbar.includes('Print / Save as PDF')||!state.atsRoot||!state.atsWaves||!state.atsPixelTrail)failures.push('English ATS print/download UI missing');
       const link=await page.locator('.toolbar a[download]').getAttribute('href');
