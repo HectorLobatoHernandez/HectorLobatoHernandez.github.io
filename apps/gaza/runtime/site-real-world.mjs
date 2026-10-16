@@ -122,7 +122,7 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   update(0);
   return {root,shell,interior,labels,routes,actors,selectable,update,moving,boxColliders,
     meta:{version:2,geometry:'PHOTO_INFERRED_STUDY',alignment:'NOT_GEOREREFERENCED',vehicles:2,workers:8,access1:'MUELLES_OFICINAS_AULA',access2:'LECHE_BASCULA_SERVICIOS'},
-    setCutaway(value){shell.visible=!value;cutawayWalls.visible=!!value;interior.visible=!!value},
+    setCutaway(value){shell.visible=!value;cutawayWalls.visible=false;interior.visible=!!value},
     setDockPreview(value){dockPreview=!!value;for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
     setDockTruck(truck){dockTruckId=truck?.id||null;dockKind=truck?.kind==='Recogida'?'Recogida':'Expedición';for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
     setDockPractice(value){dockPractice=!!value;practiceGroup.visible=dockPractice},

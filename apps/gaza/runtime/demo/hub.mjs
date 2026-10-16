@@ -1,4 +1,4 @@
-import {processStore as store} from '../processes/store.mjs';
+import {processStore as store} from '../processes/store.mjs?release=gaza-warehouse-v24';
 import {gateEligibility} from '../processes/ledger.mjs';
 import {GATES} from '../processes/catalog.mjs';
 import {RELEASE} from './session.mjs';

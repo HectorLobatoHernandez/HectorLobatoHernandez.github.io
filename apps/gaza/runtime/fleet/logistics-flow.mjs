@@ -1,4 +1,4 @@
-import {processStore} from '../processes/store.mjs';
+import {processStore} from '../processes/store.mjs?release=gaza-warehouse-v24';
 
 // Read-only projection of the same ledger used by Farm, Labs and Workflow.
 // No vehicle identity is assigned to a lot without an authorised transport source.

@@ -1,4 +1,4 @@
-import {processStore as store} from './store.mjs';
+import {processStore as store} from './store.mjs?release=gaza-warehouse-v24';
 import {TASKS,TESTS,GATES,DATA_BOUNDARY,STATIONS,ROLES} from './catalog.mjs';
 import {taskEligibility,testEligibility,gateEligibility,latestTest} from './ledger.mjs';
 const dom=(tag,text,attributes={})=>{const n=document.createElement(tag);if(text!==null)n.textContent=text;for(const [k,v] of Object.entries(attributes))n.setAttribute(k,String(v));return n};

@@ -1,6 +1,6 @@
 import {mountMobileShell} from '../mobile/shell.mjs';
 import {activeOperations} from './motion-model.mjs';
-import {processStore as store} from '../processes/store.mjs';
+import {processStore as store} from '../processes/store.mjs?release=gaza-warehouse-v24';
 import {opsView,settingsOf,LIVE_RELEASE} from './model.mjs';
 import {createSpainClock,alignedStartMinute} from '../time/spain-clock.mjs';
 const el=(tag,text,attrs={})=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n};

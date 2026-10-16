@@ -1,7 +1,7 @@
 import {initialState,reduce,validateState,visualSnapshot,lotSummary} from './ledger.mjs';
 import {TASKS} from './catalog.mjs';
 import {sessionScope} from '../demo/session.mjs';
-import {createDemonstration} from '../demo/scenario.mjs';
+import {createDemonstration,createWarehouseDemonstration} from '../demo/scenario.mjs?release=gaza-warehouse-v24';
 const scope=sessionScope(typeof location!=='undefined'?location.search:'');
 const KEY=scope.key;
 const SELECTION=KEY+':selected';
@@ -59,6 +59,7 @@ export const processStore={
  setLot(id){if(!snapshot?.lots[id])return;selected=id;localStorage.setItem(SELECTION,id);notify();channel?.postMessage({type:'SELECTED',id})},
  subscribe(fn){listeners.add(fn);fn({state:snapshot,error,selected});return()=>listeners.delete(fn)},
  restartDemonstration(living=null){if(!scope.demo)return Promise.reject(new Error('Reinicio de presentación no disponible en trabajo.'));return transaction(()=>{const n=createDemonstration({running:!qa,living});n.clock.wallAt=Date.now();return n})},
+ prepareWarehouseDemonstration(){if(!scope.demo)return Promise.reject(new Error('El almacén de ejemplo solo está disponible en modo demo.'));return transaction(()=>{archive();const n=createWarehouseDemonstration({running:!qa,living:snapshot?.config?.living});n.clock.wallAt=Date.now();return n})},
  start(config={}){return transaction(s=>{if(s)return s;archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  reset(config={}){return transaction(()=>{archive();const n=initialState(config);n.clock.wallAt=Date.now();return n})},
  recoverIncompatible(){if(!error)return Promise.reject(new Error('El registro actual es válido; no requiere recuperación.'));if(!locks)return Promise.reject(new Error('Se necesita Web Locks en un origen seguro.'));return locks.request(KEY,async()=>{const raw=localStorage.getItem(KEY);if(raw){localStorage.setItem(KEY+':archive:incompatible:'+Date.now(),raw);localStorage.removeItem(KEY)}const n=initialState();n.clock.wallAt=Date.now();return commit(n)})},
@@ -78,4 +79,4 @@ window.addEventListener('storage',e=>{if(e.key===SELECTION&&snapshot?.lots[e.new
 window.addEventListener('pageshow',notify);window.addEventListener('pagehide',e=>{if(!e.persisted)processStore.close()});
 notify();const timer=setInterval(()=>processStore.pulse(),250);
 // Only the explicit ?demo=company session may bootstrap itself. Corrupt records fail closed.
-if(scope.demo&&!snapshot&&!error)transaction(current=>{if(current)return current;const n=createDemonstration({running:!qa});n.clock.wallAt=Date.now();return n}).catch(e=>{error=e.message;window.__GAZA_PROCESS_ERROR__=error;window.dispatchEvent(new CustomEvent('gaza-demo-error',{detail:error}))});
+if(scope.demo&&!snapshot&&!error)transaction(current=>{if(current)return current;const p=new URLSearchParams(location.search),warehouse=p.get('view')==='site'||p.get('warehouse')==='1';const n=warehouse?createWarehouseDemonstration({running:!qa}):createDemonstration({running:!qa});n.clock.wallAt=Date.now();return n}).catch(e=>{error=e.message;window.__GAZA_PROCESS_ERROR__=error;window.dispatchEvent(new CustomEvent('gaza-demo-error',{detail:error}))});

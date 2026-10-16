@@ -1,4 +1,4 @@
-import {processStore} from '../processes/store.mjs';
+import {processStore} from '../processes/store.mjs?release=gaza-warehouse-v24';
 import {FLEET,projectDocks} from './model.mjs';
 import {environmentOf} from '../living/model.mjs';
 
