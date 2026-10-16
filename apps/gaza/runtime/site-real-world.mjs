@@ -81,7 +81,7 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
     box(1.4,1.7,0,3.1,2.6,2.4,mat(color),tractor);box(3.01,2.12,0,.1,1.18,2.05,glass,tractor);box(0,.65,0,6,.3,2,black,tractor);box(2,3.12,0,2.2,.18,2.5,body,tractor);
     box(3.02,1.14,0,.12,.42,1.55,black,tractor);for(const z of [-.91,.91]){box(3.07,1.39,z,.08,.2,.28,lamp,tractor);box(1.65,2.08,z>0?1.23:-1.23,.8,1,.05,glass,tractor)}
     if(type==='tanker'){const tank=mesh(new THREE.CylinderGeometry(1.35,1.35,8,20),body,0,2,0,1,1,1,load);tank.rotation.z=Math.PI/2;for(let i=-3;i<=3;i+=3)cylinder(i,3.45,0,.35,.15,black,load);for(const z of [-1.29,1.29])box(0,2,z,7.8,.2,.08,brand,load)}else {
-      if(cutaway){box(0,.82,0,9,.22,2.65,body,load);box(0,3.53,0,9,.16,2.65,body,load);box(0,2.15,-1.34,9,2.7,.07,glass,load);for(const x of [-4.43,4.43])for(const z of [-1.31,1.31])box(x,2.05,z,.12,2.9,.12,brand,load);
+      if(cutaway){box(0,.82,0,9,.22,2.65,body,load);box(0,3.53,-1.18,9,.16,.28,body,load);box(0,2.15,-1.34,9,2.7,.07,glass,load);for(const x of [-4.43,4.43])for(const z of [-1.31,1.31])box(x,2.05,z,.12,2.9,.12,brand,load);
         load.userData.cargo=[];for(let i=0;i<12;i++){const pallet=new THREE.Group();pallet.name='SIM-TRAILER-PALLET-'+i;load.add(pallet);const x=-3.45+(i%6)*1.38,z=i<6?-.67:.67;box(x,1.06,z,1.15,.2,1.05,wood,pallet);box(x,1.82,z,1.11,1.3,1.01,mat(i%2?'#e9b76c':'#8bc7e8'),pallet);box(x,2.42,z,.85,.08,.82,white,pallet);pallet.visible=false;load.userData.cargo.push(pallet)}
       }else box(0,2.05,0,9,3,2.65,body,load);
       for(const z of [-1.34,1.34]){box(0,1.08,z,8.8,.3,.06,brand,load);box(-4.25,2.85,z,.18,.18,.12,lamp,load)}
