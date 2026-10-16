@@ -54,6 +54,10 @@ Sul campo
 Sistemi
 Ingegneria
 Software
+Lavori in cantiere e collaudo
+Controllo, AV e IT/OT
+Disegni, BOM e tracciabilità
+Strumenti e automazione
 Rilievi, coordinamento, cablaggio, integrazione, test, diagnosi, consegna e documentazione delle criticità.
 KNX, DALI, DSP, matrici, reti, PoE, integrazione di interfacce e progettazione orientata alla manutenzione.
 AutoCAD, specifiche tecniche, preventivi, fornitori, QA, controllo delle modifiche e documentazione di progetto.

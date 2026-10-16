@@ -39,7 +39,6 @@ GAZA OPS combina referencias públicas, reconstrucciones inferidas y procesos si
 - [GAZA: procedencia de datos](apps/gaza/PUBLIC_EVIDENCE.md)
 - [RHB STUDIO: manual](docs/MANUAL_RHB_STUDIO.md)
 - [ATLAS: arquitectura y evidencia](atlas/README.md)
-- [Skills del portfolio](skills/manifest.json)
 
 La comprobación de enlaces se ejecuta con `tools/check_readme_links.py` y el workflow **README Links**.
 </details>
