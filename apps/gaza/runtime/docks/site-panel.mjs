@@ -1,5 +1,5 @@
 import {processStore} from '../processes/store.mjs';
-import {FLEET,projectDocks} from './model.mjs?release=gaza-site-warehouse-v25a';
+import {FLEET,projectDocks} from './model.mjs?release=gaza-site-warehouse-v25b';
 
 /** The dock controls live in the Plant viewer and read the common SIM ledger. */
 export function mountSiteDockPanel({onOpen=()=>{},onTruck=()=>{},onPractice=()=>{}}={}){
@@ -19,7 +19,7 @@ export function mountSiteDockPanel({onOpen=()=>{},onTruck=()=>{},onPractice=()=>
   $('dockFlow').textContent=view.families.map(f=>f.id+' · granja → recepción '+(f.receiving==='DONE'?'✓':'·')+' → envasado '+(f.putaway==='DONE'?'✓':'·')+' → almacén '+f.storedL.toLocaleString('es-ES')+' L → carga '+(f.loading==='RUNNING'?Math.round(f.loadingProgress*100)+' %':f.loading==='DONE'?'✓':'pendiente')+' → ruta '+f.shippingL.toLocaleString('es-ES')+' L → entrega '+f.deliveredL.toLocaleString('es-ES')+' L').join('\n');
   onTruck(view.truck,view);window.__GAZA_SITE_DOCKS__={selected,practice,revision:view.revision,families:view.families.map(f=>({id:f.id,full:f.full,partial:f.partial,occupancy:f.occupancy})),provenance:view.provenance};
  }
- let prepared=false;processStore.subscribe(({state:next})=>{state=next;render();if(prepared||!next||!processStore.scope.demo||new URLSearchParams(location.search).get('warehouse')!=='1')return;prepared=true;const openStock=()=>{onOpen('asrs');if(!practice)$('dockPractice').click()};if(view.stockL+view.shippingL+view.deliveredL===0)processStore.prepareWarehouseDemonstration().then(openStock).catch(e=>{$('dockOperation').textContent='No se pudo preparar el almacén: '+e.message});else queueMicrotask(openStock)});
+ let prepared=false;processStore.subscribe(({state:next})=>{state=next;render();if(prepared||!next||!processStore.scope.demo||new URLSearchParams(location.search).get('warehouse')!=='1')return;prepared=true;if(view.stockL+view.shippingL+view.deliveredL>0)queueMicrotask(()=>{onOpen('asrs');if(!practice)$('dockPractice').click()})});
  selector.onchange=()=>{selected=selector.value;localStorage.setItem(key,selected);render()};
  $('dockPractice').onclick=()=>{practice=!practice;$('dockPractice').setAttribute('aria-pressed',String(practice));$('dockPractice').textContent=practice?'Detener ensayo visual':'Ensayar carga / descarga';onPractice(practice,view)};
  const roof=$('dockRoof'),cutaway=document.getElementById('cutaway');function syncRoof(){roof.textContent=cutaway.checked?'Poner tejados':'Quitar tejados · ver interior';roof.setAttribute('aria-pressed',String(cutaway.checked))}roof.onclick=()=>document.getElementById('cutawayToggle').click();cutaway.addEventListener('change',syncRoof);syncRoof();
