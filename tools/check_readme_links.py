@@ -100,14 +100,17 @@ def live_result(url: str) -> dict:
         try:
             request = urllib.request.Request(url, headers={"User-Agent": "HL-README-Link-Check/1.0"})
             with urllib.request.urlopen(request, timeout=15) as response:
-                body = response.read(524288).decode("utf-8", errors="replace")
+                payload = response.read(524288)
+                body = payload.decode("utf-8", errors="replace")
                 title = re.search(r"<title[^>]*>(.*?)</title>", body, re.I | re.S)
+                is_pdf = urllib.parse.urlsplit(response.geturl()).path.lower().endswith(".pdf")
+                resource_ok = payload.startswith(b"%PDF-") if is_pdf else bool(title)
                 return {
                     "http_checked": True,
                     "http_status": response.status,
                     "final_url": response.geturl(),
                     "http_title": html.unescape(title.group(1).strip()) if title else "",
-                    "http_ok": response.status == 200 and bool(title),
+                    "http_ok": response.status == 200 and resource_ok,
                 }
         except (urllib.error.URLError, TimeoutError, OSError) as error:
             result = {"http_checked": True, "http_ok": False, "http_error": str(error)}
