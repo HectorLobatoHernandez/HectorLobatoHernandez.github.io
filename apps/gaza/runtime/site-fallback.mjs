@@ -1,5 +1,5 @@
 import {environmentOf} from './living/model.mjs';
-import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-warehouse-v25c';
+import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-warehouse-v25d';
 // GPU-free, deterministic isometric operations sketch for browsers without WebGL.
 // Footprint, vehicles and access lanes are SYNTHETIC; no internal floor-plan claim.
 export function mountSiteFallback(){
@@ -28,7 +28,7 @@ export function mountSiteFallback(){
   }
   ctx.fillStyle='#1e3d49';ctx.fillRect(dockX,top+75,width*.31,rackH);ctx.strokeStyle='#78aeba';ctx.strokeRect(dockX,top+75,width*.31,rackH);ctx.fillStyle='#ebf4f0';ctx.font='bold 13px system-ui';ctx.fillText('MUELLE 01 · EXPEDICIÓN',dockX+9,top+97);
   const vehicleY=top+133,vehicleW=Math.min(250,width*.25),vehicleH=Math.min(96,rackH*.65);ctx.fillStyle='#f2f5ed';ctx.fillRect(dockX+14,vehicleY,vehicleW*.75,vehicleH);ctx.fillStyle='#4e819b';ctx.fillRect(dockX+14+vehicleW*.75,vehicleY+vehicleH*.2,vehicleW*.24,vehicleH*.8);ctx.fillStyle='#194b71';ctx.font='bold 13px system-ui';ctx.fillText('GAZA · SIM',dockX+24,vehicleY+25);ctx.fillStyle='#2f617e';ctx.fillRect(dockX+18+vehicleW*.75,vehicleY+vehicleH*.25,vehicleW*.17,vehicleH*.25);ctx.fillStyle='#101f2a';for(const wx of [dockX+40,dockX+vehicleW*.55,dockX+vehicleW*.83]){ctx.beginPath();ctx.arc(wx,vehicleY+vehicleH+4,8,0,7);ctx.fill()}
-  const palletCount=v?.families?.reduce((n,f)=>n+Math.floor(f.full*f.loadingProgress),0)||0;for(let i=0;i<Math.min(8,palletCount);i++){ctx.fillStyle=i%2?'#f2b96c':'#8bc7e8';ctx.fillRect(dockX+24+(i%4)*37,vehicleY+vehicleH-26-Math.floor(i/4)*21,28,17)}
+  const palletCount=v?.families?.reduce((n,f)=>n+Math.floor(f.shippingL/v.palletCapacityL)+Math.floor(f.full*f.loadingProgress),0)||0;for(let i=0;i<Math.min(12,palletCount);i++){ctx.fillStyle=i%2?'#f2b96c':'#8bc7e8';ctx.fillRect(dockX+24+(i%6)*26,vehicleY+vehicleH-22-Math.floor(i/6)*20,22,17)}
   ctx.fillStyle='#486672';ctx.fillRect(left+20,laneY,width-40,5);ctx.strokeStyle='#d9d29a';ctx.setLineDash([15,10]);ctx.beginPath();ctx.moveTo(left+30,laneY+22);ctx.lineTo(dockX+vehicleW*.15,laneY+22);ctx.stroke();ctx.setLineDash([]);
   const active=dockPractice||v?.loading,phase=active?(Math.sin(elapsed*.48)+1)/2:.18,fx=rackX+rackW*.18+phase*(dockX-rackX-rackW*.18-34),fy=laneY+17;
   ctx.fillStyle='#ebb83d';ctx.fillRect(fx,fy-29,40,27);ctx.fillStyle='#0e2935';ctx.fillRect(fx+4,fy-36,25,11);for(const dx of [7,33]){ctx.beginPath();ctx.arc(fx+dx,fy,5,0,7);ctx.fill()}ctx.strokeStyle='#edcb6f';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(fx+43,fy-12);ctx.lineTo(fx+43,fy-40);ctx.lineTo(fx+53,fy-40);ctx.stroke();ctx.fillStyle='#a9d6e4';ctx.fillRect(fx+44,fy-45,17,6);
