@@ -44,6 +44,7 @@ jobs:
             /README.md
             /index.html
             /atlas/*.html
+            /atlas/README.md
             /assets/readme/
             /assets/projects/
             /tools/check_readme_links.py
@@ -59,6 +60,7 @@ jobs:
             /cv/*.html
             /projects/*.html
             /start/*.html
+            /xxxia-studio/index.html
       - name: Validate repository targets
         run: python3 tools/check_readme_links.py
       - name: Verify public links and audit previous README
