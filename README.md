@@ -6,7 +6,7 @@
 
 [**Abrir dossier editorial ↗**](https://hectorlobatohernandez.github.io/) · [Español](https://hectorlobatohernandez.github.io/?lang=es) · [English](https://hectorlobatohernandez.github.io/?lang=en) · [Italiano](https://hectorlobatohernandez.github.io/?lang=it)
 
-[CV ATS / PDF](https://hectorlobatohernandez.github.io/cv/ats.html) · [Presentación guiada de 5 minutos](https://hectorlobatohernandez.github.io/cv/present.html) · [Perfil GitHub](https://github.com/HectorLobatoHernandez)
+[CV en español, imprimible](https://hectorlobatohernandez.github.io/cv/ats.html) · [English CV, printable](https://hectorlobatohernandez.github.io/cv/ats-en.html) · [Download English CV (PDF)](https://hectorlobatohernandez.github.io/cv/Hector_Lobato_CV_EN.pdf) · [Presentación guiada de 5 minutos](https://hectorlobatohernandez.github.io/cv/present.html) · [Perfil GitHub](https://github.com/HectorLobatoHernandez)
 
 El dossier reúne perfil, competencias, proyectos documentados, método, evidencia y contacto. Conserva la dirección editorial **IVORY ATLAS × React Tech**, con retrato interactivo, tipografía TechText y navegación por áreas.
 
