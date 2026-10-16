@@ -1,5 +1,5 @@
 import {processStore} from '../processes/store.mjs';
-import {FLEET,projectDocks} from './model.mjs?release=gaza-site-warehouse-v25b';
+import {FLEET,projectDocks} from './model.mjs?release=gaza-site-warehouse-v25c';
 
 /** The dock controls live in the Plant viewer and read the common SIM ledger. */
 export function mountSiteDockPanel({onOpen=()=>{},onTruck=()=>{},onPractice=()=>{}}={}){
@@ -9,7 +9,7 @@ export function mountSiteDockPanel({onOpen=()=>{},onTruck=()=>{},onPractice=()=>
  document.querySelector('aside').prepend(host);
  const $=id=>host.querySelector('#'+id),selector=$('dockVehicle');
  for(const v of FLEET){const option=document.createElement('option');option.value=v.id;option.textContent=v.id+' · '+v.name+' · '+v.kind;selector.append(option)}
- const key='gaza:docks:truck:v1';let selected=localStorage.getItem(key)||FLEET[0].id;if(!FLEET.some(v=>v.id===selected))selected=FLEET[0].id;selector.value=selected;
+ const key='gaza:docks:truck:v1';let selected=localStorage.getItem(key)||FLEET.find(v=>v.kind==='Expedición').id;if(!FLEET.some(v=>v.id===selected))selected=FLEET[0].id;selector.value=selected;
  let state=null,practice=false,view=projectDocks(null,selected);
  function render(){view=projectDocks(state,selected);$('dockOperation').textContent=view.truck.name+' · '+view.operation+' · '+view.operationState+(practice?' · ENSAYO VISUAL':'');$('dockLoad').disabled=!processStore.scope.demo||!view.canLoad||view.loading;$('dockPrepare').hidden=!processStore.scope.demo;$('dockDeliver').hidden=!processStore.scope.demo;$('dockDeliver').disabled=!view.canDeliver;
   $('dockHeadline').textContent=view.stockL?`${view.stockPallets} palés completos visibles · ${view.stockL.toLocaleString('es-ES')} L en stock · ${view.shippingL.toLocaleString('es-ES')} L en ruta`:'Sin stock registrado en este escenario. Pulsa «Preparar palés SIM» para ver la carga.';
