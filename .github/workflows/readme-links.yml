@@ -52,6 +52,8 @@ jobs:
             /docs/project-atlas/README.md
             /apps/gaza/*.html
             /apps/gaza/*.md
+            /apps/gaza/assets/dossier/plant-warehouse-day.jpg
+            /apps/gaza/GAZA_OPS_Dossier_Visual_2026.pdf
             /apps/rhb/index.html
             /experience/index.html
             /cv/*.html
