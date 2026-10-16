@@ -77,8 +77,10 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   for(const p of [tankerPath,trailerPath])line([p.segments[0].a,...p.segments.map(s=>s.b)],p===tankerPath?'#57aac9':'#d9b366',routes);
   function makeVehicle(type,color){
     const tractor=new THREE.Group(),load=new THREE.Group(),wheels=[];actors.add(tractor,load);
-    box(1.4,1.7,0,3.1,2.6,2.4,mat(color),tractor);box(3,2.1,0,.08,1.1,2.1,glass,tractor);box(0,.65,0,6,.3,2,black,tractor);box(2,3.12,0,2.2,.18,2.5,white,tractor);
-    if(type==='tanker'){const tank=mesh(new THREE.CylinderGeometry(1.35,1.35,8,20),steel,0,2,0,1,1,1,load);tank.rotation.z=Math.PI/2;for(let i=-3;i<=3;i+=3)cylinder(i,3.45,0,.35,.15,black,load)}else box(0,2.05,0,9,3,2.65,white,load);
+    const body=mat('#f5fbff',.06,.39),brand=mat('#126aa2',.12,.45),lamp=new THREE.MeshBasicMaterial({color:'#ffe9b7'});
+    box(1.4,1.7,0,3.1,2.6,2.4,mat(color),tractor);box(3.01,2.12,0,.1,1.18,2.05,glass,tractor);box(0,.65,0,6,.3,2,black,tractor);box(2,3.12,0,2.2,.18,2.5,body,tractor);
+    box(3.02,1.14,0,.12,.42,1.55,black,tractor);for(const z of [-.91,.91]){box(3.07,1.39,z,.08,.2,.28,lamp,tractor);box(1.65,2.08,z>0?1.23:-1.23,.8,1,.05,glass,tractor)}
+    if(type==='tanker'){const tank=mesh(new THREE.CylinderGeometry(1.35,1.35,8,20),body,0,2,0,1,1,1,load);tank.rotation.z=Math.PI/2;for(let i=-3;i<=3;i+=3)cylinder(i,3.45,0,.35,.15,black,load);for(const z of [-1.29,1.29])box(0,2,z,7.8,.2,.08,brand,load)}else {box(0,2.05,0,9,3,2.65,body,load);for(const z of [-1.34,1.34]){box(0,1.08,z,8.8,.3,.06,brand,load);box(-4.25,2.85,z,.18,.18,.12,lamp,load)}}
     box(0,.6,0,9,.3,2,black,load);
     const wheelGeometry=new THREE.CylinderGeometry(.52,.52,.3,12);wheelGeometry.rotateX(Math.PI/2);
     for(const [group,xs] of [[tractor,[-1.5,2]],[load,[-2.6,-1.3]]])for(const x of xs)for(const z of [-1.2,1.2]){const w=mesh(wheelGeometry,rubber,x,.55,z,1,1,1,group);wheels.push(w)}
@@ -89,12 +91,21 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
     const v=makeVehicle(i?'box':'tanker',i?'#c9d3d5':'#dce3df'),stops=i?[{distance:85,seconds:5,label:'Control acceso 1'},{distance:326,seconds:16,label:'Espera muelle / expedición'}]:[{distance:89,seconds:5,label:'Control acceso 2'},{distance:307,seconds:10,label:'Báscula / registro de entrada'},{distance:391,seconds:16,label:'Muestreo / recepción de leche'}];
     moving.push({...v,id:i?'SIM-TRAILER-1':'SIM-TANKER-1',path,stops,speed:i?5:4,elapsed:i?8:0,previousDistance:0,phase:'Preparado'});
   }
+  // A vehicle of the selected fleet type is staged at the *same* modelled docks.
+  // It is a visual preview, never a transport assignment from the ledger.
+  const dockVehicles={Recogida:makeVehicle('tanker','#e0eef2'),Expedición:makeVehicle('box','#e0eef2')};
+  for(const v of Object.values(dockVehicles)){v.tractor.position.set(68,.15,-78);v.load.position.set(61,.15,-78);v.tractor.visible=false;v.load.visible=false}
+  let dockPreview=false,dockKind='Expedición',dockTruckId=null,dockPractice=false;
+  const practiceGroup=new THREE.Group();practiceGroup.name='DOCK_PALLETS_PRACTICE_ONLY';interior.add(practiceGroup);practiceGroup.visible=false;
+  for(let i=0;i<6;i++){const x=52+(i%2)*2.2,z=-94+Math.floor(i/2)*7;box(x,.27,z,1.45,.35,1.1,wood,practiceGroup);box(x,1.03,z,1.3,1.2,1,mat('#8ec5df'),practiceGroup)}
+  const dockForklift=new THREE.Group();dockForklift.name='SIM-DOCK-FORKLIFT';interior.add(dockForklift);box(0,1,0,3,1.6,1.8,yellow,dockForklift);box(1.3,2,0,.18,2.2,1.5,black,dockForklift);for(const x of [-1,1])for(const z of [-.85,.85]){const wheel=mesh(new THREE.CylinderGeometry(.35,.35,.3,10),rubber,x,.35,z,1,1,1,dockForklift);wheel.rotation.x=Math.PI/2}dockForklift.position.set(54,0,-70);
   // Light vehicles and workers remain clearly synthetic; pedestrian paths are separate.
   for(let i=0;i<7;i++){const c=new THREE.Group();c.name='SIM-STAFF-CAR-'+i;actors.add(c);box(0,.8,0,4,1.1,1.8,mat(['#d9dedf','#344a63','#99363e'][i%3]),c);box(0,1.5,0,2.1,.7,1.65,glass,c);c.position.set(-48,0,-6+i*9);c.rotation.y=Math.PI/2}
   const walkers=[];for(let i=0;i<8;i++){const g=new THREE.Group(),legs=[],arms=[];g.name='SIM-YARD-STAFF-'+i;g.userData={livingRole:i%2?'SIM-SHIPPING-01':'SIM-MAINT-DEMO'};actors.add(g);box(0,1.05,0,.52,.65,.3,i%3?yellow:blue,g);mesh(geoSphere,mat('#b3886d'),0,1.62,0,.2,.22,.2,g);for(const sign of [-1,1]){const leg=new THREE.Group();leg.position.set(sign*.14,.76,0);g.add(leg);box(0,-.35,0,.15,.7,.16,black,leg);legs.push(leg);const arm=new THREE.Group();arm.position.set(sign*.33,1.36,0);g.add(arm);box(0,-.25,0,.12,.55,.14,i%3?yellow:blue,arm);arms.push(arm)}walkers.push({g,legs,arms,phase:i*.8,z:-43+i*17})}
   let time=0;
   function update(dt,{held=false,process=null}={}){
     time=process?process.state.clock.seconds:time+dt;
+    dockForklift.position.z=-70+Math.sin(time*.43)*(dockPractice?10:2);
     for(const m of moving){
       const taskId=m.id==='SIM-TANKER-1'?'LOGISTICS.TRANSIT':'DELIVERY.ARRIVE',task=process?.state.lots[process.lotId]?.tasks[taskId];
       if(task?.status==='RUNNING'){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;m.elapsed=Math.max(0,Math.min(1,task.elapsed/24))*duration;}else if(!held)m.elapsed+=dt;
@@ -112,6 +123,9 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   return {root,shell,interior,labels,routes,actors,selectable,update,moving,boxColliders,
     meta:{version:2,geometry:'PHOTO_INFERRED_STUDY',alignment:'NOT_GEOREREFERENCED',vehicles:2,workers:8,access1:'MUELLES_OFICINAS_AULA',access2:'LECHE_BASCULA_SERVICIOS'},
     setCutaway(value){shell.visible=!value;cutawayWalls.visible=!!value;interior.visible=!!value},
+    setDockPreview(value){dockPreview=!!value;for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
+    setDockTruck(truck){dockTruckId=truck?.id||null;dockKind=truck?.kind==='Recogida'?'Recogida':'Expedición';for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
+    setDockPractice(value){dockPractice=!!value;practiceGroup.visible=dockPractice},
     dispose(){const geometries=new Set(),mats=new Set(),textures=new Set();root.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of [].concat(o.material||[])){mats.add(m);if(m.map)textures.add(m.map)}});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose())}
   };
 }
