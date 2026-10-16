@@ -1,14 +1,14 @@
 import {mountMobileScene} from './mobile/scene.mjs';
 import {processStore} from './processes/store.mjs';
-import {mountLivingScene} from './living/scene.mjs?release=gaza-site-showcase-v26b';
+import {mountLivingScene} from './living/scene.mjs?release=gaza-site-showcase-v26c';
 import {propagateMode} from './demo/session.mjs';
 const LEGACY_KEY=processStore.scope.legacy;
 import {mountProcessPanel} from './processes/panel.mjs';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {buildExterior} from './site-real-world.mjs?release=gaza-site-showcase-v26b';
-import {mountPlantDetail} from './plant/panel.mjs?release=gaza-site-showcase-v26b';
-import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-showcase-v26b';
+import {buildExterior} from './site-real-world.mjs?release=gaza-site-showcase-v26c';
+import {mountPlantDetail} from './plant/panel.mjs?release=gaza-site-showcase-v26c';
+import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-showcase-v26c';
 import {normalizeGeoJSON,overpassToGeoJSON,ribbon,readLedger,ORIGIN} from './site-real-core.mjs';
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),qa=params.get('qa')==='1',frozen=params.get('freeze')==='1';
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(43,1,.4,6000),renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});

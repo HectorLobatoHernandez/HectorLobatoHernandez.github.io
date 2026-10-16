@@ -31,4 +31,5 @@ test('loading progress is read from the dispatch task, not from already departed
  const task=lot.tasks['DISPATCH.LOAD'];task.status='RUNNING';task.elapsed=TASKS.find(t=>t.id==='DISPATCH.LOAD').durationSimSeconds/2;
  const f=projectDocks(state,'SIM-FLT-02').families.find(f=>f.id===lot.id);
  assert.equal(f.loadingProgress,.5);assert.equal(f.full,8);assert.equal(f.shippingL,0);
+ task.status='HELD';assert.equal(projectDocks(state,'SIM-FLT-02').families.find(row=>row.id===lot.id).loadingProgress,.5);
 });
