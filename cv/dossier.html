@@ -1,43 +1,196 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#151b18">
-  <meta name="description" content="Héctor Lobato: diseño e ingeniería, integración técnica, software e inteligencia artificial aplicada.">
-  <link rel="canonical" href="https://hectorlobatohernandez.github.io/">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/portfolio-home.css?v=1">
-  <title>Héctor Lobato · Diseño, ingeniería y software</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Dossier profesional de Héctor Lobato: integración de sistemas, automatización, IT/OT, AV, ingeniería y software aplicado.">
+<title>Héctor Lobato — Dossier / Systems Integration</title>
+<link rel="stylesheet" href="variants.css">
+<style>
+:root{--paper:#000000;--ink:#e2dfcf;--soft:#c3c8bb;--line:#4b4b43;--accent:#93884b;--deep:#bcd0d1;--cream:#090a09}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#000}
+body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Arial,sans-serif}
+.dossier a{color:inherit}.dos-shell{width:min(1500px,92vw);margin:auto}.dos-nav{position:sticky;top:0;z-index:60;background:rgba(0,0,0,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.dos-nav .inner{height:72px;display:flex;align-items:center;gap:24px}.dos-mark{font:700 13px "IBM Plex Mono",monospace;text-decoration:none;letter-spacing:.06em}.dos-nav nav{display:flex;gap:16px;margin-left:auto;align-items:center}.dos-nav nav a{font:600 10px "IBM Plex Mono",monospace;text-transform:uppercase;text-decoration:none;color:#788b7d}.dos-nav nav a:hover{color:var(--accent)}
+.progress{position:fixed;left:0;top:0;height:2px;width:0;background:var(--accent);z-index:90}
+.hero{min-height:calc(100vh - 72px);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.75fr);gap:7vw;align-items:center;padding:8vh 0 9vh;border-bottom:1px solid var(--line)}
+.kicker,.meta-label{font:600 10px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.13em;color:var(--accent)}
+.hero h1{font:400 clamp(72px,10vw,170px)/.78 "Instrument Serif",Georgia,serif;letter-spacing:-.065em;margin:22px 0 26px}.hero h1 em{font-weight:400;color:var(--deep)}
+.hero .deck{font:400 clamp(19px,2vw,31px)/1.2 "Instrument Serif",Georgia,serif;max-width:32ch}.hero .lead{max-width:64ch;color:var(--soft);font-size:15px;line-height:1.75}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.dos-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border:1px solid #3e4c43;text-decoration:none;font:600 10px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.05em}.dos-btn.primary{background:#d2ddd3;border-color:#d2ddd3;color:#050805}
+.hero-plate{position:relative}.hero-plate img{display:block;width:100%;max-height:74vh;object-fit:cover;filter:saturate(.78) contrast(.97)}.plate-caption{display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--line);font:500 9px/1.5 "IBM Plex Mono",monospace;color:var(--soft);text-transform:uppercase}
+.hero-index{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:36px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.hero-index div{padding:13px 12px 13px 0;border-right:1px solid var(--line)}.hero-index div:last-child{border-right:0;padding-left:12px}.hero-index strong{display:block;font:500 12px "IBM Plex Mono",monospace}.hero-index span{display:block;margin-top:4px;font-size:10px;color:var(--soft)}
+.section{padding:110px 0;border-bottom:1px solid var(--line)}.section-head{display:grid;grid-template-columns:.55fr 1.45fr;gap:5vw;margin-bottom:48px}.section-head h2{font:400 clamp(46px,6vw,94px)/.9 "Instrument Serif",Georgia,serif;letter-spacing:-.045em;margin:0}.section-head p{max-width:58ch;color:var(--soft);line-height:1.7;margin:8px 0 0}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}.profile-grid article{background:var(--cream);padding:28px}.profile-grid h3{font:400 28px/1.05 "Instrument Serif",Georgia,serif;margin:10px 0 14px}.profile-grid p{color:var(--soft);line-height:1.65;margin:0}
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.cap{min-height:210px;padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#090909}.cap .id{font:600 10px "IBM Plex Mono",monospace;color:var(--accent)}.cap h3{font:400 29px/1 "Instrument Serif",Georgia,serif;margin:30px 0 12px}.cap p{margin:0;color:var(--soft);font-size:12px;line-height:1.7}.cap small{display:block;margin-top:16px;font:500 9px "IBM Plex Mono",monospace;text-transform:uppercase;color:#5d7063}
+.project-chapter{display:grid;grid-template-columns:minmax(360px,.9fr) minmax(0,1.1fr);gap:7vw;padding:120px 0;border-bottom:1px solid var(--line);align-items:start}.project-visual{position:sticky;top:100px}.project-visual img{width:100%;display:block;border:1px solid var(--line);background:#080808}.project-no{font:600 10px "IBM Plex Mono",monospace;color:var(--accent);text-transform:uppercase;letter-spacing:.12em}.project-copy h2{font:400 clamp(54px,6vw,100px)/.82 "Instrument Serif",Georgia,serif;letter-spacing:-.052em;margin:18px 0 24px}.project-copy .project-lead{font:400 24px/1.25 "Instrument Serif",Georgia,serif;max-width:31ch}.project-copy>p{max-width:58ch;color:var(--soft);line-height:1.75}.project-facts{margin:38px 0;border-top:1px solid var(--line)}.fact{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:14px 0;border-bottom:1px solid var(--line);font-size:12px}.fact span:first-child{font:600 9px "IBM Plex Mono",monospace;color:var(--accent);text-transform:uppercase}.fact span:last-child{color:#c2d0c4}.project-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+.method{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.method article{min-height:190px;padding:22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.method span{font:600 10px "IBM Plex Mono",monospace;color:var(--accent)}.method h3{font:400 24px "Instrument Serif",Georgia,serif;margin:34px 0 8px}.method p{font-size:11px;line-height:1.6;color:var(--soft)}
+.archive{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.archive a{min-height:215px;padding:25px;text-decoration:none;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#080808;transition:background .2s}.archive a:hover{background:#111}.archive small{font:600 9px "IBM Plex Mono",monospace;color:var(--accent);text-transform:uppercase}.archive h3{font:400 31px "Instrument Serif",Georgia,serif;margin:36px 0 9px}.archive p{font-size:12px;color:var(--soft);line-height:1.65;max-width:52ch}
+.cred{display:grid;grid-template-columns:160px 1fr;gap:30px;padding:19px 0;border-top:1px solid var(--line)}.cred:last-child{border-bottom:1px solid var(--line)}.cred>span{font:600 10px "IBM Plex Mono",monospace;color:var(--accent)}.cred strong{display:block;font-size:14px}.cred small{display:block;margin-top:5px;color:var(--soft)}
+.final{padding:130px 0}.final h2{font:400 clamp(56px,8vw,130px)/.8 "Instrument Serif",Georgia,serif;letter-spacing:-.055em;margin:15px 0 28px;max-width:9ch}.final p{max-width:55ch;color:var(--soft);line-height:1.75}.final-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:7vw}.final-note{border-top:1px solid var(--line);padding-top:16px;font:500 10px/1.7 "IBM Plex Mono",monospace;color:var(--soft)}
+.footer{padding:24px 0 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;font:500 9px "IBM Plex Mono",monospace;text-transform:uppercase;color:var(--soft)}
+.language-switch{display:flex;align-items:center;gap:7px;margin-left:auto;position:relative;z-index:65}.language-switch a{font:600 11px "IBM Plex Mono",monospace;padding:9px 10px;border:1px solid #52574b;text-decoration:none;color:var(--ink)}.language-switch a[aria-current="true"]{background:var(--ink);color:#080908}.language-switch a:focus-visible,.domain-card:focus-visible{outline:2px solid var(--deep);outline-offset:3px}
+.rb-nav .language-switch{margin-left:auto;margin-right:18px}.rb-nav .language-switch a{padding:7px 8px}body:has([data-reactbits-hero="true"]) main>nav .language-switch{display:none}
+.portfolio-paths{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid var(--line);background:var(--line);margin-top:26px}.portfolio-paths a{background:#0b0d0c;padding:24px;text-decoration:none;display:grid;gap:8px}.portfolio-paths a:hover,.domain-card:hover{background:#131816}.portfolio-paths small,.domain-card small{font:600 10px "IBM Plex Mono",monospace;color:var(--accent);text-transform:uppercase}.portfolio-paths strong{font:400 clamp(23px,2.6vw,42px) "Instrument Serif",Georgia,serif}.portfolio-paths span,.domain-card p{font-size:12px;line-height:1.6;color:var(--soft)}
+.domain-section{padding-top:95px;padding-bottom:80px}.domain-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid var(--line);background:var(--line)}.domain-card{background:#090a09;text-decoration:none;padding:27px;min-height:230px;display:flex;flex-direction:column;align-items:flex-start}.domain-card h3{font:400 clamp(27px,2.6vw,41px) "Instrument Serif",Georgia,serif;margin:22px 0 5px}.domain-card p{margin:0}.domain-card b{font:600 10px "IBM Plex Mono",monospace;margin-top:auto;padding-top:22px;color:var(--deep)}.domain-grid.design{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:700px){.portfolio-paths,.domain-grid,.domain-grid.design{grid-template-columns:1fr}.language-switch{justify-content:flex-start;margin-left:0}.domain-card{min-height:175px}}
+@media(max-width:560px){.rb-nav .language-switch{gap:3px;margin-right:8px}.rb-nav .language-switch a{font-size:9px;padding:6px}}
+@media print{.language-switch,.portfolio-paths{display:none!important}.domain-card{min-height:0;padding:12px;background:#fff;color:#111}.domain-card p{color:#333}.domain-section{padding:24px 0}}
+.reveal{opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease}.reveal.on{opacity:1;transform:none}
+@media(max-width:900px){.dos-nav nav a:nth-child(n+4){display:none}.hero{grid-template-columns:1fr;min-height:auto}.hero-plate{max-width:620px}.section-head{grid-template-columns:1fr}.cap-grid{grid-template-columns:1fr 1fr}.project-chapter{grid-template-columns:1fr;padding:85px 0}.project-visual{position:relative;top:auto;max-width:720px}.method{grid-template-columns:1fr 1fr}.archive{grid-template-columns:1fr}.final-grid{grid-template-columns:1fr}.hero-index{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.dos-shell{width:min(92vw,720px)}.dos-nav .inner{height:62px}.dos-nav nav a:not(:first-child){display:none}.hero{padding-top:48px}.hero h1{font-size:clamp(62px,22vw,96px)}.hero-index,.cap-grid,.method{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}.project-copy h2{font-size:58px}.fact{grid-template-columns:1fr;gap:5px}.section{padding:75px 0}.project-chapter{padding:75px 0}.footer{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
+@media print{.dos-nav,.progress,.hero-actions,.project-links{display:none!important}body.dossier{background:white;color:#111}.dos-shell{width:94%}.hero{min-height:auto;grid-template-columns:1fr 250px;padding:20px 0}.hero h1{font-size:70px}.section,.project-chapter,.final{padding:28px 0}.project-chapter{grid-template-columns:280px 1fr;break-inside:avoid}.project-visual{position:relative;top:auto}.cap-grid{grid-template-columns:repeat(3,1fr)}.method{grid-template-columns:repeat(5,1fr)}.archive{grid-template-columns:repeat(2,1fr)}}
+</style>
+<link rel="stylesheet" href="hero-react.css?v=8">
+<link rel="stylesheet" href="../assets/css/mobile-projects.css?v=20261013">
 </head>
-<body>
-  <a class="skip" href="#main" data-t="skip">Saltar al contenido</a>
-  <header class="head"><div class="shell head-inner">
-    <a class="identity" href="/" aria-label="Héctor Lobato"><b>HL</b><span>Héctor Lobato<small>Studio Ingenia</small></span></a>
-    <nav aria-label="Principal"><a href="#design" data-t="navDesign">Diseño e ingeniería</a><a href="#software" data-t="navSoftware">Software e IA</a><a href="#contact" data-t="contact">Contacto</a></nav>
-    <div class="lang" role="group" aria-label="Idioma / Language / Lingua"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="it" aria-pressed="false">IT</button></div>
-  </div></header>
-  <main id="main">
-    <section class="hero shell">
-      <div><p class="eyebrow" data-t="eyebrow">Portfolio técnico · 2026</p><h1 data-t="headline">Del espacio físico al sistema que lo hace funcionar.</h1><p class="lead" data-t="lead">Diseño, acústica, audiovisuales y automatización. Desarrollo de software e IA para conectar proyectos, operaciones y personas.</p><div class="actions"><a class="button primary" href="#design" data-t="explore">Explorar proyectos</a><a class="button" href="/cv/ats.html" data-t="cv">Ver CV técnico</a></div></div>
-      <figure><img src="/assets/projects/mar-salada/hero.webp" alt="Mar Salada / Club del Mar" loading="eager"><figcaption>MAR SALADA / CLUB DEL MAR <span data-t="applied">Ingeniería aplicada</span></figcaption></figure>
-    </section>
-    <section class="department light" id="design"><div class="shell">
-      <div class="section-title"><div><p class="eyebrow" data-t="designKicker">Espacios · sistemas · construcción</p><h2 data-t="navDesign">Diseño e ingeniería</h2></div><p data-t="designIntro">Acústica, audio profesional, KNX/DALI, CAD, fabricación y coordinación de instalaciones. ATLAS reúne los proyectos espaciales en una ciudad 3D navegable.</p></div>
-      <div class="atlas"><div><span class="eyebrow">ATLAS / 3D</span><h3 data-t="atlasTitle">Una ciudad para explorar cada proyecto.</h3><p data-t="atlasText">Entra en la ciudad, selecciona un edificio y examina el modelo, sus capas y referencias. La ciudad y su actividad son una presentación conceptual.</p><a class="button dark" href="/atlas/" data-t="openAtlas">Abrir ATLAS 3D</a></div><img src="/assets/projects/casa-alain/hero.webp" alt="Render del proyecto Casa Alain" loading="lazy"></div>
-      <div class="case-links"><a href="/projects/mar-salada.html"><b>Mar Salada / Club del Mar</b><span data-t="marLabel">AV · acústica · KNX/DALI</span><i>↗</i></a><a href="/projects/casa-alain.html"><b>Casa Alain</b><span data-t="alainLabel">Cine residencial · acústica</span><i>↗</i></a></div>
-    </div></section>
-    <section class="department dark-section" id="software"><div class="shell">
-      <div class="section-title"><div><p class="eyebrow" data-t="softwareKicker">Herramientas · operaciones · automatización</p><h2 data-t="softwareTitle">Ingeniería de software e IA</h2></div><p data-t="softwareIntro">Tres líneas de desarrollo con alcance y madurez distintos: un demostrador industrial, una plataforma de ingeniería y un sistema de producción visual.</p></div>
-      <div class="product-list">
-        <article><div class="product-meta"><strong>GAZA OPS</strong><small data-t="gazaState">Demostrador independiente</small></div><h3 data-t="gazaTitle">Operaciones industriales conectadas.</h3><p data-t="gazaText">Granja, laboratorio, planta, almacén y flota en una simulación. Los datos públicos y las hipótesis se distinguen de cualquier dato operativo real de la empresa.</p><div class="links"><a href="/apps/gaza/dossier-candidatura.html" data-t="gazaDossier">Dossier GAZA</a><a href="/apps/gaza/mission-control.html?demo=company&amp;view=site&amp;warehouse=1&amp;showcase=1" data-t="gazaDemo">Abrir simulación</a></div></article>
-        <article><div class="product-meta"><strong>RHB STUDIO</strong><small data-t="rhbState">Plataforma local y demo web</small></div><h3 data-t="rhbTitle">Del levantamiento a la documentación.</h3><p data-t="rhbText">Flujos de proyecto para CAD, materiales, presupuestos, fabricación y QA. La demo de navegador muestra una parte de la plataforma local.</p><div class="links"><a href="/projects/rhb-studio.html" data-t="viewProject">Ver proyecto</a><a href="/apps/rhb/" data-t="openDemo">Abrir demo</a></div></article>
-        <article><div class="product-meta"><strong>XXXIA STUDIO</strong><small data-t="xxxiaState">Sistema en desarrollo</small></div><h3 data-t="xxxiaTitle">Producción visual con trazabilidad.</h3><p data-t="xxxiaText">Organiza referencias, briefs, storyboards, generación, revisión y archivo; distingue fuentes verificadas de material conceptual o generado.</p><div class="links"><a href="/projects/xxxia-studio.html" data-t="viewProject">Ver proyecto</a><a href="/xxxia-studio/" data-t="openConsole">Abrir consola</a></div></article>
-      </div>
-    </div></section>
-    <section class="contact shell" id="contact"><div><p class="eyebrow" data-t="contact">Contacto</p><h2 data-t="contactTitle">Hablemos del siguiente proyecto.</h2><p data-t="contactText">Integración técnica, ingeniería de proyectos y software aplicado.</p></div><div class="actions"><a class="button primary" href="mailto:lobatohernandezhector@gmail.com" data-t="email">Escribir un correo</a><a class="button" href="https://github.com/HectorLobatoHernandez" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="button" href="/cv/ats.html" data-t="fullCv">CV completo</a></div></section>
-  </main>
-  <footer class="shell"><span>© 2026 Héctor Lobato · Studio Ingenia</span><span data-t="footer">Los proyectos reales y los demostradores se identifican en cada ficha.</span></footer>
-  <script src="/assets/js/portfolio-home.js" defer></script>
-</body>
-</html>
+<body class="dossier rb-system-theme">
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div id="hero-react-root">
+  <section class="rb-fallback">
+    <div class="rb-fallback-inner">
+      <div class="rb-kicker">Systems Integration / Automation / IT/OT / AV / AI</div>
+      <h1>Héctor<br>Lobato.</h1>
+      <p>Ingeniería entre el espacio físico, los sistemas de control y el software.</p>
+      <p><a class="rb-btn primary" href="#perfil">Entrar al dossier →</a></p>
+    </div>
+  </section>
+</div>
+<main>
+<nav class="dos-shell" aria-label="Atlas, CV e idiomas" style="padding-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center"><a class="dos-btn primary" href="/atlas/">Architectural Atlas · Explore the city ↗</a><a class="dos-btn" href="/cv/ats.html">CV ATS / PDF ↗</a><div class="language-switch" role="group" aria-label="Idioma del dossier"><a href="/cv/dossier.html?lang=es" data-lang="es" lang="es">ES</a><a href="/cv/dossier.html?lang=en" data-lang="en" lang="en">EN</a><a href="/cv/dossier.html?lang=it" data-lang="it" lang="it">IT</a></div></nav>
+<div class="portfolio-paths dos-shell" aria-label="Áreas del dossier"><a href="#diseno-ingenieria"><small>01 / Espacios · sistemas</small><strong>Diseño e ingeniería</strong><span>ATLAS, proyectos espaciales e integración técnica ↓</span></a><a href="#software-ia"><small>02 / Producto · sistemas</small><strong>Ingeniería de software e IA</strong><span>GAZA OPS, RHB STUDIO y XXXIA STUDIO ↓</span></a></div>
+
+<section class="section dos-shell" id="perfil">
+<div class="section-head reveal"><div><span class="kicker">01 / Perfil</span></div><div><h2>Integrar antes que aislar.</h2><p>La especialidad no es una única tecnología. Es entender las interfaces entre disciplinas, convertir restricciones en arquitectura y llevar esa arquitectura hasta una entrega operable y documentada.</p></div></div>
+<div class="profile-grid reveal">
+<article><span class="meta-label">Campo</span><h3>Obra, montaje y commissioning</h3><p>Levantamiento, coordinación, cableado, integración, pruebas, diagnóstico, entrega y documentación de incidencias.</p></article>
+<article><span class="meta-label">Sistemas</span><h3>Control, AV e IT/OT</h3><p>KNX, DALI, DSP, matrices, redes, PoE, integración de interfaces y diseño orientado a mantenibilidad.</p></article>
+<article><span class="meta-label">Ingeniería</span><h3>Planos, BOM y trazabilidad</h3><p>AutoCAD, definición técnica, presupuestos, proveedores, QA, control de cambios y documentación de proyecto.</p></article>
+<article><span class="meta-label">Software</span><h3>Herramientas y automatización</h3><p>Python, APIs, Git/GitHub, web, GIS, agentes IA y flujos para convertir información de proyecto en sistemas utilizables.</p></article>
+</div>
+</section>
+
+<section class="section dos-shell" id="skills">
+<div class="section-head reveal"><div><span class="kicker">02 / Skills</span></div><div><h2>Un stack físico y digital.</h2><p>Las competencias se agrupan por función del sistema. El objetivo no es acumular herramientas, sino saber dónde encaja cada una, qué depende de qué y cómo se valida.</p></div></div>
+<div class="cap-grid reveal">
+<article class="cap"><span class="id">CTRL / 01</span><h3>Automation & Control</h3><p>KNX · ETS6 · DALI · Gira · Crestron · escenas · estados · interoperabilidad</p><small>Diseño / programación / commissioning</small></article>
+<article class="cap"><span class="id">AV / 02</span><h3>Audio & AV Systems</h3><p>DSP · matrices · amplificación · zonas · routing · limitación · Dante concepts</p><small>Signal flow / tuning / diagnostics</small></article>
+<article class="cap"><span class="id">NET / 03</span><h3>IT / OT & Networks</h3><p>TCP/IP · VLAN · UniFi · VPN · PoE · cableado estructurado · segmentación</p><small>Availability / observability / troubleshooting</small></article>
+<article class="cap"><span class="id">ENG / 04</span><h3>Engineering Delivery</h3><p>AutoCAD · BOM · budgeting · proveedores · documentación · QA · change control</p><small>From survey to handover</small></article>
+<article class="cap"><span class="id">AI / 05</span><h3>Software & Applied AI</h3><p>Python · JavaScript · APIs · Git/GitHub · agentes · automatización · GIS · visualización</p><small>Tools / workflows / assistants</small></article>
+<article class="cap"><span class="id">OPS / 06</span><h3>Technical Operations</h3><p>Troubleshooting · incident handling · support · process improvement · documentation</p><small>Operate / explain / improve</small></article>
+</div>
+<div id="cv-logo-loop-root" class="reveal" aria-label="Tecnologías y plataformas"></div>
+</section>
+
+<div id="proyectos"></div>
+<section class="section dos-shell domain-section" id="diseno-ingenieria">
+<div class="section-head reveal"><div><span class="kicker">01 / Área de trabajo</span></div><div><h2>Diseño e ingeniería.</h2><p>Espacios, acústica, integración y documentación técnica. ATLAS ofrece un recorrido conceptual por los proyectos; las fichas conservan sus fuentes y límites de evidencia.</p></div></div>
+<div class="domain-grid design reveal">
+<a class="domain-card" href="/atlas/"><small>ATLAS / Ciudad interactiva</small><h3>Architectural Atlas</h3><p>Recorrido espacial y acceso ordenado a los proyectos de arquitectura e ingeniería.</p><b>Explorar ATLAS ↗</b></a>
+<a class="domain-card" href="#mar-salada"><small>Proyecto ejecutado / caso documentado</small><h3>MAR SALADA</h3><p>Audio, acústica, KNX/DALI, CAD e integración de sistemas en Club del Mar Palma.</p><b>Ver capítulo ↓</b></a>
+</div></section>
+<section class="project-chapter dos-shell" id="mar-salada">
+<figure class="project-visual reveal"><img src="../assets/projects/mar-salada/hero.webp" alt="Arquitectura técnica de MAR SALADA — Club del Mar Palma: audio, acústica, KNX/DALI y control" loading="lazy"><figcaption class="plate-caption"><span>USER-SUPPLIED VIDEO FRAME · SOURCE ARCHIVE</span><span>AV · ACOUSTICS · KNX/DALI · CAD</span></figcaption></figure>
+<div class="project-copy reveal"><span class="project-no">03 / Selected work · Hospitality systems</span><h2>MAR SALADA<br>Club del Mar Palma.</h2><p class="project-lead">Audio profesional, acústica, KNX/DALI, mecánica, fabricación y commissioning coordinados como un único sistema.</p><p>El case study se ha reconstruido desde el archivo real del proyecto: informes acústicos, ETS/Gira, CAD, detalles de suspensión y desacoplamiento, subwoofers, cabina DJ, levantamientos, secuencias 3D y vídeo master. Se separan explícitamente estimación, diseño, instalación y commissioning.</p>
+<div class="project-facts"><div class="fact"><span>Rol</span><span>Diseño técnico · integración · coordinación · commissioning</span></div><div class="fact"><span>Dominios</span><span>AV · DSP · acústica · KNX/ETS6 · DALI · Gira X1 · CAD · fabricación</span></div><div class="fact"><span>Evidencia</span><span>Informes · DWG · proyecto KNX · vídeo 1080p · secuencias 3D · documentación de instalación</span></div><div class="fact"><span>Frontera</span><span>MEASURED / PREDICTED / DESIGNED / INSTALLED / COMMISSIONED se etiquetan por separado. Credenciales y archivos sensibles quedan fuera.</span></div></div>
+<div class="project-links"><a class="dos-btn primary" href="../projects/mar-salada.html">Abrir case study ↗</a><a class="dos-btn" href="../projects/index.html">Project Atlas ↗</a><a class="dos-btn" href="../projects/experience.html">Real-media 3D ↗</a><a class="dos-btn" href="../projects/atlas-3d.html">Source 3D Atlas ↗</a><a class="dos-btn" href="../projects/promo.html">Promo técnica ↗</a></div></div>
+</section>
+
+<section class="section dos-shell domain-section" id="software-ia">
+<div class="section-head reveal"><div><span class="kicker">02 / Área de trabajo</span></div><div><h2>Ingeniería de software e IA.</h2><p>Productos y herramientas con arquitectura, código, QA y fronteras de evidencia visibles. Las demos públicas distinguen los datos reales, inferidos y simulados.</p></div></div>
+<div class="domain-grid reveal">
+<a class="domain-card" href="#gaza"><small>Demostrador / operaciones</small><h3>GAZA OPS</h3><p>Planta, almacén, granja, laboratorio y logística en una superficie operativa simulada.</p><b>Ver capítulo ↓</b></a>
+<a class="domain-card" href="#rhb"><small>Desarrollo activo / ingeniería</small><h3>RHB STUDIO</h3><p>Proyectos, CAD, BOM, documentación y agentes; demo web y runtime local separados.</p><b>Ver capítulo ↓</b></a>
+<a class="domain-card" href="/projects/xxxia-studio.html"><small>Estudio creativo / IA</small><h3>XXXIA STUDIO</h3><p>Identidad, producción visual y trazabilidad de los procesos generativos.</p><b>Explorar proyecto ↗</b></a>
+</div></section>
+<section class="project-chapter dos-shell" id="gaza">
+<figure class="project-visual reveal"><img src="../assets/visuals/gaza-operations-system.svg" alt="Diagrama funcional del demostrador GAZA Operations Intelligence"><figcaption class="plate-caption"><span>Product demonstrator</span><span>PUBLIC / INFERRED / SIMULATED</span></figcaption></figure>
+<div class="project-copy reveal"><span class="project-no">04 / Selected work · Industrial operations</span><h2>GAZA<br>Operations.</h2><p class="project-lead">Un demostrador de producto para convertir expediciones, almacén, flota, GIS y entorno en un plano operativo común.</p><p>El proyecto trabaja la arquitectura funcional, UX operativa y modelo de información. La demo pública separa explícitamente datos públicos, reconstrucciones inferidas y simulación; no se presenta como una instalación validada en planta.</p>
+<div class="project-facts"><div class="fact"><span>Rol</span><span>Arquitectura · UX funcional · modelo operativo</span></div><div class="fact"><span>Superficies</span><span>Mission Control · Plant 3D · GIS · Territory · Weather · Systems</span></div><div class="fact"><span>Uso</span><span>Observabilidad, priorización de excepciones, rutas, contexto ambiental y apoyo a decisión.</span></div><div class="fact"><span>Frontera</span><span>Demo read-only; integración OT/ERP real requiere autorización, discovery y commissioning.</span></div></div>
+<div class="project-links"><a class="dos-btn primary" href="../apps/gaza/mission-control.html?guide=1">Abrir Mission Control ↗</a><a class="dos-btn" href="../projects/gaza-logistics-ia.html">Case study</a></div></div>
+</section>
+
+<section class="project-chapter dos-shell" id="rhb">
+<figure class="project-visual reveal"><img src="../assets/visuals/rhb-studio-system.svg" alt="Diagrama funcional de RHB STUDIO"><figcaption class="plate-caption"><span>Local-first engineering platform</span><span>CAD · Agents · Project Ops</span></figcaption></figure>
+<div class="project-copy reveal"><span class="project-no">05 / Selected work · Engineering platform</span><h2>RHB<br>STUDIO.</h2><p class="project-lead">Una plataforma interna para coordinar proyectos, CAD, fabricación, documentación y agentes IA.</p><p>El objetivo es convertir el ciclo técnico completo en un sistema trazable: solicitud, levantamiento, CAD, diseño, BOM, presupuesto, aprobación, fabricación, montaje, QA y entrega. El runtime completo es local; la web pública es un showcase.</p>
+<div class="project-facts"><div class="fact"><span>Rol</span><span>Arquitectura funcional · producto interno · automatización</span></div><div class="fact"><span>Estado</span><span>En desarrollo activo</span></div><div class="fact"><span>Core</span><span>Project state · versiones · documentación · decisiones · entregables</span></div><div class="fact"><span>Runtime</span><span>OmniRoute · OpenClaw · NEXO · agentes y herramientas locales</span></div></div>
+<div class="project-links"><a class="dos-btn primary" href="../apps/rhb/">Abrir demo funcional ↗</a><a class="dos-btn" href="../projects/rhb-studio.html">Arquitectura</a></div></div>
+</section>
+
+<section class="section dos-shell" id="evidence">
+<div class="section-head reveal"><div><span class="kicker">06 / Programming · AI · Systems Engineering</span></div><div><h2>Prueba de trabajo, no una lista de buzzwords.</h2><p>La parte digital se presenta mediante arquitectura, contratos, código, QA y demos navegables. Se distingue lo público de lo local, lo ejecutado de lo conceptual y los datos reales de los simulados.</p></div></div>
+<div class="profile-grid reveal">
+<article><span class="meta-label">Software engineering</span><h3>Web, APIs y visualización</h3><p>JavaScript, Python, HTML/CSS, APIs, JSON contracts, Three.js, GIS y servicios Node para construir superficies técnicas y gateways read-only.</p></article>
+<article><span class="meta-label">AI orchestration</span><h3>Agentes con fronteras claras</h3><p>OmniRoute, OpenClaw, agentes especializados, skills vendorizadas, routing por disciplina, aprobación humana y separación explícita entre runtime local y showcase público.</p></article>
+<article><span class="meta-label">Delivery & QA</span><h3>GitHub como sistema de entrega</h3><p>Branches, pull requests, GitHub Actions, QA visual/funcional en Chromium, contratos de estado, artefactos de evidencia y promoción a main sólo después de checks verdes.</p></article>
+<article><span class="meta-label">Systems engineering</span><h3>Interfaces, límites y fallos</h3><p>Diseño IT/OT read-only, credenciales fuera del navegador, observabilidad, provenance PUBLIC / INFERRED / SIMULATED, control de cambios y lógica degradable cuando una fuente externa falla.</p></article>
+</div>
+<div class="archive reveal" style="margin-top:28px">
+<a href="../apps/gaza/mission-control.html?guide=1"><small>LIVE DEMO / PRODUCT</small><h3>GAZA Mission Control</h3><p>Superficie navegable que conecta operaciones, Plant 3D, GIS, Territory, clima y sistemas con procedencia visible.</p></a>
+<a href="../apps/gaza/systems.html"><small>ARCHITECTURE / INTEGRATION</small><h3>GAZA Systems</h3><p>Gateway, discovery de interfaces, contratos canónicos, límites OT y estrategia de integración read-only.</p></a>
+<a href="../apps/rhb/"><small>FUNCTIONAL DEMO / LOCAL-FIRST</small><h3>RHB STUDIO</h3><p>Demo navegable de Project Core, Survey/CAD, BOM, routing, documentación y QA; runtime privado separado.</p></a>
+<a href="https://github.com/HectorLobatoHernandez/HectorLobatoHernandez.github.io" target="_blank" rel="noopener"><small>VERSION CONTROL / QA</small><h3>Repositorio GitHub</h3><p>Código, skills, workflows, documentación, tests y evolución trazable del portfolio y los demostradores.</p></a>
+</div>
+<div class="project-links reveal"><a class="dos-btn primary" href="../skills/manifest.json">Skill manifest ↗</a><a class="dos-btn" href="../start/mapa.html">Mapa técnico completo ↗</a><a class="dos-btn" href="present.html">Ruta de presentación ↗</a></div>
+</section>
+
+<section class="section dos-shell">
+<div class="section-head reveal"><div><span class="kicker">07 / Método</span></div><div><h2>Del problema al sistema operativo.</h2><p>Un proyecto técnico cambia de forma durante su vida. Mantener continuidad entre fases evita que el diseño, la obra, la programación y la entrega se conviertan en mundos separados.</p></div></div>
+<div class="method reveal">
+<article><span>01</span><h3>Survey</h3><p>Necesidades, estado actual, riesgos, restricciones y evidencias.</p></article>
+<article><span>02</span><h3>Architecture</h3><p>Interfaces, protocolos, topología, capacidad y decisiones.</p></article>
+<article><span>03</span><h3>Integration</h3><p>Programación, routing, montaje, coordinación y control.</p></article>
+<article><span>04</span><h3>Commissioning</h3><p>Pruebas, ajuste, diagnóstico, aceptación y correcciones.</p></article>
+<article><span>05</span><h3>Operations</h3><p>Documentación, soporte, observabilidad y mejora continua.</p></article>
+</div>
+</section>
+
+<section class="section dos-shell" id="archivo">
+<div class="section-head reveal"><div><span class="kicker">08 / Archivo de proyectos</span></div><div><h2>Más contexto, no más ruido.</h2><p>El Project Atlas organiza cada proyecto por separado, con evidencia, límites y material técnico en su contexto original.</p></div></div>
+<div class="archive reveal">
+<a href="/atlas/"><small>ARCHITECTURAL ATLAS · CITY / PROJECTS</small><h3>Architectural Atlas</h3><p>Ciudad conceptual navegable y acceso a los proyectos documentados de arquitectura e ingeniería.</p></a>
+<a href="../projects/casa-alain.html"><small>Residential cinema · acoustics · AV</small><h3>Casa Alain</h3><p>Cine club residencial: acústica, opciones de audio, SketchUp, renders, acabados y vídeo.</p></a>
+<a href="../projects/can-furnet-club.html"><small>Sound isolation · box-in-box</small><h3>Can Furnet Club</h3><p>Desacoplamiento estructural, HVAC silenciado, puertas acústicas, tratamiento, cableado y documentación.</p></a>
+<a href="../projects/playa-soleil-bora-bora.html"><small>Professional AV · infrastructure</small><h3>Playa Soleil / Bora Bora</h3><p>Cable book, posiciones de altavoces, CAT6a, potencia, CAD, secciones y modelos acústico-sonoros.</p></a>
+<a href="../projects/private-production-studio-canada.html"><small>Private studio · Canada</small><h3>Production Studio / Canada</h3><p>Desarrollo acústico por fases, CAD, SketchUp, refuerzo de difusión y escucha crítica.</p></a>
+<a href="../projects/private-production-studio-sta-eulalia.html"><small>Private producer studio · Ibiza</small><h3>Producer Studio / Sta. Eulalia</h3><p>Primeras reflexiones, techo absorbente, mobiliario acústico, CAD, SketchUp y V-Ray.</p></a>
+<a href="../projects/acoustic-studio-italy.html"><small>Mix room · acoustic prediction</small><h3>Acoustic Production Room / Italy</h3><p>Modos, graves, primeras reflexiones, difusión y predicciones RT60 con frontera de evidencia explícita.</p></a>
+<a href="../projects/private-producer-acoustic-concept.html"><small>Confidential · acoustic pre-design</small><h3>Private Producer Acoustic Concept</h3><p>Preproyecto bilingüe de aislamiento, acústica, maderas, 3D, hardware, iluminación e implantación por fases.</p></a>
+<a href="../projects/casa-noah.html"><small>High-end residential · documentation expanding</small><h3>Casa NOAH</h3><p>Integración de sistemas y documentación de proyecto.</p></a>
+<a href="../projects/las-dalias-akasha.html"><small>Entertainment / systems · documentation recovery</small><h3>Las Dalias / Akasha</h3><p>Dirección técnica e integración de sistemas con recuperación progresiva del archivo original.</p></a>
+<a href="../projects/private-tech-residence.html"><small>Confidential / high-end residential</small><h3>Private technology executive residence</h3><p>Identidad omitida y documentación pública limitada a material no sensible.</p></a>
+<a href="../projects/xxxia-studio.html"><small>Creative / AI studio</small><h3>XXXIA Studio</h3><p>Dirección creativa, identidad, sistemas de presentación y experimentación generativa controlada.</p></a>
+</div>
+</section>
+
+<section class="section dos-shell">
+<div class="section-head reveal"><div><span class="kicker">09 / Credenciales</span></div><div><h2>Base técnica.</h2><p>Formación y certificaciones ya publicadas en el portfolio. El dossier no añade credenciales no contrastadas.</p></div></div>
+<div class="reveal">
+<div class="cred"><span>2013–2016</span><div><strong>Bachelor's Degree — Audio Engineering & Audio Production</strong><small>Middlesex University, London</small></div></div>
+<div class="cred"><span>2018</span><div><strong>KNX Advanced</strong><small>Grupo Conitec Ingeniería y Domótica</small></div></div>
+<div class="cred"><span>2019</span><div><strong>Crestron CTI-P101 · Foundations of Crestron Programming</strong><small>Crestron Technical Institute</small></div></div>
+<div class="cred"><span>2019</span><div><strong>Crestron NVX · Design and Application</strong><small>Crestron Technical Institute</small></div></div>
+<div class="cred"><span>2021</span><div><strong>AXIS · Network Audio / System Design / Camera Station / Analytics</strong><small>Axis Communications</small></div></div>
+</div>
+</section>
+
+<section class="final dos-shell">
+<div class="final-grid reveal"><div><span class="kicker">10 / Contacto</span><h2>Sistemas complejos. Explicados y operables.</h2><p>Disponible para puestos técnicos, integración de sistemas, automatización, ingeniería de proyectos, operaciones técnicas y trabajo donde hardware, software y personas tengan que funcionar como un único sistema.</p><div class="hero-actions"><a class="dos-btn primary" href="mailto:lobatohernandezhector@gmail.com">Email ↗</a><a class="dos-btn" href="https://github.com/HectorLobatoHernandez" target="_blank" rel="noopener">GitHub ↗</a></div></div><div class="final-note"><strong>DOSSIER WEB / 2026</strong><br><br>Este documento es una presentación editorial. El CV ATS/PDF se mantiene como documento separado y enlazado. Las superficies GAZA son demostradores públicos y RHB STUDIO mantiene su runtime completo en entorno local.</div></div>
+</section>
+</main>
+<footer class="footer dos-shell"><span>© 2026 Héctor Lobato · Systems Integration & Automation</span><span>Atelier × Swiss Grid × Technical Monograph × Scroll narrative</span></footer>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="dossier-i18n.js?v=2"></script>
+<script src="hero-react.js?v=10"></script>
+<script>
+const p=document.getElementById('progress');
+const update=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;p.style.width=(m>0?Math.min(100,scrollY/m*100):0)+'%'};
+addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.08,rootMargin:'0px 0px -4%'});document.querySelectorAll('.reveal').forEach(el=>io.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('on'));
+window.__CV_DOSSIER__={schemaVersion:7,design:'IVORY_ATLAS_REACTBITS_TECHTEXT',projects:15,featured:3,visualEvidence:3,evidenceCards:4,presentationRoute:true,ats:false,print:true,reactBits:['TechText','Particles','DitherVeil','LogoLoop']};
+</script>
+</body></html>
