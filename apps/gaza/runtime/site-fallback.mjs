@@ -1,5 +1,5 @@
 import {environmentOf} from './living/model.mjs';
-import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-warehouse-v25a';
+import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-warehouse-v25b';
 // GPU-free, deterministic isometric operations sketch for browsers without WebGL.
 // Footprint, vehicles and access lanes are SYNTHETIC; no internal floor-plan claim.
 export function mountSiteFallback(){
