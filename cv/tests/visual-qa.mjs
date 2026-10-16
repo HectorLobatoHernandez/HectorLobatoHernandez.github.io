@@ -8,7 +8,7 @@ const browser=await chromium.launch({headless:true});
 
 const cases=[
   {id:'chooser',path:'/cv/',title:'Currículum',theme:'gallery',links:4},
-  {id:'dossier',path:'/cv/dossier.html',title:'Diseño',theme:null,project:'GAZA OPS'},
+  {id:'dossier',path:'/cv/dossier.html',title:'Dossier',theme:'dossier',project:'Club Mar Salada'},
   {id:'present',path:'/cv/present.html',title:'Presentation Route',theme:null,project:'Club Mar Salada'},
   {id:'ats',path:'/cv/ats.html',title:'CV Profesional',theme:null,project:'Sound Club, Palma'},
   {id:'atelier',path:'/cv/atelier.html',title:'Atelier',theme:'atelier',project:'GAZA Operations Intelligence'},
@@ -23,6 +23,10 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     const r=await page.goto(base+test.path,{waitUntil:'domcontentloaded',timeout:30000});
     if(!r?.ok())failures.push(test.id+'/'+viewport.id+' HTTP '+r?.status());
     await page.waitForTimeout(test.id==='world'?1900:450);
+    if(test.id==='dossier'){
+      try{await page.waitForFunction(()=>window.__CV_HERO__?.mounted===true,{timeout:8000})}catch{failures.push('dossier React hero did not mount')}
+      await page.waitForTimeout(1050);
+    }
     if(test.id==='ats'){
       try{await page.waitForFunction(()=>window.__CV_ATS_REACT__?.mounted===true,{timeout:8000})}catch{failures.push('ATS React layer did not mount')}
       await page.waitForTimeout(500);
@@ -111,18 +115,26 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.links&&state.galleryCards!==test.links)failures.push('chooser must offer four distinct variants');
     if(test.id==='atelier'&&state.imageLoaded!==true)failures.push('Atelier portrait not loaded');
     if(test.id==='dossier'){
-      const structure=await page.evaluate(()=>({
-        departments:[...document.querySelectorAll('.department')].map(x=>x.id),
-        products:[...document.querySelectorAll('.product-meta strong')].map(x=>x.textContent.trim()),
-        atlas:document.querySelector('.atlas a')?.getAttribute('href'),
-        langButtons:document.querySelectorAll('[data-lang]').length
-      }));
-      if(structure.departments.join(',')!=='design,software'||structure.products.join(',')!=='GAZA OPS,RHB STUDIO,XXXIA STUDIO'||structure.atlas!=='/atlas/'||structure.langButtons!==3)failures.push('Dossier sections and routes mismatch: '+JSON.stringify(structure));
-      for(const [lang,needle,route] of [['en','Software engineering & AI','dossier-candidatura-en.html'],['it','Ingegneria del software e IA','dossier-candidatura-it.html'],['es','Ingeniería de software e IA','dossier-candidatura.html']]){
-        await page.locator('[data-lang="'+lang+'"]').click();
-        const translated=await page.evaluate(()=>({lang:document.documentElement.lang,title:document.querySelector('#software h2')?.textContent,href:document.querySelector('[data-t="gazaDossier"]')?.getAttribute('href')}));
-        if(translated.lang!==lang||translated.title!==needle||!translated.href?.endsWith(route))failures.push('Dossier language switch failed: '+JSON.stringify(translated));
-      }
+      if(state.dossier?.schemaVersion!==7||state.dossier.projects!==15||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
+      if(state.dossierProjects!==3||state.dossierArchive!==16||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
+      const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
+      if(state.hero?.schemaVersion!==4||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||state.hero?.techMode!=='REACT_BITS_TECH_TEXT_VISIBLE_DEMO'||state.hero?.palette!=='IVORY_ATLAS'||state.hero?.displayFont!=='INSTRUMENT_SERIF'||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
+      if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||state.techShells<state.techHeadings+1||state.techSelections<1||state.techActiveChars<1||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier amplified React Bits / TechText UI missing');
+      if(!state.portraitToggle||state.portraitView!=='interactive')failures.push('Dossier portrait viewer toggle missing or wrong default state');
+      if(state.heroActionLabels.includes('Portfolio técnico')||state.heroActionLabels.includes('Contacto')||state.heroActionLabels.length!==3)failures.push('Dossier hero actions not simplified');
+      if(state.bodyBg!=='rgb(0, 0, 0)')failures.push('Dossier canonical background must be true black: '+state.bodyBg);
+      if(state.heroNameFirstColor!=='rgb(226, 223, 207)'||state.heroNameLastColor!=='rgb(188, 208, 209)')failures.push('Dossier Ivory Atlas TechText hierarchy mismatch: '+state.heroNameFirstColor+' / '+state.heroNameLastColor);
+      if(!state.heroNameFont?.includes('Instrument Serif')||!state.firstDocTitleFont?.includes('Instrument Serif'))failures.push('Editorial serif typography missing: '+state.heroNameFont+' / '+state.firstDocTitleFont);
+      if(!state.techSelectionLabelVisible||!state.activeTechBackground||state.activeTechBackground==='rgba(0, 0, 0, 0)'||state.activeTechOutlineOpacity<.6||state.activeProximity<=0)failures.push('TechText is not visibly active at idle: '+JSON.stringify({label:state.techSelectionLabelVisible,bg:state.activeTechBackground,outline:state.activeTechOutlineOpacity,proximity:state.activeProximity}));
+      if(state.particlesOpacity===null||state.particlesOpacity<.9)failures.push('Dossier particles are not prominent enough for the React demo');
+      if(!state.marSaladaCanonical||state.legacyProjectButtons)failures.push('Dossier Mar Salada canonical identity/public buttons mismatch');
+      await page.click('.rb-menu-trigger');await page.waitForTimeout(350);
+      const menu=await page.evaluate(()=>({open:document.querySelector('.rb-stagger')?.classList.contains('is-open'),links:document.querySelectorAll('.rb-stagger-link').length}));
+      if(!menu.open||menu.links!==7)failures.push('Staggered menu did not open correctly');
+      await page.click('.rb-menu-close');await page.waitForTimeout(120);
+      await page.click('.rb-portrait-toggle');await page.waitForTimeout(700);
+      const portrait=await page.evaluate(()=>({view:document.querySelector('[data-dither-veil="true"]')?.getAttribute('data-portrait-view'),pressed:document.querySelector('.rb-portrait-toggle')?.getAttribute('aria-pressed'),canvasOpacity:getComputedStyle(document.querySelector('.rb-dither-canvas')).opacity}));
+      if(portrait.view!=='plain'||portrait.pressed!=='true'||Number(portrait.canvasOpacity)>.15)failures.push('Dossier portrait normal-photo toggle failed');
     }
     if(test.id==='present'){
       if(state.present?.schemaVersion!==3||state.present.steps!==5||state.present.targetMinutes!==5||state.present.dossier!==true||state.present.ats!==true||state.present.proofLinks!==true||state.present.palette!=='OBSIDIAN_EDITORIAL'||state.present.background!=='React Bits / Threads'||state.present.duplicateDossierNav!==false||state.presentSteps!==5)failures.push('Presentation route contract mismatch');
@@ -161,12 +173,40 @@ await rootPage.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
 await rootPage.waitForTimeout(650);
 const rootState=await rootPage.evaluate(()=>({
   path:location.pathname,
-  departments:[...document.querySelectorAll('.department')].map(x=>x.id),
+  hero:!!document.querySelector('[data-reactbits-hero="true"]'),
   title:document.title,
   oldPortfolioNav:[...document.querySelectorAll('a')].some(a=>/Portfolio actual|Portfolio clásico|Portfolio ↗/.test(a.textContent||''))
 }));
-if(rootState.path!=='/'||rootState.departments.join(',')!=='design,software'||rootState.oldPortfolioNav)failures.push('Public root must serve the simplified two-department dossier: '+JSON.stringify(rootState));
+if(rootState.path!=='/'||!rootState.hero||!rootState.title.includes('Dossier')||rootState.oldPortfolioNav)failures.push('Public root must serve canonical dossier directly without old portfolio links: '+JSON.stringify(rootState));
 await rootPage.close();
+
+for(const locale of [
+  {code:'es',heading:'Diseño e ingeniería.',software:'Ingeniería de software e IA.',menu:'Menú'},
+  {code:'en',heading:'Design & engineering.',software:'Software engineering & AI.',menu:'Menu'},
+  {code:'it',heading:'Design e ingegneria.',software:'Ingegneria del software e IA.',menu:'Menu'}
+]){
+  for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:390,height:844}]){
+    const page=await browser.newPage({viewport});
+    const errors=[];
+    page.on('pageerror',e=>errors.push(e.message));
+    page.on('console',m=>{if(m.type()==='error'&&m.text().includes('Dossier translation count'))errors.push(m.text())});
+    await page.goto(base+'/cv/dossier.html?lang='+locale.code,{waitUntil:'domcontentloaded'});
+    try{await page.waitForFunction(()=>window.__CV_HERO__?.mounted===true,{timeout:8000})}catch{errors.push('Hero did not mount')}
+    const state=await page.evaluate(()=>({
+      lang:document.documentElement.lang,
+      heading:document.querySelector('#diseno-ingenieria h2')?.getAttribute('aria-label'),
+      software:document.querySelector('#software-ia h2')?.getAttribute('aria-label'),
+      menu:document.querySelector('.rb-menu-trigger')?.textContent.trim(),
+      cards:[...document.querySelectorAll('#software-ia .domain-card')].map(a=>a.querySelector('h3')?.textContent.trim()),
+      atlas:document.querySelector('#diseno-ingenieria .domain-card')?.getAttribute('href'),
+      selected:document.querySelector('.rb-nav .language-switch [aria-current="true"]')?.textContent.trim(),
+      overflow:document.documentElement.scrollWidth-innerWidth
+    }));
+    if(state.lang!==locale.code||state.heading!==locale.heading||state.software!==locale.software||state.menu!==locale.menu||state.cards.join('|')!=='GAZA OPS|RHB STUDIO|XXXIA STUDIO'||state.atlas!=='/atlas/'||state.selected!==locale.code.toUpperCase()||state.overflow>3||errors.length)failures.push('Dossier locale '+locale.code+'/'+viewport.id+': '+JSON.stringify({state,errors}));
+    await page.screenshot({path:'.qa/cv-editorial/dossier-'+locale.code+'-'+viewport.id+'.png',fullPage:false});
+    await page.close();
+  }
+}
 
 const other=await browser.newPage();
 await other.goto(base+'/start/cv.html',{waitUntil:'domcontentloaded'});
@@ -187,4 +227,4 @@ await reduce.close();
 await browser.close();
 await fs.writeFile('.qa/cv-editorial/result.json',JSON.stringify({results,start,reduced,failures},null,2));
 if(failures.length){console.error(JSON.stringify({failures,results},null,2));process.exitCode=2}
-else console.log('CV EDITORIAL QA PASS / multilingual two-department dossier + presentation route + ATS + 4 variants / desktop + mobile / reduced motion');
+else console.log('CV EDITORIAL QA PASS / full-page React Bits system + single Dither Veil portrait + presentation route + dossier + ATS + 4 variants / desktop + mobile / reduced motion');

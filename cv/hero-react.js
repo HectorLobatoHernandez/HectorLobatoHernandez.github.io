@@ -30,6 +30,7 @@
   const h=R.createElement;
   const {useEffect,useRef,useState}=R;
   const PHOTO='../assets/hector-profile.png';
+  const t=key=>window.__CV_I18N__?.t(key)||key;
 
   function useReducedMotion(){
     const [reduced,setReduced]=useState(false);
@@ -327,7 +328,7 @@
   function LogoLoop(){
     const items=[...LOGO_ITEMS,...LOGO_ITEMS];
     return h('div',{className:'rb-logo-loop-wrap','data-reactbits-logo-loop':'true'},
-      h('div',{className:'rb-logo-loop-head'},h('span',null,'Technology / systems stack'),h('small',null,'React Bits · Logo Loop pattern')),
+      h('div',{className:'rb-logo-loop-head'},h('span',null,window.__CV_I18N__?.lang==='it'?'Tecnologie / sistemi':'Technology / systems stack'),h('small',null,'React Bits · Logo Loop pattern')),
       h('div',{className:'rb-logo-loop-mask'},
         h('div',{className:'rb-logo-loop-track'},...items.map(([label,kind],i)=>
           h('div',{className:'rb-logo-item',key:label+'-'+i},h('b',null,label),h('span',null,kind))
@@ -341,8 +342,8 @@
   }
 
   const MENU=[
-    ['01','Perfil','#perfil'],['02','Skills','#skills'],['03','Mar Salada','#mar-salada'],
-    ['04','GAZA','#gaza'],['05','RHB STUDIO','#rhb'],['06','Evidence','#evidence'],['07','Archivo','#archivo']
+    ['01',t('profile'),'#perfil'],['02',t('skills'),'#skills'],['03',t('design'),'#diseno-ingenieria'],
+    ['04',t('software'),'#software-ia'],['05','GAZA / RHB / XXXIA','#software-ia'],['06',t('evidence'),'#evidence'],['07',t('archive'),'#archivo']
   ];
 
   function StaggeredMenu({open,setOpen}){
@@ -353,9 +354,9 @@
       return()=>{window.removeEventListener('keydown',esc);document.body.style.overflow=''};
     },[open,setOpen]);
     return h('div',{className:'rb-stagger'+(open?' is-open':''),'aria-hidden':open?'false':'true'},
-      h('button',{className:'rb-stagger-backdrop',onClick:()=>setOpen(false),'aria-label':'Cerrar menú'}),
-      h('aside',{className:'rb-stagger-panel','aria-label':'Navegación del dossier'},
-        h('div',{className:'rb-stagger-head'},h('span',null,'Dossier / índice'),h('button',{className:'rb-menu-close',onClick:()=>setOpen(false),'aria-label':'Cerrar'},'×')),
+      h('button',{className:'rb-stagger-backdrop',onClick:()=>setOpen(false),'aria-label':t('close')}),
+      h('aside',{className:'rb-stagger-panel','aria-label':t('index')},
+        h('div',{className:'rb-stagger-head'},h('span',null,t('index')),h('button',{className:'rb-menu-close',onClick:()=>setOpen(false),'aria-label':t('close')},'×')),
         h('nav',{className:'rb-stagger-links'},...MENU.map(([n,label,url])=>
           h('a',{key:n,className:'rb-stagger-link',href:url,onClick:()=>setOpen(false)},h('span',null,label),h('small',null,n))
         )),
@@ -479,10 +480,10 @@
     return h('div',{className:'rb-portrait-zone'},
       h('div',{className:'rb-dither-axis','aria-hidden':'true'}),
       h('div',{className:'rb-dither-frame'+(plain?' is-plain':''),ref:frameRef,'data-dither-veil':'true','data-portrait-view':plain?'plain':'interactive'},
-        h('img',{className:'rb-dither-photo',src:PHOTO,alt:'Retrato profesional de Héctor Lobato'}),
-        h('canvas',{className:'rb-dither-canvas',ref:canvasRef,'aria-label':'Retrato interactivo con efecto dither'}),
+        h('img',{className:'rb-dither-photo',src:PHOTO,alt:'Héctor Lobato'}),
+        h('canvas',{className:'rb-dither-canvas',ref:canvasRef,'aria-label':'Dither Veil portrait'}),
         h('div',{className:'rb-dither-overlay','aria-hidden':'true'}),
-        h('div',{className:'rb-dither-hint'},plain?'foto original':'mueve el cursor / revelar'),
+        h('div',{className:'rb-dither-hint'},plain?t('plain'):t('hint')),
         h('div',{className:'rb-dither-meta'},h('span',null,'Portrait / 2026'),h('span',null,plain?'Original / clean':'Dither Veil / interactive'))
       ),
       h('button',{
@@ -490,21 +491,21 @@
         type:'button',
         onClick:()=>setPlain(v=>!v),
         'aria-pressed':plain?'true':'false'
-      },plain?'Activar visor React':'Ver foto normal'),
+      },plain?t('viewer'):t('photo')),
       h('div',{className:'rb-portrait-code'},h('strong',null,'01 / HUMAN LAYER'),'field + digital',h('br'),'systems / engineering')
     );
   }
 
   function LatticeLoader({done}){
     const [message,setMessage]=useState(0);
-    const lines=['Alineando cables y píxeles…','Negociando con el commissioning…','Convenciendo al CSS de que coopere…','Todo bajo control. Casi.'];
+    const lines=[t('load'),t('load'),t('load'),t('load')];
     useEffect(()=>{const id=setInterval(()=>setMessage(v=>(v+1)%lines.length),430);return()=>clearInterval(id)},[]);
     return h('div',{className:'rb-loader'+(done?' is-done':''),'aria-hidden':done?'true':'false'},
       h('div',{className:'rb-loader-card'},
         h('div',{className:'rb-loader-head'},h('span',null,'HL / boot sequence'),h('span',null,'React + systems')),
         h('div',{className:'rb-lattice-row'},
           h('div',{className:'rb-lattice'},...Array.from({length:16},(_,i)=>h('i',{className:'rb-cell',key:i,style:{'--i':i}}))),
-          h('div',{className:'rb-loader-copy'},h('strong',null,lines[message]),h('span',null,'por favor, mantenga la curiosidad'))
+          h('div',{className:'rb-loader-copy'},h('strong',null,lines[message]),h('span',null,t('wait')))
         ),
         h('div',{className:'rb-loader-bar'},h('i'))
       )
@@ -532,7 +533,10 @@
         h('header',{className:'rb-nav'},
           h('div',{className:'rb-nav-inner'},
             h('a',{className:'rb-brand',href:'#hero-react-root'},h('span',{className:'rb-brand-mark'},'HL.'),h('span',{className:'rb-brand-name'},'Héctor Lobato')),
-            h('button',{className:'rb-menu-trigger',type:'button',onClick:()=>setMenu(true),'aria-expanded':menu?'true':'false'},h(MenuDots),'Menú')
+            h('div',{className:'language-switch',role:'group','aria-label':'Dossier language'},...['es','en','it'].map(lang=>
+              h('a',{key:lang,href:location.pathname+'?lang='+lang,lang,'aria-current':window.__CV_I18N__?.lang===lang?'true':'false'},lang.toUpperCase())
+            )),
+            h('button',{className:'rb-menu-trigger',type:'button',onClick:()=>setMenu(true),'aria-expanded':menu?'true':'false'},h(MenuDots),t('menu'))
           )
         ),
         h(StaggeredMenu,{open:menu,setOpen:setMenu}),
@@ -540,16 +544,16 @@
           h('div',{className:'rb-copy'},
             h('div',{className:'rb-kicker'},'Systems Integration / Automation / IT/OT / AV / AI'),
             h(TechText),
-            h('p',{className:'rb-deck'},'Ingeniería e integración de sistemas: automatización, AV, IT/OT, CAD y software aplicado.'),
+            h('p',{className:'rb-deck'},t('deck')),
             h('div',{className:'rb-actions rb-actions-compact'},
-              h('a',{className:'rb-btn primary',href:'/atlas/'},'Explorar Atlas 3D ↗'),
+              h('a',{className:'rb-btn primary',href:'#proyectos'},t('explore')),
               h('a',{className:'rb-btn',href:'ats.html'},'CV ATS / PDF'),
-              h('a',{className:'rb-btn',href:'present.html'},'Presentación 5 min')
+              h('a',{className:'rb-btn',href:'present.html'},t('presentation'))
             )
           ),
           h(DitherVeil)
         ),
-        h('div',{className:'rb-scroll-cue'},'scroll / explorar dossier ↓')
+        h('div',{className:'rb-scroll-cue'},t('scroll'))
       )
     );
   }

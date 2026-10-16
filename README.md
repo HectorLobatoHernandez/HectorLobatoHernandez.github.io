@@ -1,34 +1,45 @@
 # Héctor Lobato
 
-Diseño e ingeniería de espacios y sistemas. Software e inteligencia artificial aplicada.
+**Diseño e ingeniería de espacios y sistemas · Ingeniería de software e IA**
 
-**[Abrir portfolio y dossier](https://hectorlobatohernandez.github.io/)** · Idiomas: español, inglés e italiano.
+### Dossier profesional
 
-## Diseño e ingeniería
+[**Abrir dossier editorial ↗**](https://hectorlobatohernandez.github.io/) · [Español](https://hectorlobatohernandez.github.io/?lang=es) · [English](https://hectorlobatohernandez.github.io/?lang=en) · [Italiano](https://hectorlobatohernandez.github.io/?lang=it)
 
-**[ATLAS 3D](https://hectorlobatohernandez.github.io/atlas/)** presenta los proyectos espaciales en una ciudad navegable. La ciudad y su actividad son conceptuales; las fichas de cada proyecto identifican la procedencia de sus modelos y referencias.
+[CV ATS / PDF](https://hectorlobatohernandez.github.io/cv/ats.html) · [Presentación guiada de 5 minutos](https://hectorlobatohernandez.github.io/cv/present.html) · [Perfil GitHub](https://github.com/HectorLobatoHernandez)
 
-- [Mar Salada / Club del Mar](https://hectorlobatohernandez.github.io/projects/mar-salada.html) — audio, acústica, KNX/DALI e integración.
-- [Casa Alain](https://hectorlobatohernandez.github.io/projects/casa-alain.html) — cine residencial y acústica.
+El dossier reúne perfil, competencias, proyectos documentados, método, evidencia y contacto. Conserva la dirección editorial **IVORY ATLAS × React Tech**, con retrato interactivo, tipografía TechText y navegación por áreas.
 
-## Ingeniería de software e IA
+## 01 / Diseño e ingeniería
 
-| Proyecto | Alcance | Entrar |
+| Proyecto | Acceso | Alcance |
 | --- | --- | --- |
-| **GAZA OPS** | Demostrador independiente de granja, laboratorio, planta, almacén y logística. | [Dossier ES/EN/IT](https://hectorlobatohernandez.github.io/apps/gaza/dossier-candidatura.html) · [Simulación](https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?demo=company&view=site&warehouse=1&showcase=1) |
-| **RHB STUDIO** | Plataforma local de ingeniería; la versión web muestra una parte del sistema. | [Proyecto](https://hectorlobatohernandez.github.io/projects/rhb-studio.html) · [Demo web](https://hectorlobatohernandez.github.io/apps/rhb/) |
-| **XXXIA STUDIO** | Sistema en desarrollo para producción visual y trazabilidad. | [Proyecto](https://hectorlobatohernandez.github.io/projects/xxxia-studio.html) · [Consola](https://hectorlobatohernandez.github.io/xxxia-studio/) |
+| **Architectural Atlas** | [Explorar ciudad y proyectos ↗](https://hectorlobatohernandez.github.io/atlas/) | Recorrido conceptual y fichas de proyectos con procedencia explícita. |
+| **MAR SALADA / Club del Mar Palma** | [Ver caso documentado ↗](https://hectorlobatohernandez.github.io/projects/mar-salada.html) | Audio, acústica, KNX/DALI, CAD, fabricación e integración. |
+| **Archivo técnico** | [Abrir índice de proyectos ↗](https://hectorlobatohernandez.github.io/projects/) | Casa Alain, Can Furnet Club, estudios acústicos y otros casos. |
 
-[CV técnico](https://hectorlobatohernandez.github.io/cv/ats.html) · [GitHub](https://github.com/HectorLobatoHernandez)
+<a href="https://hectorlobatohernandez.github.io/atlas/"><img src="assets/projects/casa-alain/hero.webp" width="48%" alt="Vista de proyecto del archivo técnico"></a> <a href="https://hectorlobatohernandez.github.io/projects/mar-salada.html"><img src="assets/projects/mar-salada/hero.webp" width="48%" alt="Fotograma del proyecto MAR SALADA"></a>
 
-GAZA OPS combina referencias públicas, reconstrucciones inferidas y procesos simulados. No utiliza datos internos de Leche GAZA ni controla su planta o flota. El [PDF de GAZA](https://hectorlobatohernandez.github.io/apps/gaza/GAZA_OPS_Dossier_Visual_2026.pdf) permanece en español.
+## 02 / Ingeniería de software e IA
+
+| Proyecto | Acceso | Alcance |
+| --- | --- | --- |
+| **GAZA OPS** | [Simulación operativa ↗](https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?demo=company&view=site&warehouse=1&showcase=1) · [Dossier visual](https://hectorlobatohernandez.github.io/apps/gaza/dossier-candidatura.html) · [PDF](https://hectorlobatohernandez.github.io/apps/gaza/GAZA_OPS_Dossier_Visual_2026.pdf) | Demostrador independiente de planta, almacén, granja, laboratorio y logística. |
+| **RHB STUDIO** | [Demo web ↗](https://hectorlobatohernandez.github.io/apps/rhb/) · [Arquitectura](https://hectorlobatohernandez.github.io/projects/rhb-studio.html) | Plataforma de ingeniería en desarrollo; runtime completo local. |
+| **XXXIA STUDIO** | [Proyecto ↗](https://hectorlobatohernandez.github.io/projects/xxxia-studio.html) · [Consola](https://hectorlobatohernandez.github.io/xxxia-studio/) | Identidad, producción visual y trazabilidad generativa. |
+
+<a href="https://hectorlobatohernandez.github.io/apps/gaza/dossier-candidatura.html"><img src="apps/gaza/assets/dossier/plant-warehouse-day.jpg" width="48%" alt="GAZA OPS, planta 3D y almacén simulado"></a> <a href="https://hectorlobatohernandez.github.io/apps/rhb/"><img src="assets/readme/rhb-studio.svg" width="48%" alt="RHB STUDIO, demostrador de ingeniería"></a>
+
+GAZA OPS combina referencias públicas, reconstrucciones inferidas y procesos simulados. No utiliza datos internos de Leche GAZA ni controla su planta o flota. La ciudad de ATLAS es conceptual y cada ficha distingue su evidencia.
 
 <details>
-<summary>Documentación técnica</summary>
+<summary>Documentación técnica y mantenimiento</summary>
 
 - [GAZA: arquitectura y módulos](apps/gaza/README.md)
 - [GAZA: procedencia de datos](apps/gaza/PUBLIC_EVIDENCE.md)
 - [RHB STUDIO: manual](docs/MANUAL_RHB_STUDIO.md)
 - [ATLAS: arquitectura y evidencia](atlas/README.md)
+- [Skills del portfolio](skills/manifest.json)
 
+La comprobación de enlaces se ejecuta con `tools/check_readme_links.py` y el workflow **README Links**.
 </details>
