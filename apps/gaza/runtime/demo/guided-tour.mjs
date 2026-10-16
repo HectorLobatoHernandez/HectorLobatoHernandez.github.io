@@ -1,4 +1,4 @@
-import {processStore} from '../processes/store.mjs?release=gaza-warehouse-v24';
+import {processStore} from '../processes/store.mjs';
 
 // Camera and navigation only. This tour never dispatches a process transition.
 import {GUIDE_STEPS} from './tour-steps.mjs';

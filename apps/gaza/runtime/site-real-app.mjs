@@ -1,5 +1,5 @@
 import {mountMobileScene} from './mobile/scene.mjs';
-import {processStore} from './processes/store.mjs?release=gaza-warehouse-v24';
+import {processStore} from './processes/store.mjs';
 import {mountLivingScene} from './living/scene.mjs';
 import {propagateMode} from './demo/session.mjs';
 const LEGACY_KEY=processStore.scope.legacy;

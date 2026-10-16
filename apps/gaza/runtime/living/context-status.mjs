@@ -1,4 +1,4 @@
-import {processStore as store} from '../processes/store.mjs?release=gaza-warehouse-v24';
+import {processStore as store} from '../processes/store.mjs';
 import {clockOf,environmentOf} from './model.mjs';
 import {propagateMode} from '../demo/session.mjs';
 /** Cartography remains a reference layer; shipment quantities and time come from the common ledger. */

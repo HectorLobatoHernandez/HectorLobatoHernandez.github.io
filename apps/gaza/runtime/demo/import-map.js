@@ -6,7 +6,7 @@
  const engine=new URL('vendor/three-r180/build/three.module.min.js',base).href,addons=new URL('vendor/three-r180/examples/jsm/',base).href;
  const imports={'three':engine,'three/addons/':addons,'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js':engine,'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/':addons};
  window.__GAZA_ENGINE_DELIVERY__='SAME_ORIGIN_R180';
- for(const path of MODULES){const key=new URL(path,base).href;imports[key]=key+'?release='+RELEASE;}
+ for(const path of MODULES){const key=new URL(path,base).href;imports[key]=key+'?release='+(path==='runtime/processes/store.mjs'||path==='runtime/demo/scenario.mjs'?'gaza-warehouse-v24':RELEASE);}
  const map=document.createElement('script');map.type='importmap';map.textContent=JSON.stringify({imports});source.after(map);
  window.__GAZA_ASSET_RELEASE__=RELEASE;
  const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('runtime/demo/layout.css?release='+RELEASE,base).href;document.head.append(css);
