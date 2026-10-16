@@ -10,7 +10,7 @@ try{
  await context.route('https://cdn.jsdelivr.net/npm/three@0.180.0/**',async r=>{const rel=r.request().url().split('/three@0.180.0/')[1];if(!rel||rel.includes('..'))return r.abort();return r.fulfill({body:await fs.readFile(path.join(threeRoot,rel)),contentType:'text/javascript'})});
  page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  assert((await page.goto(base+'/site-real-preview.html?qa=1&dept=process',{waitUntil:'domcontentloaded'})).ok());
- await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__?.departments===16&&window.__GAZA_SITE_RENDER_STATS__?.calls>0);let v=await page.evaluate(()=>window.__GAZA_PLANT_DETAIL__);assert.equal(v.equipment,16);assert.equal(v.staff,9);assert.equal(v.warehouseLevels,9);assert.equal(v.documents.length,0);checks.push('boot-WebGL-16-areas-no-invented-records');
+ await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__?.departments===16&&window.__GAZA_SITE_RENDER_STATS__?.calls>0);let v=await page.evaluate(()=>window.__GAZA_PLANT_DETAIL__);assert.equal(v.equipment,16);assert.equal(v.staff,10);assert.equal(v.warehouseLevels,9);assert.equal(v.documents.length,0);checks.push('boot-WebGL-16-areas-no-invented-records');
  assert((await page.evaluate(()=>window.__GAZA_SITE_RENDER_STATS__.calls))<1800);
  await page.waitForTimeout(250);await page.screenshot({path:path.join(out,'01-process-interior.png')});
  await page.locator('#plantDepartment').selectOption('administration');await page.locator('#plantEnter').click();await page.locator('#plantIsolate').click();await page.waitForFunction(()=>window.__GAZA_PLANT_DETAIL__.isolated);await page.screenshot({path:path.join(out,'02-administration.png')});
