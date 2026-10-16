@@ -547,7 +547,7 @@
             h('p',{className:'rb-deck'},t('deck')),
             h('div',{className:'rb-actions rb-actions-compact'},
               h('a',{className:'rb-btn primary',href:'#proyectos'},t('explore')),
-              h('a',{className:'rb-btn',href:'ats.html'},'CV ATS / PDF'),
+              h('a',{className:'rb-btn',href:window.__CV_I18N__?.lang==='en'?'ats-en.html':'ats.html'},window.__CV_I18N__?.lang==='en'?'English CV / PDF':'CV ATS / PDF'),
               h('a',{className:'rb-btn',href:'present.html'},t('presentation'))
             )
           ),

@@ -11,6 +11,7 @@ const cases=[
   {id:'dossier',path:'/cv/dossier.html',title:'Dossier',theme:'dossier',project:'Club Mar Salada'},
   {id:'present',path:'/cv/present.html',title:'Presentation Route',theme:null,project:'Club Mar Salada'},
   {id:'ats',path:'/cv/ats.html',title:'CV Profesional',theme:null,project:'Sound Club, Palma'},
+  {id:'ats-en',path:'/cv/ats-en.html',title:'English CV',theme:null,project:'Sound Club, Palma'},
   {id:'atelier',path:'/cv/atelier.html',title:'Atelier',theme:'atelier',project:'GAZA Operations Intelligence'},
   {id:'swiss',path:'/cv/swiss.html',title:'Swiss',theme:'swiss',project:'Mar Salada.'},
   {id:'monograph',path:'/cv/monograph.html',title:'Monograph',theme:'monograph',project:'GAZA Operations Intelligence'},
@@ -28,7 +29,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       try{await page.waitForSelector('.rb-loader.is-done',{timeout:8000})}catch{failures.push('Dossier loader did not finish')}
       await page.waitForTimeout(1050);
     }
-    if(test.id==='ats'){
+    if(test.id==='ats'||test.id==='ats-en'){
       try{await page.waitForFunction(()=>window.__CV_ATS_REACT__?.mounted===true,{timeout:8000})}catch{failures.push('ATS React layer did not mount')}
       await page.waitForTimeout(500);
     }
@@ -159,6 +160,15 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
       if(!state.atsH1Font?.includes('Instrument Serif')||!state.atsH2Font?.includes('Instrument Serif'))failures.push('ATS Ivory Atlas typography missing: '+state.atsH1Font+' / '+state.atsH2Font);
       if(state.bodyBg!=='rgb(0, 0, 0)')failures.push('ATS screen background must be black behind Waves: '+state.bodyBg);
     }
+    if(test.id==='ats-en'){
+      const required=['Professional profile','Core skills','Professional experience','Selected technical projects',"Higher education and master's studies",'Certifications, manufacturer training and courses','Technology and tools','Applied experience','Languages','Working method'];
+      const content=['Studio Ingenia','2021 – Present','Estudio Áureo','2018 – 2021','IN PROGRESS','Sound Club, Palma','Las Dalias / Club Akasha','Casa NOAH','GAZA Operations Intelligence','RHB STUDIO','XXXIA Studio','Ecler','Void Acoustics','Lynx Pro Audio'];
+      if(state.ats?.language!=='en'||state.ats.selectedProjects!==8||state.atsSections<9||!required.every(x=>state.atsH2.includes(x))||!content.every(x=>state.atsText.includes(x)))failures.push('English ATS content incomplete');
+      if(!state.atsToolbar.includes('Download PDF')||!state.atsToolbar.includes('Print / Save as PDF')||!state.atsRoot||!state.atsWaves||!state.atsPixelTrail)failures.push('English ATS print/download UI missing');
+      const link=await page.locator('.toolbar a[download]').getAttribute('href');
+      const pdf=await page.request.get(base+'/cv/'+link);
+      if(!pdf.ok()||!pdf.headers()['content-type']?.includes('pdf')||(await pdf.body()).length<20000)failures.push('English PDF download unavailable');
+    }
     if(test.id==='world'){
       if(state.world?.mode!=='STORYBOARD_SVG_NO_GENERATED_VIDEO'||state.world.scenes!==4||state.world.videoClips!==0)failures.push('Scroll World provenance mismatch');
       if(state.sceneCount!==4||state.sceneLoaded.some(v=>!v))failures.push('Scroll World scenes missing or unloaded');
@@ -207,9 +217,12 @@ for(const locale of [
       cards:[...document.querySelectorAll('#software-ia .domain-card')].map(a=>a.querySelector('h3')?.textContent.trim()),
       atlas:document.querySelector('#diseno-ingenieria .domain-card')?.getAttribute('href'),
       selected:document.querySelector('.rb-nav .language-switch [aria-current="true"]')?.textContent.trim(),
+      englishCv:document.querySelector('a[href="/cv/ats-en.html"]')?.getAttribute('href'),
+      pdf:document.querySelector('a[href="/cv/Hector_Lobato_CV_EN.pdf"]')?.getAttribute('href'),
+      heroCv:document.querySelector('.rb-actions a[href*="ats"]')?.getAttribute('href'),
       overflow:document.documentElement.scrollWidth-innerWidth
     }));
-    if(state.lang!==locale.code||state.heading!==locale.heading||state.software!==locale.software||state.menu!==locale.menu||state.areas.join('|')!==locale.areas.join('|')||state.cards.join('|')!=='GAZA OPS|RHB STUDIO|XXXIA STUDIO'||state.atlas!=='/atlas/'||state.selected!==locale.code.toUpperCase()||state.overflow>3||errors.length)failures.push('Dossier locale '+locale.code+'/'+viewport.id+': '+JSON.stringify({state,errors}));
+    if(state.lang!==locale.code||state.heading!==locale.heading||state.software!==locale.software||state.menu!==locale.menu||state.areas.join('|')!==locale.areas.join('|')||state.cards.join('|')!=='GAZA OPS|RHB STUDIO|XXXIA STUDIO'||state.atlas!=='/atlas/'||state.selected!==locale.code.toUpperCase()||state.englishCv!=='/cv/ats-en.html'||state.pdf!=='/cv/Hector_Lobato_CV_EN.pdf'||state.heroCv!==(locale.code==='en'?'ats-en.html':'ats.html')||state.overflow>3||errors.length)failures.push('Dossier locale '+locale.code+'/'+viewport.id+': '+JSON.stringify({state,errors}));
     await page.screenshot({path:'.qa/cv-editorial/dossier-'+locale.code+'-'+viewport.id+'.png',fullPage:false});
     await page.close();
   }

@@ -61,7 +61,7 @@ body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Ari
   </section>
 </div>
 <main>
-<nav class="dos-shell" aria-label="Atlas, CV e idiomas" style="padding-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center"><a class="dos-btn primary" href="/atlas/">Architectural Atlas · Explore the city ↗</a><a class="dos-btn" href="/cv/ats.html">CV ATS / PDF ↗</a><div class="language-switch" role="group" aria-label="Idioma del dossier"><a href="/cv/dossier.html?lang=es" data-lang="es" lang="es">ES</a><a href="/cv/dossier.html?lang=en" data-lang="en" lang="en">EN</a><a href="/cv/dossier.html?lang=it" data-lang="it" lang="it">IT</a></div></nav>
+<nav class="dos-shell" aria-label="Atlas, CV e idiomas" style="padding-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center"><a class="dos-btn primary" href="/atlas/">Architectural Atlas · Explore the city ↗</a><a class="dos-btn" href="/cv/ats.html">CV ATS / PDF ↗</a><a class="dos-btn" href="/cv/ats-en.html">English CV · print ↗</a><a class="dos-btn" href="/cv/Hector_Lobato_CV_EN.pdf" download>English CV · PDF ↓</a><div class="language-switch" role="group" aria-label="Idioma del dossier"><a href="/cv/dossier.html?lang=es" data-lang="es" lang="es">ES</a><a href="/cv/dossier.html?lang=en" data-lang="en" lang="en">EN</a><a href="/cv/dossier.html?lang=it" data-lang="it" lang="it">IT</a></div></nav>
 <div class="portfolio-paths dos-shell" aria-label="Áreas del dossier"><a href="#diseno-ingenieria"><small>01 / Espacios · sistemas</small><strong>Diseño e ingeniería</strong><span>ATLAS, proyectos espaciales e integración técnica ↓</span></a><a href="#software-ia"><small>02 / Producto · sistemas</small><strong>Ingeniería de software e IA</strong><span>GAZA OPS, RHB STUDIO y XXXIA STUDIO ↓</span></a></div>
 
 <section class="section dos-shell" id="perfil">
@@ -187,7 +187,7 @@ body.dossier{margin:0;background:#000;color:var(--ink);font-family:"DM Sans",Ari
 <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
 <script src="dossier-i18n.js?v=3"></script>
-<script src="hero-react.js?v=10"></script>
+<script src="hero-react.js?v=11"></script>
 <script>
 const p=document.getElementById('progress');
 const update=()=>{const d=document.documentElement,m=d.scrollHeight-innerHeight;p.style.width=(m>0?Math.min(100,scrollY/m*100):0)+'%'};

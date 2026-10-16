@@ -58,6 +58,7 @@ jobs:
             /apps/rhb/index.html
             /experience/index.html
             /cv/*.html
+            /cv/*.pdf
             /projects/*.html
             /start/*.html
             /xxxia-studio/index.html
