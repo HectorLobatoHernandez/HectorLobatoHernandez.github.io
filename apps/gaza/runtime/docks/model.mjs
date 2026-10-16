@@ -12,7 +12,7 @@ export function projectDocks(state,truckId){
  const families=lots.map(l=>{
   const packed=safe(l.mass.packedL),shipping=safe(l.mass.shippingL),delivered=safe(l.mass.deliveredL);
   const full=Math.floor(packed/cap),partial=packed%cap,usedSlots=full+(partial?1:0);
-  return {id:l.id,name:l.species==='OVINE'?'Lácteo ovino · SIM':'Lácteo vacuno · SIM',color:l.species==='OVINE'?'#f2b96c':'#8bc7e8',storedL:packed,full,partial,partialPct:Math.round(partial/cap*100),usedSlots,capacity:DEMO_CAPACITY_PER_FAMILY,occupancy:Math.min(100,Math.round(usedSlots/DEMO_CAPACITY_PER_FAMILY*100)),overflow:usedSlots>DEMO_CAPACITY_PER_FAMILY,shippingL:shipping,deliveredL:delivered,inboundL:safe(l.mass.tankerL),siloL:safe(l.mass.siloL),held:!!l.holds,released:l.gates.dispatch.status==='APPROVED'&&!l.holds,receiving:l.tasks['RECEPTION.UNLOAD'].status,loading:l.tasks['DISPATCH.LOAD'].status};
+  return {id:l.id,name:l.species==='OVINE'?'Lácteo ovino · SIM':'Lácteo vacuno · SIM',color:l.species==='OVINE'?'#f2b96c':'#8bc7e8',storedL:packed,full,partial,partialPct:Math.round(partial/cap*100),usedSlots,capacity:DEMO_CAPACITY_PER_FAMILY,occupancy:Math.min(100,Math.round(usedSlots/DEMO_CAPACITY_PER_FAMILY*100)),overflow:usedSlots>DEMO_CAPACITY_PER_FAMILY,shippingL:shipping,deliveredL:delivered,inboundL:safe(l.mass.tankerL),siloL:safe(l.mass.siloL),held:!!l.holds,released:l.gates.dispatch.status==='APPROVED'&&!l.holds,putaway:l.tasks['WAREHOUSE.PUTAWAY'].status,receiving:l.tasks['RECEPTION.UNLOAD'].status,loading:l.tasks['DISPATCH.LOAD'].status};
  });
  const total=key=>families.reduce((n,f)=>n+f[key],0);
  const loading=families.some(f=>f.loading==='RUNNING'),unloading=families.some(f=>f.receiving==='RUNNING');

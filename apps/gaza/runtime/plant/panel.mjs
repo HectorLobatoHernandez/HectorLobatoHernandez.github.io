@@ -1,5 +1,6 @@
 import {DEPARTMENTS,SOURCES,BOUNDARY,projectPlant,exportDossier,SIGN_PLACEMENTS} from './model.mjs';
-import {buildPlantDetail} from './world.mjs';
+import {buildPlantDetail} from './world.mjs?release=gaza-site-docks-v23';
+import {projectDocks} from '../docks/model.mjs?release=gaza-site-docks-v23';
 import {propagateMode} from '../demo/session.mjs';
 const element=(tag,text,attrs={})=>{const el=document.createElement(tag);if(text!==null)el.textContent=text;Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));return el};
 /** Read-only spatial/document projection. Never writes to the process store. */
@@ -21,5 +22,5 @@ export function mountPlantDetail({THREE,world,camera,controls,ensureStudy,dirty,
  select.onchange=()=>choose(select.value);$('plantEnter').onclick=()=>open();$('plantPlan').onclick=()=>open(selected,true);$('plantIsolate').onclick=()=>{isolated=!isolated;detail.isolate(isolated);$('plantIsolate').setAttribute('aria-pressed',String(isolated));dirty()};$('plantFlow').onchange=e=>{detail.flows(e.target.checked);dirty()};
  $('plantExport').onclick=()=>{const doc=exportDossier(getState(),getLotId()),url=URL.createObjectURL(new Blob([JSON.stringify(doc,null,2)],{type:'application/json'})),a=element('a',null,{href:url,download:'GAZA-plant-dossier-SIM.json'});a.click();setTimeout(()=>URL.revokeObjectURL(url),500)};
  choose(selected);
- return {open,animate(state){if(state)detail.update(projectPlant(state,getLotId()))},inspect(data){if(data?.deptId)choose(data.deptId)},update(){detail.resolveSigns();if(!signSeen&&detail.snapshot().signsApplied){signSeen=true;dirty()}const s=getState(),id=getLotId(),key=(s?.revision??'none')+':'+id;if(key!==lastKey){lastKey=key;view=projectPlant(s,id);detail.update(view);refresh();dirty()}window.__GAZA_PLANT_DETAIL__={...detail.snapshot(),ready:view.ready,error:view.error,lotId:view.lotId,simSeconds:view.seconds,documents:view.documents,signs:SIGN_PLACEMENTS,recordSource:'READ_ONLY_PROCESS_LEDGER_V2',taskStates:view.tasks||{}}},snapshot:()=>detail.snapshot()};
+ return {open,animate(state){if(state)detail.update(projectPlant(state,getLotId()),projectDocks(state))},inspect(data){if(data?.deptId)choose(data.deptId)},update(){detail.resolveSigns();if(!signSeen&&detail.snapshot().signsApplied){signSeen=true;dirty()}const s=getState(),id=getLotId(),key=(s?.revision??'none')+':'+id;if(key!==lastKey){lastKey=key;view=projectPlant(s,id);detail.update(view,projectDocks(s));refresh();dirty()}window.__GAZA_PLANT_DETAIL__={...detail.snapshot(),ready:view.ready,error:view.error,lotId:view.lotId,simSeconds:view.seconds,documents:view.documents,signs:SIGN_PLACEMENTS,recordSource:'READ_ONLY_PROCESS_LEDGER_V2',taskStates:view.tasks||{}}},snapshot:()=>detail.snapshot()};
 }
