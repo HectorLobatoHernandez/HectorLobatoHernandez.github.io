@@ -25,6 +25,7 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     await page.waitForTimeout(test.id==='world'?1900:450);
     if(test.id==='dossier'){
       try{await page.waitForFunction(()=>window.__CV_HERO__?.mounted===true,{timeout:8000})}catch{failures.push('dossier React hero did not mount')}
+      try{await page.waitForSelector('.rb-loader.is-done',{timeout:8000})}catch{failures.push('Dossier loader did not finish')}
       await page.waitForTimeout(1050);
     }
     if(test.id==='ats'){
@@ -117,6 +118,8 @@ for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:3
     if(test.id==='dossier'){
       if(state.dossier?.schemaVersion!==7||state.dossier.projects!==15||state.dossier.featured!==3||state.dossier.visualEvidence!==3||state.dossier.evidenceCards!==4||state.dossier.presentationRoute!==true||state.dossier.ats!==false||state.dossier.print!==true)failures.push('Dossier contract mismatch');
       if(state.dossierProjects!==3||state.dossierArchive!==16||state.evidenceCards!==4)failures.push('Dossier project/evidence inventory mismatch');
+      const visibility=await page.evaluate(()=>['#perfil .reveal','#diseno-ingenieria .reveal','#software-ia .reveal','#archivo .reveal'].map(s=>Number(getComputedStyle(document.querySelector(s)).opacity)));
+      if(visibility.some(x=>x<.95))failures.push('Dossier sections must remain visible before scrolling: '+visibility.join(','));
       const expectedBits=['Waves','Particles','TechText','LogoLoop','DitherVeil','StaggeredMenu','LatticeLoader'];
       if(state.hero?.schemaVersion!==4||state.hero?.engine!=='REACT_18_UMD'||state.hero?.mounted!==true||state.hero?.scope!=='FULL_DOSSIER'||state.hero?.portraitMode!=='DITHER_VEIL_SINGLE'||state.hero?.portraitImages!==1||state.hero?.generatedPortraits!==0||state.hero?.globalEffects!==true||state.hero?.techMode!=='REACT_BITS_TECH_TEXT_VISIBLE_DEMO'||state.hero?.palette!=='IVORY_ATLAS'||state.hero?.displayFont!=='INSTRUMENT_SERIF'||!expectedBits.every(x=>state.hero?.components?.includes(x))||state.hero?.components?.includes('CircularCarousel'))failures.push('Dossier React Bits system contract mismatch');
       if(!state.bodyClass.includes('rb-system-theme')||!state.heroRoot||state.orbitCards!==0||state.ditherVeils!==1||state.ditherCanvases!==1||!state.ditherCanvasSize||state.ditherCanvasSize.w<100||state.ditherCanvasSize.h<100||!state.globalEffects||!state.particlesCanvas||!state.techText||!state.logoLoop||state.techHeadings<6||state.techShells<state.techHeadings+1||state.techSelections<1||state.techActiveChars<1||!state.menuTrigger||state.latticeCells!==16)failures.push('Dossier amplified React Bits / TechText UI missing');
@@ -192,6 +195,8 @@ for(const locale of [
     page.on('console',m=>{if(m.type()==='error'&&m.text().includes('Dossier translation count'))errors.push(m.text())});
     await page.goto(base+'/cv/dossier.html?lang='+locale.code,{waitUntil:'domcontentloaded'});
     try{await page.waitForFunction(()=>window.__CV_HERO__?.mounted===true,{timeout:8000})}catch{errors.push('Hero did not mount')}
+    try{await page.waitForSelector('.rb-loader.is-done',{timeout:8000})}catch{errors.push('Loader did not finish')}
+    await page.waitForTimeout(650);
     const state=await page.evaluate(()=>({
       lang:document.documentElement.lang,
       heading:document.querySelector('#diseno-ingenieria h2')?.getAttribute('aria-label'),
