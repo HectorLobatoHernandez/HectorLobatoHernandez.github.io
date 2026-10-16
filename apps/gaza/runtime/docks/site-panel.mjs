@@ -1,4 +1,4 @@
-import {processStore} from '../processes/store.mjs?release=gaza-warehouse-v24';
+import {processStore} from '../processes/store.mjs';
 import {FLEET,projectDocks} from './model.mjs?release=gaza-site-warehouse-v24';
 
 /** The dock controls live in the Plant viewer and read the common SIM ledger. */

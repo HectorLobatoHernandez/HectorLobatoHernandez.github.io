@@ -1,7 +1,7 @@
 import {initialState,reduce,validateState,visualSnapshot,lotSummary} from './ledger.mjs';
 import {TASKS} from './catalog.mjs';
 import {sessionScope} from '../demo/session.mjs';
-import {createDemonstration,createWarehouseDemonstration} from '../demo/scenario.mjs?release=gaza-warehouse-v24';
+import {createDemonstration,createWarehouseDemonstration} from '../demo/scenario.mjs';
 const scope=sessionScope(typeof location!=='undefined'?location.search:'');
 const KEY=scope.key;
 const SELECTION=KEY+':selected';
