@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "projectId": "playa-soleil-bora-bora",
+  "title": "Playa Soleil / Bora Bora",
+  "model": "model.glb.gz",
+  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceClass": "SOURCE_MODEL",
+  "sourceSha256": "6de3d0d8fddb847cf1576f5fc04f0d4606824fdde96711a5eaaa662b7e17e355",
+  "presentationBounds": null,
+  "items": {
+    "model-4k.webp": {
+      "title": "Source model \u00b7 4K view",
+      "full": "model-4k.webp",
+      "thumb": "thumbs/model-4k.webp",
+      "width": 3840,
+      "height": 2160,
+      "kind": "Source model render",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "plan.webp": {
+      "title": "Source plan",
+      "full": "plan.webp",
+      "thumb": "thumbs/plan.webp",
+      "width": 2160,
+      "height": 2160,
+      "kind": "Source plan",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "ref-001": {
+      "title": "Project reference 03",
+      "full": "ref-001.webp",
+      "thumb": "thumbs/ref-001.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "d18839d66bda9b115d9835377c71647f46d683deeaaa8113e0c49dc36530d220"
+    },
+    "ref-002": {
+      "title": "Project reference 04",
+      "full": "ref-002.webp",
+      "thumb": "thumbs/ref-002.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "c621021e971dec428ad6c29d5f4962e862b56bf9b187b65c77b26e385b4cbf80"
+    },
+    "ref-003": {
+      "title": "Project reference 05",
+      "full": "ref-003.webp",
+      "thumb": "thumbs/ref-003.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "b52279c5fa6d34b99c5ac194396e17bdcc978d1be6131792aaf9caac6cd3ca5f"
+    },
+    "ref-004": {
+      "title": "Project reference 06",
+      "full": "ref-004.webp",
+      "thumb": "thumbs/ref-004.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "de9e4bb7e66967c030d76ebdb4a6c261b242ec76bcb88f73c9919113ce4a9d5d"
+    },
+    "ref-005": {
+      "title": "Project reference 07",
+      "full": "ref-005.webp",
+      "thumb": "thumbs/ref-005.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "f1af9c4af1930293326a1428f21e5717fd533322c5a5e54243b4e270afc7ef7e"
+    },
+    "ref-006": {
+      "title": "Project reference 08",
+      "full": "ref-006.webp",
+      "thumb": "thumbs/ref-006.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "934b35f7bb9586d9215b1a1559114999862e18b73efe867711a3ca0bcdcc9173"
+    },
+    "ref-007": {
+      "title": "Project reference 09",
+      "full": "ref-007.webp",
+      "thumb": "thumbs/ref-007.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "5ecff3f95c9a5e4627d0193312d77f7fe8fcc0a4851ceadd4c7a43e294beb3e6"
+    },
+    "ref-008": {
+      "title": "Project reference 10",
+      "full": "ref-008.webp",
+      "thumb": "thumbs/ref-008.webp",
+      "width": 1600,
+      "height": 1200,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "3af9464654636e5ec73097fee6d0adeb90b10ce8c722537da1d2cb3d4e5f60af"
+    },
+    "ref-009": {
+      "title": "Project reference 11",
+      "full": "ref-009.webp",
+      "thumb": "thumbs/ref-009.webp",
+      "width": 1600,
+      "height": 1200,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "869cf188940367a7809226646102acd3f3ac71e664da404eb9f85d60113f0393"
+    },
+    "ref-010": {
+      "title": "Project reference 12",
+      "full": "ref-010.webp",
+      "thumb": "thumbs/ref-010.webp",
+      "width": 1600,
+      "height": 1200,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "3ebf30b2fd4839424faf619470e77aeed3e21ea9039f1ce96c2b6ca464ae70ac"
+    },
+    "ref-011": {
+      "title": "Project reference 13",
+      "full": "ref-011.webp",
+      "thumb": "thumbs/ref-011.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "293a978f03157a398c6ee9e589711cb06a51c5f897505d1c397ad574d2881e12"
+    },
+    "ref-012": {
+      "title": "Project reference 14",
+      "full": "ref-012.webp",
+      "thumb": "thumbs/ref-012.webp",
+      "width": 1200,
+      "height": 1600,
+      "kind": "Archive photograph",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "35d7b9246f9cbc6f165fa4055d8a22f00eea88ae77aca89d8e861e6120475577"
+    }
+  },
+  "sequences": {
+    "plan": [
+      "plan.webp"
+    ],
+    "build": [
+      "model-4k.webp"
+    ],
+    "interior": [
+      "model-4k.webp",
+      "ref-001",
+      "ref-002",
+      "ref-003",
+      "ref-004",
+      "ref-005",
+      "ref-006",
+      "ref-007",
+      "ref-008",
+      "ref-009",
+      "ref-010",
+      "ref-011",
+      "ref-012"
+    ]
+  },
+  "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+}

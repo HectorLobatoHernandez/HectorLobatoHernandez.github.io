@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "projectId": "can-furnet-club",
+  "title": "Can Furnet Club",
+  "model": "model.glb.gz",
+  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceClass": "SOURCE_MODEL",
+  "sourceSha256": "58fef88636595a2626e8fa857d825971730aca55a9e82e8aae5e4891717c85ca",
+  "presentationBounds": null,
+  "items": {
+    "model-4k.webp": {
+      "title": "Source model \u00b7 4K view",
+      "full": "model-4k.webp",
+      "thumb": "thumbs/model-4k.webp",
+      "width": 3840,
+      "height": 2160,
+      "kind": "Source model render",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "plan.webp": {
+      "title": "Source plan",
+      "full": "plan.webp",
+      "thumb": "thumbs/plan.webp",
+      "width": 2160,
+      "height": 2160,
+      "kind": "Source plan",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "ref-001": {
+      "title": "Project reference 03",
+      "full": "ref-001.webp",
+      "thumb": "thumbs/ref-001.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "67960c62b5d64f832adbc6253d0c4a1b2aa37c77f61c035fdb5db4d958903b93"
+    },
+    "ref-002": {
+      "title": "Project reference 04",
+      "full": "ref-002.webp",
+      "thumb": "thumbs/ref-002.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "8403e9a74a50575f592bffa41b5898de60399ceec08f072198e322cf5af54412"
+    },
+    "ref-003": {
+      "title": "Project reference 05",
+      "full": "ref-003.webp",
+      "thumb": "thumbs/ref-003.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "975a6e7d25d949006f2315391044bd6a1d966b0e79681cd122bab9a61ed45966"
+    },
+    "ref-004": {
+      "title": "Project reference 06",
+      "full": "ref-004.webp",
+      "thumb": "thumbs/ref-004.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "966f819760ffc1d18bbe103460ec49182c4a81001a8e2b051d617c11f70db5b6"
+    },
+    "ref-005": {
+      "title": "Project reference 07",
+      "full": "ref-005.webp",
+      "thumb": "thumbs/ref-005.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "14c359e1b82f4e23bfacf3cf77c5c0952a28e3850c0af7368d0e778b3cf7f2e7"
+    },
+    "ref-006": {
+      "title": "Project reference 08",
+      "full": "ref-006.webp",
+      "thumb": "thumbs/ref-006.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "9e3e23205812f2ee51871b1eb90a69eea835e537383390e8ab64d592949bb74c"
+    },
+    "ref-007": {
+      "title": "Project reference 09",
+      "full": "ref-007.webp",
+      "thumb": "thumbs/ref-007.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "b04f896533fb817ea8e782fcd554267abda1a98dc5f2fdc61a06ae07210c0249"
+    },
+    "ref-008": {
+      "title": "Project reference 10",
+      "full": "ref-008.webp",
+      "thumb": "thumbs/ref-008.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "a88fbeb161f1ac596fbbd850cabc9a0c56d1fbc4c2cd297935cc2c14f09761ab"
+    },
+    "ref-009": {
+      "title": "Project reference 11",
+      "full": "ref-009.webp",
+      "thumb": "thumbs/ref-009.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "264ec9a8979ffc39bc7b38162f7a4371438f6014c3bd6cd01648fa555fea9b93"
+    },
+    "ref-010": {
+      "title": "Project reference 12",
+      "full": "ref-010.webp",
+      "thumb": "thumbs/ref-010.webp",
+      "width": 1587,
+      "height": 1122,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "673649447b38fd18a7a9802200f3997ec360a75fbb9bd0033ee6ad39995b17ec"
+    },
+    "ref-011": {
+      "title": "Project reference 13",
+      "full": "ref-011.webp",
+      "thumb": "thumbs/ref-011.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "672680c27dee03f7cbfeae0e194a042b70d7382e81d9e88c780f78859bdc8cff"
+    },
+    "ref-012": {
+      "title": "Project reference 14",
+      "full": "ref-012.webp",
+      "thumb": "thumbs/ref-012.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "703b70e90049323f04339c45bed7c8ab0c33f3d67de507d800aca33a9ddf9413"
+    },
+    "ref-013": {
+      "title": "Project reference 15",
+      "full": "ref-013.webp",
+      "thumb": "thumbs/ref-013.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "25bb82298b07805b89d3459daea01882245f9171ae7f3268437ef6b004b30da6"
+    },
+    "ref-014": {
+      "title": "Project reference 16",
+      "full": "ref-014.webp",
+      "thumb": "thumbs/ref-014.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "19ef958fc4aa5b0d4980597f706918d05e0bb7b46461a6855957326023b44db2"
+    },
+    "ref-015": {
+      "title": "Project reference 17",
+      "full": "ref-015.webp",
+      "thumb": "thumbs/ref-015.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "5a6c911fa4fd2bd6eecc8900f194e019a6affa733bb3281046daa1b7e0561b8c"
+    },
+    "ref-016": {
+      "title": "Project reference 18",
+      "full": "ref-016.webp",
+      "thumb": "thumbs/ref-016.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "19edae7a8fc5d0c12d30cfe224c607897f50aa88da7c7748dc92d4310b699933"
+    },
+    "ref-017": {
+      "title": "Project reference 19",
+      "full": "ref-017.webp",
+      "thumb": "thumbs/ref-017.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "283eabc694e63a51c9c066db8881ff322d39443b275128c7a695704017cbc7c0"
+    },
+    "ref-018": {
+      "title": "Project reference 20",
+      "full": "ref-018.webp",
+      "thumb": "thumbs/ref-018.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "c54f66c44e28fea15166fd08b664b653ad8925107610d3017104d7b18f4d7fe1"
+    },
+    "ref-019": {
+      "title": "Project reference 21",
+      "full": "ref-019.webp",
+      "thumb": "thumbs/ref-019.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "8b73c5e8bdda2c4c8cf6ece9b79296c21039f43b0c0c52907f48d848808a522e"
+    },
+    "ref-020": {
+      "title": "Project reference 22",
+      "full": "ref-020.webp",
+      "thumb": "thumbs/ref-020.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "0afd179bcbd53af4fb924ffad7fe9d0c9a2df8748c5d323ca8f7afcd176dbb8a"
+    },
+    "ref-021": {
+      "title": "Project reference 23",
+      "full": "ref-021.webp",
+      "thumb": "thumbs/ref-021.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "64395db5654491980629166a55dc1ecc88f8b388fd8e2e2008f2198d6a7ac328"
+    },
+    "ref-022": {
+      "title": "Project reference 24",
+      "full": "ref-022.webp",
+      "thumb": "thumbs/ref-022.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "87923b6d2aca4929923945fdc9c2098c47ab72b78eecbef860b48636684f33f9"
+    },
+    "ref-023": {
+      "title": "Project reference 25",
+      "full": "ref-023.webp",
+      "thumb": "thumbs/ref-023.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "02d64a42d81021712b2cd3a45057a74e16721b04f75f9dd26e91fb4b8f69eda4"
+    },
+    "ref-024": {
+      "title": "Project reference 26",
+      "full": "ref-024.webp",
+      "thumb": "thumbs/ref-024.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "3a2721d890fa828587037759aec1fec2f781ba137fee197dcb45ec8f78bab5bf"
+    }
+  },
+  "sequences": {
+    "plan": [
+      "plan.webp"
+    ],
+    "build": [
+      "model-4k.webp",
+      "ref-001",
+      "ref-002",
+      "ref-003",
+      "ref-004",
+      "ref-005",
+      "ref-006",
+      "ref-007",
+      "ref-008",
+      "ref-009",
+      "ref-010"
+    ],
+    "interior": [
+      "model-4k.webp",
+      "ref-011",
+      "ref-012",
+      "ref-013",
+      "ref-014",
+      "ref-015",
+      "ref-016",
+      "ref-017",
+      "ref-018",
+      "ref-019",
+      "ref-020",
+      "ref-021",
+      "ref-022",
+      "ref-023",
+      "ref-024"
+    ]
+  },
+  "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+}

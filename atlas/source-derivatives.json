@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "classification": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "geometry": [
+    {
+      "path": "assets/projects/casa-alain/layers/model.glb",
+      "sourceSha256": "481cf498d4c92f31f73d6d597d78bdecda232ad6638f35fe01ce89e03c493681",
+      "publicSha256": "adb6625e19c5cec753eca16d73660b1eae1524b7a34cb13209103ad6015856f1",
+      "bytes": 15285292,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/acoustic-studio-italy/model.glb",
+      "sourceSha256": "645c9a65f1ed9db4f7bef781e422006792135d3b1bd4fba31f5264f759d5662e",
+      "publicSha256": "bfb5230de9a40c6bd8f74fe4fec6b871a11458bd114b5c06b93fee7fa5f82a42",
+      "bytes": 8846900,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/acoustic-studio-italy/city-preview.glb",
+      "sourceSha256": "bc72d7cd45608b3d481969e9208f15f594723f6d736ccc9aec949da099dbfa2e",
+      "publicSha256": "bd25c5e05524ef6817b45b2283d6bc388ef0d6a9cffaaf785dad034cd6355b97",
+      "bytes": 320332,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/casa-alain/city-preview.glb",
+      "sourceSha256": "52269cff63f811ca1ef8302a43bbdce620393ae5ab5e87df7d60bd9064e6a42f",
+      "publicSha256": "67d3c2d470694589b93f3d8553f5f3f40e624d2f6fa0be556fa7f70ff86793d0",
+      "bytes": 126216,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/can-furnet-club/model.glb",
+      "sourceSha256": "d3bcc6c27cf5bd3c1f15b174ed2feb5190876e0aa8f2b4b2f48f9dda77cecba5",
+      "publicSha256": "8dae648f57789957af83ce73793da8200b16ddf547bdd072f01fc674f3b4e50c",
+      "bytes": 1522092,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/can-furnet-club/city-preview.glb",
+      "sourceSha256": "da3252a8b4e8ea38b8aed20d7301668dfdf2f39c09364c4ecefe896b7b009b4c",
+      "publicSha256": "d1128ddb4adc2f805cce0321b00ef1caa78bdd3ed7968d2f9330f44183017b55",
+      "bytes": 274392,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/private-production-studio-sta-eulalia/model.glb",
+      "sourceSha256": "2bef0bde29851c3ab4ba404a745e397db5a7202b6d958b07fd122c069b6f51c2",
+      "publicSha256": "5ddd2cd14df9ebb5253ca2892d4c1f44c01ffa565079522575d02bc6ff63b794",
+      "bytes": 565812,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/private-production-studio-sta-eulalia/city-preview.glb",
+      "sourceSha256": "e7d9ac085dab38f94b4698f4dbb66ade17010b4d4781f458ad4146e4f27b9175",
+      "publicSha256": "a50b70fc5d5f19a36cf1b69cb216d1f63aefb65e1f3c261271ba583524dc32b1",
+      "bytes": 120376,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/mar-salada/model.glb",
+      "sourceSha256": "5ad3ecfa968200e89bb8240a87e1f9cb302cd9aa074268553da78333ddd51a80",
+      "publicSha256": "946df5f1018ae842457df7c0d5a9bde590a39c7d9c7d266c2bf8ec452c18f8cd",
+      "bytes": 59799756,
+      "cropped": true,
+      "removedObjectsOrInstances": 2103,
+      "retainedObjectsOrInstances": 68562,
+      "privateTextureBitmapsRemoved": true
+    },
+    {
+      "path": "assets/projects/atlas/mar-salada/city-preview.glb",
+      "sourceSha256": "3ddf7e1dcbd4fee1be3ae376800b124777ebea723fbf97add618d18c90418e74",
+      "publicSha256": "1df488247e592e9c411ea9bd740a2add33828ad1667792310f6b50f8e0c5bfd6",
+      "bytes": 310960,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/playa-soleil-bora-bora/model.glb",
+      "sourceSha256": "621b7475d9c8b0231acec69c5cf693fd52cb57bf243172b4676dabf26f6b2714",
+      "publicSha256": "eae581f17c7238a0f78b3e48c415dd315b5a0315a709a6951b1c075d35f4ba35",
+      "bytes": 5316804,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/playa-soleil-bora-bora/city-preview.glb",
+      "sourceSha256": "a03025fda8703b88a16c35db19b02ebfa5aebbf7207cabe96be9194f627325e9",
+      "publicSha256": "c35e2f9e8f91b65fe84c2544ccd03d82fc6858a0df5df1b15776136767ba059b",
+      "bytes": 235092,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/private-production-studio-canada/model.glb",
+      "sourceSha256": "694c3a9e1d4246f1ef8c524166e53145f41c95610c2788dac9a8cf07507b5313",
+      "publicSha256": "1a80cddb0781d1db6a27e48299d5cf1d04704906ab48f3c9a044a01aef876874",
+      "bytes": 7353632,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    },
+    {
+      "path": "assets/projects/atlas/private-production-studio-canada/city-preview.glb",
+      "sourceSha256": "07852572277f51ab1415f462e0aa90919b788a6843acf389b796b84eb2cf37a5",
+      "publicSha256": "fe0f16f857dbd26b84aabc72a316f35e80054ec5923ab872874fe71e66199921",
+      "bytes": 515224,
+      "cropped": false,
+      "removedObjectsOrInstances": 0,
+      "retainedObjectsOrInstances": 0,
+      "privateTextureBitmapsRemoved": false
+    }
+  ],
+  "losslessTransport": [
+    {
+      "manifest": "assets/projects/casa-alain/layers/model.parts.json",
+      "compressedBytes": 14070609,
+      "decodedSha256": "adb6625e19c5cec753eca16d73660b1eae1524b7a34cb13209103ad6015856f1"
+    },
+    {
+      "manifest": "assets/projects/atlas/mar-salada/model.parts.json",
+      "compressedBytes": 18203268,
+      "decodedSha256": "c9363e04dde337d10676be5c077fe6bc543c581672ca611601f25d8b979a5784"
+    },
+    {
+      "path": "assets/projects/atlas/acoustic-studio-italy/model.glb.gz",
+      "bytes": 7412428,
+      "sha256": "799fead4b54c5e4e08d4e038d32afb32d058d4060f8010d4a26f4059add152d4",
+      "decodedSha256": "bfb5230de9a40c6bd8f74fe4fec6b871a11458bd114b5c06b93fee7fa5f82a42"
+    },
+    {
+      "path": "assets/projects/atlas/can-furnet-club/model.glb.gz",
+      "bytes": 1107123,
+      "sha256": "867f59286b2b273d7677ed92ea860b9568f428c7be3230897df302b3877ff612",
+      "decodedSha256": "8dae648f57789957af83ce73793da8200b16ddf547bdd072f01fc674f3b4e50c"
+    },
+    {
+      "path": "assets/projects/atlas/private-production-studio-sta-eulalia/model.glb.gz",
+      "bytes": 481993,
+      "sha256": "3b6ce65f09755cfd7ff2c51a4b4db0be5bf5e765a2f0a737c3427ef5e39a1664",
+      "decodedSha256": "5ddd2cd14df9ebb5253ca2892d4c1f44c01ffa565079522575d02bc6ff63b794"
+    },
+    {
+      "path": "assets/projects/atlas/playa-soleil-bora-bora/model.glb.gz",
+      "bytes": 4203555,
+      "sha256": "0b7378c6c1eea74d3f94c625a5c819d4c3221c2189eb1e3dcc21f26368bdee9c",
+      "decodedSha256": "eae581f17c7238a0f78b3e48c415dd315b5a0315a709a6951b1c075d35f4ba35"
+    },
+    {
+      "path": "assets/projects/atlas/private-production-studio-canada/model.glb.gz",
+      "bytes": 6909198,
+      "sha256": "c3fda549692d8ef0433bcaf78d00db0270be2b8eadc88633092d79802508a845",
+      "decodedSha256": "1a80cddb0781d1db6a27e48299d5cf1d04704906ab48f3c9a044a01aef876874"
+    }
+  ],
+  "clubWebOptimisation": {
+    "path": "assets/projects/atlas/mar-salada/model.glb",
+    "sourceSha256": "5e9c62cf7572dce1ff273f34cc1f0da701bce48b4ba9fe63eb044ae32d29c230",
+    "publicSha256": "c9363e04dde337d10676be5c077fe6bc543c581672ca611601f25d8b979a5784",
+    "bytes": 58468048,
+    "cropped": false,
+    "removedObjectsOrInstances": 0,
+    "retainedObjectsOrInstances": 0,
+    "privateTextureBitmapsRemoved": false,
+    "optimisedRepeatedPrimitives": 34,
+    "sourceTriangles": 30084528,
+    "webTriangles": 8158442,
+    "classification": "SOURCE_GEOMETRY_WEB_LOD"
+  }
+}

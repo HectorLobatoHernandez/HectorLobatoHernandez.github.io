@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "compression": "gzip",
+  "bytes": 14070609,
+  "parts": [
+    {
+      "file": "model.glb.gz.part01",
+      "bytes": 8388608,
+      "sha256": "b58b522cdd7a96f45493e11acb6427a31cbc96012f1e1ca2d83bf0ed91e77f51"
+    },
+    {
+      "file": "model.glb.gz.part02",
+      "bytes": 5682001,
+      "sha256": "a8bcfa45750259488a6f81d3df85d69b17ae5d6be7f2fefa108f75740f2272aa"
+    }
+  ]
+}

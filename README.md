@@ -1,5 +1,7 @@
 <h1 align="center">Héctor Lobato</h1>
 <p align="center"><strong>Ingeniería de sistemas · Acústica · Audio / AV · Automatización · Software aplicado</strong></p>
+
+[**Architectural Atlas · English · Interactive city**](https://hectorlobatohernandez.github.io/atlas/) · [**Direct project links**](https://hectorlobatohernandez.github.io/atlas/links.html)
 <p align="center">Del diseño técnico y la integración física al desarrollo de herramientas digitales.</p>
 
 **Desde el teléfono:** [Abrir proyectos en vista móvil](https://hectorlobatohernandez.github.io/start/mobile.html)
@@ -39,7 +41,7 @@
 
 ### Project Atlas técnico
 
-[**Casa Alain — Cinema + Acoustics**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Audio Systems**](https://hectorlobatohernandez.github.io/projects/systems.html) · [**Acoustic Systems Library**](https://hectorlobatohernandez.github.io/projects/acoustic-library.html) · [Atlas visual 3D](https://hectorlobatohernandez.github.io/projects/experience.html) · [Atlas técnico 3D](https://hectorlobatohernandez.github.io/projects/atlas-3d.html) · [Promo técnica](https://hectorlobatohernandez.github.io/projects/promo.html) · [Índice técnico](https://hectorlobatohernandez.github.io/projects/) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**Studio Canada**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
+[**Casa Alain — Cinema + Acoustics**](https://hectorlobatohernandez.github.io/projects/casa-alain.html) · [**Audio Systems**](https://hectorlobatohernandez.github.io/projects/systems.html) · [**Acoustic Systems Library**](https://hectorlobatohernandez.github.io/projects/acoustic-library.html) · [Atlas visual 3D](https://hectorlobatohernandez.github.io/projects/experience.html) · [Atlas técnico 3D](https://hectorlobatohernandez.github.io/projects/atlas-3d.html) · [Promo técnica](https://hectorlobatohernandez.github.io/projects/promo.html) · [Índice técnico](https://hectorlobatohernandez.github.io/projects/) · [**Can Furnet Club**](https://hectorlobatohernandez.github.io/projects/can-furnet-club.html) · [**Playa Soleil / Bora Bora**](https://hectorlobatohernandez.github.io/projects/playa-soleil-bora-bora.html) · [**SAWYER**](https://hectorlobatohernandez.github.io/projects/private-production-studio-canada.html) · [**Studio Sta. Eulalia**](https://hectorlobatohernandez.github.io/projects/private-production-studio-sta-eulalia.html) · [**Acoustic Room Italy**](https://hectorlobatohernandez.github.io/projects/acoustic-studio-italy.html)
 
 ### Otros proyectos
 

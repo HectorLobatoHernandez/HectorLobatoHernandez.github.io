@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "projectId": "mar-salada",
+  "title": "SOUND CLUB / CLUB DEL MAR",
+  "model": "model.parts.json",
+  "sourceNote": "Optimised source geometry \u00b7 repeated details simplified \u00b7 neutral materials",
+  "sourceClass": "SOURCE_GEOMETRY_WEB_LOD",
+  "sourceSha256": "ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665",
+  "presentationBounds": [
+    [
+      -65,
+      -3,
+      -55
+    ],
+    [
+      25,
+      12,
+      25
+    ]
+  ],
+  "items": {
+    "model-capture-4k.png": {
+      "title": "Source model \u00b7 4K view",
+      "full": "model-capture-4k.png",
+      "thumb": "thumbs/model-capture-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "kind": "Source model render",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "plan.webp": {
+      "title": "Zoning reference \u00b7 design revision",
+      "full": "plan.webp",
+      "thumb": "thumbs/plan.webp",
+      "width": 992,
+      "height": 578,
+      "kind": "Project reference \u00b7 not a verified CAD drawing",
+      "source": "DOCUMENTED_REFERENCE"
+    }
+  },
+  "sequences": {
+    "plan": [
+      "plan.webp"
+    ],
+    "build": [
+      "model-capture-4k.png"
+    ],
+    "interior": [
+      "model-capture-4k.png"
+    ]
+  },
+  "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "note": "Source-derived inspection geometry. Repeated small components are simplified for web performance; neutral materials omit embedded private bitmaps. Not an as-built certificate."
+}

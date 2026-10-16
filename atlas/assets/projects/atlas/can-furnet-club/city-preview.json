@@ -1,0 +1,25 @@
+{
+  "classification": "SOURCE_GEOMETRY_LOD",
+  "file": "city-preview.glb",
+  "triangles": 9115,
+  "sourceObjectsUsed": 376,
+  "sourceOrigin": [
+    9.140844548821338,
+    -0.3499999940395353,
+    -18.18103653585326
+  ],
+  "sourceBounds": [
+    [
+      -4.554265348792167,
+      -0.3499999940395353,
+      -27.870335388786753
+    ],
+    [
+      22.835954446434844,
+      3.9999999999999982,
+      -8.491737682919766
+    ]
+  ],
+  "sourceFileSha256": "694ee6defc6561b0d855bebaced299edfabbb20d5b6d59ac766a8d9c23ccfcf7",
+  "notes": "Simplified source geometry for conceptual city navigation."
+}

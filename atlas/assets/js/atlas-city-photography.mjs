@@ -1,0 +1,6 @@
+import * as THREE from 'three';
+export function createCityPhotography(scene){
+ const uniforms={night:{value:0},sunset:{value:0}},sky=new THREE.Mesh(new THREE.SphereGeometry(1300,24,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,uniforms,vertexShader:'varying vec3 v;void main(){v=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 v;uniform float night;uniform float sunset;void main(){float h=smoothstep(-.05,.8,v.y);vec3 day=mix(vec3(.82,.85,.8),vec3(.16,.39,.64),h);vec3 dusk=mix(vec3(.72,.31,.15),vec3(.08,.12,.24),h);vec3 dark=mix(vec3(.035,.045,.07),vec3(.004,.009,.021),h);gl_FragColor=vec4(mix(mix(day,dusk,sunset),dark,night),1.);}'}));sky.renderOrder=-10;sky.frustumCulled=false;sky.onBeforeRender=(renderer,scene,camera)=>{sky.position.copy(camera.position);sky.updateMatrixWorld()};scene.add(sky);
+ const sun=new THREE.Mesh(new THREE.SphereGeometry(9,20,16),new THREE.MeshBasicMaterial({color:0xffe5af,fog:false,toneMapped:false}));scene.add(sun);
+ return {update(level,elevation=.5){uniforms.night.value=level;uniforms.sunset.value=Math.sin(level*Math.PI);sun.position.set(-100,Math.sin(elevation)*115,-150);sun.visible=level<.78;sun.material.color.setRGB(1,.86-level*.45,.62-level*.45)},snapshot(){return {sunVisible:sun.visible,night:uniforms.night.value}}};
+}

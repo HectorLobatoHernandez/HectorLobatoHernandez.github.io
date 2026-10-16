@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "title": "Project Atlas",
+  "classification": "CONCEPTUAL_NAVIGATION_CITY",
+  "description": "Conceptual navigation city; buildings do not represent real project locations.",
+  "projects": [
+    {
+      "id": "casa-alain",
+      "number": "P02",
+      "name": "Casa Alain",
+      "domain": [
+        "Private cinema",
+        "DJ listening",
+        "Acoustic engineering"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          -22,
+          20
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./casa-alain-layers.html",
+      "plan": "../assets/projects/casa-alain/gallery/plan-map.webp",
+      "source": "SOURCE_SKETCHUP_COMPONENTS",
+      "shareSlug": "casa-alain"
+    },
+    {
+      "id": "mar-salada",
+      "number": "P01",
+      "name": "SOUND CLUB / CLUB DEL MAR",
+      "domain": [
+        "Professional AV",
+        "Acoustics",
+        "KNX / ETS6"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          -70,
+          20
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./atlas-project.html",
+      "plan": "../assets/projects/atlas/mar-salada/plan.webp",
+      "source": "SOURCE_MODEL",
+      "kind": "model",
+      "shareSlug": "sound-club"
+    },
+    {
+      "id": "can-furnet-club",
+      "number": "P03",
+      "name": "Can Furnet Club",
+      "domain": [
+        "Sound isolation",
+        "Box-in-box",
+        "Structural decoupling"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          22,
+          20
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./atlas-project.html",
+      "plan": "../assets/projects/atlas/can-furnet-club/plan.webp",
+      "source": "SOURCE_MODEL",
+      "kind": "model",
+      "shareSlug": "can-furnet-club"
+    },
+    {
+      "id": "playa-soleil-bora-bora",
+      "number": "P04",
+      "name": "Playa Soleil / Bora Bora",
+      "domain": [
+        "Professional AV",
+        "Cable book",
+        "CAT6a"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          70,
+          20
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./atlas-project.html",
+      "plan": "../assets/projects/atlas/playa-soleil-bora-bora/plan.webp",
+      "source": "SOURCE_MODEL",
+      "kind": "model",
+      "shareSlug": "playa-soleil-bora-bora"
+    },
+    {
+      "id": "private-production-studio-canada",
+      "number": "P05",
+      "name": "SAWYER",
+      "domain": [
+        "Production studio",
+        "Acoustic treatment",
+        "Diffusion"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          -70,
+          -36
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./atlas-project.html",
+      "plan": "../assets/projects/atlas/private-production-studio-canada/plan.webp",
+      "source": "SOURCE_MODEL",
+      "kind": "model",
+      "shareSlug": "sawyer"
+    },
+    {
+      "id": "private-production-studio-sta-eulalia",
+      "number": "P06",
+      "name": "Private Producer Studio",
+      "domain": [
+        "Studio acoustics",
+        "First reflections",
+        "Absorbent ceiling"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          -22,
+          -36
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./atlas-project.html",
+      "plan": "../assets/projects/atlas/private-production-studio-sta-eulalia/plan.webp",
+      "source": "SOURCE_MODEL",
+      "kind": "model",
+      "shareSlug": "producer-studio"
+    },
+    {
+      "id": "acoustic-studio-italy",
+      "number": "P07",
+      "name": "Acoustic Production Room",
+      "domain": [
+        "Room acoustics",
+        "RT60 prediction",
+        "Bass control"
+      ],
+      "status": "ready",
+      "plot": {
+        "center": [
+          22,
+          -36
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "entry": "./atlas-project.html",
+      "plan": "../assets/projects/atlas/acoustic-studio-italy/plan.webp",
+      "source": "SOURCE_MODEL",
+      "kind": "model",
+      "shareSlug": "acoustic-room"
+    },
+    {
+      "id": "private-producer-acoustic-concept",
+      "number": "P08",
+      "name": "Reserved project",
+      "domain": [
+        "Private archive"
+      ],
+      "status": "reserved",
+      "plot": {
+        "center": [
+          70,
+          -36
+        ],
+        "size": [
+          34,
+          24
+        ]
+      },
+      "source": "PRIVATE_NOT_PUBLISHED",
+      "shareSlug": "private-producer-acoustic-concept"
+    }
+  ]
+}

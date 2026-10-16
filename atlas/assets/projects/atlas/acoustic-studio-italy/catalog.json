@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "projectId": "acoustic-studio-italy",
+  "title": "Acoustic Production Room",
+  "model": "model.glb.gz",
+  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceClass": "SOURCE_MODEL",
+  "sourceSha256": "2083580a436444994df956976b047e912fb27ca19f27f78944c2145455e1fa01",
+  "presentationBounds": [
+    [
+      -12,
+      -2,
+      -12
+    ],
+    [
+      12,
+      8,
+      12
+    ]
+  ],
+  "items": {
+    "model-4k.webp": {
+      "title": "Source model \u00b7 4K view",
+      "full": "model-4k.webp",
+      "thumb": "thumbs/model-4k.webp",
+      "width": 3840,
+      "height": 2160,
+      "kind": "Source model render",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "plan.webp": {
+      "title": "Source plan",
+      "full": "plan.webp",
+      "thumb": "thumbs/plan.webp",
+      "width": 2160,
+      "height": 2160,
+      "kind": "Source plan",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "ref-001": {
+      "title": "Project reference 03",
+      "full": "ref-001.webp",
+      "thumb": "thumbs/ref-001.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "110277a0ce52384e4a408f97b124eb879e2471ed27339ef4a3d554e431b7bb69"
+    },
+    "ref-002": {
+      "title": "Project reference 04",
+      "full": "ref-002.webp",
+      "thumb": "thumbs/ref-002.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "3258a49bc28c448b25e6d7319ef61deb564e3c10fac26f16820b692f22499c99"
+    },
+    "ref-003": {
+      "title": "Project reference 05",
+      "full": "ref-003.webp",
+      "thumb": "thumbs/ref-003.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "786e26c64af12334c8b4427788e68a8c3b5bf212a0ca842b5c439f16fa7ca5c9"
+    },
+    "ref-004": {
+      "title": "Project reference 06",
+      "full": "ref-004.webp",
+      "thumb": "thumbs/ref-004.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "58d5c2c376008ba637999b1c69b4c766d96d2066d5a9087a61d12807024d512e"
+    },
+    "ref-005": {
+      "title": "Project reference 07",
+      "full": "ref-005.webp",
+      "thumb": "thumbs/ref-005.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "cd24b4cf8b8ba388c986a03b017300511b927394e59b5d102c4a7ae108adb485"
+    },
+    "ref-006": {
+      "title": "Project reference 08",
+      "full": "ref-006.webp",
+      "thumb": "thumbs/ref-006.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "908f60cfd63e3ac744c587a775057b6e5b68e2669845619d1f6f2b6bbd736c1f"
+    },
+    "ref-007": {
+      "title": "Project reference 09",
+      "full": "ref-007.webp",
+      "thumb": "thumbs/ref-007.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "21fd83c42785b80881403f6425f6e9ff25b0021cde929efb1c2d48f43d6df4b6"
+    },
+    "ref-008": {
+      "title": "Project reference 10",
+      "full": "ref-008.webp",
+      "thumb": "thumbs/ref-008.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "4558481093052fa723425e5a4465bb36c369287fe892353aad8910e50e7e2370"
+    },
+    "ref-009": {
+      "title": "Project reference 11",
+      "full": "ref-009.webp",
+      "thumb": "thumbs/ref-009.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "38d5be40039940cbec5140235d4b09d06ab0ac72ce898789612a7cc87221f766"
+    },
+    "ref-010": {
+      "title": "Project reference 12",
+      "full": "ref-010.webp",
+      "thumb": "thumbs/ref-010.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "50c4d8d6ff74e2454e968615f586f6e27785ca4916f0deec1e806946a2350a5d"
+    },
+    "ref-011": {
+      "title": "Project reference 13",
+      "full": "ref-011.webp",
+      "thumb": "thumbs/ref-011.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "431644c974b32eba080d9f0a31e5a10dd8d06dd8355e2e6deaf850ea80957758"
+    },
+    "ref-012": {
+      "title": "Project reference 14",
+      "full": "ref-012.webp",
+      "thumb": "thumbs/ref-012.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "cbf7ce350f491b582403987343616755fa2827c503d3621ab9cd1d351f7748fc"
+    },
+    "ref-013": {
+      "title": "Project reference 15",
+      "full": "ref-013.webp",
+      "thumb": "thumbs/ref-013.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "e5e1d0982f25fe195b22fc0af2d05afe7bde43ae0f3918031600d63f29881fff"
+    },
+    "ref-014": {
+      "title": "Project reference 16",
+      "full": "ref-014.webp",
+      "thumb": "thumbs/ref-014.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "22461e8d7bcacad69d69a4d67c937ecdda47803bb7d7d489f7862a2ac6557251"
+    },
+    "ref-015": {
+      "title": "Project reference 17",
+      "full": "ref-015.webp",
+      "thumb": "thumbs/ref-015.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "783c8be7d29724a3c86f4e6d967429385a2d536053a25f4d9f6143cab40bbb2d"
+    },
+    "ref-016": {
+      "title": "Project reference 18",
+      "full": "ref-016.webp",
+      "thumb": "thumbs/ref-016.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "6dfbcd34b66c8a8961e0beda2433136d78c0ff24cd80bc20899bf0bd313e5eb3"
+    },
+    "ref-017": {
+      "title": "Project reference 19",
+      "full": "ref-017.webp",
+      "thumb": "thumbs/ref-017.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "9b88d86c17b19587f29c137fcfbfa3e6623a02ba0e782171b0497f9e85f7ba44"
+    },
+    "ref-018": {
+      "title": "Project reference 20",
+      "full": "ref-018.webp",
+      "thumb": "thumbs/ref-018.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "7df7a7e072d05c64a7776fee5a5f8a4cff89cace719f03f9a1b9b470c68b7ee2"
+    },
+    "ref-019": {
+      "title": "Project reference 21",
+      "full": "ref-019.webp",
+      "thumb": "thumbs/ref-019.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "27f8e171b22c795d741522987a2ab0ace78d11a3325710b2aee3d15c7ab59008"
+    },
+    "ref-020": {
+      "title": "Project reference 22",
+      "full": "ref-020.webp",
+      "thumb": "thumbs/ref-020.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "f967efba7e68aca74e2fab8d760e524babe1f9aac2d31452714109750bae10ac"
+    },
+    "ref-021": {
+      "title": "Project reference 23",
+      "full": "ref-021.webp",
+      "thumb": "thumbs/ref-021.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "2e040be44d2ef9d10f7933ea18f1246f1e462c98ab29d1fe714de53023fd31e1"
+    },
+    "ref-022": {
+      "title": "Project reference 24",
+      "full": "ref-022.webp",
+      "thumb": "thumbs/ref-022.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "84bb87bdaaa5ff4efa9789ad8e26f666e5107734d95efbd66f3f56da83b4c087"
+    },
+    "ref-023": {
+      "title": "Project reference 25",
+      "full": "ref-023.webp",
+      "thumb": "thumbs/ref-023.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "07c2099572f2f56ae8d38c60d31936cac2e1c473f0dadf817627fb672b5294ee"
+    },
+    "ref-024": {
+      "title": "Project reference 26",
+      "full": "ref-024.webp",
+      "thumb": "thumbs/ref-024.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "220692e66079d8d9dd1141105df5bf35b4a36625cf10f964b4beb98c79d5d256"
+    }
+  },
+  "sequences": {
+    "plan": [
+      "plan.webp"
+    ],
+    "build": [
+      "model-4k.webp"
+    ],
+    "interior": [
+      "model-4k.webp",
+      "ref-001",
+      "ref-002",
+      "ref-003",
+      "ref-004",
+      "ref-005",
+      "ref-006",
+      "ref-007",
+      "ref-008",
+      "ref-009",
+      "ref-010",
+      "ref-011",
+      "ref-012",
+      "ref-013",
+      "ref-014",
+      "ref-015",
+      "ref-016",
+      "ref-017",
+      "ref-018",
+      "ref-019",
+      "ref-020",
+      "ref-021",
+      "ref-022",
+      "ref-023",
+      "ref-024"
+    ]
+  },
+  "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+}

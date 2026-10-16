@@ -1,0 +1,7 @@
+# Private/intermediate input files are never part of the public application.
+**/model.glb
+**/pilot/geometry.json
+**/pilot/sources.json
+**/private-producer-acoustic-concept/
+assets/projects/casa-alain/layers/model.glb.gz
+assets/projects/atlas/mar-salada/model.glb.gz

@@ -1,0 +1,571 @@
+{
+  "schemaVersion": 1,
+  "projectId": "private-production-studio-canada",
+  "title": "SAWYER",
+  "model": "model.glb.gz",
+  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceClass": "SOURCE_MODEL",
+  "sourceSha256": "5640b3ab0e4157d863d1ba3ef64d61b59765adda690167ae645ea0970cb22000",
+  "presentationBounds": [
+    [
+      -12,
+      -2,
+      -15
+    ],
+    [
+      12,
+      8,
+      12
+    ]
+  ],
+  "items": {
+    "model-4k.webp": {
+      "title": "Source model \u00b7 4K view",
+      "full": "model-4k.webp",
+      "thumb": "thumbs/model-4k.webp",
+      "width": 3840,
+      "height": 2160,
+      "kind": "Source model render",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "plan.webp": {
+      "title": "Source plan",
+      "full": "plan.webp",
+      "thumb": "thumbs/plan.webp",
+      "width": 2160,
+      "height": 2160,
+      "kind": "Source plan",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "ref-001": {
+      "title": "Project reference 03",
+      "full": "ref-001.webp",
+      "thumb": "thumbs/ref-001.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "64c347250629796e5bd2ad61f2a7c51bea9154955ae06f2b3bfe81be011e6f1c"
+    },
+    "ref-002": {
+      "title": "Project reference 04",
+      "full": "ref-002.webp",
+      "thumb": "thumbs/ref-002.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "4c939f03e259ed8eb90ed20b869a01d0c22dedf353184c60b31c2a108b72c8b0"
+    },
+    "ref-003": {
+      "title": "Project reference 05",
+      "full": "ref-003.webp",
+      "thumb": "thumbs/ref-003.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "8deec87327cd144b455080c1edf57bde4c6d0126e998770349d0e6ea393e5f6f"
+    },
+    "ref-004": {
+      "title": "Project reference 06",
+      "full": "ref-004.webp",
+      "thumb": "thumbs/ref-004.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "4a8a3497aaebeda1949d4841be0a5323c9a2c54429f8afc61af7432590b449b7"
+    },
+    "ref-005": {
+      "title": "Project reference 07",
+      "full": "ref-005.webp",
+      "thumb": "thumbs/ref-005.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "5c8a91dee7ac6219954d974966a205c4c67491dff49e529ddeed4317cde21a87"
+    },
+    "ref-006": {
+      "title": "Project reference 08",
+      "full": "ref-006.webp",
+      "thumb": "thumbs/ref-006.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "ef536a2889117154dc879a2564f4717b188a2fa8424ea82acb92de3d45ffda41"
+    },
+    "ref-007": {
+      "title": "Project reference 09",
+      "full": "ref-007.webp",
+      "thumb": "thumbs/ref-007.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "5d8802e12101a410bebfcacb4d7cd89566b4a233988c95abb6b44bf41aefb39f"
+    },
+    "ref-008": {
+      "title": "Project reference 10",
+      "full": "ref-008.webp",
+      "thumb": "thumbs/ref-008.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "a5416cc696761be020bbd79eb70e0174a1dcbdc49887c2caa88161853b24e0ea"
+    },
+    "ref-009": {
+      "title": "Project reference 11",
+      "full": "ref-009.webp",
+      "thumb": "thumbs/ref-009.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "2f92e235160ba39e3c7385c9b90b86ae4c1ec1a07e1724040c515e88ad1b783a"
+    },
+    "ref-010": {
+      "title": "Project reference 12",
+      "full": "ref-010.webp",
+      "thumb": "thumbs/ref-010.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "45c552eb70c6461c044a58b1211a76ce8905acb4107b97338019caf5f382bf68"
+    },
+    "ref-011": {
+      "title": "Project reference 13",
+      "full": "ref-011.webp",
+      "thumb": "thumbs/ref-011.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "8f4c96935e77b436926c89e83a5472bfdea5d5f210a7a76468738e4935ca02a9"
+    },
+    "ref-012": {
+      "title": "Project reference 14",
+      "full": "ref-012.webp",
+      "thumb": "thumbs/ref-012.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "341fb7175bf9e98d5067ef85bcbfe726387ed966ed5ca598b76f8607dc36b5d4"
+    },
+    "ref-013": {
+      "title": "Project reference 15",
+      "full": "ref-013.webp",
+      "thumb": "thumbs/ref-013.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "dc21774478ca07f0cb395bc35620f96947ed09aca1e3c66f171527570cddffec"
+    },
+    "ref-014": {
+      "title": "Project reference 16",
+      "full": "ref-014.webp",
+      "thumb": "thumbs/ref-014.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "c6c79b06bd1b979316f2e9ac82fb66506a810633650a18aa0b1ee744f93d67f5"
+    },
+    "ref-015": {
+      "title": "Project reference 17",
+      "full": "ref-015.webp",
+      "thumb": "thumbs/ref-015.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "302ca052b9ae9cfe9554b279200b85050bb10b7531ea60bf5006c6964ee01e2e"
+    },
+    "ref-016": {
+      "title": "Project reference 18",
+      "full": "ref-016.webp",
+      "thumb": "thumbs/ref-016.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "ca5647e759a778a63d3279f74fbd80f6494bf4c95f31d8ae8f7016e95ba59884"
+    },
+    "ref-017": {
+      "title": "Project reference 19",
+      "full": "ref-017.webp",
+      "thumb": "thumbs/ref-017.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "a6eb071834dd97c7808e7aab8e1cce122eee11544dabde5f51436ae0c961f06f"
+    },
+    "ref-018": {
+      "title": "Project reference 20",
+      "full": "ref-018.webp",
+      "thumb": "thumbs/ref-018.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "68b4bdeb9327a1843921e53c8082b95a3014d5b5e569e251c69c9f432afea569"
+    },
+    "ref-019": {
+      "title": "Project reference 21",
+      "full": "ref-019.webp",
+      "thumb": "thumbs/ref-019.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "d058011acd260cc9d14a0f2d0ecc775a532c2ac7740d76ace4891c36d8ce6cf9"
+    },
+    "ref-020": {
+      "title": "Project reference 22",
+      "full": "ref-020.webp",
+      "thumb": "thumbs/ref-020.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "c714adecdb831cb283460fe1125366a2ca707234e1a78ceeb040d684b3efc31d"
+    },
+    "ref-021": {
+      "title": "Project reference 23",
+      "full": "ref-021.webp",
+      "thumb": "thumbs/ref-021.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "edc189b2fb6e8525afb59f0946e063ee5f167d53b0ffa5cfbf422a401d359af8"
+    },
+    "ref-022": {
+      "title": "Project reference 24",
+      "full": "ref-022.webp",
+      "thumb": "thumbs/ref-022.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "b96e306c4b25760640f52bd247b9b757657bfea43566b772778fe07efd28500a"
+    },
+    "ref-023": {
+      "title": "Project reference 25",
+      "full": "ref-023.webp",
+      "thumb": "thumbs/ref-023.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "12b27801b9c281f1805e32c200c74873ea659f3343887536bc512d733f09bbbd"
+    },
+    "ref-024": {
+      "title": "Project reference 26",
+      "full": "ref-024.webp",
+      "thumb": "thumbs/ref-024.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "30e02a982ffbf41f43b1a4fca4714b129faf754e576de61726278cfc735dc66e"
+    },
+    "ref-025": {
+      "title": "Project reference 27",
+      "full": "ref-025.webp",
+      "thumb": "thumbs/ref-025.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "cbab8973b7129229d3d9146118701545d0a660e5c55aa92c2db96376053a4a50"
+    },
+    "ref-026": {
+      "title": "Project reference 28",
+      "full": "ref-026.webp",
+      "thumb": "thumbs/ref-026.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "9cc9ce6b2a1aeb224cb574dc3d1282d81c32c27867bf8a9c90b336601e79de49"
+    },
+    "ref-027": {
+      "title": "Project reference 29",
+      "full": "ref-027.webp",
+      "thumb": "thumbs/ref-027.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "c8392a3ad364b52088c0498909eefef16c85c85a3648e89c8be2d48c41554be0"
+    },
+    "ref-028": {
+      "title": "Project reference 30",
+      "full": "ref-028.webp",
+      "thumb": "thumbs/ref-028.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "3e1f6bc77a1ae93dcff65921c6ff5e972f23dab72c3f9e7bc1d47c3fd1f16f33"
+    },
+    "ref-029": {
+      "title": "Project reference 31",
+      "full": "ref-029.webp",
+      "thumb": "thumbs/ref-029.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "2bc6c9d3cea7c71bb1c4c9404cc18a7f04b92532f7b40ac6d78fa78d50457418"
+    },
+    "ref-030": {
+      "title": "Project reference 32",
+      "full": "ref-030.webp",
+      "thumb": "thumbs/ref-030.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "5a3371b8b3de47d596e9ca47ae353867aa515e3099fa4ee2a9724d716430843e"
+    },
+    "ref-031": {
+      "title": "Project reference 33",
+      "full": "ref-031.webp",
+      "thumb": "thumbs/ref-031.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "b0cbc78ee8be547503baa3c7027b2ae847511dba20651b48d0c9cfd83b64e69c"
+    },
+    "ref-032": {
+      "title": "Project reference 34",
+      "full": "ref-032.webp",
+      "thumb": "thumbs/ref-032.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "fe6e2de32f1de4c55aebf2bebe722820267d2740f7ff9cbad4cdf0e44e623f8c"
+    },
+    "ref-033": {
+      "title": "Project reference 35",
+      "full": "ref-033.webp",
+      "thumb": "thumbs/ref-033.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "b3de2dde301eb5f3ba577d7c7207bd60af0b0b4bf9f0056e97964be76e606aa9"
+    },
+    "ref-034": {
+      "title": "Project reference 36",
+      "full": "ref-034.webp",
+      "thumb": "thumbs/ref-034.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "68787a0fefa12c19d12879d829d72bf40e6bb42be04f33b0e4af178c400fc7d6"
+    },
+    "ref-035": {
+      "title": "Project reference 37",
+      "full": "ref-035.webp",
+      "thumb": "thumbs/ref-035.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "92d4f1817754fc97124167a0acf367a96eb8a09574f842931a4328fa2897eb12"
+    },
+    "ref-036": {
+      "title": "Project reference 38",
+      "full": "ref-036.webp",
+      "thumb": "thumbs/ref-036.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "1a438a501d32d75f9890fa515d7d51c0d4d6293f1eb9482188a65758fa2b0e7e"
+    },
+    "ref-037": {
+      "title": "Project reference 39",
+      "full": "ref-037.webp",
+      "thumb": "thumbs/ref-037.webp",
+      "width": 644,
+      "height": 649,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "e1558b06bd86df61fc89098a7c8b03db14970daba224b9e423e21957271cc377"
+    },
+    "ref-038": {
+      "title": "Project reference 40",
+      "full": "ref-038.webp",
+      "thumb": "thumbs/ref-038.webp",
+      "width": 650,
+      "height": 644,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "845181b785687d4bde93bf189c9fb8cdcb716d3de05f53581a717c072b71ed06"
+    },
+    "ref-039": {
+      "title": "Project reference 41",
+      "full": "ref-039.webp",
+      "thumb": "thumbs/ref-039.webp",
+      "width": 646,
+      "height": 648,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "9fa3296c3bb18484f98ebb4500f6b5d9e635b5ed4391a5bd3744d365a1207cdf"
+    },
+    "ref-040": {
+      "title": "Project reference 42",
+      "full": "ref-040.webp",
+      "thumb": "thumbs/ref-040.webp",
+      "width": 646,
+      "height": 653,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "03667828208a780ccfacdb4b589c583768426827a753d700cd2d0a874db78d17"
+    },
+    "ref-041": {
+      "title": "Project reference 43",
+      "full": "ref-041.webp",
+      "thumb": "thumbs/ref-041.webp",
+      "width": 379,
+      "height": 251,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "96b967c00c3e7901c09f10003765fc32a44482234d648a40e70392e8b1c27cec"
+    },
+    "ref-042": {
+      "title": "Project reference 44",
+      "full": "ref-042.webp",
+      "thumb": "thumbs/ref-042.webp",
+      "width": 821,
+      "height": 291,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "67f59dcd514430216c7b49500894024c205c094a332cde5d1c0d527684f62754"
+    },
+    "ref-043": {
+      "title": "Project reference 45",
+      "full": "ref-043.webp",
+      "thumb": "thumbs/ref-043.webp",
+      "width": 831,
+      "height": 293,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "e3934dd4e167944722e708ebee1546b1a9d3f9cefb18743ee166dd06920d8f4d"
+    },
+    "ref-044": {
+      "title": "Project reference 46",
+      "full": "ref-044.webp",
+      "thumb": "thumbs/ref-044.webp",
+      "width": 1464,
+      "height": 536,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "f439d263acc2ab4260ba46f65ea47acdf0c7a41098855934e65b151ed4a36365"
+    },
+    "ref-045": {
+      "title": "Project reference 47",
+      "full": "ref-045.webp",
+      "thumb": "thumbs/ref-045.webp",
+      "width": 1500,
+      "height": 496,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "bbd727d2b1a30eea29aac0710cd34ad5e02e500a96f117198c02920191c0a1a3"
+    },
+    "ref-046": {
+      "title": "Project reference 48",
+      "full": "ref-046.webp",
+      "thumb": "thumbs/ref-046.webp",
+      "width": 311,
+      "height": 662,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "693d340fa3332d55430950c6618d4531bb9d119d266d1d1a6a05f4b43f164b44"
+    },
+    "ref-047": {
+      "title": "Project reference 49",
+      "full": "ref-047.webp",
+      "thumb": "thumbs/ref-047.webp",
+      "width": 742,
+      "height": 669,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "3deec9a10f02e5333327db9d64180cead5d372436ed1665c0e44979d203ff768"
+    }
+  },
+  "sequences": {
+    "plan": [
+      "plan.webp"
+    ],
+    "build": [
+      "model-4k.webp"
+    ],
+    "interior": [
+      "model-4k.webp",
+      "ref-001",
+      "ref-002",
+      "ref-003",
+      "ref-004",
+      "ref-005",
+      "ref-006",
+      "ref-007",
+      "ref-008",
+      "ref-009",
+      "ref-010",
+      "ref-011",
+      "ref-012",
+      "ref-013",
+      "ref-014",
+      "ref-015",
+      "ref-016",
+      "ref-017",
+      "ref-018",
+      "ref-019",
+      "ref-020",
+      "ref-021",
+      "ref-022",
+      "ref-023",
+      "ref-024",
+      "ref-025",
+      "ref-026",
+      "ref-027",
+      "ref-028",
+      "ref-029",
+      "ref-030",
+      "ref-031",
+      "ref-032",
+      "ref-033",
+      "ref-034",
+      "ref-035",
+      "ref-036",
+      "ref-037",
+      "ref-038",
+      "ref-039",
+      "ref-040",
+      "ref-041",
+      "ref-042",
+      "ref-043",
+      "ref-044",
+      "ref-045",
+      "ref-046",
+      "ref-047"
+    ]
+  },
+  "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+}

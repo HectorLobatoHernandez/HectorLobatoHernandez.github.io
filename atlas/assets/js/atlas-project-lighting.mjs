@@ -1,0 +1,14 @@
+import * as THREE from 'three';
+import {kelvinColor} from './atlas-city-atmosphere.mjs';
+// Warm, local pools and low grazing light. Presentation only: no photometric design claim.
+export function createProjectLighting(scene,id){
+ const profile={'casa-alain':{power:7,accent:0x587cb6},'mar-salada':{power:28,accent:0x26a86c},'can-furnet-club':{power:14,accent:0x6cab6d},'playa-soleil-bora-bora':{power:22,accent:0x37b6aa},'private-production-studio-canada':{power:6,accent:0x6e96ac},'private-production-studio-sta-eulalia':{power:5,accent:0xca8e56},'acoustic-studio-italy':{power:5,accent:0x8192ba}}[id]||{power:7,accent:0x75b3c8};
+ const group=new THREE.Group();group.name='Luz de presentación / 2300 K, colgantes y bañados';scene.add(group);const lights=[],targets=[],grazers=[];
+ for(let i=0;i<4;i++){const light=new THREE.SpotLight(kelvinColor(2300),profile.power*3,30,Math.PI*.26,.94,2),target=new THREE.Object3D();group.add(light,target);light.target=target;lights.push(light);targets.push(target)}
+ for(let i=0;i<4;i++){const light=new THREE.PointLight(kelvinColor(2300),profile.power*.45,8,2);group.add(light);grazers.push(light)}
+ const washes=[-1,1].map(side=>{const l=new THREE.PointLight(kelvinColor(2700),profile.power*.22,12,2);l.userData.side=side;group.add(l);return l});
+ const accent=new THREE.PointLight(profile.accent,profile.power*.5,12,2);group.add(accent);let night=0,ambience=false,level=.85;
+ const emitter=new THREE.InstancedMesh(new THREE.SphereGeometry(.035,6,4),new THREE.MeshBasicMaterial({color:0xffc87b,toneMapped:false}),4);group.add(emitter);
+ function refresh(){group.visible=night>.001;lights.forEach(l=>l.intensity=profile.power*3*level*night);grazers.forEach(l=>l.intensity=profile.power*.45*level*night);washes.forEach(l=>l.intensity=profile.power*.27*level*night);accent.visible=ambience;accent.intensity=profile.power*level*.9*night}
+ return {fit(size,floor=0,focus=null){if(focus)group.position.set(focus.x,0,focus.z);const w=Math.min(size.x,35),d=Math.min(size.z,35),y=floor+Math.min(2.8,Math.max(1.8,size.y-.15)),dummy=new THREE.Object3D();lights.forEach((light,i)=>{const x=(i%2?1:-1)*w*.27,z=(i<2?1:-1)*d*.28;light.position.set(x,y,z);light.distance=Math.max(7,Math.max(w,d));targets[i].position.set(x*.85,floor,z*.85);grazers[i].position.set((i%2?1:-1)*w*.44,floor+.2,z);grazers[i].distance=Math.max(4,Math.min(12,w));dummy.position.copy(light.position);dummy.updateMatrix();emitter.setMatrixAt(i,dummy.matrix)});emitter.instanceMatrix.needsUpdate=true;washes.forEach(l=>{l.position.set(l.userData.side*w*.3,floor+1.15,0);l.distance=Math.max(6,Math.min(18,Math.max(w,d)))});accent.position.set(w*.12,floor+.45,-d*.3);refresh()},setNight(v){night=Number(v);refresh()},setLevel(v){level=v;refresh()},setAmbience(v){ambience=v;refresh()},snapshot(){return {kelvin:2300,night,ambience,level,profile:id,spotlights:4,grazingLights:4,diffuseFills:2,classification:'PRESENTATION_LIGHTING'}}};
+}

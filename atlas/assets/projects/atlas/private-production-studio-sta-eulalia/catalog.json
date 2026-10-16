@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "projectId": "private-production-studio-sta-eulalia",
+  "title": "Private Producer Studio",
+  "model": "model.glb.gz",
+  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceClass": "SOURCE_MODEL",
+  "sourceSha256": "6868c0285d989564091e14e9636114cb0cd1fb0bc045e719fd60593063ca8b38",
+  "presentationBounds": null,
+  "items": {
+    "model-4k.webp": {
+      "title": "Source model \u00b7 4K view",
+      "full": "model-4k.webp",
+      "thumb": "thumbs/model-4k.webp",
+      "width": 3840,
+      "height": 2160,
+      "kind": "Source model render",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "plan.webp": {
+      "title": "Source plan",
+      "full": "plan.webp",
+      "thumb": "thumbs/plan.webp",
+      "width": 2160,
+      "height": 2160,
+      "kind": "Source plan",
+      "source": "SOURCE_MODEL_DERIVATIVE"
+    },
+    "ref-001": {
+      "title": "Project reference 03",
+      "full": "ref-001.webp",
+      "thumb": "thumbs/ref-001.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "9981a8172685a5b20e279081fd379c8fcb3c42c473cc70925d72301cdae325c2"
+    },
+    "ref-002": {
+      "title": "Project reference 04",
+      "full": "ref-002.webp",
+      "thumb": "thumbs/ref-002.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "fe19238a4a93702f15820efadb72d59ab65a97cf4f2b40e43d0c3a361c7eb3d1"
+    },
+    "ref-003": {
+      "title": "Project reference 05",
+      "full": "ref-003.webp",
+      "thumb": "thumbs/ref-003.webp",
+      "width": 800,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "548770ca6d73ab183dea36da0ea72b367792ca6439f8b5d988dfa62d623a777c"
+    },
+    "ref-004": {
+      "title": "Project reference 06",
+      "full": "ref-004.webp",
+      "thumb": "thumbs/ref-004.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "f36322c1b7bdf6c605883f28960f34f32b2e7566a6260cb63f14c81383861798"
+    },
+    "ref-005": {
+      "title": "Project reference 07",
+      "full": "ref-005.webp",
+      "thumb": "thumbs/ref-005.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "cf3364aba6cfbbbbe51314c0b4ea054aefc2fe5cad0456f4c302e39011f2cbb5"
+    },
+    "ref-006": {
+      "title": "Project reference 08",
+      "full": "ref-006.webp",
+      "thumb": "thumbs/ref-006.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "54d307fafb76c666bf5e01a2c93efcdf71efb72335b3f07e18ea1eac3c15e734"
+    },
+    "ref-007": {
+      "title": "Project reference 09",
+      "full": "ref-007.webp",
+      "thumb": "thumbs/ref-007.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "8a046a8ae2e3e50ee52ffa8c381b55fabe1164116e506b52baf499d23542eb5f"
+    },
+    "ref-008": {
+      "title": "Project reference 10",
+      "full": "ref-008.webp",
+      "thumb": "thumbs/ref-008.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "de25e0abe3e62be012047d97e1aedaf73058d50a456a4688795a86cd4c7914a6"
+    },
+    "ref-009": {
+      "title": "Project reference 11",
+      "full": "ref-009.webp",
+      "thumb": "thumbs/ref-009.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "98232b84a4b479b31653310df111de3c1df815d85053667cd2175c205ead07f3"
+    },
+    "ref-010": {
+      "title": "Project reference 12",
+      "full": "ref-010.webp",
+      "thumb": "thumbs/ref-010.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "da553c31af6b87f66376b454b17dd520fe372b3ee679c506714a583185cc574d"
+    },
+    "ref-011": {
+      "title": "Project reference 13",
+      "full": "ref-011.webp",
+      "thumb": "thumbs/ref-011.webp",
+      "width": 900,
+      "height": 450,
+      "kind": "Original project render",
+      "source": "SOURCE_PROJECT_ARCHIVE",
+      "sourceSha256": "357328204f66ba0190cf8883f14775491403d7fcab0f8a7d85c7b8d6b428a3bf"
+    }
+  },
+  "sequences": {
+    "plan": [
+      "plan.webp"
+    ],
+    "build": [
+      "model-4k.webp"
+    ],
+    "interior": [
+      "model-4k.webp",
+      "ref-001",
+      "ref-002",
+      "ref-003",
+      "ref-004",
+      "ref-005",
+      "ref-006",
+      "ref-007",
+      "ref-008",
+      "ref-009",
+      "ref-010",
+      "ref-011"
+    ]
+  },
+  "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+}

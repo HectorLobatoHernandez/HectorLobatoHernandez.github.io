@@ -1,0 +1,146 @@
+{
+  "source": "Source SketchUp geometry",
+  "classification": "SOURCE_SKETCHUP_COMPONENTS",
+  "layers": [
+    {
+      "id": "floor",
+      "name": "01 Suelo",
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "objects": 1
+    },
+    {
+      "id": "wall_north",
+      "name": "02 Pared norte",
+      "offset": [
+        0,
+        4.5,
+        0
+      ],
+      "objects": 1
+    },
+    {
+      "id": "wall_south",
+      "name": "03 Pared sur",
+      "offset": [
+        0,
+        -4.5,
+        0
+      ],
+      "objects": 1
+    },
+    {
+      "id": "wall_east",
+      "name": "04 Pared este",
+      "offset": [
+        4.5,
+        0,
+        0
+      ],
+      "objects": 1
+    },
+    {
+      "id": "wall_west",
+      "name": "05 Pared oeste",
+      "offset": [
+        -4.5,
+        0,
+        0
+      ],
+      "objects": 1
+    },
+    {
+      "id": "partition",
+      "name": "06 Partici\u00f3n",
+      "offset": [
+        0,
+        -3.0,
+        0
+      ],
+      "objects": 1
+    },
+    {
+      "id": "roof",
+      "name": "07 Cubiertas",
+      "offset": [
+        0,
+        0,
+        5.2
+      ],
+      "objects": 3
+    },
+    {
+      "id": "acoustic_wall",
+      "name": "08 Ac\u00fastica de paredes",
+      "offset": [
+        0,
+        0,
+        1.8
+      ],
+      "objects": 223
+    },
+    {
+      "id": "acoustic_ceiling",
+      "name": "09 Ac\u00fastica de techo",
+      "offset": [
+        0,
+        0,
+        3.1
+      ],
+      "objects": 24
+    },
+    {
+      "id": "openings",
+      "name": "10 Puertas y cortinas",
+      "offset": [
+        -3.8,
+        0,
+        0
+      ],
+      "objects": 96
+    },
+    {
+      "id": "furniture",
+      "name": "11 Mobiliario y puesto DJ",
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "objects": 14
+    },
+    {
+      "id": "av",
+      "name": "12 Audio y pantallas",
+      "offset": [
+        -1.6,
+        0,
+        0.6
+      ],
+      "objects": 354
+    },
+    {
+      "id": "lighting",
+      "name": "13 Luminarias",
+      "offset": [
+        0,
+        0,
+        1.8
+      ],
+      "objects": 386
+    }
+  ],
+  "excludedReferences": [],
+  "normalizationOffset": [
+    -22.667259216308594,
+    -11.273630142211914,
+    -0.0
+  ],
+  "originalModelHeight": 3.04484,
+  "planAnnotationHeight": 3.0,
+  "notes": "Presentation inspection layers; not an as-built or installation certificate.",
+  "objectCount": 1106
+}
