@@ -49,6 +49,7 @@ export function mountLivingScene(T,{scene,world,kind,getState,getLotId,camera=nu
   for(const id of ['SIM-MASTER-TANKER','SIM-FEED-CART']){const vehicle=world.root.getObjectByName(id);if(vehicle){for(const side of [-1,1]){const light=new T.PointLight(0xffe6ba,0,22,2);light.position.set(3.2,1.2,side*.65);vehicle.add(light);lights.push({light,inside:false,vehicle:true});}}}
  }else if(kind==='site'){
   for(const z of [-120,-75,-25,25,75,120]){lamp(root,-60,z);lamp(root,69,z);}
+  for(const [x,z] of [[0,-47],[34,-47],[61,-78]])lamp(world.interior,x,z,8,true);
   for(const d of DEPARTMENTS.filter(d=>d.id!=='parking')){const g=world.root.getObjectByName(d.id);if(g)lamp(g,d.x,d.z,Math.min(8,d.id==='asrs'?26:5),true);}
  }else{
   for(const r of world.rooms){const a=AREAS[r.station];lamp(r.g,a.x,a.z,3.1,true);}

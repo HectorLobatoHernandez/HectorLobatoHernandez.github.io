@@ -19,8 +19,8 @@
 <table>
 <tr>
 <td width="50%" valign="top">
-<a href="https://hectorlobatohernandez.github.io/apps/gaza/demostracion.html"><img src="assets/readme/gaza.svg" width="100%" alt="GAZA Operations — abrir demostración independiente de granja, laboratorio, planta y logística"></a>
-<p><a href="https://hectorlobatohernandez.github.io/apps/gaza/demostracion.html"><strong>Abrir demostración ↗</strong></a> · <a href="https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?view=site">Planta / Mission Control</a></p>
+<a href="https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?demo=company&view=site&warehouse=1&showcase=1"><img src="apps/gaza/assets/dossier/plant-warehouse-day.jpg" width="100%" alt="GAZA Operations — planta 3D con almacén y palés simulados"></a>
+<p><a href="https://hectorlobatohernandez.github.io/apps/gaza/mission-control.html?demo=company&view=site&warehouse=1&showcase=1"><strong>Abrir planta 3D y almacén ↗</strong></a> · <a href="https://hectorlobatohernandez.github.io/apps/gaza/dossier-candidatura.html">Dossier visual</a> · <a href="https://hectorlobatohernandez.github.io/apps/gaza/GAZA_OPS_Dossier_Visual_2026.pdf">Dossier PDF</a></p>
 </td>
 <td width="50%" valign="top">
 <a href="https://hectorlobatohernandez.github.io/apps/rhb/"><img src="assets/readme/rhb-studio.svg" width="100%" alt="RHB STUDIO — abrir demo en navegador de proyectos, CAD, documentación y agentes IA"></a>

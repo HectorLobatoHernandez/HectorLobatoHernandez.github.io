@@ -23,7 +23,8 @@ export function buildPlantDetail(T,world){
  function conveyor(p,x,z,w,len){box(p,x,.8,z,w,.32,len,m.dark);for(let j=-len/2+.5;j<len/2;j+=.55)tube(p,x,1,z+j,.085,w-.2,m.steel,0,Math.PI/2);for(const s of [-1,1])box(p,x+s*w/2,1.1,z,.09,.25,len,m.blue);for(let j=-len/2+1;j<len/2;j+=3)for(const s of [-1,1])box(p,x+s*w*.4,.4,z+j,.12,.7,.15)}
  function pallet(p,x,y,z,loaded=true){
   if(['asrs','shipping'].includes(p.name)){const dept=p.name,index=stockGlyphs.filter(g=>g.dept===dept).length,limit=dept==='asrs'?32:12,perFamily=limit/2;if(index>=limit)return;const g=new T.Group();g.name='LEDGER_PALLET_GLYPH';g.visible=false;p.add(g);stockGlyphs.push({g,dept,index,familyIndex:Math.floor(index/perFamily),familySlot:index%perFamily});p=g;const familyColor=material('family-'+Math.floor(index/perFamily),index<perFamily?0x8bc7e8:0xf2b96c);mesh(g,boxes,familyColor,[x,y+1.59,z+.5],[.9,.12,.07]);}
-  box(p,x,y+.14,z,1.2,.27,1,m.wood);for(let j=0;j<5;j++)box(p,x,y+.3,z-.4+j*.2,1.2,.04,.14,m.cream);if(loaded){box(p,x,y+.95,z,1.1,1.25,.95,m.cream);box(p,x,y+.95,z+.485,.75,.35,.025,m.blue)}
+  const large=p.name==='LEDGER_PALLET_GLYPH'&&stockGlyphs.at(-1)?.dept==='asrs',w=large?3.2:1.2,d=large?2.5:1;
+  box(p,x,y+.14,z,w,.27,d,m.wood);for(let j=0;j<5;j++)box(p,x,y+.3,z-d*.4+j*d*.2,w,.04,.14,m.cream);if(loaded){box(p,x,y+(large?1.5:.95),z,w*.93,large?2.25:1.25,d*.95,m.cream);box(p,x,y+(large?1.5:.95),z+d*.49,w*.65,.35,.025,m.blue)}
  }
  function person(p,d){const o=new T.Group();o.name='SIM-PLANT-STAFF-'+d.id;o.userData={livingRole:d.role,deptId:d.id};p.add(o);o.position.set(d.x-(d.w/2-1.8),0,d.z);const white=['frontdesk','administration','meeting'].includes(d.id)?m.blue:m.cream;mesh(o,cyl,white,[0,1.1,0],[.27,.85,.23]);mesh(o,ball,material('skin',0xbd967e),[0,1.78,0],[.19,.23,.18]);mesh(o,ball,m.blue,[0,1.93,0],[.2,.09,.19]);const arms=[];for(const s of [-1,1]){mesh(o,cyl,m.dark,[s*.15,.43,0],[.09,.85,.09]);const a=new T.Group();a.position.set(s*.3,1.45,0);o.add(a);mesh(a,cyl,white,[0,-.26,0],[.075,.5,.075]);arms.push(a)}workers.push({o,arms,dept:d.id,originZ:o.position.z});}
  for(const d of DEPARTMENTS){const g=new T.Group();g.name=d.id;(d.id==='parking'?outdoor:root).add(g);const fm=material('floor-'+d.id,['asrs','pallet','shipping'].includes(d.id)?0xaaa99b:['frontdesk','administration','meeting'].includes(d.id)?0xc7c0ae:0xbfcecb);const f=mesh(g,boxes,fm,[d.x,.27,d.z],[d.w,.22,d.d]);f.userData={id:'dept-'+d.id,deptId:d.id,title:d.title,description:d.steps.join(' → '),target:d.target,provenance:'SIMULATED_LAYOUT'};picks.push(f);const label=name(g,d.title,d.x,5,d.z,Math.min(22,d.w+8));areas.set(d.id,{g,f,label,d});
@@ -51,10 +52,20 @@ export function buildPlantDetail(T,world){
    for(const side of [-1,1])box(p,x+side*2.8,y,-79.5,.18,.23,49,m.yellow);
    for(let z=-100.5;z<-55;z+=7){
     for(const dz of [-2.6,0,2.6])box(p,x,y,z+dz,5.6,.16,.14,m.yellow);
-    for(const side of [-1,1])for(const dz of [-1.8,0,1.8])pallet(p,x+side*1.35,y+.05,z+dz,true);
+    // Pallet positions are drawn in the foreground inspection bay below, rather than
+    // clustering the first 32 ledger glyphs behind the rear rack frames.
    }
   }
  }
+ // Visual inventory bay: exactly one glyph per occupied ledger slot, bounded to 16
+ // positions per family. It is a proposed inspection layout, not a measured rack plan.
+ box(p,17,.35,-45,56,.35,28,m.floor);
+ for(let row=0;row<4;row++)for(let col=0;col<8;col++){
+  const x=-6+col*6.6,z=-56+row*5.8;
+  box(p,x,.57,z,5.2,.06,4.2,m.dark);
+  pallet(p,x,.62,z,true);
+ }
+ name(p,'STOCK SIM · 16 POSICIONES POR FAMILIA',17,5,-45,40);
  const lift=mesh(p,boxes,m.red,[17,1.1,-81],[4,.6,4]);dynamic.push({o:lift,taskId:'WAREHOUSE.PUTAWAY',from:[17,1.1,-81],to:[17,23.5,-81]});name(p,'9 niveles · calles propuestas / stock del lote SIM',17,28,-81,46);
  p=areas.get('shipping').g;for(let z=-99;z<=-49;z+=15){for(const x of [55,59,63])pallet(p,x,.5,z);box(p,61,1.6,z,3,.1,5,m.yellow)}equipment(p,'shipping','SHIP.CONTROL','Control de salida','Verifica decisión de expedición',62,-49,'DISPATCH.LOAD');
  for(const id of ['frontdesk','administration','meeting']){p=areas.get(id).g;const d=areas.get(id).d;if(id==='meeting'){box(p,-26,1.1,d.z,10,.2,2.5,m.wood);for(let i=0;i<5;i++)box(p,-30+i*2,.7,d.z-2,.7,.15,.6,m.blue)}else{for(let z=d.z-d.d/2+3;z<d.z+d.d/2-1;z+=4)for(const x of [-31,-24])monitor(p,x,z);equipment(p,id,'ADMIN.'+id,d.title,'Dossier derivado; no réplica de ERP',-20,d.z)}}
