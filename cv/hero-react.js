@@ -542,7 +542,7 @@
             h(TechText),
             h('p',{className:'rb-deck'},'Ingeniería e integración de sistemas: automatización, AV, IT/OT, CAD y software aplicado.'),
             h('div',{className:'rb-actions rb-actions-compact'},
-              h('a',{className:'rb-btn primary',href:'#proyectos'},'Explorar proyectos ↓'),
+              h('a',{className:'rb-btn primary',href:'/atlas/'},'Explorar Atlas 3D ↗'),
               h('a',{className:'rb-btn',href:'ats.html'},'CV ATS / PDF'),
               h('a',{className:'rb-btn',href:'present.html'},'Presentación 5 min')
             )
