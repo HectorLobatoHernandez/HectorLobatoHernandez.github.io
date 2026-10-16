@@ -43,6 +43,7 @@ jobs:
           sparse-checkout: |
             /README.md
             /index.html
+            /atlas/*.html
             /assets/readme/
             /assets/projects/
             /tools/check_readme_links.py
