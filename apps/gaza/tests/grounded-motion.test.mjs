@@ -7,6 +7,7 @@ import {buildFarmLife} from '../runtime/farm/life/layer.mjs';
 import {herdPlan} from '../runtime/farm/life/herd-model.mjs';
 import {milkingLanePose,milkingLanes} from '../runtime/farm/milking-lanes.mjs';
 import {projectFarm} from '../runtime/farm/model.mjs';
+import {buildExterior} from '../runtime/site-real-world.mjs';
 import {initialState} from '../runtime/processes/ledger.mjs';
 
 test('grazing and watering turns remain continuous at phase boundaries',()=>{
@@ -49,4 +50,27 @@ test('visible hoof meshes contact their actual indoor floor or yard',()=>{
   });
   assert(indoor&&yard);
  }finally{life.dispose();world.dispose();globalThis.document=original}
+});
+
+test('fleet wheels and practice pallets rest on their respective road and warehouse floor',()=>{
+ const original=globalThis.document;
+ globalThis.document={createElement:()=>({width:0,height:0,getContext:()=>({fillRect(){},fillText(){},beginPath(){},lineTo(){},arc(){},fill(){}})})};
+ const Mock={...T,TextureLoader:class{load(_url,callback){const tx=new T.Texture();callback?.(tx);return tx}}};
+ const world=buildExterior(Mock);
+ try{
+  for(const truck of world.moving){
+   const wheel=truck.wheels[0];wheel.geometry.computeBoundingBox();wheel.updateWorldMatrix(true,false);
+   const bounds=wheel.geometry.boundingBox.clone().applyMatrix4(wheel.matrixWorld);
+   assert(Math.abs(bounds.min.y)<.025,`truck wheel above road by ${bounds.min.y}`);
+  }
+  const forklift=world.root.getObjectByName('SIM-DOCK-FORKLIFT');
+  const wheel=forklift.children.find(o=>o.isMesh&&o.geometry.type==='CylinderGeometry');
+  wheel.geometry.computeBoundingBox();wheel.updateWorldMatrix(true,false);
+  assert(Math.abs(wheel.geometry.boundingBox.clone().applyMatrix4(wheel.matrixWorld).min.y-.35)<.03);
+  const pallets=world.root.getObjectByName('DOCK_PALLETS_PRACTICE_ONLY');
+  for(const pallet of pallets.children.filter((_,i)=>i%2===0)){
+   pallet.geometry.computeBoundingBox();pallet.updateWorldMatrix(true,false);
+   assert(Math.abs(pallet.geometry.boundingBox.clone().applyMatrix4(pallet.matrixWorld).min.y-.35)<.025);
+  }
+ }finally{world.dispose();globalThis.document=original}
 });
