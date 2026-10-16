@@ -28,7 +28,7 @@ jobs:
         run: |
           node --check runtime/farm/life/controls.mjs
           node --check runtime/farm/viewer.mjs
-          node --test tests/farm-life.test.mjs tests/farm-life-review.test.mjs tests/farm-zamora.test.mjs tests/farm-refinement.test.mjs tests/process-ledger.test.mjs tests/lab-detail.test.mjs tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/site-real-core.test.mjs
+          node --test tests/farm-life.test.mjs tests/grounded-motion.test.mjs tests/farm-life-review.test.mjs tests/farm-zamora.test.mjs tests/farm-refinement.test.mjs tests/process-ledger.test.mjs tests/lab-detail.test.mjs tests/plant-detail.test.mjs tests/plant-stock.test.mjs tests/site-real-core.test.mjs
       - run: npx playwright install --with-deps chromium
       - name: Start app
         run: |

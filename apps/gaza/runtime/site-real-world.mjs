@@ -102,15 +102,21 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   for(const v of Object.values(dockVehicles)){v.tractor.position.set(68,.15,-78);v.load.position.set(61,.15,-78);v.tractor.visible=false;v.load.visible=false}
   let dockPreview=false,dockKind='Expedición',dockTruckId=null,dockPractice=false;
   const practiceGroup=new THREE.Group();practiceGroup.name='DOCK_PALLETS_PRACTICE_ONLY';interior.add(practiceGroup);practiceGroup.visible=false;
-  for(let i=0;i<6;i++){const x=52+(i%2)*2.2,z=-94+Math.floor(i/2)*7;box(x,.27,z,1.45,.35,1.1,wood,practiceGroup);box(x,1.03,z,1.3,1.2,1,mat('#8ec5df'),practiceGroup)}
-  const dockForklift=new THREE.Group();dockForklift.name='SIM-DOCK-FORKLIFT';interior.add(dockForklift);box(0,1,0,3,1.6,1.8,yellow,dockForklift);box(1.3,2,0,.18,2.2,1.5,black,dockForklift);for(const x of [-1,1])for(const z of [-.85,.85]){const wheel=mesh(new THREE.CylinderGeometry(.35,.35,.3,10),rubber,x,.35,z,1,1,1,dockForklift);wheel.rotation.x=Math.PI/2}const forkLoad=new THREE.Group();forkLoad.name='SIM-LOAD-ON-FORKS';dockForklift.add(forkLoad);box(2.15,.38,0,1.35,.25,1.1,wood,forkLoad);box(2.15,1.05,0,1.3,1.12,1.05,mat('#8ec5df'),forkLoad);dockForklift.position.set(54,0,-70);
+  for(let i=0;i<6;i++){const x=52+(i%2)*2.2,z=-94+Math.floor(i/2)*7;box(x,.525,z,1.45,.35,1.1,wood,practiceGroup);box(x,1.3,z,1.3,1.2,1,mat('#8ec5df'),practiceGroup)}
+  const dockForklift=new THREE.Group();dockForklift.name='SIM-DOCK-FORKLIFT';interior.add(dockForklift);box(0,1,0,3,1.6,1.8,yellow,dockForklift);box(1.3,2,0,.18,2.2,1.5,black,dockForklift);for(const x of [-1,1])for(const z of [-.85,.85]){const wheel=mesh(new THREE.CylinderGeometry(.35,.35,.3,10),rubber,x,.35,z,1,1,1,dockForklift);wheel.rotation.x=Math.PI/2}const forkLoad=new THREE.Group();forkLoad.name='SIM-LOAD-ON-FORKS';dockForklift.add(forkLoad);box(2.15,.38,0,1.35,.25,1.1,wood,forkLoad);box(2.15,1.05,0,1.3,1.12,1.05,mat('#8ec5df'),forkLoad);for(const z of [-.42,.42])box(2.15,.235,z,2,.09,.13,black,dockForklift);dockForklift.position.set(54,.35,-70);
   // Light vehicles and workers remain clearly synthetic; pedestrian paths are separate.
   for(let i=0;i<7;i++){const c=new THREE.Group();c.name='SIM-STAFF-CAR-'+i;actors.add(c);box(0,.8,0,4,1.1,1.8,mat(['#d9dedf','#344a63','#99363e'][i%3]),c);box(0,1.5,0,2.1,.7,1.65,glass,c);c.position.set(-48,0,-6+i*9);c.rotation.y=Math.PI/2}
   const walkers=[];for(let i=0;i<8;i++){const g=new THREE.Group(),legs=[],arms=[];g.name='SIM-YARD-STAFF-'+i;g.userData={livingRole:i%2?'SIM-SHIPPING-01':'SIM-MAINT-DEMO'};actors.add(g);box(0,1.05,0,.52,.65,.3,i%3?yellow:blue,g);mesh(geoSphere,mat('#b3886d'),0,1.62,0,.2,.22,.2,g);for(const sign of [-1,1]){const leg=new THREE.Group();leg.position.set(sign*.14,.76,0);g.add(leg);box(0,-.35,0,.15,.7,.16,black,leg);legs.push(leg);const arm=new THREE.Group();arm.position.set(sign*.33,1.36,0);g.add(arm);box(0,-.25,0,.12,.55,.14,i%3?yellow:blue,arm);arms.push(arm)}walkers.push({g,legs,arms,phase:i*.8,z:-43+i*17})}
   let time=0;
   function update(dt,{held=false,process=null}={}){
     time=process?process.state.clock.seconds:time+dt;
-    const loading=Object.values(process?.state?.lots||{}).some(l=>l.tasks?.['DISPATCH.LOAD']?.status==='RUNNING');dockForklift.position.z=-70+Math.sin(time*.43)*(dockPractice||loading?10:2);forkLoad.visible=dockPractice||loading;
+    const loading=Object.values(process?.state?.lots||{}).some(l=>l.tasks?.['DISPATCH.LOAD']?.status==='RUNNING');const working=dockPractice||loading,cycle=((time*.65)%32+32)%32;
+    // Travel, pause at stock, return, pause at dock. The forks carry a pallet only on the return leg.
+    const ease=t=>t*t*(3-2*t);
+    const travel=cycle<10?ease(cycle/10):cycle<16?1:cycle<26?ease(1-(cycle-16)/10):0;
+    dockForklift.position.z=-70-(working?travel*16:0);
+    dockForklift.rotation.y=working?(cycle<10?Math.PI/2:cycle<16?Math.PI/2-Math.PI*ease((cycle-10)/6):cycle<26?-Math.PI/2:-Math.PI/2+Math.PI*ease((cycle-26)/6)):0;
+    forkLoad.visible=working&&cycle>=16&&cycle<30;
     for(const m of moving){
       const taskId=m.id==='SIM-TANKER-1'?'LOGISTICS.TRANSIT':'DELIVERY.ARRIVE',task=process?.state.lots[process.lotId]?.tasks[taskId];
       if(task?.status==='RUNNING'){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;m.elapsed=Math.max(0,Math.min(1,task.elapsed/24))*duration;}else if(!held)m.elapsed+=dt;
@@ -122,7 +128,14 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
       m.phase=held?'HOLD del lote · Workflow':task?.status==='RUNNING'?taskId+' · lote SIM':p.phase+' · tráfico escénico SIM';m.position=[p.x,p.z];m.heading=p.tangent;
     }
     for(const [i,b] of barriers.entries()){const m=moving[i===0?1:0],open=!held&&m.previousDistance>m.stops[0].distance+.1&&m.phase!=='Control acceso '+(i+1);b.rotation.x=THREE.MathUtils.damp(b.rotation.x,open?-1.45:0,3,dt)}
-    for(const w of walkers){w.g.position.set(-42,0,w.z+Math.sin(time*.025+w.phase)*4);w.g.rotation.y=Math.cos(time*.025+w.phase)>0?0:Math.PI;w.legs.forEach((l,i)=>l.rotation.x=Math.sin(time*3+w.phase+i*Math.PI)*.36);w.arms.forEach((a,i)=>a.rotation.x=-Math.sin(time*3+w.phase+i*Math.PI)*.25)}
+    for(const w of walkers){const phase=((time*.12+w.phase*5)%28+28)%28,ease=t=>t*t*(3-2*t);
+      const position=phase<10?ease(phase/10):phase<14?1:phase<24?ease(1-(phase-14)/10):0;
+      w.g.position.set(-42,0,w.z-3+position*6);
+      const turning=phase>=10&&phase<14?ease((phase-10)/4):phase>=24?1-ease((phase-24)/4):phase>=14?1:0;
+      w.g.rotation.y=turning*Math.PI;
+      const walking=phase<10||phase>=14&&phase<24;
+      w.legs.forEach((l,i)=>l.rotation.x=walking?Math.sin(time*1.5+w.phase+i*Math.PI)*.18:0);
+      w.arms.forEach((a,i)=>a.rotation.x=walking?-Math.sin(time*1.5+w.phase+i*Math.PI)*.14:0)}
   }
   update(0);
   return {root,shell,interior,labels,routes,actors,selectable,update,moving,boxColliders,

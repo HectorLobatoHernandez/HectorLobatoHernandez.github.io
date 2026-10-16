@@ -68,11 +68,11 @@ export function buildFarmLife(T,world){
   const milking=view?.tasks?.['FARM.MILKING'];phase=operationPhase(milking);const snapshot=world.snapshot(),time=visualSeconds??view?.seconds??0;animalCount=0;
   birdFlock.visible=!snapshot.isolated;const meadowCenter=[(Math.min(...xs)+Math.max(...xs))/2,(Math.min(...zs)+Math.max(...zs))/2];for(const b of birds){const a=time*.055+b.phase;b.g.position.set(meadowCenter[0]+Math.cos(a)*b.radius,b.height+Math.sin(a*1.7)*.8,meadowCenter[1]+Math.sin(a)*b.radius);b.g.rotation.y=-a+Math.PI/2;const flap=Math.sin(time*3.2+b.phase)*.7;b.left.rotation.z=flap;b.right.rotation.z=-flap;}
   for(const b of batches){const enabled=!(snapshot.isolated&&snapshot.station!==(b.species==='BOVINE'?1:2));
-   b.root.visible=enabled;const trough=waterPoints.find(p=>p.species===b.species)?.position;const poses=b.members.map(a=>{const routine=animalRoutine(a,time,trough);return {...routine,y:a.zone.includes('yard')?.33:.38,phase:time*.18+a.index}});
+   b.root.visible=enabled;const trough=waterPoints.find(p=>p.species===b.species)?.position;const poses=b.members.map(a=>{const routine=animalRoutine(a,time,trough),ground=a.zone?.includes('yard')?.27:.365,scale=(b.species==='BOVINE'?1:.66)*a.scale;return {...routine,y:ground-.0975*scale,phase:time*.18+a.index}});
    b.update(poses);animalCount+=b.members.length;
   }
   for(const species of ['BOVINE','OVINE']){const b=representativeBatches[species],old=milestones[species],active=milking&&['RUNNING','HELD','UNAVAILABLE'].includes(milking.status)&&view.species===species;b.root.visible=!!active&&(!snapshot.isolated||snapshot.station===3);
-   const p=milking?.progress||0,walking=active&&(p<.15||p>.78);b.update([{x:old?.position.x||0,y:.38,z:old?.position.z||0,yaw:old?.rotation.y||0,phase:(milking?.elapsed||0)*.18,walk:walking?.16:0,headTilt:phase.phase===1?-.32:0,headTurn:0,tail:0}]);}
+   const p=milking?.progress||0,walking=active&&(p<.15||p>.78);b.update([{x:old?.position.x||0,y:.365-.0975*(species==='BOVINE'?1:.66),z:old?.position.z||0,yaw:old?.rotation.y||0,phase:(milking?.elapsed||0)*.18,walk:walking?.16:0,headTilt:phase.phase===1?-.32:0,headTurn:0,tail:0}]);}
   for(const u of uniforms){const task=view?.tasks?.[u.task],active=['RUNNING','HELD','UNAVAILABLE'].includes(task?.status)&&(u.id!=='SIM-FARM-OVI'||view.species==='OVINE')&&(u.id!=='SIM-FARM-02'||view.species==='BOVINE');
    u.joints.forEach(j=>{j.upper.rotation.x=active?-.45+Math.sin((task.elapsed||0)*1.5+j.side)*.16:0;j.lower.rotation.x=active?-.65:0;});
   }
