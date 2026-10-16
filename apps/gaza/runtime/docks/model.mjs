@@ -19,5 +19,5 @@ export function projectDocks(state,truckId){
  });
  const total=key=>families.reduce((n,f)=>n+f[key],0);
  const loading=families.some(f=>f.loading==='RUNNING'),unloading=families.some(f=>f.receiving==='RUNNING');
- return {truck,families,hasLedger:!!state?.lots,revision:state?.revision??null,seconds:safe(state?.clock?.seconds),palletCapacityL:cap,stockPallets:total('full'),stockL:total('storedL'),shippingL:total('shippingL'),inboundL:total('inboundL'),loading,unloading,canLoad:families.some(f=>f.released&&f.full>0),operation:truck.kind==='Recogida'?'DESCARGA CISTERNA':'CARGA PALÉS',operationState:truck.kind==='Recogida'?(unloading?'EN CURSO EN REGISTRO':'SIN DESCARGA ACTIVA'):(loading?'EN CURSO EN REGISTRO':'SIN CARGA ACTIVA'),provenance:'SIMULATED_READ_ONLY'};
+ return {truck,families,hasLedger:!!state?.lots,revision:state?.revision??null,seconds:safe(state?.clock?.seconds),palletCapacityL:cap,stockPallets:total('full'),stockL:total('storedL'),shippingL:total('shippingL'),inboundL:total('inboundL'),loading,unloading,canLoad:families.some(f=>!f.held&&f.putaway==='DONE'&&f.loading==='PENDING'&&f.full>0),operation:truck.kind==='Recogida'?'DESCARGA CISTERNA':'CARGA PALÉS',operationState:truck.kind==='Recogida'?(unloading?'EN CURSO EN REGISTRO':'SIN DESCARGA ACTIVA'):(loading?'EN CURSO EN REGISTRO':'SIN CARGA ACTIVA'),provenance:'SIMULATED_READ_ONLY'};
 }
