@@ -1,7 +1,7 @@
-import {createVenueCrowd} from './atlas-venue-crowd.mjs';
+import {createVenueCrowd} from './atlas-venue-crowd.mjs?v=12';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {projectViews} from './atlas-project-views.mjs';
+import {projectViews} from './atlas-project-views.mjs?v=12';
 import {createResident} from './atlas-resident.mjs';
 import {ramp} from './atlas-city-state.mjs';
 const alain={poses:[{eye:[-.4,1.6,2]},{eye:[-.4,1.6,-1.4]}]};

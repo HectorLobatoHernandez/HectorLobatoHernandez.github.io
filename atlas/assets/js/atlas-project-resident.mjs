@@ -1,7 +1,7 @@
-import {createVenueCrowd,commercialVenues} from './atlas-venue-crowd.mjs';
+import {createVenueCrowd,commercialVenues} from './atlas-venue-crowd.mjs?v=12';
 import * as THREE from 'three';
 import {createResident} from './atlas-resident.mjs';
-import {projectViews} from './atlas-project-views.mjs';
+import {projectViews} from './atlas-project-views.mjs?v=12';
 export function createProjectResident(scene,id,origin=new THREE.Vector3()){
  const poses=projectViews[id]?.poses||[{eye:[-1,0,2]},{eye:[-1,0,-1.5]}],a=new THREE.Vector3(...poses[0].eye),b=new THREE.Vector3(...poses[1].eye);a.y=b.y=.035;
  const side=new THREE.Vector3(b.z-a.z,0,a.x-b.x).normalize().multiplyScalar(.55);const start=a.clone().lerp(b,.3).add(side).sub(origin),end=a.clone().lerp(b,.7).add(side).sub(origin),actor=createResident({parent:scene,id,a:start.toArray(),b:end.toArray(),club:/salada|furnet|soleil/.test(id)});const crowd=createVenueCrowd({parent:scene,id,origin,reduced:matchMedia('(prefers-reduced-motion:reduce)').matches}),commercial=!!commercialVenues[id];actor.setEnabled(commercial);actor.setVisible(false);let last=0,built=false;if(commercial){const button=document.getElementById('resident-toggle');button.textContent='Venue life';button.title='Fictional visitors and DJ atmosphere';button.setAttribute('aria-pressed','true');}

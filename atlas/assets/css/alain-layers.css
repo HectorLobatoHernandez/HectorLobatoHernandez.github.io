@@ -27,3 +27,5 @@ body.project-night{--paper:#0c121b;--ink:#f0e4cf;--muted:#aeb4b8;--line:#393d43;
 
 #project-cinematic-scrub{flex:1 0 100%;width:100%;height:12px;accent-color:var(--blue);margin:0}
 @media(max-width:760px){.layers-workspace{grid-template-rows:minmax(180px,30vh) minmax(185px,1fr) 100px}.layers-workspace .context{display:block;min-height:0;max-height:none;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:0 5px 10px 0;scroll-padding:8px}.layers-workspace .context h1{max-width:none;font-size:23px}.layers-workspace .layer-box{max-height:none;overflow:visible;margin-top:10px;padding:6px}.layers-workspace .context .chapter-copy{font-size:10px}.layers-workspace .context .opening-control{margin-top:10px}.project-cinema{margin-top:7px}}
+
+.project-zone-nav{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 12px}.project-zone-nav button{font-size:10px;padding:7px 8px}.project-zone-nav button[aria-pressed=true]{background:var(--blue);color:var(--paper)}

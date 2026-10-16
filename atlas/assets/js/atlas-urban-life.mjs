@@ -1,4 +1,4 @@
-import {cityVenueForecourts} from './atlas-venue-crowd.mjs';
+import {cityVenueForecourts} from './atlas-venue-crowd.mjs?v=12';
 import * as THREE from 'three';
 import {createTraffic,signalAt,pedestrianGreen,intersections} from './atlas-life-state.mjs';
 import {businessPoint,businessFixtures} from './atlas-business-state.mjs';

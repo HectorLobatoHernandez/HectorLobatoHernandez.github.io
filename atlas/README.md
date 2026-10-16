@@ -37,3 +37,5 @@ Opening a source project starts a 34-second close camera tour: daylight construc
 SAWYER uses room bounds for camera fitting. Source node 276 (Existing Structure) is retained as a hidden survey reference because it overlaps the presented bedroom/studio layout. The original registered plan appears during the plan stage; all source binary assets remain unchanged.
 
 Alain is a private cinema / club in a luxury residential villa; Can Furnet is a private club in a luxury residential villa. The remaining studios are luxury residential projects. Club del Mar and Playa Soleil are commercial venues. Their crowds, entry queues and DJ announcements are fictional portfolio atmosphere, not real event listings or occupancy figures.
+
+Playa Soleil places its night crowd, interior cameras and warm presentation lighting in the large main dance hall. The two other user-identified areas are exterior zones and have separate inspection buttons. The curved source detail is not used as the main dance floor.

@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {createAtmosphere} from './atlas-city-atmosphere.mjs';
-import {createUrbanLife} from './atlas-urban-life.mjs?v=11';
-import {createParcelModels} from './atlas-parcel-models.mjs?v=11';
+import {createUrbanLife} from './atlas-urban-life.mjs?v=12';
+import {createParcelModels} from './atlas-parcel-models.mjs?v=12';
 import {createProjectProjection} from './atlas-project-projection.mjs';
 import {createCityPhotography} from './atlas-city-photography.mjs';
 import {lightingSequence,duskDuration} from './atlas-cinematic-state.mjs';
