@@ -7,7 +7,7 @@ export function mountMaterialFlow(host){
  const title=document.createElement('h2');title.textContent='Materia prima y expedición';
  inbound.className='flowCard';outbound.className='flowCard out';note.className='flowNote';
  const link=document.createElement('a');link.href='mission-control.html?view=workflow';link.target='_top';link.textContent='Abrir proceso y lotes →';
- host.append(title,inbound,outbound,note,link);
+ const docks=document.createElement('a');docks.href='mission-control.html?view=site&dock=1'+(new URLSearchParams(location.search).get('demo')==='company'?'&demo=company':'');docks.target='_top';docks.textContent='Ver muelles y stock por producto →';host.append(title,inbound,outbound,note,link,document.createElement('br'),docks);
  const litres=n=>Number(n||0).toLocaleString('es-ES')+' L';
  const render=({state})=>{
   if(!state?.lots){inbound.innerHTML='<b>Entrada · sin escenario activo</b><small>Inicia un lote en Proceso y lotes para ver recogida, recepción y calidad.</small>';outbound.innerHTML='<b>Salida · sin escenario activo</b><small>La expedición requiere fabricación y liberación del lote de demostración.</small>';note.textContent='Los camiones del plano son ilustrativos y no están asignados a un lote real.';return}
