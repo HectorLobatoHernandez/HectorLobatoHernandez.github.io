@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {createAtmosphere} from './atlas-city-atmosphere.mjs';
-import {createUrbanLife} from './atlas-urban-life.mjs';
-import {createParcelModels} from './atlas-parcel-models.mjs';
+import {createUrbanLife} from './atlas-urban-life.mjs?v=11';
+import {createParcelModels} from './atlas-parcel-models.mjs?v=11';
 import {createProjectProjection} from './atlas-project-projection.mjs';
 import {createCityPhotography} from './atlas-city-photography.mjs';
 import {lightingSequence,duskDuration} from './atlas-cinematic-state.mjs';
@@ -13,7 +13,7 @@ const config=validateCity(await fetch('../assets/projects/atlas/city.json').then
 let dirty=true,p=reduced?1:0,playing=!reduced,selected=config.projects.find(x=>x.status==='ready'),mode='city',transition=null,projectReady=false,frameProject=null,pendingProject=null,last=performance.now(),elapsed=0,approachStart=0,approachProgress=0;
 const host=$('atlas-canvas'),labels=$('atlas-labels'),shell=$('atlas-project-shell'),frame=$('atlas-project-frame');
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0xeeebe3);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
-renderer.shadowMap.enabled=innerWidth>760;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.append(renderer.domElement);renderer.domElement.tabIndex=0;renderer.domElement.setAttribute('aria-label','Ciudad de proyectos. Arrastra para girar y usa la rueda para acercar.');
+renderer.localClippingEnabled=true;renderer.shadowMap.enabled=innerWidth>760;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.append(renderer.domElement);renderer.domElement.tabIndex=0;renderer.domElement.setAttribute('aria-label','Ciudad de proyectos. Arrastra para girar y usa la rueda para acercar.');
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.5,1600);
 scene.background=new THREE.Color(0xeeebe3);const hemi=new THREE.HemisphereLight(0xffffff,0x949d91,2.6);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff2d9,3.2);sun.position.set(-70,140,85);sun.castShadow=renderer.shadowMap.enabled;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-155,right:155,top:140,bottom:-145,near:1,far:400});sun.shadow.bias=-.00015;sun.shadow.normalBias=.15;scene.add(sun);
@@ -51,7 +51,7 @@ function choose(project,enter=false){
 }
 choose(selected);
 for(const phase of phases){const button=document.createElement('button');button.textContent=phase.title.replace('La ciudad de proyectos','Ciudad');button.dataset.phase=phase.id;button.onclick=()=>{p=phase.to;playing=false;dirty=true};$('atlas-phase-nav').append(button)}
-function send(type){if(frame.contentWindow&&frameProject)frame.contentWindow.postMessage({type,version:1,projectId:frameProject,night},location.origin)}
+function send(type){if(frame.contentWindow&&frameProject)frame.contentWindow.postMessage({type,version:1,projectId:frameProject,night:autoLighting||night},location.origin)}
 function enterProject(project){
  if(mode!=='city'||project.status!=='ready')return;
  projection.clear();touchProject=null;pointerOver=false;playing=false;approachProgress=p;approachStart=performance.now();mode='approach';pendingProject=project;elapsed=0;$('atlas-loading').hidden=false;$('atlas-loading-text').textContent='Acercándonos al plano…';

@@ -11,7 +11,7 @@ let browser;const errors=[],bad=[],results=[];
  await page.goto(origin+'/atlas/');await page.waitForFunction(()=>window.__ATLAS_CITY__?.snapshot().parcels.loaded===7);await page.waitForTimeout(1000);
  assert.equal(await page.locator('html').getAttribute('lang'),'en');assert.equal(await page.locator('#atlas-night').innerText(),'Night · auto');
  let snap=await page.evaluate(()=>__ATLAS_CITY__.snapshot());assert.equal(snap.parcels.errors.length,0);assert.equal(snap.parcels.loaded,7);assert.equal(snap.atmosphere.activeStreetLights,8);assert.ok(snap.parcels.structures.every(p=>p.presentationLights===2));
- assert.equal(await page.locator('[data-project="private-production-studio-canada"] b').innerText(),'SAWYER');
+ assert.equal(await page.locator('[data-project="private-production-studio-canada"] b').innerText(),'Estudio de producción /SAWYER/');
  assert.ok(!JSON.stringify(await page.evaluate(()=>__ATLAS_CITY__.config)).includes('CONFIDENTIAL_DOCUMENT_FIGURES'));
  await page.locator('#atlas-share').click();assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),origin+'/atlas/');
  await page.screenshot({path:qa+'/city-night-en.png'});await page.locator('[data-district="music"]').click();await page.waitForTimeout(500);await page.screenshot({path:qa+'/streets-night-en.png'});

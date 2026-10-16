@@ -3,7 +3,7 @@
   "projectId": "mar-salada",
   "title": "SOUND CLUB / CLUB DEL MAR",
   "model": "model.parts.json",
-  "sourceNote": "Optimised source geometry \u00b7 repeated details simplified \u00b7 neutral materials",
+  "sourceNote": "Optimised source geometry · repeated details simplified · neutral materials",
   "sourceClass": "SOURCE_GEOMETRY_WEB_LOD",
   "sourceSha256": "ae95307c724ec36a3887c3660f4e53e6dbe31ffa1b28701d9888c81217685665",
   "presentationBounds": [
@@ -20,7 +20,7 @@
   ],
   "items": {
     "model-capture-4k.png": {
-      "title": "Source model \u00b7 4K view",
+      "title": "Source model · 4K view",
       "full": "model-capture-4k.png",
       "thumb": "thumbs/model-capture-4k.png",
       "width": 3840,
@@ -29,12 +29,12 @@
       "source": "SOURCE_MODEL_DERIVATIVE"
     },
     "plan.webp": {
-      "title": "Zoning reference \u00b7 design revision",
+      "title": "Zoning reference · design revision",
       "full": "plan.webp",
       "thumb": "thumbs/plan.webp",
       "width": 992,
       "height": 578,
-      "kind": "Project reference \u00b7 not a verified CAD drawing",
+      "kind": "Project reference · not a verified CAD drawing",
       "source": "DOCUMENTED_REFERENCE"
     }
   },
@@ -50,5 +50,7 @@
     ]
   },
   "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
-  "note": "Source-derived inspection geometry. Repeated small components are simplified for web performance; neutral materials omit embedded private bitmaps. Not an as-built certificate."
+  "note": "Source-derived inspection geometry. Repeated small components are simplified for web performance; neutral materials omit embedded private bitmaps. Not an as-built certificate.",
+  "projectUse": "commercial",
+  "setting": "Commercial club and restaurant"
 }

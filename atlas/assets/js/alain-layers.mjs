@@ -1,9 +1,11 @@
+import {createProjectCinema} from './atlas-project-cinema.mjs';
+import {createProjectCutaway} from './atlas-project-cutaway.mjs';
 import {loadAtlasModel} from './atlas-model-loader.mjs';
 import * as THREE from 'three';
-import {createProjectResident} from './atlas-project-resident.mjs';
+import {createProjectResident} from './atlas-project-resident.mjs?v=11';
 import {createProjectLighting} from './atlas-project-lighting.mjs';
 import {kelvinColor} from './atlas-city-atmosphere.mjs';
-import {createAtlasBridge} from './alain-atlas-bridge.mjs';
+import {createAtlasBridge} from './alain-atlas-bridge.mjs?v=11';
 import {createGallery} from './alain-gallery.mjs';
 import {rotatePosition,zoomPosition,fitDistance} from './alain-camera-state.mjs';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
@@ -23,7 +25,7 @@ const visibility=new Map(manifest.layers.map(l=>[l.id,true]));
 const roots=new Map();const originals=new Map();
 const stats={loaded:false,sourceClass:manifest.classification,actualSourceObjects:manifest.objectCount??manifest.objects?.length??0,layerCount:manifest.layers.length};
 window.__ALAIN_LAYERS__={get state(){return {progress:shown,manual,selected,free,viewMode,autoRotate:orbit.autoRotate,visibility:Object.fromEntries(visibility),loaded:stats.loaded}},stats,
- snapshot(){return {camera:camera.position.toArray(),target:orbit.target.toArray(),canvas:[renderer.domElement.width,renderer.domElement.height],lighting:lighting.snapshot(),resident:occupant.snapshot(),layers:Object.fromEntries([...roots].map(([id,o])=>[id,{position:o.position.toArray(),scale:o.scale.toArray(),visible:o.visible}]))}}};
+ snapshot(){return {camera:camera.position.toArray(),target:orbit.target.toArray(),canvas:[renderer.domElement.width,renderer.domElement.height],cinema:cinema.snapshot(),cutaway:cutaway.snapshot(),lighting:lighting.snapshot(),resident:occupant.snapshot(),layers:Object.fromEntries([...roots].map(([id,o])=>[id,{position:o.position.toArray(),scale:o.scale.toArray(),visible:o.visible}]))}}};
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
@@ -42,10 +44,16 @@ function setNight(value){const n=Number(value);night=n>.5;const color=(a,b)=>new
 $('resident-toggle').onclick=()=>{const active=occupant.toggle();$('resident-toggle').setAttribute('aria-pressed',String(active));dirty=true};
 $('project-light-level').oninput=e=>{lighting.setLevel(Number(e.target.value)/100);dirty=true};$('project-ambience').onclick=()=>{const value=!lighting.snapshot().ambience;lighting.setAmbience(value);$('project-ambience').setAttribute('aria-pressed',String(value));dirty=true};
 $('project-night').onclick=()=>setNight(!night);setNight(night);
+const context=document.querySelector('.context');
+const cinema=createProjectCinema({camera,orbit,host:context,reduced,dirty:()=>dirty=true,onSample:sample=>{shown=sample.progress;manual=null;viewMode='cinematic';free=false;cutaway.set(sample.cuts);setNight(sample.night);},onRelease:reason=>{current=-1;frozenProgress=shown;free=true;viewMode='free';if(reason==='complete'||shown>=.135)manual=0;orbit.enabled=true;dirty=true;}});
+const cutaway=createProjectCutaway({renderer,host:context,dirty:()=>dirty=true,onChange:()=>{cinema.stop();frozenProgress=shown;free=true;viewMode='free';dirty=true;},onRestore:()=>restoreLayers()});
+function startCinema(value=night){if(!stats.loaded)return;restoreLayers();cutaway.restore(false);manual=null;focusTransition=null;frozenProgress=0;shown=0;viewMode='cinematic';free=false;scrollTo({top:0,behavior:'instant'});cinema.start(value);}
+cinema.onPlay=()=>startCinema(night);
+
 const planTexture=new THREE.TextureLoader().load(new URL('plan-map.webp',hdBase).href,()=>{dirty=true});planTexture.colorSpace=THREE.SRGBColorSpace;
 const plan=new THREE.Mesh(new THREE.PlaneGeometry(32.565,23.393),new THREE.MeshBasicMaterial({map:planTexture,side:THREE.DoubleSide}));
 plan.rotation.x=-Math.PI/2;plan.position.set(-2.615,-.185,.923);scene.add(plan);
-const resize=()=>{const host=$('canvas-host'),w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=true};
+const resize=()=>{const host=$('canvas-host'),w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();cinema.resize();dirty=true};
 new ResizeObserver(resize).observe($('canvas-host'));resize();
 const labels={
  'final-01.webp':'Tratamiento y techo','final-03.webp':'Iluminación indirecta','final-04.webp':'Acceso e interior',
@@ -93,17 +101,19 @@ $('progress-range').oninput=e=>{manual=null;overview();scrollToProgress(Number(e
 $('opening-range').oninput=e=>{manual=Number(e.target.value)/100;if(viewMode==='cinema'||viewMode==='dj'){restoreLayers();viewMode='free'}dirty=true;$('opening-value').textContent=Math.round(manual*100)+' %'};
 $('auto-opening').onclick=()=>{manual=null;$('opening-value').textContent='Scroll';overview()};
 function setFree(value){if(value&&!free)frozenProgress=shown;free=value;orbit.enabled=value;dirty=true;if(!value){orbit.autoRotate=false;$('auto-rotate').setAttribute('aria-pressed','false')}renderer.domElement.style.touchAction=value?'none':'pan-y';$('free-toggle').setAttribute('aria-pressed',String(value));$('free-toggle').textContent=value?'Volver al scroll':'Girar / mover'}
-function explore(){if(!free){viewMode='free';setFree(true)}focusTransition=null;dirty=true}
+function explore(){cinema.stop();if(!free){viewMode='free';setFree(true)}focusTransition=null;dirty=true}
 $('free-toggle').onclick=()=>{if(free){overview(false)}else explore()};
 renderer.domElement.addEventListener('pointerdown',explore,{capture:true});
 renderer.domElement.addEventListener('wheel',explore,{capture:true,passive:true});
 function overview(restore=true){
+ cinema.stop();cutaway.restore(false);
  viewMode='overview';setFree(false);camera.fov=38;camera.updateProjectionMatrix();
  focusTransition={from:camera.position.clone(),target:orbit.target.clone(),start:performance.now()};
  if(restore)restoreLayers();
 }
 $('overview').onclick=()=>overview();
 function interior(which){
+ cinema.stop();cutaway.set(['roof']);
  orbit.autoRotate=false;$('auto-rotate').setAttribute('aria-pressed','false');
  viewMode=which;setFree(true);manual=0;$('opening-range').value='0';$('opening-value').textContent='Interior';
  for(const id of visibility.keys())visibility.set(id,!id.startsWith('wall_')&&!['roof','partition','acoustic_ceiling','lighting'].includes(id));
@@ -165,10 +175,10 @@ renderer.domElement.addEventListener('pointerup',e=>{
  const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
  raycaster.setFromCamera(pointer,camera);
  const hit=raycaster.intersectObjects([...roots.values()],true).find(h=>{let o=h.object;while(o){if(!o.visible)return false;o=o.parent}return h.object.isMesh});
- if(hit){let obj=hit.object;while(obj&&!obj.userData.layer_id)obj=obj.parent;if(obj){chooseLayer(obj.userData.layer_id);$('selection-note').textContent=(manifest.layers.find(l=>l.id===obj.userData.layer_id)?.name.replace(/^\d+ /,'')||'Capa')+' seleccionada'}}
+ if(hit){let obj=hit.object;while(obj&&!obj.userData.layer_id)obj=obj.parent;if(obj){chooseLayer(obj.userData.layer_id);cutaway.select(hit);$('selection-note').textContent=(manifest.layers.find(l=>l.id===obj.userData.layer_id)?.name.replace(/^\d+ /,'')||'Capa')+' seleccionada'}}
 });
 renderer.domElement.addEventListener('dblclick',()=>{if(selected)focusLayer()});
-const atlasBridge=createAtlasBridge({onTheme:setNight,onStart:()=>{manual=null;overview();scrollToProgress(0);dirty=true},onProgress:p=>scrollToProgress(p),onPause:()=>{orbit.autoRotate=false;dirty=true}});
+const atlasBridge=createAtlasBridge({managedIntro:true,onTheme:setNight,onStart:({night:targetNight})=>{if(reduced){manual=null;overview();scrollToProgress(.23);setNight(targetNight);}else startCinema(targetNight);},onProgress:p=>scrollToProgress(p),onPause:()=>{cinema.stop();orbit.autoRotate=false;dirty=true}});
 const draco=new DRACOLoader();draco.setDecoderPath(new URL('../vendor/three-r180/examples/jsm/libs/draco/gltf/',import.meta.url).href);draco.setWorkerLimit(2);
 const loader=new GLTFLoader();loader.setDRACOLoader(draco);
 try{
@@ -183,16 +193,18 @@ try{
  scene.add(gltf.scene);
  stats.loaded=true;stats.meshes=0;stats.triangles=0;
  gltf.scene.traverse(o=>{if(o.isMesh){stats.meshes++;stats.triangles+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3}});
- $('loading').hidden=true;dirty=true;draco.dispose();atlasBridge.ready();
+ scene.updateMatrixWorld(true);const projectBounds=new THREE.Box3();for(const root of roots.values())projectBounds.union(new THREE.Box3().setFromObject(root));
+ cinema.prepare({bounds:projectBounds,detail:projectBounds,interiors:[{eye:new THREE.Vector3(2.7,1.6,.25),target:new THREE.Vector3(-3.3,1.4,-2)},{eye:new THREE.Vector3(.3,1.65,-2.8),target:new THREE.Vector3(-2.3,1,-1.75)}]});cutaway.fit(projectBounds);
+ $('loading').hidden=true;dirty=true;draco.dispose();cinema.preview();atlasBridge.ready();if(!atlasBridge.active&&!reduced)startCinema(night);
 }catch(error){$('loading').textContent='No se pudo cargar el modelo: '+error.message;stats.error=String(error);atlasBridge.error();console.error(error)}
 function paint(now){
- atlasBridge.tick(now);
- const target=free?frozenProgress:clamp(scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)),dt=Math.min(64,now-last);last=now;
+ atlasBridge.tick(now);if(!atlasBridge.suspended)cinema.tick(now);
+ const target=cinema.active?shown:free?frozenProgress:clamp(scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)),dt=Math.min(64,now-last);last=now;
  shown=reduced?target:shown+(target-shown)*(1-Math.exp(-dt/75));if(Math.abs(shown-target)<.00001)shown=target;
- const state=layerState(shown,manual);
+ const state=layerState(shown,manual);if(cinema.active){state.index=cinema.elapsed<3500?0:cinema.elapsed<12500?1:cinema.elapsed<21000?3:6;state.chapter=chapters[state.index];}
  if(state.index!==current){
   current=state.index;const ch=state.chapter;$('chapter-number').textContent=String(current+1).padStart(2,'0')+' / 08';$('chapter-title').textContent=ch.title;$('chapter-copy').textContent=ch.copy;$('view-label').textContent=ch.nav;
-  if(!selected&&viewMode==='overview')gallery(ch.gallery);
+  if(!selected&&['overview','cinematic'].includes(viewMode))gallery(ch.gallery);
   [...$('chapter-nav').children].forEach((a,i)=>{if(i===current)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current')});
   $('previous').disabled=current===0;$('next').disabled=current===7;
  }
@@ -201,24 +213,24 @@ function paint(now){
  for(const [id,obj] of roots){
   const config=manifest.layers.find(l=>l.id===id),original=originals.get(id);
   let amount=id==='roof'?state.roof:id.startsWith('wall_')||id==='partition'||id==='openings'?state.walls:id.startsWith('acoustic')?state.acoustic:['av','lighting'].includes(id)?state.systems:0;
-  if(viewMode!=='overview'&&viewMode!=='free')amount=0;
+  if(viewMode==='cinematic')amount=0;else if(viewMode!=='overview'&&viewMode!=='free')amount=0;
   const v=config.offset;obj.position.copy(original.position).addScaledVector(new THREE.Vector3(v[0],v[2],-v[1]),amount);
-  obj.scale.copy(original.scale);obj.scale.y*=viewMode==='overview'&&manual===null?buildForLayer(id,shown):1;
+  obj.scale.copy(original.scale);obj.scale.y*=['overview','cinematic'].includes(viewMode)&&manual===null?buildForLayer(id,shown):1;
   obj.visible=visibility.get(id)!==false;
  }
  if(selected&&roots.has(selected)){selectionBox.setFromObject(roots.get(selected));selectionBox.visible=visibility.get(selected)!==false}else selectionBox.visible=false;
  }
- if(!free){
+ if(!free&&!cinema.active){
   const opening=Math.max(state.roof,state.walls),pos=new THREE.Vector3(16,13,18).lerp(new THREE.Vector3(25,23,29),opening),look=new THREE.Vector3(0,1.3,0).lerp(new THREE.Vector3(0,3,0),opening);
   const fit=Math.max(1,1.15/camera.aspect);pos.sub(look).multiplyScalar(fit).add(look);
   if(focusTransition){const q=reduced?1:ramp((now-focusTransition.start)/700,0,1);pos.lerp(focusTransition.from,1-q);look.lerp(focusTransition.target,1-q);if(q===1)focusTransition=null}
   if(camera.position.distanceToSquared(pos)>.0000001||orbit.target.distanceToSquared(look)>.0000001)dirty=true;
   camera.position.copy(pos);camera.lookAt(look);orbit.target.copy(look);
- }else if(orbit.update())dirty=true;
+ }else if(!cinema.active&&orbit.update())dirty=true;
  $('progress-fill').style.width=shown*100+'%';$('percentage').textContent=Math.round(shown*100)+' %';
  if(document.activeElement!==$('progress-range'))$('progress-range').value=String(Math.round(shown*1000));
  if(manual===null){$('opening-range').value=String(Math.round(Math.max(state.roof,state.walls)*100));$('opening-value').textContent='Scroll'}
- occupant.setBuilt(shown>=.19||manual!==null);if(!atlasBridge.suspended&&occupant.tick(now))dirty=true;
+ plan.visible=!free&&shown<.19;occupant.setBuilt(shown>=.19||manual!==null);if(!atlasBridge.suspended&&occupant.tick(now))dirty=true;
  if(dirty&&!capturing&&!atlasBridge.suspended){renderer.render(scene,camera);dirty=false}requestAnimationFrame(paint);
 }
 requestAnimationFrame(paint);

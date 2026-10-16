@@ -3,7 +3,7 @@
   "projectId": "acoustic-studio-italy",
   "title": "Acoustic Production Room",
   "model": "model.glb.gz",
-  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceNote": "Source SketchUp geometry · presentation derivative",
   "sourceClass": "SOURCE_MODEL",
   "sourceSha256": "2083580a436444994df956976b047e912fb27ca19f27f78944c2145455e1fa01",
   "presentationBounds": [
@@ -20,7 +20,7 @@
   ],
   "items": {
     "model-4k.webp": {
-      "title": "Source model \u00b7 4K view",
+      "title": "Source model · 4K view",
       "full": "model-4k.webp",
       "thumb": "thumbs/model-4k.webp",
       "width": 3840,
@@ -314,5 +314,7 @@
     ]
   },
   "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
-  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance.",
+  "projectUse": "luxury-residential",
+  "setting": "Acoustic production room in a luxury residence"
 }

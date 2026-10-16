@@ -3,13 +3,13 @@
   "projectId": "playa-soleil-bora-bora",
   "title": "Playa Soleil / Bora Bora",
   "model": "model.glb.gz",
-  "sourceNote": "Source SketchUp geometry \u00b7 presentation derivative",
+  "sourceNote": "Source SketchUp geometry · presentation derivative",
   "sourceClass": "SOURCE_MODEL",
   "sourceSha256": "6de3d0d8fddb847cf1576f5fc04f0d4606824fdde96711a5eaaa662b7e17e355",
   "presentationBounds": null,
   "items": {
     "model-4k.webp": {
-      "title": "Source model \u00b7 4K view",
+      "title": "Source model · 4K view",
       "full": "model-4k.webp",
       "thumb": "thumbs/model-4k.webp",
       "width": 3840,
@@ -171,5 +171,7 @@
     ]
   },
   "privacy": "PUBLIC_PRESENTATION_DERIVATIVES",
-  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance."
+  "note": "Source geometry and reference images may show different design revisions. Presentation layers and lighting do not certify installed equipment or measured acoustic performance.",
+  "projectUse": "commercial",
+  "setting": "Commercial beach club"
 }

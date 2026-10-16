@@ -9,6 +9,7 @@
       "number": "P02",
       "name": "Casa Alain",
       "domain": [
+        "Luxury residential villa · private cinema / club",
         "Private cinema",
         "DJ listening",
         "Acoustic engineering"
@@ -27,13 +28,16 @@
       "entry": "./casa-alain-layers.html",
       "plan": "../assets/projects/casa-alain/gallery/plan-map.webp",
       "source": "SOURCE_SKETCHUP_COMPONENTS",
-      "shareSlug": "casa-alain"
+      "shareSlug": "casa-alain",
+      "use": "luxury-residential",
+      "setting": "Private cinema / club in a luxury residential villa"
     },
     {
       "id": "mar-salada",
       "number": "P01",
       "name": "SOUND CLUB / CLUB DEL MAR",
       "domain": [
+        "Commercial · club and restaurant",
         "Professional AV",
         "Acoustics",
         "KNX / ETS6"
@@ -53,13 +57,16 @@
       "plan": "../assets/projects/atlas/mar-salada/plan.webp",
       "source": "SOURCE_MODEL",
       "kind": "model",
-      "shareSlug": "sound-club"
+      "shareSlug": "sound-club",
+      "use": "commercial",
+      "setting": "Commercial club and restaurant"
     },
     {
       "id": "can-furnet-club",
       "number": "P03",
       "name": "Can Furnet Club",
       "domain": [
+        "Luxury residential villa · private club",
         "Sound isolation",
         "Box-in-box",
         "Structural decoupling"
@@ -79,13 +86,16 @@
       "plan": "../assets/projects/atlas/can-furnet-club/plan.webp",
       "source": "SOURCE_MODEL",
       "kind": "model",
-      "shareSlug": "can-furnet-club"
+      "shareSlug": "can-furnet-club",
+      "use": "luxury-residential",
+      "setting": "Private club in a luxury residential villa"
     },
     {
       "id": "playa-soleil-bora-bora",
       "number": "P04",
       "name": "Playa Soleil / Bora Bora",
       "domain": [
+        "Commercial · beach club",
         "Professional AV",
         "Cable book",
         "CAT6a"
@@ -105,13 +115,16 @@
       "plan": "../assets/projects/atlas/playa-soleil-bora-bora/plan.webp",
       "source": "SOURCE_MODEL",
       "kind": "model",
-      "shareSlug": "playa-soleil-bora-bora"
+      "shareSlug": "playa-soleil-bora-bora",
+      "use": "commercial",
+      "setting": "Commercial beach club"
     },
     {
       "id": "private-production-studio-canada",
       "number": "P05",
-      "name": "SAWYER",
+      "name": "Estudio de producción /SAWYER/",
       "domain": [
+        "Luxury residence · production studio",
         "Production studio",
         "Acoustic treatment",
         "Diffusion"
@@ -131,13 +144,16 @@
       "plan": "../assets/projects/atlas/private-production-studio-canada/plan.webp",
       "source": "SOURCE_MODEL",
       "kind": "model",
-      "shareSlug": "sawyer"
+      "shareSlug": "sawyer",
+      "use": "luxury-residential",
+      "setting": "Production studio in a luxury residence"
     },
     {
       "id": "private-production-studio-sta-eulalia",
       "number": "P06",
       "name": "Private Producer Studio",
       "domain": [
+        "Luxury residence · private studio",
         "Studio acoustics",
         "First reflections",
         "Absorbent ceiling"
@@ -157,13 +173,16 @@
       "plan": "../assets/projects/atlas/private-production-studio-sta-eulalia/plan.webp",
       "source": "SOURCE_MODEL",
       "kind": "model",
-      "shareSlug": "producer-studio"
+      "shareSlug": "producer-studio",
+      "use": "luxury-residential",
+      "setting": "Private studio in a luxury residence"
     },
     {
       "id": "acoustic-studio-italy",
       "number": "P07",
       "name": "Acoustic Production Room",
       "domain": [
+        "Luxury residence · acoustic production room",
         "Room acoustics",
         "RT60 prediction",
         "Bass control"
@@ -183,7 +202,9 @@
       "plan": "../assets/projects/atlas/acoustic-studio-italy/plan.webp",
       "source": "SOURCE_MODEL",
       "kind": "model",
-      "shareSlug": "acoustic-room"
+      "shareSlug": "acoustic-room",
+      "use": "luxury-residential",
+      "setting": "Acoustic production room in a luxury residence"
     },
     {
       "id": "private-producer-acoustic-concept",
