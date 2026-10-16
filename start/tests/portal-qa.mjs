@@ -6,7 +6,7 @@ const errors=[];
 const pages=[
   ['/start/','START HERE',['CV','GAZA','RHB STUDIO','Labs']],
   ['/start/cv.html','Currículum',['Atelier','Swiss','Monograph','Scroll World']],
-  ['/start/gaza.html','GAZA',['ARRANCAR MISSION CONTROL','ABRIR MATRIX']],
+  ['/start/gaza.html','GAZA',['ABRIR RECORRIDO GUIADO','ABRIR PLANTA']],
   ['/start/rhb.html','RHB STUDIO',['LOCAL RUNTIME','Demo pública funcional','ABRIR DEMO FUNCIONAL']],
   ['/start/labs.html','Labs',['App Test Center','GIS 3D']]
 ];
@@ -33,8 +33,8 @@ for(const [path,titlePart,needles] of pages){
 const root=await browser.newPage({viewport:{width:1440,height:960}});
 await root.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
 await root.waitForTimeout(500);
-const rootOk=await root.evaluate(()=>({path:location.pathname,title:document.title,dossier:!!document.querySelector('[data-reactbits-hero="true"]')}));
-if(rootOk.path!=='/'||!rootOk.dossier||!rootOk.title.includes('Dossier'))errors.push('root must serve canonical dossier directly: '+JSON.stringify(rootOk));
+const rootOk=await root.evaluate(()=>({path:location.pathname,departments:[...document.querySelectorAll('.department')].map(x=>x.id),languages:document.querySelectorAll('[data-lang]').length}));
+if(rootOk.path!=='/'||rootOk.departments.join(',')!=='design,software'||rootOk.languages!==3)errors.push('root must serve the two-department multilingual dossier: '+JSON.stringify(rootOk));
 await root.close();
 
 const gaza=await browser.newPage({viewport:{width:1440,height:960}});
