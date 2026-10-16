@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {initialState} from '../runtime/processes/ledger.mjs';
 import {FLEET,projectDocks} from '../runtime/docks/model.mjs';
+import {TASKS} from '../runtime/processes/catalog.mjs';
 
 test('dock occupancy derives from common ledger and does not mutate it',()=>{
  const state=initialState(),lot=state.lots['SIM-BOV-001'];
@@ -22,4 +23,12 @@ test('dock occupancy derives from common ledger and does not mutate it',()=>{
 test('empty store never displays invented pallets or an assigned shipment',()=>{
  const view=projectDocks(null,'SIM-FLT-10');
  assert.equal(view.stockPallets,0);assert.equal(view.hasLedger,false);assert.equal(view.revision,null);
+});
+
+test('loading progress is read from the dispatch task, not from already departed stock',()=>{
+ const state=initialState(),lot=state.lots['SIM-BOV-001'];
+ lot.mass.packedL=8*state.config.palletCapacityL;
+ const task=lot.tasks['DISPATCH.LOAD'];task.status='RUNNING';task.elapsed=TASKS.find(t=>t.id==='DISPATCH.LOAD').durationSimSeconds/2;
+ const f=projectDocks(state,'SIM-FLT-02').families.find(f=>f.id===lot.id);
+ assert.equal(f.loadingProgress,.5);assert.equal(f.full,8);assert.equal(f.shippingL,0);
 });
