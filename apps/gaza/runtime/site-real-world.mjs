@@ -98,14 +98,14 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
   let dockPreview=false,dockKind='Expedición',dockTruckId=null,dockPractice=false;
   const practiceGroup=new THREE.Group();practiceGroup.name='DOCK_PALLETS_PRACTICE_ONLY';interior.add(practiceGroup);practiceGroup.visible=false;
   for(let i=0;i<6;i++){const x=52+(i%2)*2.2,z=-94+Math.floor(i/2)*7;box(x,.27,z,1.45,.35,1.1,wood,practiceGroup);box(x,1.03,z,1.3,1.2,1,mat('#8ec5df'),practiceGroup)}
-  const dockForklift=new THREE.Group();dockForklift.name='SIM-DOCK-FORKLIFT';interior.add(dockForklift);box(0,1,0,3,1.6,1.8,yellow,dockForklift);box(1.3,2,0,.18,2.2,1.5,black,dockForklift);for(const x of [-1,1])for(const z of [-.85,.85]){const wheel=mesh(new THREE.CylinderGeometry(.35,.35,.3,10),rubber,x,.35,z,1,1,1,dockForklift);wheel.rotation.x=Math.PI/2}dockForklift.position.set(54,0,-70);
+  const dockForklift=new THREE.Group();dockForklift.name='SIM-DOCK-FORKLIFT';interior.add(dockForklift);box(0,1,0,3,1.6,1.8,yellow,dockForklift);box(1.3,2,0,.18,2.2,1.5,black,dockForklift);for(const x of [-1,1])for(const z of [-.85,.85]){const wheel=mesh(new THREE.CylinderGeometry(.35,.35,.3,10),rubber,x,.35,z,1,1,1,dockForklift);wheel.rotation.x=Math.PI/2}const forkLoad=new THREE.Group();forkLoad.name='SIM-LOAD-ON-FORKS';dockForklift.add(forkLoad);box(2.15,.38,0,1.35,.25,1.1,wood,forkLoad);box(2.15,1.05,0,1.3,1.12,1.05,mat('#8ec5df'),forkLoad);dockForklift.position.set(54,0,-70);
   // Light vehicles and workers remain clearly synthetic; pedestrian paths are separate.
   for(let i=0;i<7;i++){const c=new THREE.Group();c.name='SIM-STAFF-CAR-'+i;actors.add(c);box(0,.8,0,4,1.1,1.8,mat(['#d9dedf','#344a63','#99363e'][i%3]),c);box(0,1.5,0,2.1,.7,1.65,glass,c);c.position.set(-48,0,-6+i*9);c.rotation.y=Math.PI/2}
   const walkers=[];for(let i=0;i<8;i++){const g=new THREE.Group(),legs=[],arms=[];g.name='SIM-YARD-STAFF-'+i;g.userData={livingRole:i%2?'SIM-SHIPPING-01':'SIM-MAINT-DEMO'};actors.add(g);box(0,1.05,0,.52,.65,.3,i%3?yellow:blue,g);mesh(geoSphere,mat('#b3886d'),0,1.62,0,.2,.22,.2,g);for(const sign of [-1,1]){const leg=new THREE.Group();leg.position.set(sign*.14,.76,0);g.add(leg);box(0,-.35,0,.15,.7,.16,black,leg);legs.push(leg);const arm=new THREE.Group();arm.position.set(sign*.33,1.36,0);g.add(arm);box(0,-.25,0,.12,.55,.14,i%3?yellow:blue,arm);arms.push(arm)}walkers.push({g,legs,arms,phase:i*.8,z:-43+i*17})}
   let time=0;
   function update(dt,{held=false,process=null}={}){
     time=process?process.state.clock.seconds:time+dt;
-    dockForklift.position.z=-70+Math.sin(time*.43)*(dockPractice?10:2);
+    const loading=Object.values(process?.state?.lots||{}).some(l=>l.tasks?.['DISPATCH.LOAD']?.status==='RUNNING');dockForklift.position.z=-70+Math.sin(time*.43)*(dockPractice||loading?10:2);forkLoad.visible=dockPractice||loading;
     for(const m of moving){
       const taskId=m.id==='SIM-TANKER-1'?'LOGISTICS.TRANSIT':'DELIVERY.ARRIVE',task=process?.state.lots[process.lotId]?.tasks[taskId];
       if(task?.status==='RUNNING'){const duration=m.path.length/m.speed+m.stops.reduce((a,x)=>a+x.seconds,0)+8;m.elapsed=Math.max(0,Math.min(1,task.elapsed/24))*duration;}else if(!held)m.elapsed+=dt;
