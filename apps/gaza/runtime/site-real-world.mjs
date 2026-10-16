@@ -130,7 +130,8 @@ export function buildExterior(THREE,{logoUrl='assets/gaza-logo.svg'}={}){
     setCutaway(value){shell.visible=!value;cutawayWalls.visible=false;interior.visible=!!value},
     setDockPreview(value){dockPreview=!!value;for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
     setDockTruck(truck){dockTruckId=truck?.id||null;dockKind=truck?.kind==='Recogida'?'Recogida':'Expedición';for(const [kind,v] of Object.entries(dockVehicles)){const visible=dockPreview&&kind===dockKind;v.tractor.visible=visible;v.load.visible=visible}},
-    setDockInventory(view){const pallets=dockVehicles.Expedición.load.userData.cargo||[],capacity=view?.palletCapacityL||720,count=Math.min(pallets.length,(view?.families||[]).reduce((n,f)=>n+Math.floor(f.shippingL/cap)+Math.floor(f.full*f.loadingProgress),0));pallets.forEach((p,i)=>p.visible=i<count)},
+    setDockInventory(view){const pallets=dockVehicles.Expedición.load.userData.cargo||[],capacity=view?.palletCapacityL||720,count=Math.min(pallets.length,(view?.families||[]).reduce((n,f)=>n+Math.floor(f.shippingL/capacity)+Math.floor(f.full*f.loadingProgress),0));pallets.forEach((p,i)=>p.visible=i<count)},
+    dockCargoCount(){return (dockVehicles.Expedición.load.userData.cargo||[]).filter(p=>p.visible).length},
     setDockPractice(value){dockPractice=!!value;practiceGroup.visible=dockPractice},
     dispose(){const geometries=new Set(),mats=new Set(),textures=new Set();root.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of [].concat(o.material||[])){mats.add(m);if(m.map)textures.add(m.map)}});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose())}
   };

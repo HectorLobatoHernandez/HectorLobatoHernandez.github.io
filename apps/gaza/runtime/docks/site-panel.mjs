@@ -1,5 +1,5 @@
 import {processStore} from '../processes/store.mjs';
-import {FLEET,projectDocks} from './model.mjs?release=gaza-site-showcase-v26c';
+import {FLEET,projectDocks} from './model.mjs?release=gaza-site-showcase-v26d';
 
 /** The dock controls live in the Plant viewer and read the common SIM ledger. */
 export function mountSiteDockPanel({onOpen=()=>{},onTruck=()=>{},onPractice=()=>{}}={}){

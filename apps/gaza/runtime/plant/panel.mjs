@@ -1,6 +1,6 @@
 import {DEPARTMENTS,SOURCES,BOUNDARY,projectPlant,exportDossier,SIGN_PLACEMENTS} from './model.mjs';
-import {buildPlantDetail} from './world.mjs?release=gaza-site-showcase-v26c';
-import {projectDocks} from '../docks/model.mjs?release=gaza-site-showcase-v26c';
+import {buildPlantDetail} from './world.mjs?release=gaza-site-showcase-v26d';
+import {projectDocks} from '../docks/model.mjs?release=gaza-site-showcase-v26d';
 import {propagateMode} from '../demo/session.mjs';
 const element=(tag,text,attrs={})=>{const el=document.createElement(tag);if(text!==null)el.textContent=text;Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));return el};
 /** Read-only spatial/document projection. Never writes to the process store. */

@@ -1,14 +1,14 @@
 import {mountMobileScene} from './mobile/scene.mjs';
 import {processStore} from './processes/store.mjs';
-import {mountLivingScene} from './living/scene.mjs?release=gaza-site-showcase-v26c';
+import {mountLivingScene} from './living/scene.mjs?release=gaza-site-showcase-v26d';
 import {propagateMode} from './demo/session.mjs';
 const LEGACY_KEY=processStore.scope.legacy;
 import {mountProcessPanel} from './processes/panel.mjs';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {buildExterior} from './site-real-world.mjs?release=gaza-site-showcase-v26c';
-import {mountPlantDetail} from './plant/panel.mjs?release=gaza-site-showcase-v26c';
-import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-showcase-v26c';
+import {buildExterior} from './site-real-world.mjs?release=gaza-site-showcase-v26d';
+import {mountPlantDetail} from './plant/panel.mjs?release=gaza-site-showcase-v26d';
+import {mountSiteDockPanel} from './docks/site-panel.mjs?release=gaza-site-showcase-v26d';
 import {normalizeGeoJSON,overpassToGeoJSON,ribbon,readLedger,ORIGIN} from './site-real-core.mjs';
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),qa=params.get('qa')==='1',frozen=params.get('freeze')==='1';
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(43,1,.4,6000),renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
@@ -57,7 +57,7 @@ let busy=false;
 $('load').onclick=async()=>{if(busy)return;busy=true;$('load').disabled=true;$('status').textContent='Consultando Overpass… (límite 30 s; sin reintentos automáticos)';const box='41.5163635,-5.6095288,41.5307365,-5.5903312',query=`[out:json][timeout:25];(way["highway"](${box});way["building"](${box}););out geom;`;try{const response=await fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query),{signal:AbortSignal.timeout(30000)});if(!response.ok)throw new Error('HTTP '+response.status);applyGeo(overpassToGeoJSON(await response.json()),'OSM_PUBLIC_REFERENCE')}catch(e){$('status').textContent='OSM no disponible: '+e.message+'. Se conserva lo que ya estaba cargado. Puedes importar GeoJSON local.'}finally{busy=false;$('load').disabled=false;publish()}};
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>10*1024*1024)throw new Error('Archivo mayor de 10 MB');applyGeo(JSON.parse(await f.text()),'IMPORTED_GEOJSON_SOURCE_TO_VALIDATE')}catch(err){$('status').textContent='Importación rechazada: '+err.message}finally{e.target.value=''}};
 $('export').onclick=()=>{if(!geo)return;const payload={...geo.original,siteReal:{anchor:ORIGIN,source:geo.source,geometryCRS:'EPSG:4326',renderAxes:'X_EAST_Y_UP_Z_SOUTH',derivedWidthsAndHeights:'INFERRED_NOT_SURVEYED',attribution:geo.source==='OSM_PUBLIC_REFERENCE'?'© OpenStreetMap contributors / ODbL':'See original file; source not verified'}},url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/geo+json'})),a=document.createElement('a');a.href=url;a.download='gaza-site-context.geojson';a.click();setTimeout(()=>URL.revokeObjectURL(url),500)};
-function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,startup:{...startup},processScope:processStore.scope.id,living:living?.snapshot()||null,lighting:{mode:lightingChoice,background:scene.background?.getHexString(),sunIntensity:sun.intensity},state:startup.phase==='ready'?'ready':startup.phase,mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,roofAction:$('cutaway').checked?'PONER_CUBIERTA':'QUITAR_CUBIERTA',geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
+function publish(){window.__GAZA_SITE_REAL__={schemaVersion:2,startup:{...startup},processScope:processStore.scope.id,living:living?.snapshot()||null,lighting:{mode:lightingChoice,background:scene.background?.getHexString(),sunIntensity:sun.intensity},state:startup.phase==='ready'?'ready':startup.phase,mode,paused,freeze:frozen,qa,cutaway:world.interior.visible,roofAction:$('cutaway').checked?'PONER_CUBIERTA':'QUITAR_CUBIERTA',geometryQA,source:geo?.source||'NO_REMOTE_GEODATA',roads:geo?.roads.length||0,buildings:geo?.buildings.length||0,axes:'X_EAST_Y_UP_Z_SOUTH',geometry:world.meta,dockCargoCount:world.dockCargoCount(),ledger,weatherMode:'SIMULATED',elapsed,selected:selected?.id||null,process:processView,actors:world.moving.map(m=>({id:m.id,position:m.position,heading:m.heading,phase:m.phase,forwardAxis:'+X'})),render:window.__GAZA_SITE_RENDER_STATS__||null};dispatchEvent(new CustomEvent('gaza-site-real-state',{detail:window.__GAZA_SITE_REAL__}))}
 // Bound visual work independently of ledger writes. A paused scene renders on demand.
 // Shader compilation is prepared asynchronously below; no readiness is published before a real draw.
 const mobile=mountMobileScene({T:THREE,kind:'site',renderer,controls,mount:$('viewport'),side:document.querySelector('aside'),getState:()=>processState,onOverview:()=>cameraTo('overview'),onDetail:()=>plantDetail.open('process')});
