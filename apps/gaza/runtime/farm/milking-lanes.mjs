@@ -16,7 +16,8 @@ export function milkingLanePose(lane,progress){
  const entering=p<.15,leaving=p>.78;
  const t=entering?easing(p/.15):leaving?easing(1-(p-.78)/.22):1;
  const pose=pointOnRoute(lane.route,t);
- // The parked animal faces along its own lane. On exit, reverse its direction.
+ // Turn in the stall before leaving, without an instantaneous half turn.
  const end=pointOnRoute(lane.route,.999);
- return {position:pose.position,yaw:leaving?pose.yaw+Math.PI:entering?pose.yaw:end.yaw,walking:entering||leaving};
+ const turn=easing(Math.max(0,Math.min(1,(p-.72)/.06)));
+ return {position:pose.position,yaw:end.yaw+turn*Math.PI,walking:entering||leaving};
 }
