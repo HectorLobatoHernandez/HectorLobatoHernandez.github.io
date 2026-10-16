@@ -23,15 +23,15 @@ Enter the dossier →`,`Ingegneria tra spazi fisici, sistemi di controllo e soft
 Entra nel dossier →`);
   copy('main > nav > a:first-child',`Architectural Atlas · Explore the city ↗`,`Architectural Atlas · Esplora la città ↗`);
   copy('.portfolio-paths small,.portfolio-paths strong,.portfolio-paths span',`01 / Spaces · systems
-Design & engineering
-ATLAS, spatial projects and systems integration ↓
 02 / Products · systems
+Design & engineering
 Software engineering & AI
+ATLAS, spatial projects and systems integration ↓
 GAZA OPS, RHB STUDIO and XXXIA STUDIO ↓`,`01 / Spazi · sistemi
-Design e ingegneria
-ATLAS, progetti spaziali e integrazione tecnica ↓
 02 / Prodotti · sistemi
+Design e ingegneria
 Ingegneria del software e IA
+ATLAS, progetti spaziali e integrazione tecnica ↓
 GAZA OPS, RHB STUDIO e XXXIA STUDIO ↓`);
   copy('#perfil .kicker,#perfil h2,#perfil .section-head p,#perfil .meta-label,#perfil h3,#perfil article p',`01 / Profile
 Integrate before isolating.

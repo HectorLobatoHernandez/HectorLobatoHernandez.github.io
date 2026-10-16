@@ -185,9 +185,9 @@ if(rootState.path!=='/'||!rootState.hero||!rootState.title.includes('Dossier')||
 await rootPage.close();
 
 for(const locale of [
-  {code:'es',heading:'Diseño e ingeniería.',software:'Ingeniería de software e IA.',menu:'Menú'},
-  {code:'en',heading:'Design & engineering.',software:'Software engineering & AI.',menu:'Menu'},
-  {code:'it',heading:'Design e ingegneria.',software:'Ingegneria del software e IA.',menu:'Menu'}
+  {code:'es',heading:'Diseño e ingeniería.',software:'Ingeniería de software e IA.',menu:'Menú',areas:['Diseño e ingeniería','Ingeniería de software e IA']},
+  {code:'en',heading:'Design & engineering.',software:'Software engineering & AI.',menu:'Menu',areas:['Design & engineering','Software engineering & AI']},
+  {code:'it',heading:'Design e ingegneria.',software:'Ingegneria del software e IA.',menu:'Menu',areas:['Design e ingegneria','Ingegneria del software e IA']}
 ]){
   for(const viewport of [{id:'desktop',width:1440,height:950},{id:'mobile',width:390,height:844}]){
     const page=await browser.newPage({viewport});
@@ -203,12 +203,13 @@ for(const locale of [
       heading:document.querySelector('#diseno-ingenieria h2')?.getAttribute('aria-label'),
       software:document.querySelector('#software-ia h2')?.getAttribute('aria-label'),
       menu:document.querySelector('.rb-menu-trigger')?.textContent.trim(),
+      areas:[...document.querySelectorAll('.portfolio-paths a strong')].map(x=>x.textContent.trim()),
       cards:[...document.querySelectorAll('#software-ia .domain-card')].map(a=>a.querySelector('h3')?.textContent.trim()),
       atlas:document.querySelector('#diseno-ingenieria .domain-card')?.getAttribute('href'),
       selected:document.querySelector('.rb-nav .language-switch [aria-current="true"]')?.textContent.trim(),
       overflow:document.documentElement.scrollWidth-innerWidth
     }));
-    if(state.lang!==locale.code||state.heading!==locale.heading||state.software!==locale.software||state.menu!==locale.menu||state.cards.join('|')!=='GAZA OPS|RHB STUDIO|XXXIA STUDIO'||state.atlas!=='/atlas/'||state.selected!==locale.code.toUpperCase()||state.overflow>3||errors.length)failures.push('Dossier locale '+locale.code+'/'+viewport.id+': '+JSON.stringify({state,errors}));
+    if(state.lang!==locale.code||state.heading!==locale.heading||state.software!==locale.software||state.menu!==locale.menu||state.areas.join('|')!==locale.areas.join('|')||state.cards.join('|')!=='GAZA OPS|RHB STUDIO|XXXIA STUDIO'||state.atlas!=='/atlas/'||state.selected!==locale.code.toUpperCase()||state.overflow>3||errors.length)failures.push('Dossier locale '+locale.code+'/'+viewport.id+': '+JSON.stringify({state,errors}));
     await page.screenshot({path:'.qa/cv-editorial/dossier-'+locale.code+'-'+viewport.id+'.png',fullPage:false});
     await page.close();
   }
