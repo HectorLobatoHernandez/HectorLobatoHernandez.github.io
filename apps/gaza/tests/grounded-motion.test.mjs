@@ -8,7 +8,7 @@ import {herdPlan} from '../runtime/farm/life/herd-model.mjs';
 import {milkingLanePose,milkingLanes} from '../runtime/farm/milking-lanes.mjs';
 import {projectFarm} from '../runtime/farm/model.mjs';
 import {buildExterior} from '../runtime/site-real-world.mjs';
-import {initialState} from '../runtime/processes/ledger.mjs';
+import {initialState,reduce} from '../runtime/processes/ledger.mjs';
 
 test('grazing and watering turns remain continuous at phase boundaries',()=>{
  const member={index:0,zone:'cow-yard',position:[0,0],yaw:.4};
@@ -43,7 +43,7 @@ test('visible hoof meshes contact their actual indoor floor or yard',()=>{
    assert.equal(body.count,members.length);
    for(let i=0;i<body.count;i++){
     foot.getMatrixAt(i,matrix);box.copy(foot.geometry.boundingBox).applyMatrix4(matrix);
-    const isYard=members[i].zone.includes('yard'),ground=isYard?.27:.365;
+    const isYard=members[i].zone.includes('yard'),ground=isYard?.27:.545;
     assert(Math.abs(box.min.y-ground)<.065,`hoof does not contact ${isYard?'yard':'floor'}: ${box.min.y}`);
     indoor ||= !isYard;yard ||= isYard;
    }
@@ -73,4 +73,22 @@ test('fleet wheels and practice pallets rest on their respective road and wareho
    assert(Math.abs(pallet.geometry.boundingBox.clone().applyMatrix4(pallet.matrixWorld).min.y-.35)<.025);
   }
  }finally{world.dispose();globalThis.document=original}
+});
+
+test('milking animal hooves reach the raised platform',()=>{
+ const original=globalThis.document;
+ globalThis.document={createElement:()=>({width:0,height:0,getContext:()=>({fillRect(){},fillText(){}})})};
+ const Mock={...T,TextureLoader:class{load(_url,callback){const tx=new T.Texture();callback?.(tx);return tx}}};
+ const world=buildFarmWorld(Mock,new T.Scene()),life=buildFarmLife(Mock,world);
+ try{
+  let state=reduce(initialState(),{type:'AUTO',enabled:true});
+  for(let i=0;i<100&&state.lots['SIM-BOV-001'].tasks['FARM.MILKING'].status!=='RUNNING';i++)state=reduce(state,{type:'TICK',seconds:1});
+  assert.equal(state.lots['SIM-BOV-001'].tasks['FARM.MILKING'].status,'RUNNING');
+  const view=projectFarm(state,'SIM-BOV-001');world.update(view);life.update(view);
+  const actor=world.root.getObjectByName('DETAIL_HERD_BOVINE_4');assert(actor.visible);
+  const foot=actor.children.at(-1);foot.geometry.computeBoundingBox();
+  const matrix=new T.Matrix4();foot.getMatrixAt(0,matrix);
+  const bounds=foot.geometry.boundingBox.clone().applyMatrix4(matrix);
+  assert(Math.abs(bounds.min.y-.875)<.065,`milking hoof relative to platform: ${bounds.min.y}`);
+ }finally{life.dispose();world.dispose();globalThis.document=original}
 });
