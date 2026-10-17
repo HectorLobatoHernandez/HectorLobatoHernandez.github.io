@@ -91,7 +91,7 @@ function financeBoard(x,y,z,w,h,title,sub){
   texture.colorSpace=THREE.SRGBColorSpace;
   const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide,transparent:false}));
   mesh.position.set(x,y,z);scene.add(mesh);
-  dynamicBoards.push({ctx,texture,title,sub,seed:dynamicBoards.length});
+  dynamicBoards.push({ctx,texture,mesh,title,sub,seed:dynamicBoards.length});
 }
 financeBoard(0,67,-25.9,21,14,'GAZA OPS','INDUSTRIAL INTELLIGENCE');
 financeBoard(-73,32,12.35,21,11,'PLANTA','DIGITAL TWIN / PRODUCTION');
@@ -148,7 +148,7 @@ $('topview').onclick=()=>{controls.target.set(0,0,3);camera.position.set(.01,250
 $('orbit').onclick=()=>{orbiting=!orbiting;$('orbit').style.borderColor=orbiting?'#ffb56d':''};
 $('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
 $('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.2:1.5;$('night').textContent=night?'Noche / 2300 K':'Día'};
-function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}for(const b of dynamicBoards)b.texture.needsUpdate=progress>.7}
+function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}for(const b of dynamicBoards)b.mesh.visible=progress>.7}
 $('timeline').oninput=e=>{playing=false;setProgress(+e.target.value/1000);$('play').textContent='Reanudar'};
 $('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Pausa':'Reanudar'};
 $('replay').onclick=()=>{setProgress(0);playing=true;$('play').textContent='Pausa'};
