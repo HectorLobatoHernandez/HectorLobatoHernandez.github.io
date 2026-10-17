@@ -5,6 +5,11 @@ on:
     paths:
       - 'atlas-ai/**'
       - '.github/workflows/atlas-ai-smoke.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'atlas-ai/**'
+      - '.github/workflows/atlas-ai-smoke.yml'
   workflow_dispatch:
 jobs:
   smoke:
@@ -19,6 +24,8 @@ jobs:
         run: |
           npm install --no-save playwright
           npx playwright install --with-deps chromium
+      - name: Check modules syntax
+        run: node --check atlas-ai/district-v2.mjs
       - name: Start local server
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/atlas-server.log 2>&1 &
@@ -43,6 +50,11 @@ jobs:
           const src=await page.locator('#projectframe').getAttribute('src');
           assert.match(src,/module=logistica/);
           await page.locator('#back').click();
+          await page.locator('#v2structure').click();
+          await page.locator('#v2systems').click();
+          await page.locator('#v2tour').click();
+          await page.locator('#v2quality').click();
+          await page.locator('#v2tour').click();
           await page.locator('#replay').click();
           await page.locator('#night').click();
           await page.locator('#topview').click();
