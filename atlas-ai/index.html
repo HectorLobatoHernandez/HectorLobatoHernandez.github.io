@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ATLAS / AI & SOFTWARE DISTRICT</title>
+<meta name="description" content="ATLAS AI & Software District: ciudad interactiva de proyectos de IA, digital twins e ingeniería de software.">
+<script type="importmap">{"imports":{"three":"../atlas/assets/vendor/three-r180/build/three.module.min.js","three/addons/":"../atlas/assets/vendor/three-r180/examples/jsm/"}}</script>
+<style>
+:root{color-scheme:dark;--bg:#070d16;--gold:#fbb46e;--text:#e9edf4;--sub:#9caac0}*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);font:13px/1.5 system-ui,Arial,sans-serif;color:var(--text);overflow:hidden}button,a{font:inherit}button{cursor:pointer;border:1px solid #53647a;background:#101a2bcf;color:var(--text);padding:8px 12px;border-radius:3px}button:hover,button:focus-visible{border-color:var(--gold)}a{color:var(--gold);text-decoration:none}.top{height:66px;position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:#070d16d8;border-bottom:1px solid #25364a;backdrop-filter:blur(12px)}.brand{font-size:19px;letter-spacing:.18em}.brand small{display:block;font-size:9px;color:var(--sub);letter-spacing:.25em}.headerlinks{display:flex;gap:16px;align-items:center}.layout{position:absolute;inset:66px 0 78px}.canvas{position:absolute;inset:0}.canvas canvas{display:block;width:100%;height:100%;touch-action:none}.side{position:absolute;top:22px;left:25px;width:275px;max-height:calc(100% - 45px);overflow:auto;background:#071120d9;border:1px solid #2c4055;padding:20px;backdrop-filter:blur(10px)}.eyebrow{color:var(--gold);font-size:10px;letter-spacing:.23em}.side h1{font-size:33px;font-weight:400;line-height:1.05;letter-spacing:-.045em;margin:14px 0}.muted{color:var(--sub)}.projects{margin-top:22px;border-top:1px solid #324052}.projects button{display:block;text-align:left;width:100%;border:0;border-bottom:1px solid #26374b;background:none;padding:11px 3px;color:var(--text)}.projects button:hover,.projects button.selected{color:var(--gold)}.projects small{display:block;color:var(--sub);font-size:10px}.detail{border-top:1px solid #455568;padding-top:14px;margin-top:20px}.detail h2{font-size:20px;font-weight:450}.detail button{margin-top:8px;background:#7b4c26}.actions{position:absolute;right:24px;top:22px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:410px}.bottom{position:absolute;bottom:0;height:78px;background:#070d16ed;width:100%;border-top:1px solid #2b394b;display:flex;align-items:center;padding:0 24px;gap:20px;z-index:5}.bottom input{flex:1;accent-color:var(--gold)}.bottom label{white-space:nowrap}.hint{position:absolute;right:23px;bottom:20px;color:#b6bfd0;font-size:11px}#status{font-size:11px;color:var(--gold)}.open{position:absolute;inset:66px 0 0;background:#070b14;z-index:15;display:none;flex-direction:column}.open.active{display:flex}.open header{display:flex;gap:20px;align-items:center;padding:10px 20px}.open iframe{border:0;flex:1;background:#fff}@media(max-width:750px){.top{padding:0 12px}.brand{font-size:14px}.headerlinks{gap:5px}.headerlinks a{font-size:10px}.side{left:9px;top:8px;width:195px;padding:12px;max-height:70%}.side h1{font-size:22px}.actions{right:8px;top:8px;max-width:125px}.actions button{font-size:10px;padding:6px}.bottom{gap:8px;padding:0 9px;font-size:10px}.hint{display:none}}
+</style></head><body>
+<header class="top"><div class="brand">ATLAS <small>AI / SOFTWARE DISTRICT</small></div><nav class="headerlinks"><a href="../atlas/projects/atlas.html">ATLAS DISEÑO ↗</a><a href="../cv/dossier.html">DOSSIER ↗</a></nav></header>
+<main class="layout"><div id="view" class="canvas"></div><aside class="side"><div class="eyebrow">ATLAS / 02 — FINANCIAL DISTRICT</div><h1>A city of<br>intelligence.</h1><div class="muted">Distrito financiero virtual para proyectos de IA, automatización y digital twins.</div><nav id="projects" class="projects"></nav><section class="detail"><div id="status">SELECCIONA UNA PARCELA</div><h2 id="name">GAZA OPS</h2><div class="muted" id="description">Selecciona un edificio para explorar.</div><button id="enter">Entrar en proyecto ↗</button></section></aside>
+<div class="actions"><button id="night">Noche / 2300 K</button><button id="overview">Vista general</button><button id="topview">Planta</button><button id="orbit">Órbita 360°</button><button id="fullscreen">Pantalla completa</button></div><div class="hint">Arrastrar: orbitar · Rueda: zoom · Clic: seleccionar edificio</div></main>
+<footer class="bottom"><label id="phase">TRAZADO URBANO</label><button id="play">Pausa</button><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="Secuencia de construcción"><button id="replay">Repetir</button><span id="pct">0%</span></footer>
+<section id="open" class="open"><header><button id="back">← Volver a ATLAS</button><b id="projecttitle"></b></header><iframe id="projectframe" title="Proyecto seleccionado" loading="lazy" allowfullscreen></iframe></section>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const $=s=>document.getElementById(s);
+const projects=[
+ {id:'gaza',name:'GAZA OPS',type:'HEADQUARTERS',desc:'Centro de operaciones e inteligencia industrial.',x:0,z:-39,w:26,d:25,h:95,url:'../apps/gaza/territory.html',ready:true},
+ {id:'planta',name:'PLANTA',type:'INDUSTRIAL DIGITAL TWIN',desc:'Planta industrial, producción y simulación ASRS.',x:-73,z:-2,w:26,d:28,h:52,url:'../apps/gaza/territory.html',ready:true},
+ {id:'laboratorio',name:'LABORATORIO',type:'QUALITY INTELLIGENCE',desc:'Procesos de laboratorio y control de calidad.',x:-34,z:-2,w:26,d:28,h:65,url:'../apps/gaza/territory.html',ready:true},
+ {id:'granja',name:'GRANJA',type:'AGRICULTURE INTELLIGENCE',desc:'Monitorización y simulación de producción agroindustrial.',x:34,z:-2,w:26,d:28,h:54,url:'../apps/gaza/territory.html',ready:true},
+ {id:'logistica',name:'CAMIÓN / LOGÍSTICA',type:'FLEET & TRANSPORT',desc:'Vehículos, distribución, rutas y operaciones logísticas.',x:73,z:-2,w:26,d:28,h:43,url:'../apps/gaza/territory.html',ready:true},
+ {id:'rhb',name:'RHB STUDIO',type:'EN CONSTRUCCIÓN',desc:'Plataforma de ingeniería, empresa e integración.',x:-44,z:57,w:38,d:29,h:52,url:null,ready:false},
+ {id:'xxxia',name:'XXXIA STUDIO',type:'EN CONSTRUCCIÓN',desc:'Estudio de IA, agentes y creación digital.',x:44,z:57,w:38,d:29,h:60,url:null,ready:false}
+];
+let selected=projects[0],progress=0,playing=true,night=true,orbiting=false;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x070c17);scene.fog=new THREE.FogExp2(0x070c17,.0024);
+const camera=new THREE.PerspectiveCamera(48,1,.5,1100);camera.position.set(152,144,183);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.65));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+$('view').append(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,23,2);controls.enableDamping=true;controls.dampingFactor=.065;controls.maxPolarAngle=Math.PI*.49;controls.maxDistance=440;controls.minDistance=32;
+const hemi=new THREE.HemisphereLight(0x779fc9,0x20212a,1.05);scene.add(hemi);
+const moon=new THREE.DirectionalLight(0xa9bce1,1.05);moon.position.set(-90,160,20);scene.add(moon);
+const gold=0xffaa62,blue=0x32b7ff;
+const mats={road:new THREE.MeshStandardMaterial({color:0x151d28,roughness:.95}),sidewalk:new THREE.MeshStandardMaterial({color:0x283343,roughness:.85}),ground:new THREE.MeshStandardMaterial({color:0x101824,roughness:1}),glass:new THREE.MeshStandardMaterial({color:0x14283e,metalness:.82,roughness:.21}),glass2:new THREE.MeshStandardMaterial({color:0x233b50,metalness:.8,roughness:.18}),edge:new THREE.MeshBasicMaterial({color:gold}),screen:new THREE.MeshBasicMaterial({color:0xffffff}),steel:new THREE.MeshStandardMaterial({color:0x687180,metalness:.85,roughness:.4}),window:new THREE.MeshBasicMaterial({color:0xfac182})};
+const box=(w,h,d,x,y,z,m,parent=scene)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
+box(290,1,232,0,-.6,4,mats.ground);
+for(const x of [-104,-87,-54,-17,17,54,87,104])box(3,.09,220,x,.04,4,mats.road);
+for(const z of [-70,-23,25,85])box(250,.09,7,0,.05,z,mats.road);
+for(const x of [-103,-52,-18,18,52,103])for(let z=-86;z<95;z+=10)box(.12,.015,3,x,.12,z,mats.window);
+for(const z of [-70,-23,25,85])for(let x=-112;x<113;x+=10)box(3,.015,.12,x,.12,z,mats.window);
+function textTexture(label,subtitle='',accent='#ffc187'){const c=document.createElement('canvas');c.width=1024;c.height=512;let q=c.getContext('2d');q.fillStyle='#061022';q.fillRect(0,0,1024,512);q.fillStyle=accent;q.fillRect(35,27,954,5);q.font='bold 78px Arial';q.textAlign='center';q.fillStyle='#f6f2ec';q.fillText(label,512,232,940);q.font='35px Arial';q.fillStyle=accent;q.fillText(subtitle,512,317,900);q.strokeStyle='#577084';q.strokeRect(20,16,984,480);let t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+const picks=[],structures=[],screenTextures=[];
+const makeScreen=(parent,label,subtitle,w,h,x,y,z)=>{let tex=textTexture(label,subtitle);screenTextures.push(tex);const m=new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide});let o=new THREE.Mesh(new THREE.PlaneGeometry(w,h),m);o.position.set(x,y,z);parent.add(o);return o};
+function tower(p,i){
+ const parent=new THREE.Group();scene.add(parent);const basement=box(p.w+2,1,p.d+2,p.x,.55,p.z,mats.steel,parent);
+ const levels=p.ready?Math.floor(p.h/5):Math.floor(p.h/5)*.53;
+ const facade=box(p.w,p.h,p.d,p.x,p.h/2+1,p.z,i%2?mats.glass:mats.glass2,parent);
+ const inner=box(p.w-1,p.h-.5,p.d-1,p.x,p.h/2+1,p.z,new THREE.MeshStandardMaterial({color:0x0a1728,metalness:.4,roughness:.6}),parent);
+ // Transparent dark glass skin with legible separated floors.
+ inner.visible=false; facade.userData.project=p;
+ for(let f=1;f<levels;f++){
+  let y=f*5+1;
+  for(const side of [-1,1]){
+   box(p.w+.2,.11,.14,p.x,y,p.z+side*(p.d/2+.08),mats.edge,parent);
+   for(let col=-p.w/2+2;col<p.w/2-1;col+=3.8)if((f*7+Math.round(col)*3+i)%5!==0)
+    box(1.7,2.4,.07,p.x+col,y-2.2,p.z+side*(p.d/2+.13),mats.window,parent);
+  }
+ }
+ for(const xx of [-1,1])for(const zz of [-1,1]){
+  const x=p.x+xx*p.w/2,z=p.z+zz*p.d/2;
+  const m=box(.18,p.h,.18,x,p.h/2+1,z,mats.edge,parent);m.userData.project=p
+ }
+ const billboard=p.id==='gaza'?'GAZA OPS':p.id==='logistica'?'LOGÍSTICA':p.name;
+ makeScreen(parent,billboard,p.type,p.w*.90,Math.min(19,p.h*.32),p.x,p.h*.70,p.z+p.d/2+.22);
+ if(p.id==='gaza')makeScreen(parent,'ATLAS','AI FINANCIAL DISTRICT',p.w*.85,11,p.x,p.h*.29,p.z+p.d/2+.27);
+ if(!p.ready){facade.material=mats.steel;const under=box(p.w+2,1,p.d+2,p.x,p.h*.54,p.z,mats.steel,parent);for(let j=0;j<6;j++)box(.17,p.h*.75,.17,p.x-p.w/2+j*p.w/5,p.h*.4,p.z+p.d/2+1,mats.steel,parent);makeScreen(parent,'EN CONSTRUCCIÓN','PROJECT IN DEVELOPMENT',p.w*.85,8,p.x,p.h*.29,p.z+p.d/2+.26)}
+ let hit=box(p.w,p.h,p.d,p.x,p.h/2+1,p.z,new THREE.MeshBasicMaterial({visible:false}),parent);hit.userData.project=p;picks.push(hit);
+ structures.push({group:parent,p,facade,hit});return parent
+}
+projects.forEach(tower);
+let seed=78134;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+for(let ring=0;ring<2;ring++)for(let i=0;i<50;i++){
+ let x=(rand()-.5)*275,z=(rand()-.5)*218;
+ if(Math.abs(x)<115&&Math.abs(z)<90)continue;
+ let w=6+rand()*11,d=6+rand()*11,h=18+rand()*105;
+ let mat=rand()>.5?mats.glass:mats.glass2;
+ box(w,h,d,x,h/2,z,mat);
+ for(let yy=5;yy<h;yy+=6)box(w+.09,.09,d+.09,x,yy,z,mats.edge)
+}
+for(let i=0;i<55;i++){const x=(rand()-.5)*245,z=(rand()-.5)*203;if(Math.abs(x)<100&&Math.abs(z)<86)continue;let h=15+rand()*85;box(5,h,5,x,h/2,z,mats.glass)}
+const projectButtons=new Map();
+function choose(p){selected=p;for(const [key,btn] of projectButtons)btn.classList.toggle('selected',key===p.id);$('name').textContent=p.name;$('status').textContent=p.ready?'PROYECTO ACTIVO':'EN CONSTRUCCIÓN';$('description').textContent=p.desc;$('enter').disabled=!p.ready;$('enter').textContent=p.ready?'Entrar en proyecto ↗':'Próximamente';if(!p.ready)$('enter').title='La parcela aún no tiene aplicación publicada'}
+for(const [i,p] of projects.entries()){const b=document.createElement('button');b.innerHTML='<b>'+String(i+1).padStart(2,'0')+' / '+p.name+'</b><small>'+p.type+'</small>';b.onclick=()=>{choose(p);controls.target.set(p.x,p.h*.39,p.z);camera.position.set(p.x+p.w*2,p.h*.95+20,p.z+p.d*2)};$('projects').append(b);projectButtons.set(p.id,b)}choose(selected);
+const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let down=null;
+renderer.domElement.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+renderer.domElement.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>7)return;let r=renderer.domElement.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*2-1;pointer.y=-(e.clientY-r.top)/r.height*2+1;ray.setFromCamera(pointer,camera);let hit=ray.intersectObjects(picks,false)[0];if(hit){let p=hit.object.userData.project;choose(p);controls.target.set(p.x,p.h*.4,p.z)}});
+$('enter').onclick=()=>{if(!selected.ready||!selected.url)return;$('projecttitle').textContent=selected.name;$('projectframe').src=selected.url;$('open').classList.add('active')};
+$('back').onclick=()=>{$('open').classList.remove('active');$('projectframe').src='about:blank'};
+$('overview').onclick=()=>{controls.target.set(0,23,2);camera.position.set(152,144,183)};
+$('topview').onclick=()=>{controls.target.set(0,0,3);camera.position.set(.01,250,3)};
+$('orbit').onclick=()=>{orbiting=!orbiting;$('orbit').style.borderColor=orbiting?'#ffb56d':''};
+$('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+$('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.2:1.5;$('night').textContent=night?'Noche / 2300 K':'Día'};
+function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}}
+$('timeline').oninput=e=>{playing=false;setProgress(+e.target.value/1000);$('play').textContent='Reanudar'};
+$('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Pausa':'Reanudar'};
+$('replay').onclick=()=>{setProgress(0);playing=true;$('play').textContent='Pausa'};
+function resize(){let el=$('view');let w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+addEventListener('resize',resize);resize();setProgress(0);
+let previous=performance.now();function frame(now){let dt=Math.min(.08,(now-previous)/1000);previous=now;if(playing&&progress<1)setProgress(progress+dt*.095);if(orbiting&&progress>=.9){let offset=camera.position.clone().sub(controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.10);camera.position.copy(controls.target).add(offset)}controls.update();renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+</script></body></html>
