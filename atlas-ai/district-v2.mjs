@@ -198,7 +198,7 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
     boards.forEach(b=>b.m.visible=build>.84&&night);
     if(build>.84)updateBoards(t);
     if(tour){
-      const q=((t-tourStart)%42000)/42000*(poses.length-1);
+      const q=(Math.max(0,t-tourStart)%42000)/42000*(poses.length-1);
       const index=Math.min(poses.length-2,Math.floor(q)),fraction=q-index;
       const ease=fraction*fraction*(3-2*fraction);
       const p0=poses[index],p1=poses[index+1];
