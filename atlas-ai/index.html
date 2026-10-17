@@ -28,15 +28,15 @@ const projects=[
 ];
 let selected=projects[0],progress=0,playing=true,night=true,orbiting=false;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x070c17);scene.fog=new THREE.FogExp2(0x070c17,.0024);
-const camera=new THREE.PerspectiveCamera(48,1,.5,1100);camera.position.set(152,144,183);
+const camera=new THREE.PerspectiveCamera(48,1,.5,1100);camera.position.set(132,82,174);
 let renderer;
 try{renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:false});}
 catch(error){const fallback=document.createElement('section');fallback.setAttribute('role','alert');fallback.style.cssText='padding:24px;max-width:580px;margin:20vh auto;background:#0a1524;border:1px solid #d49d65;color:#fff;position:relative;z-index:20';fallback.innerHTML='<h2>No se pudo iniciar la ciudad 3D</h2><p>Activa la aceleración gráfica de tu navegador o prueba con una versión actualizada de Chrome o Edge.</p><a href="./gaza-module.html?module=gaza">Acceder a GAZA OPS sin WebGL ↗</a>';document.body.replaceChildren(fallback);throw error;}
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.48;
 $('view').append(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,23,2);controls.enableDamping=true;controls.dampingFactor=.065;controls.maxPolarAngle=Math.PI*.49;controls.maxDistance=440;controls.minDistance=32;
-const hemi=new THREE.HemisphereLight(0x779fc9,0x20212a,1.05);scene.add(hemi);
-const moon=new THREE.DirectionalLight(0xa9bce1,1.05);moon.position.set(-90,160,20);scene.add(moon);
+const hemi=new THREE.HemisphereLight(0x779fc9,0x20212a,1.38);scene.add(hemi);
+const moon=new THREE.DirectionalLight(0xa9bce1,1.3);moon.position.set(-90,160,20);scene.add(moon);
 const gold=0xffaa62,blue=0x32b7ff;
 const mats={road:new THREE.MeshStandardMaterial({color:0x151d28,roughness:.95}),sidewalk:new THREE.MeshStandardMaterial({color:0x283343,roughness:.85}),ground:new THREE.MeshStandardMaterial({color:0x101824,roughness:1}),glass:new THREE.MeshStandardMaterial({color:0x14283e,metalness:.82,roughness:.21}),glass2:new THREE.MeshStandardMaterial({color:0x233b50,metalness:.8,roughness:.18}),edge:new THREE.MeshBasicMaterial({color:gold}),screen:new THREE.MeshBasicMaterial({color:0xffffff}),steel:new THREE.MeshStandardMaterial({color:0x687180,metalness:.85,roughness:.4}),window:new THREE.MeshBasicMaterial({color:0xfac182})};
 const box=(w,h,d,x,y,z,m,parent=scene)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
@@ -78,12 +78,13 @@ let seed=78134;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/42
 for(let ring=0;ring<2;ring++)for(let i=0;i<50;i++){
  let x=(rand()-.5)*275,z=(rand()-.5)*218;
  if(Math.abs(x)<115&&Math.abs(z)<90)continue;
+ if(z>62)continue; // unobstructed foreground
  let w=6+rand()*11,d=6+rand()*11,h=18+rand()*105;
  let mat=rand()>.5?mats.glass:mats.glass2;
  box(w,h,d,x,h/2,z,mat);
  for(let yy=5;yy<h;yy+=6)box(w+.09,.09,d+.09,x,yy,z,mats.edge)
 }
-for(let i=0;i<55;i++){const x=(rand()-.5)*245,z=(rand()-.5)*203;if(Math.abs(x)<100&&Math.abs(z)<86)continue;let h=15+rand()*85;box(5,h,5,x,h/2,z,mats.glass)}
+for(let i=0;i<55;i++){const x=(rand()-.5)*245,z=(rand()-.5)*203;if(Math.abs(x)<100&&Math.abs(z)<86)continue;if(z>62)continue;let h=15+rand()*85;box(5,h,5,x,h/2,z,mats.glass)}
 
 /* District enhancements: finance billboards, rooftop aviation lights, moving traffic.
    All geometries are procedurally generated; no external images are needed. */
@@ -148,7 +149,7 @@ renderer.domElement.setAttribute('aria-label','ATLAS AI: ciudad financiera 3D in
 renderer.domElement.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>7)return;let r=renderer.domElement.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*2-1;pointer.y=-(e.clientY-r.top)/r.height*2+1;ray.setFromCamera(pointer,camera);let hit=ray.intersectObjects(picks,false)[0];if(hit){let p=hit.object.userData.project;choose(p);controls.target.set(p.x,p.h*.4,p.z)}});
 $('enter').onclick=()=>{if(!selected.ready||!selected.url)return;$('projecttitle').textContent=selected.name;$('projectframe').src=selected.url;$('open').classList.add('active')};
 $('back').onclick=()=>{$('open').classList.remove('active');$('projectframe').src='about:blank'};
-$('overview').onclick=()=>{controls.target.set(0,23,2);camera.position.set(152,144,183)};
+$('overview').onclick=()=>{controls.target.set(0,23,2);camera.position.set(132,82,174)};
 $('topview').onclick=()=>{controls.target.set(0,0,3);camera.position.set(.01,250,3)};
 $('orbit').onclick=()=>{orbiting=!orbiting;$('orbit').style.borderColor=orbiting?'#ffb56d':''};
 $('v2structure').onclick=()=>{enhancementMode=enhancementMode==='structure'?'city':'structure';enhancements.setMode(enhancementMode);$('v2structure').style.borderColor=enhancementMode==='structure'?'#ffb66f':'';$('v2systems').style.borderColor='';};
@@ -157,7 +158,7 @@ $('v2tour').onclick=()=>{if(enhancements.touring){enhancements.stopTour();$('v2t
 const qualityModes=['high','medium','low'];let qualityLevel=0;
 $('v2quality').onclick=()=>{qualityLevel=(qualityLevel+1)%3;const q=qualityModes[qualityLevel];enhancements.setQuality(q);renderer.setPixelRatio(Math.min(devicePixelRatio,q==='high'?1.5:q==='medium'?1.1:1));resize();$('v2quality').textContent='Calidad: '+({high:'Alta',medium:'Media',low:'Baja'}[q]);};
 $('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
-$('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.2:1.5;$('night').textContent=night?'Noche / 2300 K':'Día';enhancements.setNight(night)};
+$('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.48:1.65;$('night').textContent=night?'Noche / 2300 K':'Día';enhancements.setNight(night)};
 function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}for(const b of dynamicBoards)b.mesh.visible=progress>.7}
 $('timeline').oninput=e=>{playing=false;setProgress(+e.target.value/1000);$('play').textContent='Reanudar'};
 $('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Pausa':'Reanudar'};
