@@ -28,7 +28,9 @@ const projects=[
 let selected=projects[0],progress=0,playing=true,night=true,orbiting=false;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x070c17);scene.fog=new THREE.FogExp2(0x070c17,.0024);
 const camera=new THREE.PerspectiveCamera(48,1,.5,1100);camera.position.set(152,144,183);
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:false});
+let renderer;
+try{renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:false});}
+catch(error){const fallback=document.createElement('section');fallback.setAttribute('role','alert');fallback.style.cssText='padding:24px;max-width:580px;margin:20vh auto;background:#0a1524;border:1px solid #d49d65;color:#fff;position:relative;z-index:20';fallback.innerHTML='<h2>No se pudo iniciar la ciudad 3D</h2><p>Activa la aceleración gráfica de tu navegador o prueba con una versión actualizada de Chrome o Edge.</p><a href="./gaza-module.html?module=gaza">Acceder a GAZA OPS sin WebGL ↗</a>';document.body.replaceChildren(fallback);throw error;}
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
 $('view').append(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,23,2);controls.enableDamping=true;controls.dampingFactor=.065;controls.maxPolarAngle=Math.PI*.49;controls.maxDistance=440;controls.minDistance=32;
@@ -139,7 +141,7 @@ const projectButtons=new Map();
 function choose(p){selected=p;for(const [key,btn] of projectButtons)btn.classList.toggle('selected',key===p.id);$('name').textContent=p.name;$('status').textContent=p.ready?'PROYECTO ACTIVO':'EN CONSTRUCCIÓN';$('description').textContent=p.desc;$('enter').disabled=!p.ready;$('enter').textContent=p.ready?'Entrar en proyecto ↗':'Próximamente';if(!p.ready)$('enter').title='La parcela aún no tiene aplicación publicada'}
 for(const [i,p] of projects.entries()){const b=document.createElement('button');b.innerHTML='<b>'+String(i+1).padStart(2,'0')+' / '+p.name+'</b><small>'+p.type+'</small>';b.onclick=()=>{choose(p);controls.target.set(p.x,p.h*.39,p.z);camera.position.set(p.x+p.w*2,p.h*.95+20,p.z+p.d*2)};$('projects').append(b);projectButtons.set(p.id,b)}choose(selected);
 const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let down=null;
-renderer.domElement.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+renderer.domElement.setAttribute('aria-label','ATLAS AI: ciudad financiera 3D interactiva. Selecciona proyectos desde el panel lateral.');renderer.domElement.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
 renderer.domElement.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>7)return;let r=renderer.domElement.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*2-1;pointer.y=-(e.clientY-r.top)/r.height*2+1;ray.setFromCamera(pointer,camera);let hit=ray.intersectObjects(picks,false)[0];if(hit){let p=hit.object.userData.project;choose(p);controls.target.set(p.x,p.h*.4,p.z)}});
 $('enter').onclick=()=>{if(!selected.ready||!selected.url)return;$('projecttitle').textContent=selected.name;$('projectframe').src=selected.url;$('open').classList.add('active')};
 $('back').onclick=()=>{$('open').classList.remove('active');$('projectframe').src='about:blank'};
@@ -153,6 +155,6 @@ $('timeline').oninput=e=>{playing=false;setProgress(+e.target.value/1000);$('pla
 $('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Pausa':'Reanudar'};
 $('replay').onclick=()=>{setProgress(0);playing=true;$('play').textContent='Pausa'};
 function resize(){let el=$('view');let w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
-addEventListener('resize',resize);resize();setProgress(0);
+addEventListener('resize',resize);renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();playing=false;$('phase').textContent='CONTEXTO GRÁFICO PERDIDO · RECARGA LA PÁGINA';});resize();setProgress(0);
 let previous=performance.now(),lastBoardUpdate=0;updateBillboards(0);function frame(now){let dt=Math.min(.08,(now-previous)/1000);previous=now;if(playing&&progress<1)setProgress(progress+dt*.095);if(orbiting&&progress>=.9){let offset=camera.position.clone().sub(controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.10);camera.position.copy(controls.target).add(offset)}updateTraffic(now*.001);if(progress>.7&&now-lastBoardUpdate>350){updateBillboards(now);lastBoardUpdate=now;}controls.update();renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
 </script></body></html>
