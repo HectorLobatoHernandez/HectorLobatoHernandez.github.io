@@ -5,6 +5,11 @@ on:
     paths:
       - 'atlas-ai/**'
       - '.github/workflows/atlas-ai-smoke.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'atlas-ai/**'
+      - '.github/workflows/atlas-ai-smoke.yml'
   workflow_dispatch:
 jobs:
   smoke:
@@ -19,6 +24,8 @@ jobs:
         run: |
           npm install --no-save playwright
           npx playwright install --with-deps chromium
+      - name: Check modules syntax
+        run: node --check atlas-ai/district-v2.mjs
       - name: Start local server
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/atlas-server.log 2>&1 &
@@ -31,7 +38,7 @@ jobs:
           const browser=await chromium.launch({headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
           const page=await browser.newPage({viewport:{width:1440,height:900}});
           const errors=[];
-          page.on('pageerror',e=>errors.push(e.message));
+          page.on('pageerror',e=>errors.push(e.stack||e.message));
           const response=await page.goto('http://127.0.0.1:8000/atlas-ai/',{waitUntil:'load'});
           assert.equal(response.status(),200);
           await page.locator('#projects button').first().waitFor({timeout:20000});
@@ -43,6 +50,23 @@ jobs:
           const src=await page.locator('#projectframe').getAttribute('src');
           assert.match(src,/module=logistica/);
           await page.locator('#back').click();
+          await page.locator('#v2structure').click();
+          await page.locator('#v2systems').click();
+          await page.locator('#v2tour').click();
+          await page.locator('#v2quality').click();
+          await page.locator('#v2quality').click();
+          await page.locator('#v2quality').click();
+          await page.locator('#v2tour').click();
+          await page.locator('#timeline').evaluate(el=>{el.value='1000';el.dispatchEvent(new Event('input',{bubbles:true}));});
+          await page.locator('#overview').click();
+          await page.waitForTimeout(750);
+          await page.screenshot({path:'atlas-ai-complete.png',fullPage:true});
+          await page.locator('#v2structure').click();
+          await page.waitForTimeout(600);
+          await page.screenshot({path:'atlas-ai-structure.png',fullPage:true});
+          await page.locator('#v2systems').click();
+          await page.waitForTimeout(600);
+          await page.screenshot({path:'atlas-ai-systems.png',fullPage:true});
           await page.locator('#replay').click();
           await page.locator('#night').click();
           await page.locator('#topview').click();
@@ -56,5 +80,9 @@ jobs:
         if: always()
         with:
           name: atlas-ai-browser-smoke
-          path: atlas-ai-browser-smoke.png
+          path: |
+            atlas-ai-browser-smoke.png
+            atlas-ai-complete.png
+            atlas-ai-structure.png
+            atlas-ai-systems.png
           if-no-files-found: ignore
