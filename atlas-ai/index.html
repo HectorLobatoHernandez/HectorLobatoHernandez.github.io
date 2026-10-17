@@ -17,11 +17,11 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const $=s=>document.getElementById(s);
 const projects=[
- {id:'gaza',name:'GAZA OPS',type:'HEADQUARTERS',desc:'Centro de operaciones e inteligencia industrial.',x:0,z:-39,w:26,d:25,h:95,url:'../apps/gaza/territory.html',ready:true},
- {id:'planta',name:'PLANTA',type:'INDUSTRIAL DIGITAL TWIN',desc:'Planta industrial, producción y simulación ASRS.',x:-73,z:-2,w:26,d:28,h:52,url:'../apps/gaza/territory.html',ready:true},
- {id:'laboratorio',name:'LABORATORIO',type:'QUALITY INTELLIGENCE',desc:'Procesos de laboratorio y control de calidad.',x:-34,z:-2,w:26,d:28,h:65,url:'../apps/gaza/territory.html',ready:true},
- {id:'granja',name:'GRANJA',type:'AGRICULTURE INTELLIGENCE',desc:'Monitorización y simulación de producción agroindustrial.',x:34,z:-2,w:26,d:28,h:54,url:'../apps/gaza/territory.html',ready:true},
- {id:'logistica',name:'CAMIÓN / LOGÍSTICA',type:'FLEET & TRANSPORT',desc:'Vehículos, distribución, rutas y operaciones logísticas.',x:73,z:-2,w:26,d:28,h:43,url:'../apps/gaza/territory.html',ready:true},
+ {id:'gaza',name:'GAZA OPS',type:'HEADQUARTERS',desc:'Centro de operaciones e inteligencia industrial.',x:0,z:-39,w:26,d:25,h:95,url:'../apps/gaza/index.html',ready:true},
+ {id:'planta',name:'PLANTA',type:'INDUSTRIAL DIGITAL TWIN',desc:'Planta industrial, producción y simulación ASRS.',x:-73,z:-2,w:26,d:28,h:52,url:'../apps/gaza/index.html',ready:true},
+ {id:'laboratorio',name:'LABORATORIO',type:'QUALITY INTELLIGENCE',desc:'Procesos de laboratorio y control de calidad.',x:-34,z:-2,w:26,d:28,h:65,url:'../apps/gaza/index.html',ready:true},
+ {id:'granja',name:'GRANJA',type:'AGRICULTURE INTELLIGENCE',desc:'Monitorización y simulación de producción agroindustrial.',x:34,z:-2,w:26,d:28,h:54,url:'../apps/gaza/index.html',ready:true},
+ {id:'logistica',name:'CAMIÓN / LOGÍSTICA',type:'FLEET & TRANSPORT',desc:'Vehículos, distribución, rutas y operaciones logísticas.',x:73,z:-2,w:26,d:28,h:43,url:'../apps/gaza/index.html',ready:true},
  {id:'rhb',name:'RHB STUDIO',type:'EN CONSTRUCCIÓN',desc:'Plataforma de ingeniería, empresa e integración.',x:-44,z:57,w:38,d:29,h:52,url:null,ready:false},
  {id:'xxxia',name:'XXXIA STUDIO',type:'EN CONSTRUCCIÓN',desc:'Estudio de IA, agentes y creación digital.',x:44,z:57,w:38,d:29,h:60,url:null,ready:false}
 ];
@@ -29,7 +29,7 @@ let selected=projects[0],progress=0,playing=true,night=true,orbiting=false;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x070c17);scene.fog=new THREE.FogExp2(0x070c17,.0024);
 const camera=new THREE.PerspectiveCamera(48,1,.5,1100);camera.position.set(152,144,183);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:false});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.65));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
 $('view').append(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,23,2);controls.enableDamping=true;controls.dampingFactor=.065;controls.maxPolarAngle=Math.PI*.49;controls.maxDistance=440;controls.minDistance=32;
 const hemi=new THREE.HemisphereLight(0x779fc9,0x20212a,1.05);scene.add(hemi);
@@ -49,11 +49,10 @@ function tower(p,i){
  const parent=new THREE.Group();scene.add(parent);const basement=box(p.w+2,1,p.d+2,p.x,.55,p.z,mats.steel,parent);
  const levels=p.ready?Math.floor(p.h/5):Math.floor(p.h/5)*.53;
  const facade=box(p.w,p.h,p.d,p.x,p.h/2+1,p.z,i%2?mats.glass:mats.glass2,parent);
- const inner=box(p.w-1,p.h-.5,p.d-1,p.x,p.h/2+1,p.z,new THREE.MeshStandardMaterial({color:0x0a1728,metalness:.4,roughness:.6}),parent);
- // Transparent dark glass skin with legible separated floors.
- inner.visible=false; facade.userData.project=p;
+ // Facade remains a single geometrical shell to minimize draw calls.
+ facade.userData.project=p;
  for(let f=1;f<levels;f++){
-  let y=f*5+1;
+  let y=f*5+1;if(y>p.h-2)continue;
   for(const side of [-1,1]){
    box(p.w+.2,.11,.14,p.x,y,p.z+side*(p.d/2+.08),mats.edge,parent);
    for(let col=-p.w/2+2;col<p.w/2-1;col+=3.8)if((f*7+Math.round(col)*3+i)%5!==0)
@@ -130,7 +129,8 @@ function updateBillboards(time){
  }
 }
 function updateTraffic(t){
- for(const car of traffic){
+ if(progress<.28){for(const car of traffic)car.mesh.visible=false;return}
+ for(const car of traffic){car.mesh.visible=true;
   const u=(car.offset+t*car.speed)%240-120;
   car.mesh.position.set(car.alongX?u:car.lane,.54,car.alongX?car.lane:u*0.87);
  }
@@ -148,11 +148,11 @@ $('topview').onclick=()=>{controls.target.set(0,0,3);camera.position.set(.01,250
 $('orbit').onclick=()=>{orbiting=!orbiting;$('orbit').style.borderColor=orbiting?'#ffb56d':''};
 $('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
 $('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.2:1.5;$('night').textContent=night?'Noche / 2300 K':'Día'};
-function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}}
+function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}for(const b of dynamicBoards)b.texture.needsUpdate=progress>.7}
 $('timeline').oninput=e=>{playing=false;setProgress(+e.target.value/1000);$('play').textContent='Reanudar'};
 $('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Pausa':'Reanudar'};
 $('replay').onclick=()=>{setProgress(0);playing=true;$('play').textContent='Pausa'};
 function resize(){let el=$('view');let w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 addEventListener('resize',resize);resize();setProgress(0);
-let previous=performance.now(),lastBoardUpdate=0;updateBillboards(0);function frame(now){let dt=Math.min(.08,(now-previous)/1000);previous=now;if(playing&&progress<1)setProgress(progress+dt*.095);if(orbiting&&progress>=.9){let offset=camera.position.clone().sub(controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.10);camera.position.copy(controls.target).add(offset)}updateTraffic(now*.001);if(now-lastBoardUpdate>130){updateBillboards(now);lastBoardUpdate=now;}controls.update();renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+let previous=performance.now(),lastBoardUpdate=0;updateBillboards(0);function frame(now){let dt=Math.min(.08,(now-previous)/1000);previous=now;if(playing&&progress<1)setProgress(progress+dt*.095);if(orbiting&&progress>=.9){let offset=camera.position.clone().sub(controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.10);camera.position.copy(controls.target).add(offset)}updateTraffic(now*.001);if(progress>.7&&now-lastBoardUpdate>350){updateBillboards(now);lastBoardUpdate=now;}controls.update();renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
 </script></body></html>
