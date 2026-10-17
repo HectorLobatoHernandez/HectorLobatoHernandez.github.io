@@ -19,8 +19,10 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
   const moving = [];
   const cranes = [];
   const boards = [];
-  const groundGroup = new THREE.Group(), architecture = new THREE.Group();
-  root.add(groundGroup,architecture);
+  const groundGroup = new THREE.Group(), architecture = new THREE.Group(), facadeLights=new THREE.Group();
+  root.add(groundGroup,architecture,facadeLights);
+  const haloGold=new THREE.MeshBasicMaterial({color:0xffb66f,transparent:true,opacity:.72,blending:THREE.AdditiveBlending,depthWrite:false});
+  const haloCyan=new THREE.MeshBasicMaterial({color:0x59c4ff,transparent:true,opacity:.58,blending:THREE.AdditiveBlending,depthWrite:false});
   let night = true, quality = 'high', mode = 'city', tour = false, tourStart = 0;
   function cube(parent,x,y,z,w,h,d,material) {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);
@@ -41,6 +43,10 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
     if(z>50)continue; // keep the camera-facing waterfront and GAZA campus visible
     const w=8+rand()*5,d=9+rand()*4,h=18+rand()*96;
     cube(architecture,x,h/2,z,w,h,d,glass);
+    const lightMat=rand()>.28?haloGold:haloCyan;
+    cube(architecture,x-w/2-.14,h/2,z+d/2+.16,.20,h,.16,lightMat);
+    if(rand()>.42)cube(architecture,x+w/2+.14,h/2,z+d/2+.16,.16,h,.12,lightMat);
+    cube(architecture,x,h+.08,z+d/2+.15,w,.17,.14,lightMat);
     for(let f=1;f<h/5;f++){
       const y=f*5;
       for(let col=-w/2+1.1;col<w/2-1;col+=2.3)
@@ -121,6 +127,11 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
       cube(jib,21,-4,0,.2,8,.2,steel);
       root.add(crane);cranes.push({crane,jib,p});
     }
+    // Landmark outline lighting follows each named GAZA / Studio parcel.
+    for(const side of [-1,1])
+      cube(facadeLights,x+side*(w/2+.22),h/2,z+d/2+.4,.22,h,.16,p.id==='granja'?haloCyan:haloGold);
+    for(let y=8;y<h;y+=10)
+      cube(facadeLights,x,y,z+d/2+.42,w+.48,.14,.1,p.id==='laboratorio'?haloCyan:haloGold);
     plotLayers.push({p,g,struct,sys,site,beams,core});
   }
   // Animated advertising screens on the financial perimeter.
@@ -152,6 +163,7 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
   }
   function setMode(next){
     mode=next;
+    facadeLights.visible=night&&next==='city';
     for(const {p,struct,sys} of plotLayers){
       struct.visible=next!=='city';
       sys.visible=next==='systems';
@@ -211,7 +223,7 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
       camera.position.lerp(nextPos,.08);controls.target.lerp(nextTarget,.08);
     }
   }
-  function setNight(next){night=next;}
+  function setNight(next){night=next;facadeLights.visible=night&&mode==='city';}
   function setQuality(next){quality=next;}
   setMode('city');
   return {update,setMode,setNight,setQuality,startTour,stopTour,get touring(){return tour},stats:{windows:windows.length+windowsBlue.length,structures:plotLayers.length}};
