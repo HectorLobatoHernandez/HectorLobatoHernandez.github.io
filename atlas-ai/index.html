@@ -9,12 +9,13 @@ html,body{margin:0;height:100%;background:var(--bg);font:13px/1.5 system-ui,Aria
 </style></head><body>
 <header class="top"><div class="brand">ATLAS <small>AI / SOFTWARE DISTRICT</small></div><nav class="headerlinks"><a href="../atlas/projects/atlas.html">ATLAS DISEÑO ↗</a><a href="../cv/dossier.html">DOSSIER ↗</a></nav></header>
 <main class="layout"><div id="view" class="canvas"></div><aside class="side"><div class="eyebrow">ATLAS / 02 — FINANCIAL DISTRICT</div><h1>A city of<br>intelligence.</h1><div class="muted">Distrito financiero virtual para proyectos de IA, automatización y digital twins.</div><nav id="projects" class="projects"></nav><section class="detail"><div id="status">SELECCIONA UNA PARCELA</div><h2 id="name">GAZA OPS</h2><div class="muted" id="description">Selecciona un edificio para explorar.</div><button id="enter">Entrar en proyecto ↗</button></section></aside>
-<div class="actions"><button id="night">Noche / 2300 K</button><button id="overview">Vista general</button><button id="topview">Planta</button><button id="orbit">Órbita 360°</button><button id="fullscreen">Pantalla completa</button></div><div class="hint">Arrastrar: orbitar · Rueda: zoom · Clic: seleccionar edificio</div></main>
+<div class="actions"><button id="night">Noche / 2300 K</button><button id="v2structure">Estructura</button><button id="v2systems">Sistemas</button><button id="v2tour">Tour FPV</button><button id="v2quality">Calidad: Alta</button><button id="overview">Vista general</button><button id="topview">Planta</button><button id="orbit">Órbita 360°</button><button id="fullscreen">Pantalla completa</button></div><div class="hint">Arrastrar: orbitar · Rueda: zoom · Clic: seleccionar edificio</div></main>
 <footer class="bottom"><label id="phase">TRAZADO URBANO</label><button id="play">Pausa</button><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="Secuencia de construcción"><button id="replay">Repetir</button><span id="pct">0%</span></footer>
 <section id="open" class="open"><header><button id="back">← Volver a ATLAS</button><b id="projecttitle"></b></header><iframe id="projectframe" title="Proyecto seleccionado" loading="lazy" allowfullscreen></iframe></section>
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {createDistrictV2} from './district-v2.mjs';
 const $=s=>document.getElementById(s);
 const projects=[
  {id:'gaza',name:'GAZA OPS',type:'HEADQUARTERS',desc:'Centro de operaciones e inteligencia industrial.',x:0,z:-39,w:26,d:25,h:95,url:'./gaza-module.html?module=gaza',ready:true},
@@ -137,6 +138,8 @@ function updateTraffic(t){
   car.mesh.position.set(car.alongX?u:car.lane,.54,car.alongX?car.lane:u*0.87);
  }
 }
+const enhancements=createDistrictV2({scene,camera,controls,projects,structures});
+let enhancementMode='city';
 const projectButtons=new Map();
 function choose(p){selected=p;for(const [key,btn] of projectButtons)btn.classList.toggle('selected',key===p.id);$('name').textContent=p.name;$('status').textContent=p.ready?'PROYECTO ACTIVO':'EN CONSTRUCCIÓN';$('description').textContent=p.desc;$('enter').disabled=!p.ready;$('enter').textContent=p.ready?'Entrar en proyecto ↗':'Próximamente';if(!p.ready)$('enter').title='La parcela aún no tiene aplicación publicada'}
 for(const [i,p] of projects.entries()){const b=document.createElement('button');b.innerHTML='<b>'+String(i+1).padStart(2,'0')+' / '+p.name+'</b><small>'+p.type+'</small>';b.onclick=()=>{choose(p);controls.target.set(p.x,p.h*.39,p.z);camera.position.set(p.x+p.w*2,p.h*.95+20,p.z+p.d*2)};$('projects').append(b);projectButtons.set(p.id,b)}choose(selected);
@@ -148,13 +151,18 @@ $('back').onclick=()=>{$('open').classList.remove('active');$('projectframe').sr
 $('overview').onclick=()=>{controls.target.set(0,23,2);camera.position.set(152,144,183)};
 $('topview').onclick=()=>{controls.target.set(0,0,3);camera.position.set(.01,250,3)};
 $('orbit').onclick=()=>{orbiting=!orbiting;$('orbit').style.borderColor=orbiting?'#ffb56d':''};
+$('v2structure').onclick=()=>{enhancementMode=enhancementMode==='structure'?'city':'structure';enhancements.setMode(enhancementMode);$('v2structure').style.borderColor=enhancementMode==='structure'?'#ffb66f':'';$('v2systems').style.borderColor='';};
+$('v2systems').onclick=()=>{enhancementMode=enhancementMode==='systems'?'city':'systems';enhancements.setMode(enhancementMode);$('v2systems').style.borderColor=enhancementMode==='systems'?'#4eb8ff':'';$('v2structure').style.borderColor='';};
+$('v2tour').onclick=()=>{if(enhancements.touring){enhancements.stopTour();$('v2tour').style.borderColor='';}else{enhancements.startTour(performance.now());$('v2tour').style.borderColor='#ffb66f';}};
+const qualityModes=['high','medium','low'];let qualityLevel=0;
+$('v2quality').onclick=()=>{qualityLevel=(qualityLevel+1)%3;const q=qualityModes[qualityLevel];enhancements.setQuality(q);renderer.setPixelRatio(Math.min(devicePixelRatio,q==='high'?1.5:q==='medium'?1.1:1));resize();$('v2quality').textContent='Calidad: '+({high:'Alta',medium:'Media',low:'Baja'}[q]);};
 $('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
-$('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.2:1.5;$('night').textContent=night?'Noche / 2300 K':'Día'};
+$('night').onclick=()=>{night=!night;hemi.intensity=night?1.05:2.2;moon.intensity=night?1.05:2.6;scene.background.set(night?0x070c17:0x9ab1c7);scene.fog.color.set(night?0x070c17:0x9ab1c7);renderer.toneMappingExposure=night?1.2:1.5;$('night').textContent=night?'Noche / 2300 K':'Día';enhancements.setNight(night)};
 function setProgress(n){progress=Math.max(0,Math.min(1,n));$('timeline').value=progress*1000;$('pct').textContent=Math.round(progress*100)+'%';$('phase').textContent=progress<.18?'TRAZADO URBANO':progress<.38?'CIMENTACIÓN':progress<.67?'ESTRUCTURA':progress<.92?'ENVOLVENTES':'DISTRITO OPERATIVO';for(const {group,p} of structures){const q=Math.max(.001,Math.min(1,(progress-.17)/.73));group.scale.y=q;group.visible=progress>.12}for(const b of dynamicBoards)b.mesh.visible=progress>.7}
 $('timeline').oninput=e=>{playing=false;setProgress(+e.target.value/1000);$('play').textContent='Reanudar'};
 $('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Pausa':'Reanudar'};
 $('replay').onclick=()=>{setProgress(0);playing=true;$('play').textContent='Pausa'};
 function resize(){let el=$('view');let w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 addEventListener('resize',resize);renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();playing=false;$('phase').textContent='CONTEXTO GRÁFICO PERDIDO · RECARGA LA PÁGINA';});resize();setProgress(0);
-let previous=performance.now(),lastBoardUpdate=0;updateBillboards(0);function frame(now){let dt=Math.min(.08,(now-previous)/1000);previous=now;if(playing&&progress<1)setProgress(progress+dt*.095);if(orbiting&&progress>=.9){let offset=camera.position.clone().sub(controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.10);camera.position.copy(controls.target).add(offset)}updateTraffic(now*.001);if(progress>.7&&now-lastBoardUpdate>350){updateBillboards(now);lastBoardUpdate=now;}controls.update();renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+let previous=performance.now(),lastBoardUpdate=0;updateBillboards(0);function frame(now){let dt=Math.min(.08,(now-previous)/1000);previous=now;if(playing&&progress<1)setProgress(progress+dt*.095);if(orbiting&&progress>=.9){let offset=camera.position.clone().sub(controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),dt*.10);camera.position.copy(controls.target).add(offset)}updateTraffic(now*.001);if(progress>.7&&now-lastBoardUpdate>350){updateBillboards(now);lastBoardUpdate=now;}enhancements.update(now,progress);controls.update();renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
 </script></body></html>
