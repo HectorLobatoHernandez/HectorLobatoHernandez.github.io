@@ -1,0 +1,60 @@
+name: ATLAS AI browser smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'atlas-ai/**'
+      - '.github/workflows/atlas-ai-smoke.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Start local server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/atlas-server.log 2>&1 &
+          sleep 2
+      - name: Exercise financial district
+        run: |
+          node --input-type=module <<'JS'
+          import {chromium} from 'playwright';
+          import assert from 'node:assert/strict';
+          const browser=await chromium.launch({headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+          const page=await browser.newPage({viewport:{width:1440,height:900}});
+          const errors=[];
+          page.on('pageerror',e=>errors.push(e.message));
+          const response=await page.goto('http://127.0.0.1:8000/atlas-ai/',{waitUntil:'load'});
+          assert.equal(response.status(),200);
+          await page.locator('#projects button').first().waitFor({timeout:20000});
+          assert.equal(await page.locator('#projects button').count(),7);
+          await page.locator('#projects button').nth(4).click();
+          assert.match(await page.locator('#name').textContent(),/LOGÍSTICA/);
+          await page.locator('#enter').click();
+          await page.locator('#projectframe').waitFor();
+          const src=await page.locator('#projectframe').getAttribute('src');
+          assert.match(src,/module=logistica/);
+          await page.locator('#back').click();
+          await page.locator('#replay').click();
+          await page.locator('#night').click();
+          await page.locator('#topview').click();
+          await page.screenshot({path:'atlas-ai-browser-smoke.png',fullPage:true});
+          assert.deepEqual(errors,[]);
+          await page.goto('http://127.0.0.1:8000/atlas-ai/gaza-module.html?module=planta');
+          assert.equal(await page.locator('#title').textContent(),'PLANTA');
+          await browser.close();
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atlas-ai-browser-smoke
+          path: atlas-ai-browser-smoke.png
+          if-no-files-found: ignore
