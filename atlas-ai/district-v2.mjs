@@ -38,6 +38,7 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
   // The adjacent skyline is deterministic, allowing repeatable camera tours.
   for(let x=-140;x<=140;x+=17)for(let z=-112;z<=112;z+=20){
     if(Math.abs(x)<112&&Math.abs(z)<90)continue;
+    if(z>50)continue; // keep the camera-facing waterfront and GAZA campus visible
     const w=8+rand()*5,d=9+rand()*4,h=18+rand()*96;
     cube(architecture,x,h/2,z,w,h,d,glass);
     for(let f=1;f<h/5;f++){
@@ -133,6 +134,8 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
   ad(-136,45,-90,'ATLAS / INDUSTRIAL AI',Math.PI/2);
   ad(136,58,-68,'INTELLIGENT OPERATIONS',-Math.PI/2);
   ad(136,49,76,'GAZA OPS / DIGITAL TWIN',-Math.PI/2);
+  ad(0,84,-112,'ATLAS AI / FINANCIAL DISTRICT',0);
+  ad(84,56,-110,'GAZA OPS / INTELLIGENCE',0);
   let lastBoard=-999;
   function updateBoards(t){
     if(t-lastBoard<400)return;lastBoard=t;
@@ -154,6 +157,7 @@ export function createDistrictV2({scene, camera, controls, projects, structures}
       sys.visible=next==='systems';
     }
     for(const obj of structures){
+      if(obj.group)obj.group.visible=next==='city';
       if(!obj.facade)continue;
       if(!obj.facade.userData.v2Material) {
         obj.facade.material=obj.facade.material.clone();
